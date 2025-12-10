@@ -33,11 +33,16 @@
         }
 
         .logo {
-            font-size: 3.5rem;
-            font-weight: 700;
             margin-bottom: 2rem;
-            letter-spacing: -0.02em;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 280px;
+            height: auto;
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.1));
         }
 
         .mascot-container {
@@ -207,8 +212,8 @@
         }
 
         @media (max-width: 480px) {
-            .logo {
-                font-size: 2.5rem;
+            .logo img {
+                width: 200px;
             }
 
             h1 {
@@ -250,7 +255,9 @@
 </head>
 <body>
     <div class="container">
-        <div class="logo">FinWiser</div>
+        <div class="logo">
+            <img src="finwiserlogo.svg" alt="FinWiser Logo" />
+        </div>
         
         <div class="mascot-container">
             <img src="mascot_loading_notes.gif" alt="Finny the FinWiser mascot catching money bills" class="mascot-animation">
