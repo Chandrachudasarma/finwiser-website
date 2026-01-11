@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finwiser Privacy Policy</title>
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --primary-light: #14b8a6;
+            --bg-gradient-start: #0d9488;
+            --bg-gradient-end: #115e59;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        nav {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        nav h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        nav ol {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+
+        nav li {
+            margin-bottom: 10px;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        h3 {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin: 25px 0 15px 0;
+        }
+
+        h4 {
+            color: var(--text-dark);
+            font-size: 1.05rem;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-dark);
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 16px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        .highlight-box {
+            background: #f0fdfa;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: var(--primary-light);
+        }
+
+        .data-category {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+        }
+
+        .data-category h4 {
+            margin-top: 0;
+            color: var(--primary-dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="top">
+        <h1>Finwiser Privacy Policy</h1>
+        <p>Last Updated: January 2025</p>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Table of Contents</h2>
+            <ol>
+                <li><a href="#section-1">Applicability and Scope</a></li>
+                <li><a href="#section-2">Categories of Personal Data Collected</a></li>
+                <li><a href="#section-3">Purpose of Processing Personal Data</a></li>
+                <li><a href="#section-4">Consent, Withdrawal, and Consequences</a></li>
+                <li><a href="#section-5">Data Sharing and Disclosure</a></li>
+                <li><a href="#section-6">Data Retention and Erasure</a></li>
+                <li><a href="#section-7">Data Security Safeguards</a></li>
+                <li><a href="#section-8">User Rights under the DPDP Act, 2023</a></li>
+                <li><a href="#section-9">Grievance Redressal</a></li>
+                <li><a href="#section-10">Updates to This Privacy Policy</a></li>
+            </ol>
+        </nav>
+
+        <!-- Section 1 -->
+        <section id="section-1">
+            <h2>1. Applicability and Scope</h2>
+            <p>This Privacy Policy describes how Finwiser ("we", "us", "our") collects, uses, stores, shares, and protects personal data when you access or use the Finwiser Platform (website/mobile application and related services).</p>
+
+            <p>This Policy applies to:</p>
+            <ul>
+                <li>all users of the Platform; and</li>
+                <li>personal data processed by Finwiser in connection with Platform usage, including where Finwiser acts as a Financial Information User (FIU) under the Account Aggregator framework (where applicable).</li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>For the purposes of the <a href="https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a> ("DPDP Act"):</p>
+                <ul>
+                    <li>you are the <strong>Data Principal</strong>; and</li>
+                    <li>Finwiser is the <strong>Data Fiduciary</strong> for personal data processed through the Platform, and may engage third parties as Data Processors to provide Platform functionality.</li>
+                </ul>
+            </div>
+
+            <p>This Policy should be read together with:</p>
+            <ul>
+                <li>the <a href="terms.html">Platform Terms & Conditions</a>; and</li>
+                <li>if you choose to avail regulated investment advisory services, the Investment Advisory Agreement.</li>
+            </ul>
+
+            <div class="warning-box">
+                <p><strong>Important:</strong> Use of the Platform (including viewing projections or generic insights) does not create an investment advisory relationship. A regulated advisory relationship arises only if you execute a valid Investment Advisory Agreement.</p>
+            </div>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="section-2">
+            <h2>2. Categories of Personal Data Collected</h2>
+            <p>Depending on how you use the Platform, Finwiser may process the following categories of personal data:</p>
+
+            <h3>2.1 Data You Provide Directly</h3>
+            <div class="data-category">
+                <ul>
+                    <li>identity and contact information (name, mobile number, email address);</li>
+                    <li>demographic details you choose to provide (such as age or date of birth, where required for features);</li>
+                    <li>user-entered financial inputs (goals, preferences, assumptions, questionnaire responses).</li>
+                </ul>
+            </div>
+
+            <h3>2.2 Device, Technical, and Usage Data</h3>
+            <div class="data-category">
+                <ul>
+                    <li>device identifiers, device type, operating system and app version;</li>
+                    <li>IP address and approximate location signals derived from IP (if applicable);</li>
+                    <li>login and security logs;</li>
+                    <li>Platform interaction and usage metadata (pages/screens accessed, feature usage, timestamps).</li>
+                </ul>
+            </div>
+
+            <h3>2.3 Financial Information Accessed via Account Aggregator (Consent-Based)</h3>
+            <div class="data-category">
+                <p>Where you provide explicit consent through the Account Aggregator framework, Finwiser may access and process Financial Information made available by Financial Information Providers (such as banks, AMCs, and other regulated entities) through your chosen Account Aggregator. This may include, depending on consent scope:</p>
+                <ul>
+                    <li>account and holding summaries;</li>
+                    <li>balances; and/or</li>
+                    <li>transaction or cashflow information.</li>
+                </ul>
+                <p><strong>Finwiser is not a Financial Information Provider (FIP)</strong> and does not act as the system of record for such information.</p>
+                <p>Finwiser operates on a <strong>Transient Data Model</strong> for raw Financial Information. We do not act as a secondary storage provider for bank statements or transaction records.</p>
+            </div>
+
+            <h3>2.4 Derived or Generated Data</h3>
+            <div class="data-category">
+                <p>Finwiser may generate derived data from inputs and permitted data sources, such as:</p>
+                <ul>
+                    <li>net worth summaries, ratios, and diagnostics;</li>
+                    <li>projections, simulations, and scores; and</li>
+                    <li>categorisations and trend indicators.</li>
+                </ul>
+                <p>Derived outputs are dependent on inputs, assumptions, and data availability.</p>
+            </div>
+
+            <h3>2.5 Minor's Data</h3>
+            <div class="info-box">
+                <p>The Platform is intended for use by individuals aged <strong>18 years and above</strong>. Finwiser does not knowingly collect personal data from minors. If we become aware that personal data of a minor has been collected without appropriate legal authorisation, such data will be deleted in accordance with Applicable Law.</p>
+            </div>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="section-3">
+            <h2>3. Purpose of Processing Personal Data</h2>
+            <p>Finwiser processes personal data only for specific, explicit, and lawful purposes consistent with the DPDP Act and Applicable Law. The purposes below are grouped by context.</p>
+
+            <h3>3.1 Platform Access and Account Management (Mandatory for All Users)</h3>
+            <p>Finwiser processes personal data to:</p>
+            <ul>
+                <li>create and manage your user account;</li>
+                <li>authenticate access and protect account security;</li>
+                <li>provide core Platform features you request;</li>
+                <li>send essential service communications (logins, security alerts, critical updates);</li>
+                <li>prevent fraud, detect abuse, and maintain system integrity; and</li>
+                <li>comply with Applicable Law.</li>
+            </ul>
+            <p><strong>This processing is required to operate the Platform and cannot be disabled without affecting account access.</strong></p>
+
+            <h3>3.2 Platform Features and Generic Outputs (All Users)</h3>
+            <p>Finwiser processes personal data and user-provided inputs to:</p>
+            <ul>
+                <li>compute net worth views, summaries, and financial overviews;</li>
+                <li>generate projections, simulations, scores, or generic insights based on assumptions and available inputs;</li>
+                <li>improve Platform reliability, performance, and user experience; and</li>
+                <li>run internal product analytics using aggregated or anonymised data where feasible.</li>
+            </ul>
+            <div class="warning-box">
+                <p><strong>These outputs are Generic Outputs and do not constitute personalised investment advice.</strong></p>
+                <p>Generic Outputs are provided for informational and educational purposes only and do not constitute a recommendation to buy, sell, hold, or allocate to any financial product or security.</p>
+                <p>No fiduciary, advisory, or suitability obligation arises from Generic Outputs. Personalised investment advice is provided only after execution of a valid Investment Advisory Agreement and completion of mandatory risk profiling.</p>
+            </div>
+
+            <h3>3.3 Account Aggregator and Financial Information Processing (Consent-Based)</h3>
+            <p>Where you provide explicit consent through the Account Aggregator framework, Finwiser processes Financial Information to:</p>
+            <ul>
+                <li>aggregate financial positions and holdings;</li>
+                <li>compute cashflow patterns and obligations;</li>
+                <li>generate financial health indicators and diagnostics; and</li>
+                <li>support scenario modelling and Platform insights.</li>
+            </ul>
+            <p>This processing is:</p>
+            <ul>
+                <li><strong>read-only and purpose-limited;</strong></li>
+                <li>restricted to the scope, duration, and data types authorised in your consent artefact; and</li>
+                <li>discontinued upon consent expiry or revocation, subject to Applicable Law and regulatory record-keeping obligations.</li>
+            </ul>
+            <div class="info-box">
+                <p>Upon expiry or revocation of consent, Finwiser ceases fetching any new Financial Information.</p>
+                <p>Limited historical derived summaries and security or audit logs (excluding raw Financial Information payloads) may be retained solely for security monitoring, dispute resolution, and regulatory compliance, as permitted under Applicable Law.</p>
+            </div>
+
+            <h3>3.4 Conditional Processing for Investment Advisory Services (Clients Only)</h3>
+            <p><em>This section applies only if you execute a valid Investment Advisory Agreement with Finwiser.</em></p>
+            <p>Where you become a Client, Finwiser may additionally process personal data to:</p>
+            <ul>
+                <li>perform risk profiling and suitability assessment as required under <a href="https://www.sebi.gov.in/legal/regulations/jan-2020/securities-and-exchange-board-of-india-investment-advisers-regulations-2013-last-amended-on-january-23-2020-_45791.html" target="_blank" rel="noopener">SEBI regulations</a>;</li>
+                <li>analyse financial position for advisory purposes;</li>
+                <li>prepare, document, and deliver personalised advice;</li>
+                <li>maintain advice records, audit trails, and compliance documentation; and</li>
+                <li>manage grievances and regulatory escalations relating to advisory services.</li>
+            </ul>
+            <p>Such processing does not occur for users who have not entered into an Investment Advisory Agreement.</p>
+
+            <h3>3.5 Legal, Regulatory, and Compliance Purposes</h3>
+            <p>Finwiser may process personal data to:</p>
+            <ul>
+                <li>comply with Applicable Law and lawful directions;</li>
+                <li>respond to regulatory or authority requests;</li>
+                <li>investigate fraud, security incidents, or misuse; and</li>
+                <li>enforce rights, resolve disputes, or manage claims.</li>
+            </ul>
+            <p>This may continue after account closure to the extent required by law.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="section-4">
+            <h2>4. Consent, Withdrawal, and Consequences</h2>
+
+            <h3>4.1 Basis of Processing and Consent Structure</h3>
+            <p>Finwiser processes personal data on the basis of:</p>
+            <ul>
+                <li><strong>mandatory processing</strong>, where necessary to provide core Platform functionality or comply with Applicable Law; and</li>
+                <li><strong>consent-based processing</strong>, where required under the DPDP Act or other applicable regulations.</li>
+            </ul>
+            <p>Consent, where required, is obtained in a free, informed, specific, and unambiguous manner and is limited to the stated purpose.</p>
+
+            <h3>4.2 Platform Access and Mandatory Processing</h3>
+            <p>Certain personal data processing is essential to operate the Platform, including:</p>
+            <ul>
+                <li>account creation and authentication;</li>
+                <li>security, fraud prevention, and system integrity;</li>
+                <li>essential service and regulatory communications; and</li>
+                <li>compliance with Applicable Law.</li>
+            </ul>
+            <p>Withdrawal of consent for such mandatory processing may result in:</p>
+            <ul>
+                <li>restriction of Platform features; or</li>
+                <li>inability to continue providing access to the Platform.</li>
+            </ul>
+
+            <h3>4.3 Consent for Account Aggregator and Financial Information Processing</h3>
+            <p>Access to Financial Information through the Account Aggregator framework is <strong>entirely consent-driven</strong>.</p>
+            <p>Where you choose to provide consent:</p>
+            <ul>
+                <li>consent is granted through your chosen Account Aggregator;</li>
+                <li>the consent artefact specifies data types, accounts, purpose, frequency, and duration; and</li>
+                <li>Finwiser processes Financial Information strictly within the scope of such consent.</li>
+            </ul>
+            <p>You may review, modify, or revoke Account Aggregator consent at any time using your Account Aggregator's interface.</p>
+
+            <h3>4.4 Consequences of Withdrawing Account Aggregator Consent</h3>
+            <p>Upon expiry or revocation of Account Aggregator consent:</p>
+            <ul>
+                <li>Finwiser will cease further access to Financial Information;</li>
+                <li>previously fetched data will no longer be refreshed or updated; and</li>
+                <li>certain Platform features that rely on such data (including aggregated views, diagnostics, or projections) may become limited or unavailable.</li>
+            </ul>
+            <p>Revocation of consent does not affect:</p>
+            <ul>
+                <li>processing already carried out prior to revocation; or</li>
+                <li>retention required under Applicable Law or regulatory obligations.</li>
+            </ul>
+
+            <h3>4.5 Consent for Investment Advisory Services (Clients Only)</h3>
+            <p>Processing of personal data for investment advisory purposes occurs only after you execute a valid Investment Advisory Agreement.</p>
+            <p>Such processing is governed by:</p>
+            <ul>
+                <li>this Privacy Policy; and</li>
+                <li>the specific disclosures and consent terms set out in the Investment Advisory Agreement.</li>
+            </ul>
+            <p>If you withdraw consent or terminate the Investment Advisory Agreement:</p>
+            <ul>
+                <li>Finwiser will cease providing investment advisory services; and</li>
+                <li>data processing will be limited to regulatory record-keeping, audit, and dispute resolution requirements.</li>
+            </ul>
+
+            <h3>4.6 Withdrawal of Consent and Its Effects</h3>
+            <p>You may withdraw consent for any consent-based processing by:</p>
+            <ul>
+                <li>using available Platform controls (where applicable); or</li>
+                <li>contacting Finwiser through the grievance or support channels.</li>
+            </ul>
+            <p>Withdrawal of consent:</p>
+            <ul>
+                <li>does not operate retrospectively;</li>
+                <li>may affect availability or quality of certain Platform features; and</li>
+                <li>does not override processing required under Applicable Law.</li>
+            </ul>
+            <p>Finwiser will inform you of any material consequences before acting on a withdrawal request, where practicable.</p>
+
+            <h3>4.7 Purpose-Linked and Feature-Gated Consent</h3>
+            <p>Certain core financial aggregation, analytics, and diagnostic features of the Platform require processing of personal data and Financial Information that is integral to the nature of those features.</p>
+            <p>Where such processing is necessary, Finwiser may be unable to provide access to those features in the absence of the required consent.</p>
+            <p>Account creation, authentication, and basic Platform access may remain available; however, refusal or withdrawal of consent may result in restricted or no access to features that depend on such processing.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="section-5">
+            <h2>5. Data Sharing and Disclosure</h2>
+
+            <h3>5.1 General Principle</h3>
+            <div class="highlight-box">
+                <p><strong>Finwiser does not sell your personal data.</strong></p>
+            </div>
+            <p>We share personal data only where necessary to:</p>
+            <ul>
+                <li>provide Platform functionality you request;</li>
+                <li>process Account Aggregator-enabled Financial Information strictly within your consent artefact;</li>
+                <li>comply with Applicable Law; or</li>
+                <li>protect the Platform, Users, and Finwiser from fraud, misuse, or security threats.</li>
+            </ul>
+            <p>Where feasible, Finwiser shares data in a minimised form (limited to what is necessary for the specific purpose).</p>
+
+            <h3>5.2 Categories of Recipients</h3>
+            <p>Finwiser may share personal data with the following categories of recipients:</p>
+
+            <h4>5.2.1 Service Providers and Data Processors</h4>
+            <p>We may share personal data with vendors who process data on our behalf to operate the Platform, such as:</p>
+            <ul>
+                <li>cloud hosting and infrastructure providers;</li>
+                <li>database, storage, and backup providers;</li>
+                <li>communication providers (SMS, email, WhatsApp or equivalent channels, if used);</li>
+                <li>customer support tooling (ticketing/helpdesk);</li>
+                <li>analytics and performance monitoring tools;</li>
+                <li>security and fraud-prevention providers; and</li>
+                <li>identity verification/KYC service providers, only when required for a specific feature or onboarding step.</li>
+            </ul>
+            <p>These recipients act as <strong>Data Processors</strong> and are contractually required to:</p>
+            <ul>
+                <li>process data only on Finwiser's instructions;</li>
+                <li>apply appropriate security safeguards; and</li>
+                <li>not use the data for their own independent purposes.</li>
+            </ul>
+
+            <h4>5.2.2 Account Aggregator Ecosystem Participants</h4>
+            <p>Where you provide consent through the Account Aggregator framework, Finwiser will exchange the minimum required technical and consent-related information with:</p>
+            <ul>
+                <li>your chosen Account Aggregator; and</li>
+                <li>Financial Information Providers (FIPs) through the AA ecosystem rails,</li>
+            </ul>
+            <p>strictly as required to fulfil the consent artefact (such as initiating a data request and receiving Financial Information responses).</p>
+            <p>Finwiser does not disclose raw Financial Information or consent-linked responses to any third party outside the Account Aggregator ecosystem, except where required under Applicable Law.</p>
+            <div class="info-box">
+                <p>Notwithstanding the above, Finwiser may use derived, aggregated, or irreversibly anonymised data (which does not identify you and does not constitute Financial Information) for:</p>
+                <ul>
+                    <li>internal analytics and research;</li>
+                    <li>platform improvement and model training;</li>
+                    <li>statistical analysis; and</li>
+                    <li>use by automated systems or AI-based tools operating under Finwiser's control.</li>
+                </ul>
+                <p>Such anonymised or de-identified data is subject to technical and organisational safeguards, is used only for internal analytics, research, or model improvement, and is not used for re-identification or third-party profiling.</p>
+            </div>
+
+            <h4>5.2.3 Regulated Service Context (Clients Only)</h4>
+            <p><em>This applies only if you execute an Investment Advisory Agreement.</em></p>
+            <p>In connection with regulated advisory services, Finwiser may share limited personal data:</p>
+            <ul>
+                <li>with compliance, audit, or record-management service providers engaged by Finwiser; and/or</li>
+                <li>as required for regulatory reporting or grievance handling.</li>
+            </ul>
+            <p><strong>Finwiser will not share client data with product manufacturers, distributors, brokers, or intermediaries for marketing or referral purposes.</strong></p>
+
+            <h4>5.2.4 Corporate Transactions</h4>
+            <p>If Finwiser undergoes a merger, acquisition, restructuring, or sale of assets, personal data may be shared with relevant counterparties and advisers as part of such transaction, subject to:</p>
+            <ul>
+                <li>confidentiality obligations; and</li>
+                <li>Applicable Law.</li>
+            </ul>
+
+            <h4>5.2.5 Legal and Regulatory Disclosure</h4>
+            <p>Finwiser may disclose personal data where required to comply with:</p>
+            <ul>
+                <li>Applicable Law;</li>
+                <li>court orders or lawful requests from competent authorities;</li>
+                <li>regulatory directions; or</li>
+                <li>legal processes.</li>
+            </ul>
+            <p>We may also disclose data where necessary to:</p>
+            <ul>
+                <li>investigate, prevent, or address fraud, security incidents, or abuse; or</li>
+                <li>enforce our rights and agreements.</li>
+            </ul>
+
+            <h3>5.3 What We Do Not Do</h3>
+            <div class="highlight-box">
+                <p>Finwiser does not:</p>
+                <ul>
+                    <li>sell personal data;</li>
+                    <li>rent personal data; or</li>
+                    <li>share personal data with third parties for their independent marketing purposes.</li>
+                </ul>
+            </div>
+
+            <h3>5.4 International Transfers</h3>
+            <p>If Finwiser uses service providers that store or process data outside India, such transfers will be undertaken only:</p>
+            <ul>
+                <li>in accordance with Applicable Law; and</li>
+                <li>with appropriate contractual and security safeguards.</li>
+            </ul>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 6 -->
+        <section id="section-6">
+            <h2>6. Data Retention and Erasure</h2>
+
+            <h3>6.1 Retention Principles</h3>
+            <p>Finwiser retains personal data only for as long as necessary to:</p>
+            <ul>
+                <li>provide the Platform and requested features;</li>
+                <li>comply with Applicable Law and regulatory obligations;</li>
+                <li>maintain security, prevent fraud, and ensure platform integrity; and</li>
+                <li>resolve disputes, grievances, and enforcement matters.</li>
+            </ul>
+            <p>Where feasible, Finwiser minimises retention by:</p>
+            <ul>
+                <li>retaining only necessary categories; and</li>
+                <li>deleting or irreversibly anonymising data when no longer required.</li>
+            </ul>
+
+            <h3>6.2 Retention by Data Category (High-Level)</h3>
+            <p>Finwiser typically retains the following categories of data:</p>
+
+            <h4>6.2.1 Account and Core Platform Data</h4>
+            <p>Retained while your Account remains active and for a reasonable period thereafter to:</p>
+            <ul>
+                <li>comply with legal obligations;</li>
+                <li>prevent fraud/abuse; and</li>
+                <li>enable dispute resolution.</li>
+            </ul>
+
+            <h4>6.2.2 Device, Security, and Audit Logs</h4>
+            <p>Retained for a reasonable period to:</p>
+            <ul>
+                <li>detect and investigate suspicious activity;</li>
+                <li>maintain Platform security; and</li>
+                <li>meet audit and compliance requirements.</li>
+            </ul>
+
+            <h4>6.2.3 Account Aggregator Financial Information</h4>
+            <div class="info-box">
+                <p>Raw Financial Information fetched via the Account Aggregator framework is processed on a <strong>transient basis</strong> and purged from Finwiser's active systems within a limited period, in accordance with the requirements of the Account Aggregator ecosystem, applicable consent artefacts, and Applicable Law.</p>
+                <p>Such purging timelines may vary based on the nature of the data, technical processing requirements, and obligations imposed by the relevant Account Aggregator or Financial Information Provider.</p>
+                <p>Finwiser does not retain raw Financial Information as a long-term record store. Only derived summaries, analytical outputs, and regulatory or suitability logs (which do not contain raw FI payloads) may be retained for longer periods where required for Platform functionality or compliance.</p>
+            </div>
+
+            <h4>6.2.4 Derived or Generated Data</h4>
+            <p>Derived data (such as summaries, ratios, trends, categorisations, and projections) may be retained to:</p>
+            <ul>
+                <li>maintain continuity of user experience; and</li>
+                <li>support Platform features and insights.</li>
+            </ul>
+            <p>Where you request deletion or close your account, derived data will be deleted or irreversibly anonymised unless retention is required under Applicable Law.</p>
+
+            <h3>6.3 Account Closure and Deletion Requests</h3>
+            <p>You may request account deletion or closure through the Platform or support channels. Upon closure:</p>
+            <ul>
+                <li>Finwiser will disable access to the Platform; and</li>
+                <li>commence deletion or anonymisation processes in accordance with this Policy.</li>
+            </ul>
+            <p>Finwiser may retain limited information after closure where necessary for:</p>
+            <ul>
+                <li>compliance with Applicable Law;</li>
+                <li>regulatory record-keeping (including SEBI requirements where applicable);</li>
+                <li>fraud prevention and security; or</li>
+                <li>resolution of disputes and grievances.</li>
+            </ul>
+
+            <h3>6.4 Erasure, Portability, and Legal Overrides</h3>
+            <p>Finwiser may provide access to, or export of, basic profile information, user-provided data, and derived summaries where technically feasible and permitted under Applicable Law.</p>
+            <p><strong>Finwiser does not provide exports of raw Financial Information payloads, bank statements, or original records.</strong> Re-use or transfer of original financial records should be undertaken through the Account Aggregator framework or by approaching the relevant Financial Information Provider.</p>
+
+            <h3>6.5 Anonymisation</h3>
+            <p>Where feasible and lawful, Finwiser may retain anonymised and aggregated data that cannot reasonably identify you, for:</p>
+            <ul>
+                <li>analytics;</li>
+                <li>product improvement.</li>
+            </ul>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 7 -->
+        <section id="section-7">
+            <h2>7. Data Security Safeguards</h2>
+
+            <h3>7.1 Security Principles</h3>
+            <p>Finwiser implements reasonable security safeguards, appropriate to the nature of personal data processed, in accordance with the <a href="https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a> and Applicable Law.</p>
+            <p>Security measures are designed to:</p>
+            <ul>
+                <li>protect personal data against unauthorised access, disclosure, alteration, or destruction; and</li>
+                <li>maintain the confidentiality, integrity, and availability of Platform systems and data.</li>
+            </ul>
+
+            <h3>7.2 Organisational Safeguards</h3>
+            <p>Finwiser maintains organisational measures including:</p>
+            <ul>
+                <li>internal access controls based on role and necessity;</li>
+                <li>confidentiality obligations for employees, contractors, and service providers;</li>
+                <li>periodic internal reviews of access privileges;</li>
+                <li>documented incident handling and escalation procedures; and</li>
+                <li>training and awareness programs relevant to data protection and information security.</li>
+            </ul>
+
+            <h3>7.3 Technical Safeguards</h3>
+            <p>Finwiser uses appropriate technical safeguards, which may include:</p>
+            <ul>
+                <li>encryption of data in transit and at rest, where applicable;</li>
+                <li>secure authentication mechanisms;</li>
+                <li>system monitoring and logging;</li>
+                <li>segregation of environments (development, testing, production); and</li>
+                <li>periodic security testing and vulnerability assessments.</li>
+            </ul>
+            <p>Specific technical implementations may change over time to respond to evolving security threats.</p>
+
+            <h3>7.4 Access Control and Least Privilege</h3>
+            <p>Access to personal data is restricted to authorised personnel only and granted strictly on a need-to-know basis.</p>
+            <p>Access rights are reviewed periodically and revoked promptly where no longer required.</p>
+
+            <h3>7.5 Incident Management</h3>
+            <p>In the event of a personal data breach, Finwiser will:</p>
+            <ul>
+                <li>take reasonable steps to contain, assess, and remediate the incident;</li>
+                <li>notify affected users and authorities where required under Applicable Law; and</li>
+                <li>document the incident and corrective actions taken.</li>
+            </ul>
+
+            <h3>7.6 User Responsibilities</h3>
+            <p>Users are responsible for:</p>
+            <ul>
+                <li>safeguarding their account credentials;</li>
+                <li>notifying Finwiser of unauthorised access or suspicious activity; and</li>
+                <li>ensuring the security of their devices and networks used to access the Platform.</li>
+            </ul>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 8 -->
+        <section id="section-8">
+            <h2>8. User Rights under the Digital Personal Data Protection Act, 2023</h2>
+            <p>Finwiser recognises and facilitates the rights available to Users as Data Principals under the DPDP Act, subject to Applicable Law.</p>
+
+            <h3>8.1 Right to Access Information</h3>
+            <p>You may request access to information about:</p>
+            <ul>
+                <li>the categories of personal data processed by Finwiser;</li>
+                <li>the purposes of such processing; and</li>
+                <li>the identities of categories of data recipients, where applicable.</li>
+            </ul>
+            <div class="info-box">
+                <p>The Right to Access includes the ability to view Financial Information fetched via the Account Aggregator framework as displayed on the Platform during the active consent period.</p>
+                <p>This right does not extend to providing certified statements, official records, or raw data files. For original records or certified copies, Users should approach their respective Financial Information Providers or Account Aggregator.</p>
+                <p>The Right to Access does not extend to Finwiser's proprietary algorithms, internal models, scoring logic, or trade secrets used to generate Generic Outputs, as permitted under Applicable Law.</p>
+                <p>Derived summaries and analytical outputs may remain accessible after consent expiry or revocation, subject to retention policies. Viewing of raw Financial Information requires an active Account Aggregator consent.</p>
+            </div>
+
+            <h3>8.2 Right to Correction and Updating</h3>
+            <p>You may request correction or updating of personal data that is:</p>
+            <ul>
+                <li>inaccurate;</li>
+                <li>incomplete; or</li>
+                <li>outdated.</li>
+            </ul>
+            <p>Where correction is not feasible (for example, historical records required for compliance), Finwiser may retain such data with appropriate annotation.</p>
+
+            <h3>8.3 Right to Erasure</h3>
+            <p>You may request erasure of personal data that is:</p>
+            <ul>
+                <li>no longer necessary for the stated purpose; or</li>
+                <li>processed based on consent that has been withdrawn.</li>
+            </ul>
+            <p>Erasure requests are subject to:</p>
+            <ul>
+                <li>retention obligations under Applicable Law; and</li>
+                <li>regulatory record-keeping requirements (including those applicable to registered investment advisers).</li>
+            </ul>
+
+            <h3>8.4 Right to Grievance Redressal</h3>
+            <p>You may raise grievances regarding:</p>
+            <ul>
+                <li>processing of personal data; or</li>
+                <li>exercise of rights under the DPDP Act.</li>
+            </ul>
+            <p>Grievances will be addressed in accordance with <a href="#section-9">Section 9</a> of this Privacy Policy.</p>
+
+            <h3>8.5 Right to Nomination</h3>
+            <p>You may nominate another individual to exercise your rights under the DPDP Act in the event of death or incapacity, in accordance with Applicable Law.</p>
+
+            <h3>8.6 Limitations</h3>
+            <p>The exercise of rights under this section may be limited where:</p>
+            <ul>
+                <li>required to comply with Applicable Law;</li>
+                <li>necessary to protect the rights of other users.</li>
+            </ul>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 9 -->
+        <section id="section-9">
+            <h2>9. Grievance Redressal</h2>
+
+            <h3>9.1 Grievance Redressal Officer</h3>
+            <p>In accordance with the <a href="https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a> and Applicable Law, Finwiser has appointed a Grievance Redressal Officer to address concerns relating to the processing of personal data and the exercise of Data Principal rights.</p>
+
+            <div class="highlight-box">
+                <p><strong>Grievance Redressal Officer:</strong></p>
+                <p><strong>Name:</strong> Chandrachuda Sarma Y</p>
+                <p><strong>Email:</strong> <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></p>
+            </div>
+
+            <h3>9.2 Raising a Grievance</h3>
+            <p>You may raise a grievance relating to:</p>
+            <ul>
+                <li>processing of personal data;</li>
+                <li>exercise of rights under the DPDP Act;</li>
+                <li>consent management or withdrawal; or</li>
+                <li>any perceived non-compliance with this Privacy Policy.</li>
+            </ul>
+            <p>Grievances may be submitted via:</p>
+            <ul>
+                <li>email to the Grievance Redressal Officer; or</li>
+                <li>such other channels as may be made available on the Platform.</li>
+            </ul>
+
+            <h3>9.3 Resolution Timelines</h3>
+            <p>Finwiser shall:</p>
+            <ul>
+                <li>acknowledge grievances within reasonable timelines; and</li>
+                <li>endeavour to resolve them in accordance with timelines prescribed under Applicable Law.</li>
+            </ul>
+            <p>Where additional time is required due to the nature of the grievance, you will be informed accordingly.</p>
+
+            <h3>9.4 Regulatory Escalation</h3>
+            <p>If a grievance is not resolved to your satisfaction, you may exercise your statutory right to escalate the matter before the appropriate authority under Applicable Law.</p>
+            <p>Nothing in this Privacy Policy restricts your right to approach a competent regulatory or judicial authority.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 10 -->
+        <section id="section-10">
+            <h2>10. Updates to This Privacy Policy</h2>
+
+            <h3>10.1 Policy Updates</h3>
+            <p>Finwiser may update this Privacy Policy from time to time to reflect:</p>
+            <ul>
+                <li>changes in Applicable Law;</li>
+                <li>regulatory guidance;</li>
+                <li>changes in Platform functionality; or</li>
+                <li>operational or security requirements.</li>
+            </ul>
+
+            <h3>10.2 Notification of Changes</h3>
+            <p>Where material changes are made, Finwiser will take reasonable steps to notify Users through:</p>
+            <ul>
+                <li>the Platform; and/or</li>
+                <li>electronic communication.</li>
+            </ul>
+            <p>The updated Privacy Policy will be made available on the Platform with the revised effective date.</p>
+
+            <h3>10.3 Continued Use</h3>
+            <p>Your continued use of the Platform after the effective date of an updated Privacy Policy constitutes acceptance of such updated Privacy Policy, to the extent permitted under Applicable Law.</p>
+            <p>If you do not agree with the updated Privacy Policy, you may discontinue use of the Platform and request account closure.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Finwiser. All rights reserved.</p>
+        <p>
+            <a href="index.html">Home</a> |
+            <a href="mailto:helpdesk@finwiser.org">Contact Us</a> |
+            <a href="terms.html">Terms & Conditions</a>
+        </p>
+        <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+            SEBI Registered Investment Adviser - Individual | Registration No: INA000021331
+        </p>
+    </footer>
+</body>
+</html>
