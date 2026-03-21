@@ -332,12 +332,100 @@
 
   .light .flywheel, .white .flywheel { background: #f5f5f5; }
 
+  /* --- TABLET LANDSCAPE / SMALL DESKTOP --- */
   @media (max-width: 1200px) {
     .slide { padding: 40px 50px; }
     h1 { font-size: 42px; }
     h1.hero { font-size: 52px; }
     h2 { font-size: 32px; }
-    .grid-2 { grid-template-columns: 1fr; }
+    h3 { font-size: 19px; }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+    .stat .number { font-size: 36px; }
+    .two-col { gap: 30px; }
+    .quote { font-size: 20px; }
+  }
+
+  /* --- TABLET PORTRAIT --- */
+  @media (max-width: 900px) {
+    .slide { padding: 32px 28px; min-height: auto; padding-bottom: 50px; }
+    h1 { font-size: 34px; }
+    h1.hero { font-size: 40px; }
+    h2 { font-size: 26px; margin-bottom: 16px; }
+    h3 { font-size: 17px; }
+    .subtitle { font-size: 18px; }
+    .grid-2 { grid-template-columns: 1fr; gap: 20px; }
+    .grid-3 { grid-template-columns: 1fr; gap: 16px; }
+    .grid-4 { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .two-col { flex-direction: column; gap: 24px; }
+    .card { padding: 20px; }
+    .quote { font-size: 18px; padding: 14px 0 14px 20px; }
+    .insight-box { font-size: 14px; padding: 12px 16px; }
+    .flow-step { font-size: 14px; }
+    .flow-step .step-num { width: 30px; height: 30px; font-size: 12px; }
+    table { font-size: 12px; }
+    table th { padding: 8px 10px; font-size: 10px; }
+    table td { padding: 8px 10px; }
+    .stat .number { font-size: 32px; }
+    .stat .label { font-size: 12px; }
+    ul li { font-size: 14px; line-height: 1.5; }
+    .logo-bar { top: 16px; left: 20px; }
+    .logo-bar img { height: 22px !important; }
+    .slide-number { bottom: 12px; right: 20px; font-size: 12px; }
+    .pill { font-size: 11px; padding: 4px 10px; }
+    .tag { font-size: 11px; padding: 4px 12px; }
+    .flywheel { font-size: 12px; padding: 14px; }
+  }
+
+  /* --- MOBILE PORTRAIT --- */
+  @media (max-width: 600px) {
+    .slide { padding: 24px 18px; padding-top: 50px; padding-bottom: 40px; }
+    h1 { font-size: 26px; margin-bottom: 12px; }
+    h1.hero { font-size: 30px; }
+    h2 { font-size: 22px; margin-bottom: 12px; }
+    h3 { font-size: 15px; margin-bottom: 8px; }
+    .subtitle { font-size: 16px; max-width: 100%; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; gap: 12px; }
+    .card { padding: 16px; border-radius: 12px; }
+    .card p { font-size: 13px; }
+    .quote { font-size: 15px; padding: 10px 0 10px 16px; margin: 12px 0; }
+    .insight-box { font-size: 13px; padding: 10px 14px; margin: 8px 0; }
+    .stat { padding: 12px 8px; }
+    .stat .number { font-size: 28px; }
+    .stat .label { font-size: 10px; }
+    table { font-size: 11px; display: block; overflow-x: auto; white-space: nowrap; }
+    table th { padding: 6px 8px; font-size: 9px; }
+    table td { padding: 6px 8px; }
+    .two-col { gap: 16px; }
+    .flow-step { font-size: 13px; gap: 10px; }
+    .flow-step .step-num { width: 26px; height: 26px; font-size: 11px; }
+    ul li { font-size: 13px; line-height: 1.5; }
+    ul { padding-left: 16px; }
+    .pill-list { gap: 6px; }
+    .pill { font-size: 10px; padding: 3px 8px; }
+    .tag { font-size: 10px; padding: 3px 10px; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .logo-bar { top: 12px; left: 14px; }
+    .logo-bar img { height: 18px !important; }
+    .slide-number { bottom: 10px; right: 14px; font-size: 11px; }
+    .flywheel { font-size: 11px; padding: 12px; line-height: 1.6; }
+    .nav-hint { font-size: 10px; }
+    /* Title slide logo */
+    .slide.center img[src*="finwiserlogo"] { max-width: 280px !important; width: 80% !important; }
+    .slide.center img[src*="finny"] { width: 90px !important; height: 90px !important; }
+    /* Product wireframe grids — stack on mobile */
+    .slide [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  }
+
+  /* --- MOBILE LANDSCAPE (short + wide) --- */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .slide { min-height: auto; padding: 20px 40px; padding-bottom: 40px; }
+    h2 { font-size: 24px; margin-bottom: 10px; }
+    .grid-2 { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .card { padding: 14px; }
+    .quote { font-size: 16px; }
+    .stat .number { font-size: 28px; }
+    .two-col { flex-direction: row; gap: 20px; }
   }
 </style>
 </head>
