@@ -332,6 +332,28 @@
 
   .light .flywheel, .white .flywheel { background: #f5f5f5; }
 
+  /* Mascot animation */
+  .mascot-anim {
+    width: 160px;
+    height: 178px;
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .mascot-anim img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.08s ease;
+  }
+
+  .mascot-anim img.mascot-active {
+    opacity: 1;
+  }
+
   /* Screenshot cards */
   .screenshot-label {
     position: absolute;
@@ -464,6 +486,23 @@
 
 <!-- SLIDE 1: Title -->
 <div class="slide white active center" id="s1">
+  <div class="mascot-anim" id="mascot">
+    <img src="slides/frame-1.png" class="mascot-active" data-frame="1">
+    <img src="slides/frame-2.png" data-frame="2">
+    <img src="slides/frame-3.png" data-frame="3">
+    <img src="slides/frame-4.png" data-frame="4">
+    <img src="slides/frame-5.png" data-frame="5">
+    <img src="slides/frame-6.png" data-frame="6">
+    <img src="slides/frame-7.png" data-frame="7">
+    <img src="slides/frame-8.png" data-frame="8">
+    <img src="slides/frame-9.png" data-frame="9">
+    <img src="slides/frame-10.png" data-frame="10">
+    <img src="slides/frame-11.png" data-frame="11">
+    <img src="slides/frame-12.png" data-frame="12">
+    <img src="slides/frame-13.png" data-frame="13">
+    <img src="slides/frame-14.png" data-frame="14">
+    <img src="slides/frame-15.png" data-frame="15">
+  </div>
   <img src="slides/finwiserlogo.svg" style="width:420px;margin-bottom:24px">
   <div style="margin-bottom:20px">
     <span class="tag red">SEBI RIA Licensed</span>
@@ -1198,6 +1237,65 @@
   document.querySelectorAll('.screenshot-card').forEach(card => {
     observer.observe(card);
   });
+</script>
+
+<!-- Mascot frame animation -->
+<script>
+(function() {
+  const container = document.getElementById('mascot');
+  if (!container) return;
+  const frames = container.querySelectorAll('img');
+
+  // Timing from README:
+  // Frames 1-2: 700ms each (sleeping loop)
+  // Frames 3-14: 100ms each (wake up fast sequence)
+  // Frame 15: 700ms hold (Hi!)
+  const timing = [
+    700, 700,           // 1-2: sleeping
+    100, 100, 100,      // 3-5: waking
+    100, 100, 100,      // 6-8: celebrating
+    100, 100, 100,      // 9-11: turbo
+    100, 100, 100,      // 12-14: jumping/running
+    2000                // 15: Hi! (hold longer)
+  ];
+
+  let current = 0;
+  let sleepLoops = 0;
+
+  function showFrame(n) {
+    frames.forEach(f => f.classList.remove('mascot-active'));
+    frames[n].classList.add('mascot-active');
+  }
+
+  function animate() {
+    showFrame(current);
+    const delay = timing[current];
+
+    if (current <= 1) {
+      // Sleep loop — loop frames 1-2 three times, then wake up
+      current = (current === 0) ? 1 : 0;
+      sleepLoops++;
+      if (sleepLoops >= 6) {
+        // Done sleeping, start wake up
+        current = 2;
+        sleepLoops = 0;
+      }
+      setTimeout(animate, delay);
+    } else if (current < 14) {
+      // Wake up sequence — advance through frames
+      current++;
+      setTimeout(animate, delay);
+    } else {
+      // Frame 15 (Hi!) — hold, then restart loop
+      setTimeout(() => {
+        current = 0;
+        animate();
+      }, delay);
+    }
+  }
+
+  animate();
+})();
 </script>
 </body>
 </html>
