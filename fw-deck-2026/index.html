@@ -361,6 +361,33 @@
     opacity: 1;
   }
 
+  /* Slide highlight bar */
+  .slide-bar {
+    margin-top: auto;
+    padding: 14px 24px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .dark .slide-bar {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+  }
+
+  .white .slide-bar {
+    background: rgba(233,69,96,0.08);
+    border-left: 4px solid var(--accent);
+    color: var(--primary);
+  }
+
+  @media (max-width: 600px) {
+    .slide-bar { font-size: 13px; padding: 10px 16px; }
+  }
+
   /* Screenshot cards */
   .screenshot-label {
     position: absolute;
@@ -576,7 +603,7 @@
     </div>
   </div>
 
-  <p style="margin-top:24px;font-size:16px;text-align:center;opacity:0.8">Every one of them has a financial app. None of those apps say: <strong style="color:#ff6b81">"This is wrong for YOU."</strong><br>Because judgment requires a license, full context, and intelligence. A human advisor does this — for <strong>₹1-2 lakh/year</strong>. 80M+ Indians can't afford that.</p>
+  <div class="slide-bar">Every one of them has a financial app. None of those apps say: "This is wrong for YOU." A human advisor does — for ₹1-2 lakh/year. 80M+ Indians can't afford that.</div>
   <div class="slide-number">3</div>
 </div>
 
@@ -607,9 +634,7 @@
     </div>
   </div>
 
-  <div class="insight-box">
-    <strong>"Am I saving enough for my child's education?" "Can I afford a car in 2 years?"</strong> — ask the chatbot. It answers with your real numbers. Every transaction recalibrates your goals in real-time — money in or out, timelines adjust automatically.
-  </div>
+  <div class="slide-bar">Ask the chatbot. It answers with your real numbers. Every transaction recalibrates your goals in real-time.</div>
   <div class="slide-number">4</div>
 </div>
 
@@ -628,7 +653,7 @@
     <div class="quote" style="border-color:#00b894"><strong style="opacity:0.5;font-style:normal">To all of them:</strong> "You're saving 32% of your income — that's better than 80% of people your age. You're on track. Keep going."</div>
   </div>
 
-  <p style="margin-top:30px;font-size:18px;font-weight:500;color:#ff6b81">No other app in India can say any of this — because nobody else has your full picture.</p>
+  <div class="slide-bar">No other app in India can say any of this — because nobody else has your full picture.</div>
   <div class="slide-number">5</div>
 </div>
 
@@ -665,6 +690,7 @@
       <div class="screenshot-label">Budget Dashboard</div>
     </div>
   </div>
+  <div class="slide-bar">Everything you see is built. Not mockups. Not Figma. Production code.</div>
   <div class="slide-number">6</div>
 </div>
 
@@ -703,9 +729,7 @@
     </div>
   </div>
 
-  <div style="margin-top:16px;padding:14px 24px;background:rgba(255,255,255,0.06);border-radius:12px;text-align:center">
-    <span style="font-size:15px;opacity:0.8">Quiet hours (10 PM–7 AM) &nbsp;·&nbsp; Batting average over streaks &nbsp;·&nbsp; Lock screen previews OFF by default &nbsp;·&nbsp; User controls everything</span>
-  </div>
+  <div class="slide-bar">Quiet hours (10 PM–7 AM) · Batting average over streaks · Lock screen previews OFF · User controls everything</div>
   <div class="slide-number">7</div>
 </div>
 
@@ -742,11 +766,12 @@
       </div>
     </div>
   </div>
+  <div class="slide-bar">Your net worth in 3 minutes. No app download. Zero CAC.</div>
   <div class="slide-number">8</div>
 </div>
 
 <!-- ============================================================ -->
-<!-- SLIDE 8: Business Model -->
+<!-- SLIDE 9: Business Model -->
 <!-- ============================================================ -->
 <div class="slide dark" id="s8">
   <div class="logo-bar"><img src="slides/finwiser-icon.svg" style="height:28px;opacity:0.6"></div>
@@ -789,10 +814,9 @@
       <div class="insight-box" style="margin-bottom:12px">
         <strong>Why free users are valuable:</strong> Every free user improves categorization for all users. The free tier IS the moat. More free users = better engine = higher conversion.
       </div>
-      <p style="font-size:15px;font-style:italic;color:#ff6b81;font-weight:600">"₹49 today, or ₹199/month for unlimited advice plus rebalancing whenever markets move."</p>
-      <p style="font-size:12px;opacity:0.5;margin-top:6px">All investment insights gated behind SEBI-compliant risk profiling.</p>
     </div>
   </div>
+  <div class="slide-bar">"₹49 today, or ₹199/month for unlimited advice." All insights gated behind SEBI-compliant risk profiling.</div>
   <div class="slide-number">9</div>
 </div>
 
@@ -813,14 +837,7 @@
     <tr style="color:#ff6b81;font-weight:700"><td>Month 36</td><td>150,000</td><td>22,500</td><td>8,000</td><td>₹27L</td><td>Category leader in RIA-tech</td></tr>
   </table>
 
-  <div class="grid-2" style="margin-top:16px">
-    <div class="insight-box" style="font-size:14px">
-      <strong>Why free users are valuable:</strong> Every free user improves categorization for all users. 150K free users = 150K data points training the engine daily. The free tier IS the moat.
-    </div>
-    <div class="insight-box" style="font-size:14px">
-      <strong>Downside scenario:</strong> Even at 50% of projections (4K subscribers, ₹8L MRR), we're cash-flow positive. Free users still compound the data flywheel regardless of conversion.
-    </div>
-  </div>
+  <div class="slide-bar">Even at 50% of projections, we're cash-flow positive. Free users compound the data flywheel regardless of conversion.</div>
   <div class="slide-number">10</div>
 </div>
 
@@ -855,7 +872,7 @@
     </div>
   </div>
 
-  <p style="font-size:15px;opacity:0.6;max-width:700px">SOM excludes Phase 2-3 execution revenue (₹500-10,000/user/year additional). With execution, SOM grows to ₹300-500 Cr.</p>
+  <div class="slide-bar">₹19,100 Cr market. We need 0.5% to build a category leader. With execution revenue, SOM grows to ₹300-500 Cr.</div>
   <div class="slide-number">11</div>
 </div>
 
@@ -879,14 +896,7 @@
     <tr><td>24/7 availability</td><td>Self-serve</td><td>Self-serve</td><td class="cross">Appointments</td><td class="check"><strong>Always-on AI</strong></td></tr>
   </table>
 
-  <div class="grid-2" style="margin-top:20px">
-    <div class="insight-box" style="background:rgba(233,69,96,0.06)">
-      <strong>Why incumbents can't copy this:</strong> Distributors would lose commissions by advising "switch to Direct." Trackers don't have the RIA license, categorization engine, or surplus computation. Generic AI can't know your numbers — our advisor uses computed values, not LLM guesses.
-    </div>
-    <div class="insight-box" style="background:rgba(0,184,148,0.06);border-color:var(--green)">
-      <strong>The data flywheel:</strong> Every user correction, every chat session, every outcome compounds. By Day 365 with 5,000 users — 10,000 learned merchant patterns, 50 bank formats. A competitor can hire engineers. They can't buy learned patterns.
-    </div>
-  </div>
+  <div class="slide-bar">They built the mirror. We built the brain. And every user makes it smarter.</div>
   <div class="slide-number">12</div>
 </div>
 
@@ -956,11 +966,9 @@
         <span class="pill live">Onboarding Flow</span>
       </div>
 
-      <div class="insight-box" style="margin-top:20px">
-        <strong>Built by 1 founder + AI agents.</strong> No developers hired. No outsourcing. This is what capital-efficient looks like.
-      </div>
     </div>
   </div>
+  <div class="slide-bar">Built by 1 founder + AI agents. No developers hired. No outsourcing. This is what capital-efficient looks like.</div>
   <div class="slide-number">13</div>
 </div>
 
@@ -988,9 +996,9 @@
       <h3 style="font-size:22px">Ready to Scale</h3>
       <p style="font-size:13px;color:#ff6b81;margin-bottom:10px">Post-funding team</p>
       <p style="font-size:14px;line-height:1.6">Vetted bench of senior technical leaders — certified architect (14 years) and domain expert (18+ years in trading platforms) — ready to join once funded.</p>
-      <p style="font-size:13px;opacity:0.6;margin-top:10px"><strong>SEBI RIA</strong> · <strong>CA co-founder</strong> · <strong>AI-native</strong> · <strong>Capital efficient</strong></p>
     </div>
   </div>
+  <div class="slide-bar">SEBI RIA licensed · CA co-founder · Senior tech bench ready · Capital efficient from day one</div>
   <div class="slide-number">14</div>
 </div>
 
@@ -1028,13 +1036,10 @@
       <div class="flow-step"><div class="step-num" style="font-size:11px;background:var(--accent)">M9</div> 2,000 users — PMF = >60% Day-90 retention + ₹4L MRR</div>
       <div class="flow-step"><div class="step-num" style="font-size:11px;background:var(--green)">M12</div> Seed round ready — metrics proven</div>
 
-      <div class="insight-box" style="margin-top:24px">
-        <strong>Key insight:</strong> We're not raising to build. The product is built. We're raising to <strong>launch and acquire users</strong>. The data flywheel starts the day users join.
-      </div>
-
-      <p style="margin-top:20px;font-size:14px;opacity:0.6;border-top:1px solid rgba(255,255,255,0.15);padding-top:16px"><strong>What we're looking for in a partner:</strong><br>Beyond capital, we're seeking investors with hands-on experience in SEBI IA licensing and the AA regulatory stack.</p>
+      <p style="margin-top:20px;font-size:14px;opacity:0.6;border-top:1px solid rgba(255,255,255,0.15);padding-top:16px"><strong>What we're looking for in a partner:</strong><br>Beyond capital — hands-on experience in SEBI IA licensing and the AA regulatory stack.</p>
     </div>
   </div>
+  <div class="slide-bar">We're not raising to build. The product is built. We're raising to launch.</div>
   <div class="slide-number">15</div>
 </div>
 
@@ -1067,11 +1072,12 @@
       </div>
     </div>
   </div>
+  <div class="slide-bar">AA + AI + SEBI tailwind. This wasn't possible 2 years ago.</div>
   <div class="slide-number">16</div>
 </div>
 
 <!-- ============================================================ -->
-<!-- SLIDE 15: Vision / Close -->
+<!-- SLIDE 17: Vision / Close -->
 <!-- ============================================================ -->
 <div class="slide white center" id="s15">
   <div class="logo-bar"><img src="slides/finwiser-icon.svg" style="height:28px;opacity:0.4"></div>
