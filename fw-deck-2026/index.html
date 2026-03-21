@@ -777,50 +777,49 @@
 <!-- ============================================================ -->
 <div class="slide white" id="s8">
   <div class="logo-bar"><img src="slides/finwiser-icon.svg" style="height:28px;opacity:0.4"></div>
-  <h2>Business Model</h2>
+  <h2>Business Model — Freemium Ladder</h2>
+  <p style="font-size:16px;color:var(--muted);margin-bottom:24px">Users build the habit for free. They pay when they're ready to act on their money — not before.</p>
+
+  <div style="display:flex;gap:16px;margin-bottom:24px">
+    <div class="card" style="flex:1;border-top:3px solid var(--accent2)">
+      <p style="font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.5;margin-bottom:4px">Tier 1</p>
+      <h3 style="margin-bottom:4px">Free — Forever</h3>
+      <p style="font-size:14px">Net worth dashboard, spending categorization, surplus computation, Morning Pulse, Daily Question, budget alerts. <strong>Full financial picture, zero cost.</strong> Build the habit first.</p>
+      <p style="font-size:12px;opacity:0.5;margin-top:8px">Variable cost: ~₹15/user/month (AA fetches only)</p>
+    </div>
+    <div class="card" style="flex:1;border-top:3px solid var(--accent)">
+      <p style="font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.5;margin-bottom:4px">Tier 2</p>
+      <h3 style="margin-bottom:4px">₹49 — One-Time Action</h3>
+      <p style="font-size:14px">Portfolio rebalancing plan, switch cost analysis with tax impact, goal feasibility deep-dive. <strong>Pay at the moment of peak intent</strong> — when you see your portfolio has drifted 15%, you'll pay ₹49 right now.</p>
+      <p style="font-size:12px;opacity:0.5;margin-top:8px">Cheaper than a restaurant meal. Captures impulse + anxiety.</p>
+    </div>
+    <div class="card" style="flex:1;border-top:3px solid var(--green)">
+      <p style="font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:0.5;margin-bottom:4px">Tier 3</p>
+      <h3 style="margin-bottom:4px">₹199/month — Full Advisor</h3>
+      <p style="font-size:14px">Unlimited AI advisor chatbot, Next Best Rupee allocation, dynamic goal recalibration, proactive nudges, detailed fund recommendations. <strong>The ongoing relationship.</strong></p>
+      <p style="font-size:12px;opacity:0.5;margin-top:8px">~75% gross margin. Breakeven at 40 subscribers.</p>
+    </div>
+  </div>
 
   <div class="grid-2">
     <div>
-      <h3 style="color:var(--accent)">₹199/month — AI Financial Advisor</h3>
-      <div class="insight-box" style="margin-bottom:16px;font-size:15px"><strong>We break even at 40 paying users.</strong> Most SaaS companies need 400.</div>
-
-      <table>
-        <tr><th>Variable Cost</th><th>Per user/month</th></tr>
-        <tr><td>AA fetches (10 FIPs × 30 pulls)</td><td>₹15</td></tr>
-        <tr><td>Equifax credit fetch</td><td>₹25</td></tr>
-        <tr><td>LLM inference (~5-10 sessions)</td><td>₹5-10</td></tr>
-        <tr><td style="font-weight:700">Total variable cost</td><td style="font-weight:700">~₹40-50</td></tr>
-      </table>
-
-      <div style="margin-top:20px;padding:16px;background:rgba(0,184,148,0.08);border-radius:12px;text-align:center">
-        <div style="font-size:36px;font-weight:800;color:var(--green)">~75%</div>
-        <div style="font-size:14px;font-weight:500;color:var(--muted)">Gross margin at ₹199</div>
-      </div>
-
-      <p style="margin-top:12px;text-align:center;font-size:14px;opacity:0.5">Fixed costs ₹6K/month → breakeven at ~40 users</p>
+      <h3 style="font-size:16px;margin-bottom:12px">Conversion Funnel</h3>
+      <div class="flow-step"><div class="step-num" style="font-size:11px;background:var(--accent2)">1</div> Free users build habit (Morning Pulse, spending insights daily)</div>
+      <div class="flow-step"><div class="step-num" style="font-size:11px;background:var(--accent)">2</div> Moment of intent → ₹49 action (portfolio drift, goal gap revealed)</div>
+      <div class="flow-step"><div class="step-num" style="font-size:11px;background:var(--green)">3</div> Trust earned → ₹199/month subscription (ongoing advisor relationship)</div>
+      <p style="font-size:13px;opacity:0.5;margin-top:12px">Free → ₹49: ~15-20% conversion &nbsp;|&nbsp; ₹49 → ₹199: ~10-15% &nbsp;|&nbsp; Net: ~2-3% free→subscriber</p>
     </div>
-
     <div>
-      <h3>Revenue Expansion</h3>
-      <div class="card" style="margin-bottom:12px;border-left:4px solid var(--accent2)">
-        <p style="font-size:12px;text-transform:uppercase;letter-spacing:1px;opacity:0.5;margin-bottom:4px">Phase 1 — Now</p>
-        <h3 style="margin-bottom:4px">RIA Advisory</h3>
-        <p>₹199/month subscription = <strong>₹2,388/year per user</strong></p>
+      <h3 style="font-size:16px;margin-bottom:12px">Revenue Expansion (Phase 2-3)</h3>
+      <div class="card" style="margin-bottom:8px;padding:14px;border-left:3px solid var(--accent)">
+        <h3 style="font-size:14px;margin-bottom:2px">Investment Execution — Year 2</h3>
+        <p style="font-size:13px">Buy/switch directly in-app via partner broker = ₹500-2,000/year additional per user</p>
       </div>
-      <div class="card" style="margin-bottom:12px;border-left:4px solid var(--accent)">
-        <p style="font-size:12px;text-transform:uppercase;letter-spacing:1px;opacity:0.5;margin-bottom:4px">Phase 2 — Year 2</p>
-        <h3 style="margin-bottom:4px">Investment Execution</h3>
-        <p>Partner broker or own ARN = <strong>₹500-2,000/year additional</strong></p>
+      <div class="card" style="padding:14px;border-left:3px solid var(--green)">
+        <h3 style="font-size:14px;margin-bottom:2px">Full-Stack Wealth — Year 3-5</h3>
+        <p style="font-size:13px">Advisory + execution + insurance + tax = ₹3,000-10,000/year per user</p>
       </div>
-      <div class="card" style="border-left:4px solid var(--green)">
-        <p style="font-size:12px;text-transform:uppercase;letter-spacing:1px;opacity:0.5;margin-bottom:4px">Phase 3 — Year 3-5</p>
-        <h3 style="margin-bottom:4px">Full-Stack Wealth</h3>
-        <p>NSE/BSE membership = <strong>₹3,000-10,000/year per user</strong></p>
-      </div>
-
-      <div class="insight-box" style="margin-top:16px">
-        Advisory is the <strong>customer acquisition channel</strong>. Execution is the business.
-      </div>
+      <p style="font-size:13px;opacity:0.6;margin-top:12px"><strong>Free is the acquisition channel. ₹49 is the trust bridge. ₹199 is the relationship. Execution is the business.</strong></p>
     </div>
   </div>
   <div class="slide-number">9</div>
@@ -832,19 +831,24 @@
 <div class="slide dark" id="s9">
   <div class="logo-bar"><img src="slides/finwiser-icon.svg" style="height:28px;opacity:0.6"></div>
   <h2>Revenue Projections</h2>
-  <p style="opacity:0.5;margin-bottom:24px;font-size:14px">Assumptions: 5% free→paid conversion, 70% annual retention, K-factor 0.3 (each user brings 0.3 new users via WhatsApp forwards)</p>
+  <p style="opacity:0.5;margin-bottom:24px;font-size:14px">Assumptions: K-factor 0.3 (WhatsApp viral), 15% free→₹49 conversion at intent moments, 10% ₹49→₹199 upgrade, 70% subscriber retention</p>
 
-  <table style="font-size:16px">
-    <tr><th>Timeline</th><th>Users</th><th>MRR</th><th>ARR</th><th>Milestone</th></tr>
-    <tr><td>Month 6</td><td>500</td><td>₹1L</td><td>₹12L</td><td>WhatsApp viral + early adopters</td></tr>
-    <tr><td>Month 12</td><td>2,000</td><td>₹4L</td><td>₹48L</td><td>Referral loops kicking in</td></tr>
-    <tr><td>Month 18</td><td>5,000</td><td>₹10L</td><td>₹1.2Cr</td><td>+ Phase 2 execution revenue</td></tr>
-    <tr style="color:#ff6b81;font-weight:600"><td>Month 24</td><td>15,000</td><td>₹30L</td><td>₹3.6Cr</td><td>Compounding data flywheel</td></tr>
-    <tr style="color:#ff6b81;font-weight:700"><td>Month 36</td><td>50,000</td><td>₹1Cr</td><td>₹12Cr</td><td>Category leader in RIA-tech</td></tr>
+  <table style="font-size:15px">
+    <tr><th>Timeline</th><th>Free Users</th><th>₹49 Actions</th><th>₹199 Subs</th><th>MRR</th><th>Milestone</th></tr>
+    <tr><td>Month 6</td><td>2,000</td><td>300</td><td>50</td><td>₹25K</td><td>Habit forming, first ₹49 conversions</td></tr>
+    <tr><td>Month 12</td><td>8,000</td><td>1,200</td><td>250</td><td>₹1.1L</td><td>Referral loops, ₹49→₹199 upgrades</td></tr>
+    <tr><td>Month 18</td><td>20,000</td><td>3,000</td><td>800</td><td>₹3.1L</td><td>+ Phase 2 execution revenue</td></tr>
+    <tr style="color:#ff6b81;font-weight:600"><td>Month 24</td><td>50,000</td><td>7,500</td><td>2,500</td><td>₹8.6L</td><td>Data flywheel compounding</td></tr>
+    <tr style="color:#ff6b81;font-weight:700"><td>Month 36</td><td>150,000</td><td>22,500</td><td>8,000</td><td>₹27L</td><td>Category leader in RIA-tech</td></tr>
   </table>
 
-  <div class="insight-box" style="margin-top:16px;font-size:14px">
-    <strong>Downside scenario:</strong> Even at 50% of these projections (25K users, ₹6Cr ARR at Month 36), we're cash-flow positive and category-relevant. The model works at half scale.
+  <div class="grid-2" style="margin-top:16px">
+    <div class="insight-box" style="font-size:14px">
+      <strong>Why free users are valuable:</strong> Every free user improves categorization for all users. 150K free users = 150K data points training the engine daily. The free tier IS the moat.
+    </div>
+    <div class="insight-box" style="font-size:14px">
+      <strong>Downside scenario:</strong> Even at 50% of projections (4K subscribers, ₹8L MRR), we're cash-flow positive. Free users still compound the data flywheel regardless of conversion.
+    </div>
   </div>
   <div class="slide-number">10</div>
 </div>
