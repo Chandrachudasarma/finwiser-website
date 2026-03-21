@@ -26,18 +26,23 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: #0a0a1a;
     color: var(--text);
-    overflow-y: auto;
+    overflow: hidden;
+    height: 100vh;
+    touch-action: pan-y;
   }
 
   .slide {
-    display: flex;
+    display: none;
     flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
+    width: 100vw;
+    height: 100vh;
     padding: 60px 80px;
     position: relative;
-    page-break-after: always;
-    border-bottom: 3px solid rgba(255,255,255,0.1);
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    display: flex;
   }
 
   .slide.dark {
@@ -1231,19 +1236,58 @@
   <div class="slide-number">19</div>
 </div>
 
-<!-- Scroll-triggered animations for screenshot cards -->
-<script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.15 });
+<!-- Navigation bar -->
+<div id="nav-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);padding:8px 20px;display:flex;align-items:center;gap:12px">
+  <button onclick="navigate(-1)" style="background:none;border:1px solid rgba(255,255,255,0.2);color:white;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px">&#9664;</button>
+  <div style="flex:1;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden">
+    <div id="progress-bar" style="height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s ease;width:5.3%"></div>
+  </div>
+  <span id="slide-counter" style="color:rgba(255,255,255,0.6);font-size:13px;font-weight:500;min-width:45px;text-align:center">1/19</span>
+  <button onclick="navigate(1)" style="background:none;border:1px solid rgba(255,255,255,0.2);color:white;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px">&#9654;</button>
+</div>
 
-  document.querySelectorAll('.screenshot-card').forEach(card => {
-    observer.observe(card);
+<!-- Slide navigation -->
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, total - 1));
+    slides[current].classList.add('active');
+    document.getElementById('slide-counter').textContent = (current + 1) + '/' + total;
+    document.getElementById('progress-bar').style.width = ((current + 1) / total * 100) + '%';
+
+    // Trigger screenshot animations on the visible slide
+    slides[current].querySelectorAll('.screenshot-card').forEach((card, i) => {
+      setTimeout(() => card.classList.add('visible'), i * 200);
+    });
+  }
+
+  function navigate(dir) { showSlide(current + dir); }
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); navigate(1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
   });
+
+  // Swipe (mobile)
+  let touchStartX = 0, touchStartY = 0;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    const dy = e.changedTouches[0].screenY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      navigate(dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+
+  showSlide(0);
 </script>
 
 <!-- Mascot frame animation -->
