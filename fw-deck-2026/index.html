@@ -1260,7 +1260,6 @@
   ];
 
   let current = 0;
-  let sleepLoops = 0;
 
   function showFrame(n) {
     frames.forEach(f => f.classList.remove('mascot-active'));
@@ -1269,29 +1268,10 @@
 
   function animate() {
     showFrame(current);
+    if (current >= 14) return; // Frame 15 (Hi!) — stop here
     const delay = timing[current];
-
-    if (current <= 1) {
-      // Sleep loop — loop frames 1-2 three times, then wake up
-      current = (current === 0) ? 1 : 0;
-      sleepLoops++;
-      if (sleepLoops >= 6) {
-        // Done sleeping, start wake up
-        current = 2;
-        sleepLoops = 0;
-      }
-      setTimeout(animate, delay);
-    } else if (current < 14) {
-      // Wake up sequence — advance through frames
-      current++;
-      setTimeout(animate, delay);
-    } else {
-      // Frame 15 (Hi!) — hold, then restart loop
-      setTimeout(() => {
-        current = 0;
-        animate();
-      }, delay);
-    }
+    current++;
+    setTimeout(animate, delay);
   }
 
   animate();
