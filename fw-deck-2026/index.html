@@ -332,6 +332,37 @@
 
   .light .flywheel, .white .flywheel { background: #f5f5f5; }
 
+  /* Screenshot cards */
+  .screenshot-label {
+    position: absolute;
+    bottom: 8px;
+    left: 12px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* Scroll-triggered fade-in animation */
+  .screenshot-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .screenshot-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger each card */
+  .screenshot-card:nth-child(1) { transition-delay: 0s; }
+  .screenshot-card:nth-child(2) { transition-delay: 0.2s; }
+  .screenshot-card:nth-child(3) { transition-delay: 0.4s; }
+  .screenshot-card:nth-child(4) { transition-delay: 0.6s; }
+
   /* --- TABLET LANDSCAPE / SMALL DESKTOP --- */
   @media (max-width: 1200px) {
     .slide { padding: 40px 50px; }
@@ -656,23 +687,23 @@
 <div class="slide dark" id="s7" style="padding:40px 60px">
   <div class="logo-bar"><img src="slides/finwiser-icon.svg" style="height:28px;opacity:0.6"></div>
   <h2 style="margin-bottom:6px">Product: Portfolio Intelligence</h2>
-  <p style="opacity:0.5;font-size:14px;margin-bottom:16px">Real wireframes from the app — fund states, 5-pillar scoring, wealth mix, performance analytics</p>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0">
-    <div style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+  <p style="opacity:0.5;font-size:14px;margin-bottom:16px">Real wireframes — fund states, 5-pillar scoring, wealth mix, performance analytics</p>
+  <div class="screenshot-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0">
+    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
       <img src="slides/portfolio-tab-v10.png" style="width:100%;height:100%;object-fit:contain">
-      <div style="position:absolute;bottom:8px;left:12px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600">Portfolio Dashboard v10</div>
+      <div class="screenshot-label">Portfolio Dashboard v10</div>
     </div>
-    <div style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
       <img src="slides/portfolio-performance.png" style="width:100%;height:100%;object-fit:contain">
-      <div style="position:absolute;bottom:8px;left:12px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600">Performance Detail Sheet</div>
+      <div class="screenshot-label">Performance Detail Sheet</div>
     </div>
-    <div style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
       <img src="slides/portfolio-wealthmix.png" style="width:100%;height:100%;object-fit:contain">
-      <div style="position:absolute;bottom:8px;left:12px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600">Wealth Mix Breakdown</div>
+      <div class="screenshot-label">Wealth Mix Breakdown</div>
     </div>
-    <div style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
       <img src="slides/suitability-detail.png" style="width:100%;height:100%;object-fit:contain">
-      <div style="position:absolute;bottom:8px;left:12px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600">Suitability & Risk Profiling</div>
+      <div class="screenshot-label">Suitability & Risk Profiling</div>
     </div>
   </div>
   <div class="slide-number">7</div>
@@ -681,24 +712,16 @@
 <!-- SLIDE 8: Product Wireframes - Goals & Budget -->
 <div class="slide white" id="s8" style="padding:40px 60px">
   <div class="logo-bar"><img src="slides/finwiser-icon.svg" style="height:28px;opacity:0.4"></div>
-  <h2 style="margin-bottom:6px">Product: Goals, Budget & Intelligence</h2>
-  <p style="opacity:0.5;font-size:14px;margin-bottom:16px">Auto-created goals with feasibility, budget tracking, intelligence loop — all from real bank data</p>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0">
-    <div style="background:#f0f0f0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+  <h2 style="margin-bottom:6px">Product: Goals & Budget</h2>
+  <p style="opacity:0.5;font-size:14px;margin-bottom:16px">Auto-created goals with feasibility, budget tracking — all computed from real bank data</p>
+  <div class="screenshot-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;min-height:0;max-width:900px;margin:0 auto">
+    <div class="screenshot-card" style="background:#f0f0f0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
       <img src="slides/goals-dashboard.png" style="width:100%;height:100%;object-fit:contain">
-      <div style="position:absolute;bottom:8px;left:12px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600">Goals Dashboard — Auto-created + Feasibility</div>
+      <div class="screenshot-label">Goals Dashboard — Auto-created + Feasibility</div>
     </div>
-    <div style="background:#f0f0f0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+    <div class="screenshot-card" style="background:#f0f0f0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
       <img src="slides/budget-dashboard.png" style="width:100%;height:100%;object-fit:contain">
-      <div style="position:absolute;bottom:8px;left:12px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600">Budget Dashboard — Category Tracking</div>
-    </div>
-    <div style="background:#f0f0f0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
-      <img src="slides/intelligence-loop.png" style="width:100%;height:100%;object-fit:contain">
-      <div style="position:absolute;bottom:8px;left:12px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600">Intelligence Loop — 16 Ratios + Advisor</div>
-    </div>
-    <div style="background:#f0f0f0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
-      <img src="slides/all-modules-architecture.png" style="width:100%;height:100%;object-fit:contain">
-      <div style="position:absolute;bottom:8px;left:12px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600">4-Module Architecture</div>
+      <div class="screenshot-label">Budget Dashboard — Category Tracking</div>
     </div>
   </div>
   <div class="slide-number">8</div>
@@ -1162,6 +1185,19 @@
   <div class="slide-number">18</div>
 </div>
 
-<!-- Scrollable deck - just scroll down to see all slides -->
+<!-- Scroll-triggered animations for screenshot cards -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.screenshot-card').forEach(card => {
+    observer.observe(card);
+  });
+</script>
 </body>
 </html>
