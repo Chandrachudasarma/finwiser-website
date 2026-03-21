@@ -470,8 +470,30 @@
     /* Title slide logo */
     .slide.center img[src*="finwiserlogo"] { max-width: 280px !important; width: 80% !important; }
     .slide.center img[src*="finny"] { width: 90px !important; height: 90px !important; }
-    /* Product wireframe grids — stack on mobile */
-    .slide [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+    /* Product wireframe grids — horizontal snap carousel on mobile */
+    .screenshot-grid {
+      display: flex !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch;
+      gap: 12px !important;
+      padding-bottom: 20px !important;
+    }
+    .screenshot-card {
+      flex: 0 0 85% !important;
+      scroll-snap-align: center !important;
+      min-height: 250px !important;
+    }
+    /* Dots indicator hint */
+    .screenshot-grid::after {
+      content: 'swipe →';
+      position: absolute;
+      bottom: 4px;
+      right: 20px;
+      font-size: 11px;
+      opacity: 0.4;
+      color: inherit;
+    }
   }
 
   /* --- MOBILE LANDSCAPE (short + wide) --- */
@@ -1280,6 +1302,8 @@
     touchStartY = e.changedTouches[0].screenY;
   }, { passive: true });
   document.addEventListener('touchend', (e) => {
+    // Don't navigate slides if swiping inside a screenshot carousel
+    if (e.target.closest('.screenshot-grid')) return;
     const dx = e.changedTouches[0].screenX - touchStartX;
     const dy = e.changedTouches[0].screenY - touchStartY;
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
