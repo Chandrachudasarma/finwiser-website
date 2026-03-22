@@ -524,16 +524,26 @@
     }
   }
 
-  /* --- MOBILE LANDSCAPE (short + wide) --- */
+  /* --- MOBILE LANDSCAPE (short + wide) — zoom to fit each slide on one screen --- */
   @media (max-height: 500px) and (orientation: landscape) {
-    .slide { min-height: auto; padding: 20px 40px; padding-bottom: 40px; }
-    h2 { font-size: 24px; margin-bottom: 10px; }
-    .grid-2 { grid-template-columns: 1fr 1fr; gap: 16px; }
-    .grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-    .card { padding: 14px; }
-    .quote { font-size: 16px; }
-    .stat .number { font-size: 28px; }
+    .slide {
+      zoom: 0.55;
+      width: calc(100vw / 0.55);
+      height: calc(100vh / 0.55);
+      min-height: calc(100vh / 0.55);
+      max-height: calc(100vh / 0.55);
+      overflow: hidden;
+      padding: 20px 40px 30px !important;
+    }
+    .slide.center { justify-content: center; }
+    /* Override tablet-portrait single-column grids back to multi-column */
+    .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
     .two-col { flex-direction: row; gap: 20px; }
+    /* Title slide mascot + logo */
+    .mascot-anim { width: 180px !important; height: 200px !important; margin-bottom: 8px !important; }
+    .slide.center img[src*="finwiserlogo"] { max-width: 250px !important; margin-top: 10px !important; }
   }
 </style>
 </head>
