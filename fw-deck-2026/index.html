@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Finwiser — VC Pitch Deck</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -524,26 +524,38 @@
     }
   }
 
-  /* --- MOBILE LANDSCAPE (short + wide) — zoom to fit each slide on one screen --- */
+  /* --- MOBILE LANDSCAPE — scale slides to fit one screen per device --- */
   @media (max-height: 500px) and (orientation: landscape) {
     .slide {
+      /* Fallback zoom before JS calculates exact value */
       zoom: 0.55;
       width: calc(100vw / 0.55);
       height: calc(100vh / 0.55);
       min-height: calc(100vh / 0.55);
       max-height: calc(100vh / 0.55);
       overflow: hidden;
-      padding: 20px 40px 30px !important;
+      padding: 20px 40px 28px !important;
+      /* Safe-area for notched phones (iPhone, Pixel) */
+      padding-left: max(40px, env(safe-area-inset-left, 0px)) !important;
+      padding-right: max(40px, env(safe-area-inset-right, 0px)) !important;
+      /* Crisp text at small sizes */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
     .slide.center { justify-content: center; }
     /* Override tablet-portrait single-column grids back to multi-column */
-    .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-    .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
+    .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px; }
+    .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
     .two-col { flex-direction: row; gap: 20px; }
-    /* Title slide mascot + logo */
-    .mascot-anim { width: 180px !important; height: 200px !important; margin-bottom: 8px !important; }
-    .slide.center img[src*="finwiserlogo"] { max-width: 250px !important; margin-top: 10px !important; }
+    /* Compact slide bar + number */
+    .slide-bar { margin-top: auto !important; }
+    .slide-number { bottom: 4px; right: 10px; font-size: 10px; }
+    /* Title slide */
+    .mascot-anim { width: 160px !important; height: 178px !important; margin-bottom: 6px !important; }
+    .slide.center img[src*="finwiserlogo"] { max-width: 220px !important; margin-top: 8px !important; }
+    .slide.center img[src*="finny-celebrate"] { width: 60px !important; height: 60px !important; margin-top: 8px !important; }
   }
 </style>
 </head>
@@ -1593,6 +1605,42 @@
   }
 
   animate();
+})();
+</script>
+
+<!-- Dynamic slide zoom — calculates perfect scale for each device's viewport -->
+<script>
+(function() {
+  var DESIGN_H = 720; // slides designed for 720px content height
+  var mql = window.matchMedia('(max-height: 500px) and (orientation: landscape)');
+
+  function updateSlideZoom() {
+    var slides = document.querySelectorAll('.slide');
+    if (mql.matches) {
+      var vh = window.innerHeight;
+      var zoom = Math.min(vh / DESIGN_H, 1);
+      var inv = (100 / zoom);
+      slides.forEach(function(s) {
+        s.style.zoom = zoom;
+        s.style.width = inv + 'vw';
+        s.style.height = inv + 'vh';
+        s.style.minHeight = inv + 'vh';
+        s.style.maxHeight = inv + 'vh';
+      });
+    } else {
+      slides.forEach(function(s) {
+        s.style.zoom = '';
+        s.style.width = '';
+        s.style.height = '';
+        s.style.minHeight = '';
+        s.style.maxHeight = '';
+      });
+    }
+  }
+
+  updateSlideZoom();
+  window.addEventListener('resize', updateSlideZoom);
+  if (mql.addEventListener) mql.addEventListener('change', updateSlideZoom);
 })();
 </script>
 </body>
