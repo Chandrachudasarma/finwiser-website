@@ -830,33 +830,90 @@
 <div class="slide white" id="s7">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
   <h2>Go-to-Market: WhatsApp First</h2>
-  <p class="subtitle" style="margin-bottom:30px">"Know your net worth in 3 minutes. Just WhatsApp us."</p>
+  <p class="subtitle" style="margin-bottom:20px">"Know your net worth in 3 minutes. Just WhatsApp us."</p>
 
-  <div class="two-col">
+  <div class="two-col" style="gap:40px;align-items:flex-start">
+
+    <!-- LEFT: WhatsApp chat simulation -->
     <div class="col">
-      <div class="flow-step"><div class="step-num">1</div> User WhatsApps "Hi" <span style="opacity:0.5">(zero friction)</span></div>
-      <div class="flow-step"><div class="step-num">2</div> Gets AA consent link <span style="opacity:0.5">(3 taps)</span></div>
-      <div class="flow-step"><div class="step-num">3</div> <strong>2.5 min:</strong> Net worth on WhatsApp</div>
-      <div class="flow-step"><div class="step-num">4</div> Answer 3 questions</div>
-      <div class="flow-step"><div class="step-num">5</div> <strong>4.5 min:</strong> Income, surplus, first insight</div>
-      <div class="flow-step"><div class="step-num" style="background:var(--green)">6</div> "Want to know what to do with your ₹28K surplus? Download Finwiser."</div>
-
-      <p style="margin-top:20px;font-size:14px;opacity:0.5">Already built and tested.</p>
+      <div style="background:#e5ddd5;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.15);max-width:340px;margin:0 auto">
+        <!-- WA header -->
+        <div style="background:#075e54;padding:10px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:34px;height:34px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">&#128172;</div>
+          <div>
+            <div style="color:white;font-weight:700;font-size:14px">Finwiser</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:11px">SEBI RIA Licensed &middot; AA Verified</div>
+          </div>
+        </div>
+        <!-- Chat body -->
+        <div style="padding:10px 12px;display:flex;flex-direction:column;gap:7px">
+          <!-- User: Hi -->
+          <div style="display:flex;justify-content:flex-end">
+            <div style="background:#dcf8c6;border-radius:12px 0 12px 12px;padding:7px 11px;max-width:60%;font-size:13px;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              Hi &#128075;
+              <div style="font-size:10px;text-align:right;color:#999;margin-top:1px">Just now</div>
+            </div>
+          </div>
+          <!-- Bot: consent link -->
+          <div style="display:flex;justify-content:flex-start">
+            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 11px;max-width:82%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              Hey! Connect your bank accounts in 3 taps &#128279;<br>
+              <span style="color:#075e54;font-weight:700">&rarr; Link via Account Aggregator</span>
+              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
+            </div>
+          </div>
+          <!-- Time marker -->
+          <div style="text-align:center;font-size:10px;color:#888;background:rgba(0,0,0,0.07);border-radius:8px;padding:2px 10px;align-self:center">&#9201; 2.5 min later</div>
+          <!-- Bot: net worth reveal -->
+          <div style="display:flex;justify-content:flex-start">
+            <div style="background:white;border-radius:0 12px 12px 12px;padding:9px 12px;max-width:86%;font-size:12px;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              <div style="font-weight:700;color:#075e54;font-size:14px;margin-bottom:3px">&#128202; Your Net Worth: <span style="color:#00b894">&#8377;18,43,200</span></div>
+              <div style="font-size:11px;opacity:0.65">MFs: &#8377;8.2L &nbsp;&middot;&nbsp; FD: &#8377;4.1L &nbsp;&middot;&nbsp; Savings: &#8377;6.1L</div>
+              <div style="font-size:11px;margin-top:4px;opacity:0.8">Answer 3 quick questions to unlock your financial score &#128071;</div>
+              <div style="font-size:10px;color:#999;margin-top:2px">12:03 PM &#10003;&#10003;</div>
+            </div>
+          </div>
+          <!-- Time marker -->
+          <div style="text-align:center;font-size:10px;color:#888;background:rgba(0,0,0,0.07);border-radius:8px;padding:2px 10px;align-self:center">&#9201; 4.5 min later</div>
+          <!-- Bot: CTA -->
+          <div style="display:flex;justify-content:flex-start">
+            <div style="background:#075e54;border-radius:0 12px 12px 12px;padding:10px 13px;max-width:86%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              <div style="color:#25d366;font-weight:700;font-size:13px;margin-bottom:3px">&#128161; You save &#8377;28K/month</div>
+              <div style="color:white;line-height:1.5">Want to know exactly where to put it?<br><span style="color:#25d366;font-weight:700">Download Finwiser &rarr;</span></div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px">12:05 PM &#10003;&#10003;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:10px;font-size:12px;opacity:0.45">Already built and tested.</p>
     </div>
-    <div class="col">
-      <div class="card">
-        <h3>Why this works</h3>
-        <ul>
-          <li><strong>Zero friction</strong> — WhatsApp is on every phone</li>
-          <li><strong>Aha before commitment</strong> — real numbers shown for free</li>
-          <li><strong>Structural virality</strong> — after net worth reveal, a forward-ready message with share CTA is auto-generated</li>
-          <li><strong>CAC near-zero</strong> — one forward in a tech company WhatsApp group = 50 leads overnight</li>
-          <li><strong>Seamless handoff</strong> — one-tap deep link into the app with AA consent already done, zero re-entry</li>
-          <li><strong>Meets users where they are</strong> — Indian financial talk is on WhatsApp</li>
-        </ul>
+
+    <!-- RIGHT: Why this works — colored cards -->
+    <div class="col" style="display:flex;flex-direction:column;gap:9px">
+      <h3 style="margin-bottom:4px">Why this works</h3>
+      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.25);border-radius:10px;padding:10px 14px">
+        <span style="font-size:20px;flex-shrink:0;line-height:1">&#128242;</span>
+        <div><strong style="color:#128C7E">Zero friction</strong><br><span style="font-size:13px;opacity:0.7">WhatsApp is on every Indian phone — no app download, no sign-up</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(116,185,255,0.08);border:1px solid rgba(116,185,255,0.25);border-radius:10px;padding:10px 14px">
+        <span style="font-size:20px;flex-shrink:0;line-height:1">&#128142;</span>
+        <div><strong style="color:#4a90d9">Aha before commitment</strong><br><span style="font-size:13px;opacity:0.7">Real net worth shown for free — value delivered before any ask</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(253,203,110,0.08);border:1px solid rgba(253,203,110,0.25);border-radius:10px;padding:10px 14px">
+        <span style="font-size:20px;flex-shrink:0;line-height:1">&#128257;</span>
+        <div><strong style="color:#c8a230">Structural virality</strong><br><span style="font-size:13px;opacity:0.7">Auto-generated forward message after reveal — one share = 50 leads in a tech group</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(233,69,96,0.08);border:1px solid rgba(233,69,96,0.25);border-radius:10px;padding:10px 14px">
+        <span style="font-size:20px;flex-shrink:0;line-height:1">&#127919;</span>
+        <div><strong style="color:#c0392b">CAC near-zero</strong><br><span style="font-size:13px;opacity:0.7">One forward in a tech company group = 50 leads overnight</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(0,184,148,0.08);border:1px solid rgba(0,184,148,0.25);border-radius:10px;padding:10px 14px">
+        <span style="font-size:20px;flex-shrink:0;line-height:1">&#9889;</span>
+        <div><strong style="color:#00866b">Seamless handoff</strong><br><span style="font-size:13px;opacity:0.7">One-tap deep link into the app — AA consent already done, zero re-entry</span></div>
       </div>
     </div>
   </div>
+
   <div class="slide-bar">Your net worth in 3 minutes. No app download. Zero CAC.</div>
   <div class="slide-number">9</div>
 </div>
