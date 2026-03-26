@@ -422,6 +422,25 @@
   }
   .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
   .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  /* Typewriter effect */
+  @keyframes typeIn   { from { width:0 } to { width:100% } }
+  @keyframes cursorOn { 0%,100% { border-right-color:transparent } 50% { border-right-color:#0056d2 } }
+  .type-line {
+    overflow:hidden; white-space:nowrap; width:0;
+    border-right:2px solid transparent;
+    font-size:17px; font-weight:400; color:#444; line-height:2;
+  }
+  /* "Hey! 👋"  ~6 chars  */
+  .tl1 { animation: typeIn .3s steps(6,end) .6s forwards, cursorOn .4s step-end .6s 1; font-size:22px; font-weight:600; color:var(--primary); }
+  /* "I'm Finwy — Finwiser's SEBI RIA licensed AI advisor."  ~52 chars */
+  .tl2 { animation: typeIn 2.1s steps(52,end) 1.1s forwards, cursorOn .4s step-end 1.1s 6; }
+  /* "Bank, MFs, FDs, NPS, loans, credit cards — I see it all."  ~57 chars */
+  .tl3 { animation: typeIn 2.3s steps(57,end) 3.4s forwards, cursorOn .4s step-end 3.4s 6; }
+  /* "No entries. No manual work. No guesswork."  ~41 chars */
+  .tl4 { animation: typeIn 1.6s steps(41,end) 5.9s forwards, cursorOn .4s step-end 5.9s 5; font-weight:600; color:#0056d2; }
+  /* "Your complete picture. All in 3 minutes."  ~40 chars */
+  .tl5 { animation: typeIn 1.6s steps(40,end) 7.7s forwards, cursorOn .4s step-end 7.7s 4; }
   .finwy-bubble {
     background:#f0f4ff;
     border:1px solid rgba(0,86,210,0.12);
@@ -598,8 +617,10 @@
 <!-- ============================================================ -->
 <!-- SLIDE 1: Finny says Hi -->
 <!-- ============================================================ -->
-<div class="slide white center" id="s1">
-  <div class="mascot-anim" id="mascot" style="width:400px;height:445px">
+<div class="slide white" id="s1" style="display:flex;flex-direction:row;align-items:center;justify-content:center;gap:56px;padding:60px 80px">
+
+  <!-- Finwy mascot — left -->
+  <div class="mascot-anim" id="mascot" style="width:320px;height:356px;flex-shrink:0">
     <img src="slides/frame-1.png" class="mascot-active" data-frame="1">
     <img src="slides/frame-2.png" data-frame="2">
     <img src="slides/frame-3.png" data-frame="3">
@@ -617,16 +638,16 @@
     <img src="slides/frame-15.png" data-frame="15">
   </div>
 
-  <!-- Finwy typing intro -->
-  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:12px">
-    <p class="wa-msg" style="font-size:18px;color:var(--muted);font-weight:400;margin:0">Hey! &#128075;</p>
-    <p class="wa-msg" style="font-size:16px;color:var(--muted);font-weight:400;margin:0">I'm <strong style="color:var(--primary)">Finwy</strong> &mdash; Finwiser's <strong style="color:#0056d2">SEBI RIA licensed</strong> AI financial advisor.</p>
-    <p class="wa-msg" style="font-size:15px;color:var(--muted);font-weight:400;margin:0">I connect to your entire financial life &mdash; bank accounts, MFs, FDs, NPS, loans, credit cards.</p>
-    <p class="wa-msg" style="font-size:15px;color:#0056d2;font-weight:600;margin:0">No entries. No manual work. No guesswork.</p>
-    <p class="wa-msg" style="font-size:15px;color:var(--muted);font-weight:400;margin:0">Your complete financial picture. <strong style="color:var(--primary)">All in 3 minutes.</strong></p>
+  <!-- Typewriter text — right -->
+  <div style="display:flex;flex-direction:column;gap:2px;text-align:left">
+    <img src="slides/finwiserlogo.svg" style="width:640px;margin-bottom:24px">
+    <p class="type-line tl1" style="margin:0">Hey! &#128075;</p>
+    <p class="type-line tl2" style="margin:0">I'm Finwy &mdash; Finwiser's SEBI RIA licensed AI advisor.</p>
+    <p class="type-line tl3" style="margin:0">Bank, MFs, FDs, NPS, loans, credit cards &mdash; I see it all.</p>
+    <p class="type-line tl4" style="margin:0">No entries. No manual work. No guesswork.</p>
+    <p class="type-line tl5" style="margin:0">Your complete picture. All in 3 minutes.</p>
   </div>
 
-  <img src="slides/finwiserlogo.svg" style="width:280px;margin-top:24px" class="wa-msg">
   <div class="slide-number">1</div>
 </div>
 
