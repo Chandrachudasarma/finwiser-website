@@ -400,6 +400,29 @@
     font-weight: 600;
   }
 
+  /* WhatsApp typing animation */
+  @keyframes waMsgIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes typingDot {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+    30%           { transform: translateY(-4px); opacity: 1; }
+  }
+  .wa-msg { animation: waMsgIn 0.3s ease both; }
+  .wa-msg:nth-child(1) { animation-delay: 0.4s; }
+  .wa-msg:nth-child(2) { animation-delay: 1.0s; }
+  .wa-msg:nth-child(3) { animation-delay: 1.8s; }
+  .wa-msg:nth-child(4) { animation-delay: 2.5s; }
+  .wa-msg:nth-child(5) { animation-delay: 3.2s; }
+  .typing-dots { display:flex; align-items:center; gap:3px; padding:2px 4px; }
+  .typing-dots span {
+    display:inline-block; width:6px; height:6px; border-radius:50%; background:#aaa;
+    animation: typingDot 1.2s infinite ease-in-out;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
   /* Scroll-triggered fade-in animation */
   .screenshot-card {
     opacity: 0;
@@ -854,12 +877,42 @@
               <div style="font-size:10px;text-align:right;color:#999;margin-top:1px">Just now</div>
             </div>
           </div>
-          <!-- Bot: consent link -->
-          <div style="display:flex;justify-content:flex-start">
-            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 11px;max-width:82%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              Hey! Connect your bank accounts in 3 taps &#128279;<br>
-              <span style="color:#075e54;font-weight:700">&rarr; Link via Account Aggregator</span>
+          <!-- Bot: sequential intro messages -->
+          <div class="wa-msg" style="display:flex;justify-content:flex-start">
+            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:60%;font-size:13px;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              Hey! &#128075;
               <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
+            </div>
+          </div>
+          <div class="wa-msg" style="display:flex;justify-content:flex-start">
+            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:86%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              I'm Finwy &mdash; Finwiser's <strong style="color:#075e54">SEBI RIA licensed</strong> AI financial advisor.
+              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
+            </div>
+          </div>
+          <div class="wa-msg" style="display:flex;justify-content:flex-start">
+            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:90%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              I connect to your entire financial life &mdash; bank accounts, MFs, FDs, NPS, loans, credit cards &mdash; and build your complete financial picture.
+              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
+            </div>
+          </div>
+          <div class="wa-msg" style="display:flex;justify-content:flex-start">
+            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:82%;font-size:12px;line-height:1.6;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              <span style="color:#075e54;font-weight:700">No entries. No manual work. No guesswork.</span>
+              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
+            </div>
+          </div>
+          <div class="wa-msg" style="display:flex;justify-content:flex-start">
+            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:86%;font-size:12px;line-height:1.6;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              Your net worth. What you're spending. What you're saving. What you should do next.
+              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
+            </div>
+          </div>
+          <div class="wa-msg" style="display:flex;justify-content:flex-start">
+            <div style="background:#075e54;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:72%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
+              <div style="color:white;font-weight:600;margin-bottom:4px">All in 3 minutes. &#128071;</div>
+              <span style="color:#25d366;font-weight:700">&rarr; Connect via Account Aggregator</span>
+              <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px">12:02 PM &#10003;&#10003;</div>
             </div>
           </div>
           <!-- Time marker -->
