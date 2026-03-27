@@ -11,8 +11,16 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   @keyframes finwyWobble {
-    0%, 100% { transform: rotate(-5deg); }
-    50% { transform: rotate(5deg); }
+    0%, 100% {
+      transform: rotate(-5deg);
+      -webkit-mask-image: linear-gradient(to right, white 60%, transparent 100%);
+      mask-image: linear-gradient(to right, white 60%, transparent 100%);
+    }
+    50% {
+      transform: rotate(5deg);
+      -webkit-mask-image: linear-gradient(to left, white 60%, transparent 100%);
+      mask-image: linear-gradient(to left, white 60%, transparent 100%);
+    }
   }
   .finwy-wobble { animation: finwyWobble 2s ease-in-out infinite; transform-origin: center center; }
 
