@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Finwiser — VC Pitch Deck</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -401,60 +400,6 @@
     font-weight: 600;
   }
 
-  /* WhatsApp typing animation */
-  @keyframes waMsgIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes typingDot {
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
-    30%           { transform: translateY(-4px); opacity: 1; }
-  }
-  .wa-msg { animation: waMsgIn 0.3s ease both; }
-  .wa-msg:nth-child(1) { animation-delay: 0.4s; }
-  .wa-msg:nth-child(2) { animation-delay: 1.0s; }
-  .wa-msg:nth-child(3) { animation-delay: 1.8s; }
-  .wa-msg:nth-child(4) { animation-delay: 2.5s; }
-  .wa-msg:nth-child(5) { animation-delay: 3.2s; }
-  .typing-dots { display:flex; align-items:center; gap:3px; padding:2px 4px; }
-  .typing-dots span {
-    display:inline-block; width:6px; height:6px; border-radius:50%; background:#aaa;
-    animation: typingDot 1.2s infinite ease-in-out;
-  }
-  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-  /* Typewriter effect */
-  @keyframes typeIn   { from { width:0 } to { width:100% } }
-  @keyframes cursorOn { 0%,100% { border-right-color:transparent } 50% { border-right-color:#0056d2 } }
-  .type-line {
-    overflow:hidden; white-space:nowrap; width:0;
-    border-right:2px solid transparent;
-    font-family:'Courier Prime', Courier, monospace;
-    font-size:17px; font-weight:400; color:#444; line-height:2;
-  }
-  /* "Hey! 👋"  ~6 chars  */
-  .tl1 { animation: typeIn .3s steps(6,end) .6s forwards, cursorOn .4s step-end .6s 1; font-size:22px; font-weight:600; color:var(--primary); }
-  /* "I'm Finwy — Finwiser's SEBI RIA licensed AI advisor."  ~52 chars */
-  .tl2 { animation: typeIn 2.1s steps(52,end) 1.1s forwards, cursorOn .4s step-end 1.1s 6; }
-  /* "Bank, MFs, FDs, NPS, loans, credit cards — I see it all."  ~57 chars */
-  .tl3 { animation: typeIn 2.3s steps(57,end) 3.4s forwards, cursorOn .4s step-end 3.4s 6; }
-  /* "No entries. No manual work. No guesswork."  ~41 chars */
-  .tl4 { animation: typeIn 1.6s steps(41,end) 5.9s forwards, cursorOn .4s step-end 5.9s 5; font-weight:600; color:#0056d2; }
-  /* "Your complete picture. All in 3 minutes."  ~40 chars */
-  .tl5 { animation: typeIn 1.6s steps(40,end) 7.7s forwards, cursorOn .4s step-end 7.7s 4; }
-  .finwy-bubble {
-    background:#f0f4ff;
-    border:1px solid rgba(0,86,210,0.12);
-    border-radius:0 16px 16px 16px;
-    padding:10px 16px;
-    font-size:15px;
-    line-height:1.6;
-    color:var(--primary);
-    max-width:520px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.06);
-  }
-
   /* Scroll-triggered fade-in animation */
   .screenshot-card {
     opacity: 0;
@@ -579,38 +524,16 @@
     }
   }
 
-  /* --- MOBILE LANDSCAPE — scale slides to fit one screen per device --- */
+  /* --- MOBILE LANDSCAPE (short + wide) --- */
   @media (max-height: 500px) and (orientation: landscape) {
-    .slide {
-      /* Fallback zoom before JS calculates exact value */
-      zoom: 0.55;
-      width: calc(100vw / 0.55);
-      height: calc(100vh / 0.55);
-      min-height: calc(100vh / 0.55);
-      max-height: calc(100vh / 0.55);
-      overflow: hidden;
-      padding: 20px 40px 28px !important;
-      /* Safe-area for notched phones (iPhone, Pixel) */
-      padding-left: max(40px, env(safe-area-inset-left, 0px)) !important;
-      padding-right: max(40px, env(safe-area-inset-right, 0px)) !important;
-      /* Crisp text at small sizes */
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-    }
-    .slide.center { justify-content: center; }
-    /* Override tablet-portrait single-column grids back to multi-column */
-    .grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
-    .grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px; }
-    .grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
+    .slide { min-height: auto; padding: 20px 40px; padding-bottom: 40px; }
+    h2 { font-size: 24px; margin-bottom: 10px; }
+    .grid-2 { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .card { padding: 14px; }
+    .quote { font-size: 16px; }
+    .stat .number { font-size: 28px; }
     .two-col { flex-direction: row; gap: 20px; }
-    /* Compact slide bar + number */
-    .slide-bar { margin-top: auto !important; }
-    .slide-number { bottom: 4px; right: 10px; font-size: 10px; }
-    /* Title slide */
-    .mascot-anim { width: 160px !important; height: 178px !important; margin-bottom: 6px !important; }
-    .slide.center img[src*="finwiserlogo"] { max-width: 220px !important; margin-top: 8px !important; }
-    .slide.center img[src*="finny-celebrate"] { width: 60px !important; height: 60px !important; margin-top: 8px !important; }
   }
 </style>
 </head>
@@ -619,10 +542,8 @@
 <!-- ============================================================ -->
 <!-- SLIDE 1: Finny says Hi -->
 <!-- ============================================================ -->
-<div class="slide white" id="s1" style="display:flex;flex-direction:row;align-items:center;justify-content:center;gap:56px;padding:60px 80px">
-
-  <!-- Finwy mascot — left -->
-  <div class="mascot-anim" id="mascot" style="width:320px;height:356px;flex-shrink:0">
+<div class="slide white center" id="s1">
+  <div class="mascot-anim" id="mascot" style="width:400px;height:445px">
     <img src="slides/frame-1.png" class="mascot-active" data-frame="1">
     <img src="slides/frame-2.png" data-frame="2">
     <img src="slides/frame-3.png" data-frame="3">
@@ -639,17 +560,7 @@
     <img src="slides/frame-14.png" data-frame="14">
     <img src="slides/frame-15.png" data-frame="15">
   </div>
-
-  <!-- Typewriter text — right -->
-  <div style="display:flex;flex-direction:column;gap:2px;text-align:left">
-    <img src="slides/finwiserlogo.svg" style="width:640px;margin-bottom:24px">
-    <p class="type-line tl1" style="margin:0">Hey! &#128075;</p>
-    <p class="type-line tl2" style="margin:0">I'm Finwy &mdash; Finwiser's SEBI RIA licensed AI advisor.</p>
-    <p class="type-line tl3" style="margin:0">Bank, MFs, FDs, NPS, loans, credit cards &mdash; I see it all.</p>
-    <p class="type-line tl4" style="margin:0">No entries. No manual work. No guesswork.</p>
-    <p class="type-line tl5" style="margin:0">Your complete picture. All in 3 minutes.</p>
-  </div>
-
+  <img src="slides/finwiserlogo.svg" style="width:320px;margin-top:20px">
   <div class="slide-number">1</div>
 </div>
 
@@ -674,61 +585,20 @@
 <div class="slide dark" id="s3">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
   <h2>The Problem</h2>
-  <p style="font-size:20px;color:#ff6b81;font-weight:600;margin-bottom:8px">Everyone's investing. Nobody's advising.</p>
+  <p style="font-size:20px;color:#ff6b81;font-weight:600;margin-bottom:30px">Everyone's investing. Nobody's advising.</p>
 
-  <div class="grid-3" style="margin-top:0;padding-top:220px">
-    <!-- Persona 1: Father -->
-    <div style="position:relative">
-      <img src="slides/finny-father-worried.png" alt="Worried retiring father" style="width:220px;position:absolute;bottom:calc(100%);left:50%;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.35))">
-      <div class="card" style="border-top:3px solid #e94560;position:relative;padding-top:28px;text-align:center">
-        <div style="position:absolute;top:-1px;left:28px;background:#e94560;color:white;font-size:11px;font-weight:700;padding:5px 14px;border-radius:0 0 10px 10px;text-transform:uppercase;letter-spacing:0.8px">High Risk</div>
-        <h3 style="margin-bottom:2px;font-size:18px">Retiring Father</h3>
-        <span style="font-size:13px;opacity:0.5">60 years · Pension income</span>
-        <div style="background:rgba(233,69,96,0.12);border-radius:10px;padding:12px 16px;margin:12px 0;text-align:left">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <span style="font-size:12px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px">Portfolio in Equity</span>
-            <span style="font-size:18px;font-weight:800;color:#ff6b81">70%</span>
-          </div>
-          <div class="progress-bar" style="height:6px"><div class="progress-fill" style="width:70%"></div></div>
-        </div>
-        <p style="font-size:14px;line-height:1.6;text-align:left">Invested in equity NFOs on friends' advice. Can't recover from a single bad year. <strong style="color:#ff6b81">No one sees the full picture.</strong></p>
-      </div>
+  <div class="grid-3">
+    <div class="card">
+      <h3>A father nearing retirement</h3>
+      <p>60 years old. Pension income. Invested in equity NFOs because friends recommended them. 70% of his portfolio is in high-risk equity — at an age where he can't recover from a single bad year. No distributor will tell him to stop — they earn more commission on equity. Nobody sees his full picture: age + pension + allocation + zero earning runway left.</p>
     </div>
-
-    <!-- Persona 2: Working Mother -->
-    <div style="position:relative">
-      <img src="slides/finny-mother-worried.png" alt="Worried working mother" style="width:188px;position:absolute;bottom:calc(100%);left:50%;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.35))">
-      <div class="card" style="border-top:3px solid #fdcb6e;position:relative;padding-top:28px;text-align:center">
-        <div style="position:absolute;top:-1px;left:28px;background:#fdcb6e;color:#1a1a2e;font-size:11px;font-weight:700;padding:5px 14px;border-radius:0 0 10px 10px;text-transform:uppercase;letter-spacing:0.8px">No Diversification</div>
-        <h3 style="margin-bottom:2px;font-size:18px">Working Mother</h3>
-        <span style="font-size:13px;opacity:0.5">35 years · ₹20K/mo SIPs</span>
-        <div style="background:rgba(253,203,110,0.1);border-radius:10px;padding:12px 16px;margin:12px 0;text-align:left">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <span style="font-size:12px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px">SIPs in Large-Cap Only</span>
-            <span style="font-size:18px;font-weight:800;color:#fdcb6e">4 of 4</span>
-          </div>
-          <div class="progress-bar" style="height:6px"><div class="progress-fill" style="width:100%;background:linear-gradient(90deg,#fdcb6e,#e17055)"></div></div>
-        </div>
-        <p style="font-size:14px;line-height:1.6;text-align:left">Daughter needs this money in 8 years. She thinks <strong style="color:#fdcb6e">"SIP = good investing"</strong> — nobody told her about the asterisk.</p>
-      </div>
+    <div class="card">
+      <h3>A working woman planning for her child</h3>
+      <p>35 years old. Started ₹20K/month SIPs — disciplined, responsible. But all 4 SIPs are in large-cap equity. Zero diversification. Her daughter needs this money in 8 years — one market correction wipes out 2 years of gains. She doesn't have time to review daily. She thinks "SIP = good investing" — nobody told her about the asterisk.</p>
     </div>
-
-    <!-- Persona 3: Graduate -->
-    <div style="position:relative">
-      <img src="slides/finny-graduate-worried.png" alt="Overwhelmed fresh graduate" style="width:188px;position:absolute;bottom:calc(100%);left:50%;transform:translateX(-50%);z-index:2;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.35))">
-      <div class="card" style="border-top:3px solid #00b894;position:relative;padding-top:28px;text-align:center">
-        <div style="position:absolute;top:-1px;left:28px;background:#00b894;color:white;font-size:11px;font-weight:700;padding:5px 14px;border-radius:0 0 10px 10px;text-transform:uppercase;letter-spacing:0.8px">Decision Paralysis</div>
-        <h3 style="margin-bottom:2px;font-size:18px">Fresh Graduate</h3>
-        <span style="font-size:13px;opacity:0.5">24 years · ₹2.5L in savings</span>
-        <div style="background:rgba(0,184,148,0.1);border-radius:10px;padding:12px 16px;margin:12px 0;text-align:left">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <span style="font-size:12px;opacity:0.6;text-transform:uppercase;letter-spacing:0.5px">Lost to Inflation / Year</span>
-            <span style="font-size:18px;font-weight:800;color:#ff6b81">₹6,250</span>
-          </div>
-          <div class="progress-bar" style="height:6px"><div class="progress-fill" style="width:45%;background:linear-gradient(90deg,#00b894,#e94560)"></div></div>
-        </div>
-        <p style="font-size:14px;line-height:1.6;text-align:left">Opens 4 MF apps, sees <strong style="color:#00b894">400+ options</strong>, gets paralyzed, does nothing. Money bleeds to inflation.</p>
-      </div>
+    <div class="card">
+      <h3>A fresh graduate starting out</h3>
+      <p>24 years old. ₹2.5L sitting in savings, earning well, knows she should invest. Opens 4 mutual fund apps, sees 400+ options, gets paralyzed, does nothing. Money losing ₹6,250/year to inflation while she decides. Nobody tells her where to start.</p>
     </div>
   </div>
 
@@ -770,32 +640,16 @@
 <!-- ============================================================ -->
 <!-- SLIDE 5: Aha Moment -->
 <!-- ============================================================ -->
-<div class="slide dark center" id="s5" style="position:relative;overflow:hidden">
+<div class="slide dark center" id="s5">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
   <h2 style="margin-bottom:8px">The Aha Moment</h2>
-  <p style="opacity:0.6;margin-bottom:30px">Within 60 seconds, Finwiser tells each of them something no app has ever said.</p>
+  <p style="opacity:0.6;margin-bottom:40px">Within 60 seconds, Finwiser tells each of them something no app has ever said.</p>
 
-  <!-- Father quote — image LEFT -->
-  <div style="position:relative;max-width:650px;margin-bottom:16px">
-    <img src="slides/finny-father-happy.png" alt="Happy father" style="position:absolute;right:calc(100% + 16px);top:50%;transform:translateY(-50%);height:175px;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3))">
-    <div class="quote" style="margin:0"><strong style="opacity:0.5;font-style:normal">To the father:</strong> "70% of your portfolio is in equity. At 60 with pension income, that's dangerous. Here's your rebalancing plan — move ₹8L to debt funds, keep ₹3L in equity."</div>
-  </div>
-
-  <!-- Mother quote — image RIGHT -->
-  <div style="position:relative;max-width:650px;margin-bottom:16px">
-    <img src="slides/finny-mother-happy.png" alt="Happy mother" style="position:absolute;left:calc(100% + 16px);top:50%;transform:translateY(-50%);height:190px;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3))">
-    <div class="quote" style="margin:0"><strong style="opacity:0.5;font-style:normal">To the working woman:</strong> "All 4 SIPs are large-cap equity. Your daughter needs this money in 8 years. Move ₹3L to a balanced advantage fund before the next correction wipes out 2 years of gains."</div>
-  </div>
-
-  <!-- Graduate quote — image LEFT -->
-  <div style="position:relative;max-width:650px;margin-bottom:16px">
-    <img src="slides/finny-graduate-happy.png" alt="Happy graduate" style="position:absolute;right:calc(100% + 16px);top:50%;transform:translateY(-50%);height:160px;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3))">
-    <div class="quote" style="margin:0"><strong style="opacity:0.5;font-style:normal">To the graduate:</strong> "₹2.5L in savings is losing ₹6,250/year to inflation. Your best first fund — based on your risk profile and surplus — is locked. ₹49 to unlock."</div>
-  </div>
-
-  <!-- To all — no image, green accent -->
-  <div style="max-width:650px;margin-bottom:0">
-    <div class="quote" style="border-color:#00b894;margin:0"><strong style="opacity:0.5;font-style:normal">To all of them:</strong> "You're saving 32% of your income — that's better than 80% of people your age. You're on track. Keep going."</div>
+  <div style="max-width:750px;text-align:left">
+    <div class="quote" style="margin-bottom:16px"><strong style="opacity:0.5;font-style:normal">To the father:</strong> "70% of your portfolio is in equity. At 60 with pension income, that's dangerous. Here's your rebalancing plan — move ₹8L to debt funds, keep ₹3L in equity."</div>
+    <div class="quote" style="margin-bottom:16px"><strong style="opacity:0.5;font-style:normal">To the working woman:</strong> "All 4 SIPs are large-cap equity. Your daughter needs this money in 8 years. Move ₹3L to a balanced advantage fund before the next correction wipes out 2 years of gains."</div>
+    <div class="quote" style="margin-bottom:16px"><strong style="opacity:0.5;font-style:normal">To the graduate:</strong> "₹2.5L in savings is losing ₹6,250/year to inflation. Your best first fund — based on your risk profile and surplus — is locked. ₹49 to unlock."</div>
+    <div class="quote" style="border-color:#00b894"><strong style="opacity:0.5;font-style:normal">To all of them:</strong> "You're saving 32% of your income — that's better than 80% of people your age. You're on track. Keep going."</div>
   </div>
 
   <div class="slide-bar">No other app in India can say any of this — because nobody else has your full picture.</div>
@@ -803,9 +657,133 @@
 </div>
 
 <!-- ============================================================ -->
-<!-- SLIDE 6A: Product — Portfolio -->
+<!-- SLIDE 6: Life Keeps Asking — Why Users Come Back -->
 <!-- ============================================================ -->
-<div class="slide white" id="s6a" style="padding:30px 40px;padding-top:60px">
+<div class="slide dark" id="s6" style="padding:40px 60px 30px">
+  <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
+
+  <h2 style="margin-bottom:4px">Life Keeps Asking</h2>
+  <p style="font-size:17px;font-weight:300;opacity:0.45;margin-bottom:24px">Every month brings a new money question. Only Finwiser answers — it sees every account, every goal.</p>
+
+  <!-- Two-panel layout with Finwy bridge -->
+  <div style="display:flex;align-items:stretch;flex:1;position:relative">
+
+    <!-- LEFT PANEL: Anxiety zone -->
+    <div style="flex:1;background:rgba(233,69,96,0.07);border:1px solid rgba(233,69,96,0.15);border-radius:20px 0 0 20px;border-right:none;padding:32px 28px;display:flex;align-items:center;justify-content:flex-end;gap:20px">
+
+      <!-- Questions — right-aligned to sit close to mother -->
+      <div style="display:flex;flex-direction:column;gap:18px;text-align:right">
+        <div style="font-size:20px;font-weight:600;color:#ff6b81;line-height:1.3">"Where's all my money going?"</div>
+        <div style="font-size:20px;font-weight:600;color:#fdcb6e;line-height:1.3">"Can I still afford my SIPs?"</div>
+        <div style="font-size:20px;font-weight:600;color:#ff6b81;line-height:1.3">"Market crashed — am I okay?"</div>
+        <div style="font-size:20px;font-weight:600;color:#a29bfe;line-height:1.3">"Am I on track for retirement?"</div>
+        <div style="font-size:20px;font-weight:600;color:#00b894;line-height:1.3">"₹3L bonus — now what?"</div>
+        <div style="font-size:20px;font-weight:600;color:#fdcb6e;line-height:1.3">"Tax season — save how much?"</div>
+      </div>
+
+      <!-- Worried mother -->
+      <div style="flex-shrink:0;text-align:center;padding-right:80px">
+        <img src="slides/finny-mother-worried.png" style="height:260px;filter:drop-shadow(0 0 24px rgba(233,69,96,0.2))">
+      </div>
+
+    </div>
+
+    <!-- FINWY BRIDGE — animated, overlapping center -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:0">
+      <div class="mascot-anim" id="finwy-bridge" style="width:210px;height:210px">
+        <img src="slides/finny-work-1.png" class="mascot-active" data-frame="1">
+        <img src="slides/finny-work-2.png" data-frame="2">
+        <img src="slides/finny-work-3.png" data-frame="3">
+        <img src="slides/finny-work-4.png" data-frame="4">
+        <img src="slides/finny-work-5.png" data-frame="5">
+        <img src="slides/finny-work-6.png" data-frame="6">
+        <img src="slides/finny-work-7.png" data-frame="7">
+        <img src="slides/finny-work-8.png" data-frame="8">
+      </div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.5px;opacity:0.5;font-weight:700;color:white;text-align:center">Finwiser</div>
+    </div>
+
+    <!-- RIGHT PANEL: Clarity zone -->
+    <div style="flex:1;background:rgba(0,184,148,0.07);border:1px solid rgba(0,184,148,0.15);border-radius:0 20px 20px 0;border-left:none;padding:32px 28px;display:flex;align-items:center;gap:20px">
+
+      <!-- Happy mother -->
+      <div style="flex-shrink:0;text-align:center;padding-left:80px">
+        <img src="slides/finny-mother-happy.png" style="height:260px;filter:drop-shadow(0 0 24px rgba(0,184,148,0.2))">
+      </div>
+
+      <!-- Answer card -->
+      <div style="flex:0 1 320px">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(0,184,148,0.25);border-radius:16px;padding:20px 22px;position:relative">
+          <div style="font-size:17px;line-height:1.7;color:rgba(255,255,255,0.85)">
+            <span style="color:#00b894;font-weight:700">₹3L surplus this month.</span><br>
+            Daughter's education: <span style="color:#ff6b81;font-weight:600">₹2.1L short</span><br>
+            Emergency fund: <span style="color:#00b894;font-weight:600">on track</span><br>
+            Retirement: <span style="color:#00b894;font-weight:600">91% funded</span>
+          </div>
+
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08)">
+            <div style="font-size:17px;font-weight:700;color:white;line-height:1.5">
+              ₹2.1L → balanced advantage fund<br>₹90K → liquid fund
+            </div>
+          </div>
+
+          <div style="margin-top:14px;background:rgba(0,184,148,0.15);border:1px solid rgba(0,184,148,0.3);border-radius:10px;padding:10px 16px;text-align:center">
+            <span style="font-size:15px;font-weight:700;color:#00b894">Invest for daughter's education &#8250;</span>
+          </div>
+        </div>
+
+        <p style="font-size:13px;opacity:0.3;margin-top:12px;text-align:center;line-height:1.4">Every answer from her real bank data, real goals, real portfolio.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="slide-bar">Life creates the questions. Only Finwiser has the answers.</div>
+  <div class="slide-number">6</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7: WhatsApp GTM -->
+<!-- ============================================================ -->
+<div class="slide white" id="s7">
+  <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
+  <h2>Go-to-Market: WhatsApp First</h2>
+  <p class="subtitle" style="margin-bottom:30px">"Know your net worth in 3 minutes. Just WhatsApp us."</p>
+
+  <div class="two-col">
+    <div class="col">
+      <div class="flow-step"><div class="step-num">1</div> User WhatsApps "Hi" <span style="opacity:0.5">(zero friction)</span></div>
+      <div class="flow-step"><div class="step-num">2</div> Gets AA consent link <span style="opacity:0.5">(3 taps)</span></div>
+      <div class="flow-step"><div class="step-num">3</div> <strong>2.5 min:</strong> Net worth on WhatsApp</div>
+      <div class="flow-step"><div class="step-num">4</div> Answer 3 questions</div>
+      <div class="flow-step"><div class="step-num">5</div> <strong>4.5 min:</strong> Income, surplus, first insight</div>
+      <div class="flow-step"><div class="step-num" style="background:var(--green)">6</div> "Want to know what to do with your ₹28K surplus? Download Finwiser."</div>
+
+      <p style="margin-top:20px;font-size:14px;opacity:0.5">Already built and tested.</p>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>Why this works</h3>
+        <ul>
+          <li><strong>Zero friction</strong> — WhatsApp is on every phone</li>
+          <li><strong>Aha before commitment</strong> — real numbers shown for free</li>
+          <li><strong>Structural virality</strong> — after net worth reveal, a forward-ready message with share CTA is auto-generated</li>
+          <li><strong>CAC near-zero</strong> — one forward in a tech company WhatsApp group = 50 leads overnight</li>
+          <li><strong>Seamless handoff</strong> — one-tap deep link into the app with AA consent already done, zero re-entry</li>
+          <li><strong>Meets users where they are</strong> — Indian financial talk is on WhatsApp</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-bar">Your net worth in 3 minutes. No app download. Zero CAC.</div>
+  <div class="slide-number">7</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8: Product — Portfolio -->
+<!-- ============================================================ -->
+<div class="slide white" id="s8a" style="padding:30px 40px;padding-top:60px">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
   <h2 style="margin-bottom:4px;font-size:30px">Your Portfolio</h2>
   <p style="opacity:0.5;font-size:13px;margin-bottom:10px">What you own, how it's performing, and how it's allocated</p>
@@ -824,13 +802,13 @@
     </div>
   </div>
   <div class="slide-bar">Your 360-degree portfolio — MFs, NPS, gold, real estate — all in one view.</div>
-  <div class="slide-number">6</div>
+  <div class="slide-number">8</div>
 </div>
 
 <!-- ============================================================ -->
-<!-- SLIDE 6B: Product — Goals & Planning -->
+<!-- SLIDE 9: Product — Goals & Planning -->
 <!-- ============================================================ -->
-<div class="slide dark" id="s6b" style="padding:30px 40px;padding-top:60px">
+<div class="slide dark" id="s9" style="padding:30px 40px;padding-top:60px">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
   <h2 style="margin-bottom:4px;font-size:30px">Your Goals & Planning</h2>
   <p style="opacity:0.5;font-size:13px;margin-bottom:10px">Your risk profile, your goals with progress, and your budget</p>
@@ -849,169 +827,6 @@
     </div>
   </div>
   <div class="slide-bar">Everything you see is built. Not mockups. Not Figma. Production code.</div>
-  <div class="slide-number">7</div>
-</div>
-
-<!-- ============================================================ -->
-<!-- SLIDE 7: Engagement — How Users Come Back -->
-<!-- ============================================================ -->
-<div class="slide dark" id="s7">
-  <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
-  <h2>Why Users Come Back</h2>
-  <p style="opacity:0.6;margin-bottom:20px">Financial apps die when users stop opening them. We built 12 retention hooks — all live — informed by behavioral economics research.</p>
-
-  <div class="grid-3" style="margin-top:10px">
-    <div class="card">
-      <h3 style="font-size:16px">Morning Money Pulse</h3>
-      <p style="font-size:13px">8:30 AM daily — personalized insight from 8 rotating templates. "Your food spending is up 30% this week." Keeps you aware without opening the app.</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Daily Question</h3>
-      <p style="font-size:13px">1 PM — the highest-impact unresolved transaction. "Was this ₹12K to Ajay a loan or a gift?" Your answer improves your entire financial picture.</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Advisor Nudges</h3>
-      <p style="font-size:13px">Proactive, not reactive. Large unusual expense? Spending spike? Fund drifted? We tell you before you notice — with seasonal awareness (Diwali spending isn't an anomaly).</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Goal Milestones</h3>
-      <p style="font-size:13px">"Your emergency fund crossed 50%! Keep going." Positive reinforcement at every milestone. 2:1 ratio — two celebrations for every nudge.</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Budget Alerts</h3>
-      <p style="font-size:13px">Warning at 75%, critical at 90%, overshoot at 100%. Real-time — not a surprise at month-end. CC due date reminders before you get charged interest.</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Weekly Portfolio Summary</h3>
-      <p style="font-size:13px">Goal-anchored progress — "Your retirement is 3% closer." Not raw ₹ swings that cause panic. Designed by behavioral economists to build confidence, not anxiety.</p>
-    </div>
-  </div>
-
-  <div class="slide-bar">12 retention hooks. All live. Built to keep users coming back without overwhelming them.</div>
-  <div class="slide-number">8</div>
-</div>
-
-<!-- ============================================================ -->
-<!-- SLIDE 8: WhatsApp GTM -->
-<!-- ============================================================ -->
-<div class="slide white" id="s7">
-  <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
-  <h2>Go-to-Market: WhatsApp First</h2>
-  <p class="subtitle" style="margin-bottom:20px">"Know your net worth in 3 minutes. Just WhatsApp us."</p>
-
-  <div class="two-col" style="gap:40px;align-items:flex-start">
-
-    <!-- LEFT: WhatsApp chat simulation -->
-    <div class="col">
-      <div style="background:#e5ddd5;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.15);max-width:340px;margin:0 auto">
-        <!-- WA header -->
-        <div style="background:#075e54;padding:10px 16px;display:flex;align-items:center;gap:12px">
-          <div style="width:34px;height:34px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">&#128172;</div>
-          <div>
-            <div style="color:white;font-weight:700;font-size:14px">Finwiser</div>
-            <div style="color:rgba(255,255,255,0.6);font-size:11px">SEBI RIA Licensed &middot; AA Verified</div>
-          </div>
-        </div>
-        <!-- Chat body -->
-        <div style="padding:10px 12px;display:flex;flex-direction:column;gap:7px">
-          <!-- User: Hi -->
-          <div style="display:flex;justify-content:flex-end">
-            <div style="background:#dcf8c6;border-radius:12px 0 12px 12px;padding:7px 11px;max-width:60%;font-size:13px;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              Hi &#128075;
-              <div style="font-size:10px;text-align:right;color:#999;margin-top:1px">Just now</div>
-            </div>
-          </div>
-          <!-- Bot: sequential intro messages -->
-          <div class="wa-msg" style="display:flex;justify-content:flex-start">
-            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:60%;font-size:13px;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              Hey! &#128075;
-              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
-            </div>
-          </div>
-          <div class="wa-msg" style="display:flex;justify-content:flex-start">
-            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:86%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              I'm Finwy &mdash; Finwiser's <strong style="color:#075e54">SEBI RIA licensed</strong> AI financial advisor.
-              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
-            </div>
-          </div>
-          <div class="wa-msg" style="display:flex;justify-content:flex-start">
-            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:90%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              I connect to your entire financial life &mdash; bank accounts, MFs, FDs, NPS, loans, credit cards &mdash; and build your complete financial picture.
-              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
-            </div>
-          </div>
-          <div class="wa-msg" style="display:flex;justify-content:flex-start">
-            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:82%;font-size:12px;line-height:1.6;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              <span style="color:#075e54;font-weight:700">No entries. No manual work. No guesswork.</span>
-              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
-            </div>
-          </div>
-          <div class="wa-msg" style="display:flex;justify-content:flex-start">
-            <div style="background:white;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:86%;font-size:12px;line-height:1.6;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              Your net worth. What you're spending. What you're saving. What you should do next.
-              <div style="font-size:10px;color:#999;margin-top:2px">12:01 PM &#10003;&#10003;</div>
-            </div>
-          </div>
-          <div class="wa-msg" style="display:flex;justify-content:flex-start">
-            <div style="background:#075e54;border-radius:0 12px 12px 12px;padding:8px 12px;max-width:72%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              <div style="color:white;font-weight:600;margin-bottom:4px">All in 3 minutes. &#128071;</div>
-              <span style="color:#25d366;font-weight:700">&rarr; Connect via Account Aggregator</span>
-              <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px">12:02 PM &#10003;&#10003;</div>
-            </div>
-          </div>
-          <!-- Time marker -->
-          <div style="text-align:center;font-size:10px;color:#888;background:rgba(0,0,0,0.07);border-radius:8px;padding:2px 10px;align-self:center">&#9201; 2.5 min later</div>
-          <!-- Bot: net worth reveal -->
-          <div style="display:flex;justify-content:flex-start">
-            <div style="background:white;border-radius:0 12px 12px 12px;padding:9px 12px;max-width:86%;font-size:12px;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              <div style="font-weight:700;color:#075e54;font-size:14px;margin-bottom:3px">&#128202; Your Net Worth: <span style="color:#00b894">&#8377;18,43,200</span></div>
-              <div style="font-size:11px;opacity:0.65">MFs: &#8377;8.2L &nbsp;&middot;&nbsp; FD: &#8377;4.1L &nbsp;&middot;&nbsp; Savings: &#8377;6.1L</div>
-              <div style="font-size:11px;margin-top:4px;opacity:0.8">Answer 3 quick questions to unlock your financial score &#128071;</div>
-              <div style="font-size:10px;color:#999;margin-top:2px">12:03 PM &#10003;&#10003;</div>
-            </div>
-          </div>
-          <!-- Time marker -->
-          <div style="text-align:center;font-size:10px;color:#888;background:rgba(0,0,0,0.07);border-radius:8px;padding:2px 10px;align-self:center">&#9201; 4.5 min later</div>
-          <!-- Bot: CTA -->
-          <div style="display:flex;justify-content:flex-start">
-            <div style="background:#075e54;border-radius:0 12px 12px 12px;padding:10px 13px;max-width:86%;font-size:12px;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,0.1)">
-              <div style="color:#25d366;font-weight:700;font-size:13px;margin-bottom:3px">&#128161; You save &#8377;28K/month</div>
-              <div style="color:white;line-height:1.5">Want to know exactly where to put it?<br><span style="color:#25d366;font-weight:700">Download Finwiser &rarr;</span></div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px">12:05 PM &#10003;&#10003;</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p style="text-align:center;margin-top:10px;font-size:12px;opacity:0.45">Already built and tested.</p>
-    </div>
-
-    <!-- RIGHT: Why this works — colored cards -->
-    <div class="col" style="display:flex;flex-direction:column;gap:9px">
-      <h3 style="margin-bottom:4px">Why this works</h3>
-      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.25);border-radius:10px;padding:10px 14px">
-        <span style="font-size:20px;flex-shrink:0;line-height:1">&#128242;</span>
-        <div><strong style="color:#128C7E">Zero friction</strong><br><span style="font-size:13px;opacity:0.7">WhatsApp is on every Indian phone — no app download, no sign-up</span></div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(116,185,255,0.08);border:1px solid rgba(116,185,255,0.25);border-radius:10px;padding:10px 14px">
-        <span style="font-size:20px;flex-shrink:0;line-height:1">&#128142;</span>
-        <div><strong style="color:#4a90d9">Aha before commitment</strong><br><span style="font-size:13px;opacity:0.7">Real net worth shown for free — value delivered before any ask</span></div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(253,203,110,0.08);border:1px solid rgba(253,203,110,0.25);border-radius:10px;padding:10px 14px">
-        <span style="font-size:20px;flex-shrink:0;line-height:1">&#128257;</span>
-        <div><strong style="color:#c8a230">Structural virality</strong><br><span style="font-size:13px;opacity:0.7">Auto-generated forward message after reveal — one share = 50 leads in a tech group</span></div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(233,69,96,0.08);border:1px solid rgba(233,69,96,0.25);border-radius:10px;padding:10px 14px">
-        <span style="font-size:20px;flex-shrink:0;line-height:1">&#127919;</span>
-        <div><strong style="color:#c0392b">CAC near-zero</strong><br><span style="font-size:13px;opacity:0.7">One forward in a tech company group = 50 leads overnight</span></div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(0,184,148,0.08);border:1px solid rgba(0,184,148,0.25);border-radius:10px;padding:10px 14px">
-        <span style="font-size:20px;flex-shrink:0;line-height:1">&#9889;</span>
-        <div><strong style="color:#00866b">Seamless handoff</strong><br><span style="font-size:13px;opacity:0.7">One-tap deep link into the app — AA consent already done, zero re-entry</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="slide-bar">Your net worth in 3 minutes. No app download. Zero CAC.</div>
   <div class="slide-number">9</div>
 </div>
 
@@ -1059,160 +874,64 @@
       <div class="label">Cost per user/month</div>
     </div>
   </div>
-
-  <!-- Data Moat -->
-  <div style="margin-top:20px;background:rgba(253,203,110,0.06);border:1px solid rgba(253,203,110,0.2);border-radius:12px;padding:18px 28px;display:flex;align-items:center;gap:28px">
-
-    <!-- Left: Label + hero stat -->
-    <div style="flex-shrink:0;text-align:center;min-width:140px">
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#fdcb6e;font-weight:700;margin-bottom:6px">Data Moat</div>
-      <div style="font-size:36px;font-weight:800;color:#fdcb6e;line-height:1">90%+</div>
-      <div style="font-size:11px;opacity:0.5;margin-top:4px">auto-categorization<br>on founder's live data</div>
-    </div>
-
-    <!-- Divider -->
-    <div style="width:1px;height:60px;background:rgba(253,203,110,0.2);flex-shrink:0"></div>
-
-    <!-- Right: Flywheel + explanation -->
-    <div style="flex:1">
-      <!-- Flywheel arrows -->
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap">
-        <span style="background:rgba(253,203,110,0.12);border:1px solid rgba(253,203,110,0.25);padding:4px 12px;border-radius:16px;font-size:11px;font-weight:600;color:#fdcb6e">Users transact</span>
-        <span style="opacity:0.3;font-size:12px">→</span>
-        <span style="background:rgba(253,203,110,0.12);border:1px solid rgba(253,203,110,0.25);padding:4px 12px;border-radius:16px;font-size:11px;font-weight:600;color:#fdcb6e">ML categorizes</span>
-        <span style="opacity:0.3;font-size:12px">→</span>
-        <span style="background:rgba(253,203,110,0.12);border:1px solid rgba(253,203,110,0.25);padding:4px 12px;border-radius:16px;font-size:11px;font-weight:600;color:#fdcb6e">Model learns</span>
-        <span style="opacity:0.3;font-size:12px">→</span>
-        <span style="background:rgba(253,203,110,0.12);border:1px solid rgba(253,203,110,0.25);padding:4px 12px;border-radius:16px;font-size:11px;font-weight:600;color:#fdcb6e">Next user auto-classified</span>
-        <span style="opacity:0.3;font-size:12px">→</span>
-        <span style="background:rgba(253,203,110,0.12);border:1px solid rgba(253,203,110,0.25);padding:4px 12px;border-radius:16px;font-size:11px;font-weight:600;color:#fdcb6e">Better insights</span>
-        <span style="opacity:0.3;font-size:12px">↻</span>
-      </div>
-      <p style="font-size:13px;line-height:1.5;opacity:0.7;margin:0">7-tier ML engine — 90%+ accuracy proven on real bank data (4 accounts, 3 CCs, UPI). With every new user, shared merchant patterns train the model for everyone. <strong style="color:#fdcb6e;opacity:1">At 500 users, cold-start disappears entirely.</strong></p>
-    </div>
-  </div>
-
-  <div class="slide-bar">"₹49 today, or ₹199/month for unlimited advice." Free users don't cost us — they compound the moat.</div>
+  <div class="slide-bar">"₹49 today, or ₹199/month for unlimited advice." All insights gated behind SEBI-compliant risk profiling.</div>
   <div class="slide-number">10</div>
 </div>
 
 <!-- ============================================================ -->
-<!-- SLIDE 9: Market & Revenue -->
+<!-- SLIDE 9: Revenue Projections -->
 <!-- ============================================================ -->
-<div class="slide dark" id="s9">
+<div class="slide white" id="s9">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
-  <h2>Market & Revenue</h2>
+  <h2>Revenue Projections</h2>
+  <p style="opacity:0.5;margin-bottom:24px;font-size:14px">Assumptions: K-factor 0.3 (WhatsApp viral), 15% free→₹49 conversion at intent moments, 10% ₹49→₹199 upgrade, 70% subscriber retention</p>
 
-  <!-- Two-column: Market Size + Revenue -->
-  <div style="display:flex;gap:24px;align-items:stretch">
+  <table style="font-size:15px">
+    <tr><th>Timeline</th><th>Free Users</th><th>₹49 Actions</th><th>₹199 Subs</th><th>MRR</th><th>Milestone</th></tr>
+    <tr><td>Month 6</td><td>2,000</td><td>300</td><td>50</td><td>₹25K</td><td>Habit forming, first ₹49 conversions</td></tr>
+    <tr><td>Month 12</td><td>8,000</td><td>1,200</td><td>250</td><td>₹1.1L</td><td>Referral loops, ₹49→₹199 upgrades</td></tr>
+    <tr><td>Month 18</td><td>20,000</td><td>3,000</td><td>800</td><td>₹3.1L</td><td>+ Phase 2 execution revenue</td></tr>
+    <tr style="color:#ff6b81;font-weight:600"><td>Month 24</td><td>50,000</td><td>7,500</td><td>2,500</td><td>₹8.6L</td><td>Data flywheel compounding</td></tr>
+    <tr style="color:#ff6b81;font-weight:700"><td>Month 36</td><td>150,000</td><td>22,500</td><td>8,000</td><td>₹27L</td><td>Category leader in RIA-tech</td></tr>
+  </table>
 
-    <!-- Left: Market Size vertical stack -->
-    <div style="display:flex;flex-direction:column;gap:6px;min-width:170px;max-width:190px">
-      <div style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;text-align:center;display:flex;flex-direction:column;justify-content:center">
-        <div style="font-size:22px;font-weight:800;color:#ff6b81">₹19,100 Cr</div>
-        <div style="font-size:10px;opacity:0.5;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px">TAM</div>
-        <div style="font-size:10px;opacity:0.35;margin-top:3px">80M salaried Indians</div>
+  <div class="slide-bar">Even at 50% of projections, we're cash-flow positive. Free users compound the data flywheel regardless of conversion.</div>
+  <div class="slide-number">11</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10: Market Size -->
+<!-- ============================================================ -->
+<div class="slide dark center" id="s10">
+  <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
+  <h2>Market Size</h2>
+
+  <div style="display:flex;gap:40px;margin-top:20px;margin-bottom:30px;align-items:flex-end;justify-content:center">
+    <div style="text-align:center">
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px 40px">
+        <div style="font-size:42px;font-weight:800;color:#ff6b81">₹19,100 Cr</div>
+        <div style="font-size:14px;opacity:0.6;margin-top:8px;text-transform:uppercase;letter-spacing:1px">TAM</div>
       </div>
-      <div style="text-align:center;font-size:12px;opacity:0.2;line-height:1">↓</div>
-      <div style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;text-align:center;display:flex;flex-direction:column;justify-content:center">
-        <div style="font-size:22px;font-weight:800;color:#ff6b81">₹2,400 Cr</div>
-        <div style="font-size:10px;opacity:0.5;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px">SAM</div>
-        <div style="font-size:10px;opacity:0.35;margin-top:3px">10M digitally active</div>
-      </div>
-      <div style="text-align:center;font-size:12px;opacity:0.2;line-height:1">↓</div>
-      <div style="flex:1;background:rgba(0,184,148,0.08);border:1px solid rgba(0,184,148,0.25);border-radius:12px;padding:14px;text-align:center;display:flex;flex-direction:column;justify-content:center">
-        <div style="font-size:22px;font-weight:800;color:#00b894">₹120 Cr</div>
-        <div style="font-size:10px;opacity:0.5;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px">SOM</div>
-        <div style="font-size:10px;opacity:0.35;margin-top:3px">0.5% in 3 years</div>
-      </div>
+      <p style="font-size:13px;opacity:0.5;margin-top:12px;max-width:200px">80M salaried Indians<br>× ₹2,388/year</p>
     </div>
-
-    <!-- Right: Revenue -->
-    <div style="flex:1;display:flex;flex-direction:column;gap:12px">
-      <!-- MRR Hockey Stick Chart -->
-      <div>
-    <svg viewBox="0 0 750 235" style="width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="mrr-area" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#e94560" stop-opacity="0.35"/>
-          <stop offset="100%" stop-color="#e94560" stop-opacity="0.03"/>
-        </linearGradient>
-      </defs>
-
-      <!-- Grid lines -->
-      <line x1="60" y1="200" x2="710" y2="200" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-      <line x1="60" y1="140" x2="710" y2="140" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
-      <line x1="60" y1="80" x2="710" y2="80" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
-      <line x1="60" y1="20" x2="710" y2="20" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
-
-      <!-- Y-axis labels -->
-      <text x="52" y="204" fill="rgba(255,255,255,0.3)" font-size="10" text-anchor="end" font-family="Inter,sans-serif">₹0</text>
-      <text x="52" y="144" fill="rgba(255,255,255,0.3)" font-size="10" text-anchor="end" font-family="Inter,sans-serif">₹9L</text>
-      <text x="52" y="84" fill="rgba(255,255,255,0.3)" font-size="10" text-anchor="end" font-family="Inter,sans-serif">₹18L</text>
-      <text x="52" y="24" fill="rgba(255,255,255,0.3)" font-size="10" text-anchor="end" font-family="Inter,sans-serif">₹27L</text>
-
-      <!-- Area fill -->
-      <path d="M 60,198 C 125,196 155,194 190,192 C 225,189 285,183 320,178 C 355,172 415,148 450,138 C 510,118 620,45 710,20 L 710,200 L 60,200 Z" fill="url(#mrr-area)"/>
-
-      <!-- Curve line -->
-      <path d="M 60,198 C 125,196 155,194 190,192 C 225,189 285,183 320,178 C 355,172 415,148 450,138 C 510,118 620,45 710,20" fill="none" stroke="#e94560" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-
-      <!-- Data point dots -->
-      <circle cx="60" cy="198" r="4" fill="#e94560" stroke="rgba(15,52,96,0.9)" stroke-width="2"/>
-      <circle cx="190" cy="192" r="4" fill="#e94560" stroke="rgba(15,52,96,0.9)" stroke-width="2"/>
-      <circle cx="320" cy="178" r="4.5" fill="#e94560" stroke="rgba(15,52,96,0.9)" stroke-width="2"/>
-      <circle cx="450" cy="138" r="5" fill="#e94560" stroke="rgba(15,52,96,0.9)" stroke-width="2"/>
-      <circle cx="710" cy="20" r="6" fill="#e94560" stroke="rgba(15,52,96,0.9)" stroke-width="2.5"/>
-
-      <!-- Value labels — key points only to avoid clutter -->
-      <text x="60" y="189" fill="rgba(255,255,255,0.6)" font-size="10" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">₹25K</text>
-      <text x="190" y="183" fill="rgba(255,255,255,0.6)" font-size="10" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">₹1.1L</text>
-      <text x="320" y="167" fill="rgba(255,255,255,0.7)" font-size="10" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">₹3.1L</text>
-      <text x="437" y="128" fill="rgba(255,255,255,0.85)" font-size="12" font-weight="700" text-anchor="end" font-family="Inter,sans-serif">₹8.6L</text>
-      <text x="693" y="16" fill="white" font-size="14" font-weight="800" text-anchor="end" font-family="Inter,sans-serif">₹27L</text>
-
-      <!-- X-axis month labels -->
-      <text x="60" y="218" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle" font-family="Inter,sans-serif">M6</text>
-      <text x="190" y="218" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle" font-family="Inter,sans-serif">M12</text>
-      <text x="320" y="218" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle" font-family="Inter,sans-serif">M18</text>
-      <text x="450" y="218" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle" font-family="Inter,sans-serif">M24</text>
-      <text x="710" y="218" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle" font-family="Inter,sans-serif">M36</text>
-
-      <!-- PMF annotation at ~M9 -->
-      <line x1="125" y1="195" x2="125" y2="168" stroke="rgba(0,184,148,0.35)" stroke-width="1" stroke-dasharray="3,3"/>
-      <text x="125" y="163" fill="#00b894" font-size="9" font-weight="600" text-anchor="middle" font-family="Inter,sans-serif">PMF signal</text>
-
-      <!-- Seed-ready annotation near M24 -->
-      <line x1="456" y1="133" x2="488" y2="108" stroke="rgba(253,203,110,0.35)" stroke-width="1"/>
-      <text x="491" y="105" fill="#fdcb6e" font-size="9" font-weight="600" text-anchor="start" font-family="Inter,sans-serif">Seed-ready</text>
-      <text x="491" y="116" fill="rgba(253,203,110,0.7)" font-size="8" font-weight="400" text-anchor="start" font-family="Inter,sans-serif">metrics</text>
-    </svg>
+    <div style="text-align:center">
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px 40px">
+        <div style="font-size:42px;font-weight:800;color:#ff6b81">₹2,400 Cr</div>
+        <div style="font-size:14px;opacity:0.6;margin-top:8px;text-transform:uppercase;letter-spacing:1px">SAM</div>
       </div>
-
-      <!-- Key stats -->
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-        <div style="text-align:center;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 16px;min-width:100px">
-          <div style="font-size:20px;font-weight:800;color:#ff6b81">150K</div>
-          <div style="font-size:9px;opacity:0.5;text-transform:uppercase;letter-spacing:0.5px">Free Users</div>
-        </div>
-        <div style="text-align:center;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 16px;min-width:100px">
-          <div style="font-size:20px;font-weight:800;color:#ff6b81">8,000</div>
-          <div style="font-size:9px;opacity:0.5;text-transform:uppercase;letter-spacing:0.5px">Paid Subs</div>
-        </div>
-        <div style="text-align:center;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 16px;min-width:100px">
-          <div style="font-size:20px;font-weight:800;color:#ff6b81">₹27L</div>
-          <div style="font-size:9px;opacity:0.5;text-transform:uppercase;letter-spacing:0.5px">MRR at M36</div>
-        </div>
-        <div style="text-align:center;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 16px;min-width:100px">
-          <div style="font-size:20px;font-weight:800;color:#00b894">75%</div>
-          <div style="font-size:9px;opacity:0.5;text-transform:uppercase;letter-spacing:0.5px">Gross Margin</div>
-        </div>
+      <p style="font-size:13px;opacity:0.5;margin-top:12px;max-width:200px">10M digitally active,<br>₹8-25 LPA, AA-reachable</p>
+    </div>
+    <div style="text-align:center">
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px 40px">
+        <div style="font-size:42px;font-weight:800;color:#ff6b81">₹120 Cr</div>
+        <div style="font-size:14px;opacity:0.6;margin-top:8px;text-transform:uppercase;letter-spacing:1px">SOM</div>
       </div>
+      <p style="font-size:13px;opacity:0.5;margin-top:12px;max-width:200px">50K users in 3 years<br>(0.5% of SAM)</p>
     </div>
   </div>
 
-  <div class="slide-bar">₹19,100 Cr market. We need 0.5%. Even at 50% of projections, we're cash-flow positive.<br><span style="font-size:12px;font-weight:400;opacity:0.45;letter-spacing:0.3px">K-factor 0.3 · 15% free→₹49 · 10% ₹49→₹199 · 70% retention</span></div>
-  <div class="slide-number">11</div>
+  <div class="slide-bar">₹19,100 Cr market. We need 0.5% to build a category leader. With execution revenue, SOM grows to ₹300-500 Cr.</div>
+  <div class="slide-number">12</div>
 </div>
 
 <!-- ============================================================ -->
@@ -1222,101 +941,21 @@
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
   <h2>Why We Win</h2>
 
-  <!-- Visual comparison matrix -->
-  <div style="overflow-x:auto;margin-bottom:16px">
-    <table style="font-size:14px;margin-top:8px;border-collapse:separate;border-spacing:0">
-      <thead>
-        <tr>
-          <th style="width:30%;padding:14px 16px;border-bottom:2px solid #e0e0e0"></th>
-          <th style="padding:14px 12px;text-align:center;border-bottom:2px solid #e0e0e0;font-size:12px">Net Worth<br>Trackers</th>
-          <th style="padding:14px 12px;text-align:center;border-bottom:2px solid #e0e0e0;font-size:12px">MF<br>Distributors</th>
-          <th style="padding:14px 12px;text-align:center;border-bottom:2px solid #e0e0e0;font-size:12px">Human<br>RIA</th>
-          <th style="padding:14px 16px;text-align:center;background:var(--accent);color:white;font-weight:800;font-size:14px;border-radius:12px 12px 0 0;min-width:120px">Finwiser</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="padding:11px 16px;border-bottom:1px solid #f0f0f0;font-weight:500">Shows full net worth</td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--green);font-size:18px">✓</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--orange);font-size:13px">Partial</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--muted);font-size:13px">Manual</span></td>
-          <td style="padding:11px 16px;text-align:center;border-bottom:1px solid rgba(233,69,96,0.1);background:rgba(233,69,96,0.05)"><span style="color:var(--green);font-size:18px;font-weight:700">✓</span></td>
-        </tr>
-        <tr>
-          <td style="padding:11px 16px;border-bottom:1px solid #f0f0f0;font-weight:500">Categorizes spending</td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--orange);font-size:13px">Partial</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--muted);font-size:13px">Manual</span></td>
-          <td style="padding:11px 16px;text-align:center;border-bottom:1px solid rgba(233,69,96,0.1);background:rgba(233,69,96,0.05)"><span style="color:var(--green);font-size:18px;font-weight:700">✓</span></td>
-        </tr>
-        <tr>
-          <td style="padding:11px 16px;border-bottom:1px solid #f0f0f0;font-weight:500">Computes real surplus</td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--muted);font-size:13px">Manual</span></td>
-          <td style="padding:11px 16px;text-align:center;border-bottom:1px solid rgba(233,69,96,0.1);background:rgba(233,69,96,0.05)"><span style="color:var(--green);font-size:18px;font-weight:700">✓</span></td>
-        </tr>
-        <tr>
-          <td style="padding:11px 16px;border-bottom:1px solid #f0f0f0;font-weight:500">360° portfolio advice</td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--orange);font-size:13px">MFs only</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--green);font-size:18px">✓</span></td>
-          <td style="padding:11px 16px;text-align:center;border-bottom:1px solid rgba(233,69,96,0.1);background:rgba(233,69,96,0.05)"><span style="color:var(--green);font-size:18px;font-weight:700">✓</span></td>
-        </tr>
-        <tr>
-          <td style="padding:11px 16px;border-bottom:1px solid #f0f0f0;font-weight:500">Goal planning + feasibility</td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--green);font-size:18px">✓</span></td>
-          <td style="padding:11px 16px;text-align:center;border-bottom:1px solid rgba(233,69,96,0.1);background:rgba(233,69,96,0.05)"><span style="color:var(--green);font-size:18px;font-weight:700">✓</span></td>
-        </tr>
-        <tr>
-          <td style="padding:11px 16px;border-bottom:1px solid #f0f0f0;font-weight:500">SEBI RIA licensed advice</td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:13px;font-weight:600">Conflicted</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--green);font-size:18px">✓</span></td>
-          <td style="padding:11px 16px;text-align:center;border-bottom:1px solid rgba(233,69,96,0.1);background:rgba(233,69,96,0.05)"><span style="color:var(--green);font-size:18px;font-weight:700">✓</span></td>
-        </tr>
-        <tr>
-          <td style="padding:11px 16px;border-bottom:1px solid #f0f0f0;font-weight:500">Dynamic recalibration</td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 12px;text-align:center;border-bottom:1px solid #f0f0f0"><span style="color:var(--accent);font-size:18px">✗</span></td>
-          <td style="padding:11px 16px;text-align:center;border-bottom:1px solid rgba(233,69,96,0.1);background:rgba(233,69,96,0.05)"><span style="color:var(--green);font-size:18px;font-weight:700">✓</span></td>
-        </tr>
-        <tr>
-          <td style="padding:11px 16px;font-weight:500">24/7 availability</td>
-          <td style="padding:11px 12px;text-align:center"><span style="color:var(--muted);font-size:13px">Self-serve</span></td>
-          <td style="padding:11px 12px;text-align:center"><span style="color:var(--muted);font-size:13px">Self-serve</span></td>
-          <td style="padding:11px 12px;text-align:center"><span style="color:var(--accent);font-size:13px;font-weight:600">Appointments</span></td>
-          <td style="padding:11px 16px;text-align:center;background:rgba(233,69,96,0.05);border-radius:0 0 12px 12px"><span style="color:var(--accent);font-size:13px;font-weight:800">Always-on AI</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Score summary bar -->
-  <div style="display:flex;gap:12px;justify-content:center;margin-bottom:8px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border-radius:8px;padding:8px 16px">
-      <span style="font-size:12px;color:var(--muted)">Net Worth Trackers</span>
-      <span style="font-size:14px;font-weight:800;color:var(--accent)">1/8</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border-radius:8px;padding:8px 16px">
-      <span style="font-size:12px;color:var(--muted)">MF Distributors</span>
-      <span style="font-size:14px;font-weight:800;color:var(--accent)">0/8</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border-radius:8px;padding:8px 16px">
-      <span style="font-size:12px;color:var(--muted)">Human RIA</span>
-      <span style="font-size:14px;font-weight:800;color:var(--orange)">4/8</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;background:rgba(233,69,96,0.08);border:1px solid rgba(233,69,96,0.2);border-radius:8px;padding:8px 16px">
-      <span style="font-size:12px;font-weight:600;color:var(--accent)">Finwiser</span>
-      <span style="font-size:14px;font-weight:800;color:var(--green)">8/8</span>
-    </div>
-  </div>
+  <!-- Vertical comparison table -->
+  <table style="font-size:14px;margin-bottom:24px">
+    <tr><th style="width:35%">Capability</th><th>Net Worth Trackers</th><th>MF Distributors</th><th>Human RIA</th><th style="background:rgba(233,69,96,0.2);color:#ff6b81;font-weight:800;font-size:15px;border-radius:8px 8px 0 0">Finwiser</th></tr>
+    <tr><td>Shows full net worth</td><td class="check">Yes</td><td>Partial</td><td>Manual</td><td class="check" style="background:rgba(233,69,96,0.08)"><strong>Yes</strong></td></tr>
+    <tr><td>Categorizes spending</td><td class="cross">No</td><td>Partial</td><td>Manual</td><td class="check" style="background:rgba(233,69,96,0.08)"><strong>Yes</strong></td></tr>
+    <tr><td>Computes real surplus</td><td class="cross">No</td><td class="cross">No</td><td>Manual</td><td class="check" style="background:rgba(233,69,96,0.08)"><strong>Yes</strong></td></tr>
+    <tr><td>360° portfolio advice (MFs, NPS, gold, RE)</td><td class="cross">No</td><td class="cross">MFs only</td><td class="check">Yes</td><td class="check" style="background:rgba(233,69,96,0.08)"><strong>Yes</strong></td></tr>
+    <tr><td>Goal planning + feasibility</td><td class="cross">No</td><td class="cross">No</td><td class="check">Yes</td><td class="check" style="background:rgba(233,69,96,0.08)"><strong>Yes</strong></td></tr>
+    <tr><td>Legally advises (SEBI RIA)</td><td class="cross">No</td><td class="cross">Conflicted</td><td class="check">Yes</td><td class="check" style="background:rgba(233,69,96,0.08)"><strong>Yes</strong></td></tr>
+    <tr><td>Dynamic recalibration</td><td class="cross">No</td><td class="cross">No</td><td class="cross">No</td><td class="check" style="background:rgba(233,69,96,0.08)"><strong>Yes</strong></td></tr>
+    <tr><td>24/7 availability</td><td>Self-serve</td><td>Self-serve</td><td class="cross">Appointments</td><td class="check" style="background:rgba(233,69,96,0.08);border-radius:0 0 8px 8px"><strong>Always-on AI</strong></td></tr>
+  </table>
 
   <div class="slide-bar">They built the mirror. We built the brain. And every user makes it smarter.</div>
-  <div class="slide-number">12</div>
+  <div class="slide-number">13</div>
 </div>
 
 <!-- ============================================================ -->
@@ -1388,255 +1027,78 @@
     </div>
   </div>
   <div class="slide-bar">Built by 1 founder + AI agents. No developers hired. No outsourcing. This is what capital-efficient looks like.</div>
-  <div class="slide-number">13</div>
+  <div class="slide-number">14</div>
 </div>
 
 <!-- ============================================================ -->
-<!-- SLIDE 12: Founder -->
+<!-- SLIDE 12: Team -->
 <!-- ============================================================ -->
 <div class="slide dark" id="s12">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
-  <h2>Founder</h2>
+  <h2>Team</h2>
 
-  <!-- Hero Founder Block -->
-  <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px 32px 24px;margin-bottom:18px">
-
-    <!-- Name + Badges -->
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap">
-      <span style="font-size:26px;font-weight:800;letter-spacing:-0.5px">Chandrachuda Sarma Y</span>
-      <span style="font-size:12px;color:#ff6b81;font-weight:600;border:1px solid rgba(233,69,96,0.35);padding:4px 14px;border-radius:20px">Founder & CEO</span>
-      <span style="font-size:12px;color:#00b894;font-weight:600;border:1px solid rgba(0,184,148,0.35);padding:4px 14px;border-radius:20px">SEBI RIA Licensed</span>
-      <span style="font-size:12px;color:rgba(255,255,255,0.6);font-weight:600;border:1px solid rgba(255,255,255,0.15);padding:4px 14px;border-radius:20px">MBA · MDI Gurgaon · CAT 99%ile</span>
+  <div class="grid-3" style="margin-top:10px">
+    <div class="card">
+      <h3 style="font-size:22px">Chandrachuda Sarma Y</h3>
+      <p style="font-size:13px;color:#ff6b81;margin-bottom:10px">Founder & CEO · SEBI RIA Licensed</p>
+      <p style="font-size:14px;line-height:1.6">10+ years running P&Ls at high-growth companies. Built entire Finwiser platform — 480K lines, 172 tests, 137 docs — solo with AI agents. Strategy, execution, compliance, and product in one person.</p>
     </div>
 
-    <!-- One-liner -->
-    <p style="font-size:16px;line-height:1.6;opacity:0.85;max-width:880px;margin-bottom:24px">A business operator with 10+ years across growth, sales, product, and transformation — who trained thousands on AI at Growth School, saw how it could democratize financial advice, and built the entire platform to prove it.</p>
-
-    <!-- Journey Timeline -->
-    <div style="display:flex;gap:0;position:relative;margin-bottom:24px">
-      <!-- Connecting gradient line -->
-      <div style="position:absolute;top:19px;left:24px;right:24px;height:2px;background:linear-gradient(90deg,rgba(255,255,255,0.15) 0%,rgba(255,255,255,0.25) 30%,rgba(233,69,96,0.5) 60%,rgba(0,184,148,0.5) 100%);z-index:0"></div>
-
-      <!-- Step 1: Scaled Businesses -->
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.2);display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:rgba(255,255,255,0.7);margin-bottom:10px">1</div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px">Scaled Businesses</div>
-        <div style="font-size:11px;opacity:0.45;line-height:1.45">₹200 Cr P&L · 400+ teams<br>Philips · Unacademy · Lava</div>
-      </div>
-
-      <!-- Step 2: Trained 1000s on AI -->
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.2);display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:rgba(255,255,255,0.7);margin-bottom:10px">2</div>
-        <div style="font-size:13px;font-weight:700;margin-bottom:4px">Trained 1000s on AI</div>
-        <div style="font-size:11px;opacity:0.45;line-height:1.45">Growth School<br>Saw AI's power to transform</div>
-      </div>
-
-      <!-- Step 3: Got Licensed (red accent) -->
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:38px;height:38px;border-radius:50%;background:rgba(233,69,96,0.12);border:2px solid rgba(233,69,96,0.5);display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#ff6b81;margin-bottom:10px">3</div>
-        <div style="font-size:13px;font-weight:700;color:#ff6b81;margin-bottom:4px">Got Licensed</div>
-        <div style="font-size:11px;opacity:0.45;line-height:1.45">SEBI RIA · FIU Registration<br>Sahamati Technical Certification</div>
-      </div>
-
-      <!-- Step 4: Built Everything (green) -->
-      <div style="flex:1;text-align:center;position:relative;z-index:1">
-        <div style="width:38px;height:38px;border-radius:50%;background:rgba(0,184,148,0.12);border:2px solid rgba(0,184,148,0.5);display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#00b894;margin-bottom:10px">4</div>
-        <div style="font-size:13px;font-weight:700;color:#00b894;margin-bottom:4px">Built Everything</div>
-        <div style="font-size:11px;opacity:0.45;line-height:1.45">480K lines · 172 tests · 137 docs<br>Solo + AI agents · ₹0 funding</div>
-      </div>
+    <div class="card">
+      <h3 style="font-size:22px">Keerthi Sagar Sharma</h3>
+      <p style="font-size:13px;color:#ff6b81;margin-bottom:10px">Co-founder · Chartered Accountant</p>
+      <p style="font-size:14px;line-height:1.6">7+ years in tax and financial planning. Ensures the advice engine aligns with real-world tax implications, deduction strategies, and regulatory compliance.</p>
     </div>
 
-    <!-- Stats Row -->
-    <div style="display:flex;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.07);overflow:hidden">
-      <div style="flex:1;text-align:center;padding:14px 8px">
-        <div style="font-size:26px;font-weight:800;color:#ff6b81;line-height:1">₹200 Cr</div>
-        <div style="font-size:10px;opacity:0.45;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px">P&L Owned</div>
-      </div>
-      <div style="flex:1;text-align:center;padding:14px 8px;border-left:1px solid rgba(255,255,255,0.07)">
-        <div style="font-size:26px;font-weight:800;color:#ff6b81;line-height:1">400+</div>
-        <div style="font-size:10px;opacity:0.45;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px">Team Led</div>
-      </div>
-      <div style="flex:1;text-align:center;padding:14px 8px;border-left:1px solid rgba(255,255,255,0.07)">
-        <div style="font-size:26px;font-weight:800;color:#ff6b81;line-height:1">1000s</div>
-        <div style="font-size:10px;opacity:0.45;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px">Trained on AI</div>
-      </div>
-      <div style="flex:1;text-align:center;padding:14px 8px;border-left:1px solid rgba(255,255,255,0.07)">
-        <div style="font-size:26px;font-weight:800;color:#00b894;line-height:1">480K</div>
-        <div style="font-size:10px;opacity:0.45;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px">Lines Built Solo</div>
-      </div>
-      <div style="flex:1;text-align:center;padding:14px 8px;border-left:1px solid rgba(255,255,255,0.07)">
-        <div style="font-size:26px;font-weight:800;color:#00b894;line-height:1">3</div>
-        <div style="font-size:10px;opacity:0.45;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px">Licenses Cleared</div>
-      </div>
+    <div class="card">
+      <h3 style="font-size:22px">Ready to Scale</h3>
+      <p style="font-size:13px;color:#ff6b81;margin-bottom:10px">Post-funding team</p>
+      <p style="font-size:14px;line-height:1.6">Vetted bench of senior technical leaders — certified architect (14 years) and domain expert (18+ years in trading platforms) — ready to join once funded.</p>
     </div>
   </div>
-
-  <!-- Advisor + Post-Funding Plan -->
-  <div style="display:flex;gap:16px">
-    <div class="card" style="flex:1">
-      <h3 style="font-size:17px;margin-bottom:4px">Keerthi Sagar Sharma</h3>
-      <p style="font-size:12px;color:#ff6b81;font-weight:600;margin-bottom:8px">Advisor — Tax & Compliance · Chartered Accountant</p>
-      <p style="font-size:13px;line-height:1.55;opacity:0.7">7+ years in tax and financial planning. Ensures every recommendation aligns with real-world tax implications, deduction strategies, and regulatory compliance.</p>
-    </div>
-
-    <div class="card" style="flex:1;border-color:rgba(0,184,148,0.25);background:rgba(0,184,148,0.04)">
-      <h3 style="font-size:17px;margin-bottom:4px">Post-Funding: Founder → 100% GTM</h3>
-      <p style="font-size:12px;color:#00b894;font-weight:600;margin-bottom:8px">The plan once funded</p>
-      <p style="font-size:13px;line-height:1.55;opacity:0.7">Day 1–45: Senior engineer hired, codebase handed over. Day 45+: Founder goes full GTM — distribution, partnerships, sales. The skill he's done for a decade. Vetted senior bench (14yr architect, 18yr domain expert) ready.</p>
-    </div>
-  </div>
-
-  <div class="slide-bar">A closer who built the product. Not a builder learning to sell. Imagine what happens with ₹2 Crore.</div>
-  <div class="slide-number">14</div>
+  <div class="slide-bar">SEBI RIA licensed · CA co-founder · Senior tech bench ready · Capital efficient from day one</div>
+  <div class="slide-number">15</div>
 </div>
 
 <!-- ============================================================ -->
 <!-- SLIDE 13: The Ask -->
 <!-- ============================================================ -->
-<div class="slide white" id="s13" style="padding:40px 60px">
+<div class="slide white" id="s13">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
-  <h2 style="margin-bottom:14px">The Ask</h2>
+  <h2>The Ask</h2>
 
-  <!-- Hero: ₹2 Crore — compact, fit-content, centered -->
-  <div style="text-align:center;padding:10px 60px;background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:12px;color:white;margin:0 auto 12px;max-width:fit-content">
-    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:2px">Pre-Seed Round</div>
-    <div style="font-size:42px;font-weight:800;margin:2px 0">₹2 Crore</div>
-    <div style="font-size:14px;opacity:0.6;font-weight:500;margin-bottom:2px">₹40 Cr pre-money · 4.76% dilution</div>
-    <div style="font-size:13px;opacity:0.85;font-weight:500">Not to build the product. <span style="color:#ff6b81;font-weight:700">To build the brand.</span></div>
-  </div>
-
-  <!-- Two-column: Left = dark (eliminated), Right = light (unlocks) -->
-  <div style="display:flex;gap:20px;flex:1;max-width:1000px;margin:0 auto">
-
-    <!-- Left: 5 Risks Eliminated — DARK with hero stat -->
-    <div style="flex:1;background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:12px;padding:20px;display:flex;flex-direction:column;color:white">
-      <!-- Hero stat -->
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <span style="font-size:44px;font-weight:800;color:#00b894;line-height:1">5</span>
-        <div>
-          <div style="font-size:13px;font-weight:600;opacity:0.8;line-height:1.3">risks eliminated</div>
-          <div style="font-size:20px;font-weight:800;color:#00b894;line-height:1.2;letter-spacing:-0.5px">with ₹0 funding</div>
-        </div>
+  <div class="grid-2">
+    <div>
+      <div style="text-align:center;padding:30px;background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:16px;color:white;margin-bottom:20px">
+        <div style="font-size:14px;opacity:0.6;text-transform:uppercase;letter-spacing:1px">Raising</div>
+        <div style="font-size:48px;font-weight:800;margin:8px 0">₹1-2 Crore</div>
+        <div style="font-size:16px;opacity:0.7">Pre-Seed Round</div>
       </div>
 
-      <style>
-        .risk-x { position:relative;display:inline-block;font-weight:700;opacity:0.75 }
-        .risk-x::after { content:'';position:absolute;left:-2px;right:-2px;top:50%;height:2px;border-radius:1px;transform:rotate(-8deg) }
-        .risk-x.green::after { background:#00b894 }
-        .risk-x.white::after { background:rgba(255,255,255,0.5) }
-      </style>
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px">
-        <!-- Product Risk — hero card (heavier border, green cross) -->
-        <div style="border:1px solid rgba(0,184,148,0.35);background:rgba(0,184,148,0.07);border-radius:8px;padding:10px 12px">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
-            <span style="color:#00b894;font-size:14px;font-weight:800;flex-shrink:0">✓</span>
-            <span class="risk-x green" style="font-size:16px">Product Risk</span>
-          </div>
-          <div style="font-size:13px;opacity:0.6;line-height:1.4;padding-left:22px">480K lines of production code. All in-house. Zero external dependencies.</div>
-        </div>
-        <!-- Remaining 4 — same box family, subtler -->
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 12px">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
-            <span style="color:#00b894;font-size:14px;font-weight:800;flex-shrink:0">✓</span>
-            <span class="risk-x white" style="font-size:15px">Regulatory Risk</span>
-          </div>
-          <div style="font-size:13px;opacity:0.5;line-height:1.4;padding-left:22px">SEBI RIA + FIU licensed. Full regulatory framework.</div>
-        </div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 12px">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
-            <span style="color:#00b894;font-size:14px;font-weight:800;flex-shrink:0">✓</span>
-            <span class="risk-x white" style="font-size:15px">Commitment Risk</span>
-          </div>
-          <div style="font-size:13px;opacity:0.5;line-height:1.4;padding-left:22px">Founder resigned. Full-time, no consulting. 100% dedicated.</div>
-        </div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 12px">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
-            <span style="color:#00b894;font-size:14px;font-weight:800;flex-shrink:0">✓</span>
-            <span class="risk-x white" style="font-size:15px">Leadership Risk</span>
-          </div>
-          <div style="font-size:13px;opacity:0.5;line-height:1.4;padding-left:22px">MBA. Philips, Unacademy, Lava. 10+ years P&L ownership. Led 400+.</div>
-        </div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 12px">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
-            <span style="color:#00b894;font-size:14px;font-weight:800;flex-shrink:0">✓</span>
-            <span class="risk-x white" style="font-size:15px">Privacy Risk</span>
-          </div>
-          <div style="font-size:13px;opacity:0.5;line-height:1.4;padding-left:22px">Consent-based data access. Zero data stored without explicit user approval.</div>
-        </div>
-      </div>
+      <table>
+        <tr><th>Use of Funds</th><th>%</th></tr>
+        <tr><td>Go-to-market (WhatsApp, content, acquisition)</td><td><strong>40%</strong></td></tr>
+        <tr><td>Data costs (Equifax, AA fetches)</td><td>15%</td></tr>
+        <tr><td>LLM inference (advisor chatbot)</td><td>10%</td></tr>
+        <tr><td>Infrastructure scaling</td><td>10%</td></tr>
+        <tr><td>Regulatory (non-individual IA)</td><td>10%</td></tr>
+        <tr><td>Working capital (12-month buffer)</td><td>15%</td></tr>
+      </table>
     </div>
 
-    <!-- Right: ₹2 Crore Unlocks — LIGHT -->
-    <div style="flex:1;background:#f5f7fa;border:1px solid #dde2e8;border-radius:12px;padding:18px 20px;display:flex;flex-direction:column">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <span style="font-size:44px;font-weight:800;color:var(--accent2);line-height:1">2</span>
-        <div>
-          <div style="font-size:13px;font-weight:600;color:var(--muted);line-height:1.3">unlocks remaining</div>
-          <div style="font-size:20px;font-weight:800;color:var(--accent2);line-height:1.2;letter-spacing:-0.5px">₹2 Crore completes the picture</div>
-        </div>
-      </div>
+    <div>
+      <h3>Milestones This Enables</h3>
+      <div class="flow-step"><div class="step-num" style="font-size:11px">M1-2</div> Test launch — 50 users (founder's network)</div>
+      <div class="flow-step"><div class="step-num" style="font-size:11px;background:var(--accent2)">M3-4</div> WhatsApp GTM launch — 500 free users</div>
+      <div class="flow-step"><div class="step-num" style="font-size:11px;background:var(--accent2)">M5-6</div> First paid conversions</div>
+      <div class="flow-step"><div class="step-num" style="font-size:11px;background:var(--accent)">M9</div> 2,000 users — PMF = >60% Day-90 retention + ₹4L MRR</div>
+      <div class="flow-step"><div class="step-num" style="font-size:11px;background:var(--green)">M12</div> Seed round ready — metrics proven</div>
 
-      <!-- Distribution -->
-      <div style="margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:3px;border-bottom:2px solid var(--primary)">
-          <span style="font-size:15px;font-weight:700;color:var(--text)">Distribution</span>
-          <span style="font-size:16px;font-weight:800;color:var(--text);flex-shrink:0;margin-left:16px">₹85L</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #dde2e8">
-          <span style="font-size:13px;color:var(--text)">Content & trust marketing</span>
-          <span style="font-size:13px;font-weight:700;color:var(--text);flex-shrink:0;margin-left:16px">₹30L</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #dde2e8">
-          <span style="font-size:13px;color:var(--text)">Paid user acquisition</span>
-          <span style="font-size:13px;font-weight:700;color:var(--text);flex-shrink:0;margin-left:16px">₹25L</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #dde2e8">
-          <span style="font-size:13px;color:var(--text)">Community & influencer</span>
-          <span style="font-size:13px;font-weight:700;color:var(--text);flex-shrink:0;margin-left:16px">₹25L</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0">
-          <span style="font-size:13px;color:var(--text)">SEBI Corporate IA Registration <span style="font-size:11px;color:var(--muted)">(multi-advisor scale)</span></span>
-          <span style="font-size:13px;font-weight:700;color:var(--text);flex-shrink:0;margin-left:16px">₹5L</span>
-        </div>
-      </div>
-
-      <!-- Team & Infrastructure -->
-      <div style="margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:3px;border-bottom:2px solid var(--primary)">
-          <span style="font-size:15px;font-weight:700;color:var(--text)">Team & Infrastructure</span>
-          <span style="font-size:16px;font-weight:800;color:var(--text);flex-shrink:0;margin-left:16px">₹57L</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #dde2e8">
-          <span style="font-size:13px;color:var(--text)">Engineering hire <span style="font-size:11px;color:var(--muted)">(codebase no longer single-owner)</span></span>
-          <span style="font-size:13px;font-weight:700;color:var(--text);flex-shrink:0;margin-left:16px">₹27L</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #dde2e8">
-          <span style="font-size:13px;color:var(--text)">Cloud + MongoDB + DevOps infra</span>
-          <span style="font-size:13px;font-weight:700;color:var(--text);flex-shrink:0;margin-left:16px">₹20L</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0">
-          <span style="font-size:13px;color:var(--text)">LLM advisory layer</span>
-          <span style="font-size:13px;font-weight:700;color:var(--text);flex-shrink:0;margin-left:16px">₹10L</span>
-        </div>
-      </div>
-
-      <!-- Runway + Total -->
-      <div style="margin-top:8px">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:3px;border-bottom:2px solid var(--primary)">
-          <span style="font-size:15px;font-weight:700;color:var(--text)">Operational runway: 12+ months</span>
-          <span style="font-size:16px;font-weight:800;color:var(--text);flex-shrink:0;margin-left:16px">₹58L</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:10px 0 0">
-          <span style="font-size:17px;font-weight:800;color:var(--primary)">Total</span>
-          <span style="font-size:17px;font-weight:800;color:var(--primary);flex-shrink:0;margin-left:16px">₹2 Crore</span>
-        </div>
-      </div>
+      <p style="margin-top:20px;font-size:14px;opacity:0.6;border-top:1px solid rgba(255,255,255,0.15);padding-top:16px"><strong>What we're looking for in a partner:</strong><br>Beyond capital — hands-on experience in SEBI IA licensing and the AA regulatory stack.</p>
     </div>
   </div>
-
-
-<div class="slide-bar">We're not raising to build. The product is built. We're raising to launch.</div>
-  <div class="slide-number">15</div>
+  <div class="slide-bar">We're not raising to build. The product is built. We're raising to launch.</div>
+  <div class="slide-number">16</div>
 </div>
 
 <!-- ============================================================ -->
@@ -1669,7 +1131,7 @@
     </div>
   </div>
   <div class="slide-bar">AA + AI + SEBI tailwind. This wasn't possible 2 years ago.</div>
-  <div class="slide-number">16</div>
+  <div class="slide-number">17</div>
 </div>
 
 <!-- ============================================================ -->
@@ -1705,7 +1167,7 @@
   <p style="font-size:18px;color:var(--muted);margin-top:8px">One app to solve India's entire financial life.</p>
 
   <p style="margin-top:40px;font-size:14px;opacity:0.4">Chandrachuda Sarma Yemmanuru &nbsp;·&nbsp; cy@finwiser.in &nbsp;·&nbsp; SEBI RIA Licensed</p>
-  <div class="slide-number">17</div>
+  <div class="slide-number">18</div>
 </div>
 
 <!-- Screenshot scroll-triggered animations -->
@@ -1760,41 +1222,37 @@
 
   animate();
 })();
-</script>
 
-<!-- Dynamic slide zoom — calculates perfect scale for each device's viewport -->
-<script>
+// Finwy bridge animation — loops through 8 working poses
 (function() {
-  var DESIGN_H = 720; // slides designed for 720px content height
-  var mql = window.matchMedia('(max-height: 500px) and (orientation: landscape)');
+  const container = document.getElementById('finwy-bridge');
+  if (!container) return;
+  const frames = Array.from(container.querySelectorAll('img'));
+  const timing = [
+    800,   // 1: at laptop, calm
+    800,   // 2: pointing at charts
+    1200,  // 3: thinking, chin on hand
+    1000,  // 4: magnifying glass, analyzing
+    800,   // 5: happy, line chart
+    1000,  // 6: magnifying glass, excited
+    1500,  // 7: lightbulb eureka!
+    4000,  // 8: thumbs up, solved! — hold longest
+  ];
+  let current = 0;
 
-  function updateSlideZoom() {
-    var slides = document.querySelectorAll('.slide');
-    if (mql.matches) {
-      var vh = window.innerHeight;
-      var zoom = Math.min(vh / DESIGN_H, 1);
-      var inv = (100 / zoom);
-      slides.forEach(function(s) {
-        s.style.zoom = zoom;
-        s.style.width = inv + 'vw';
-        s.style.height = inv + 'vh';
-        s.style.minHeight = inv + 'vh';
-        s.style.maxHeight = inv + 'vh';
-      });
-    } else {
-      slides.forEach(function(s) {
-        s.style.zoom = '';
-        s.style.width = '';
-        s.style.height = '';
-        s.style.minHeight = '';
-        s.style.maxHeight = '';
-      });
-    }
+  function showFrame(n) {
+    frames.forEach(f => f.classList.remove('mascot-active'));
+    frames[n].classList.add('mascot-active');
   }
 
-  updateSlideZoom();
-  window.addEventListener('resize', updateSlideZoom);
-  if (mql.addEventListener) mql.addEventListener('change', updateSlideZoom);
+  function loop() {
+    showFrame(current);
+    const delay = timing[current];
+    current = (current + 1) % frames.length;
+    setTimeout(loop, delay);
+  }
+
+  loop();
 })();
 </script>
 </body>
