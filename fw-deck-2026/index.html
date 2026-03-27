@@ -11,25 +11,10 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   @keyframes finwyWobble {
-    0%, 100% {
-      transform: rotate(-5deg);
-      -webkit-mask-position: 100% 0%;
-      mask-position: 100% 0%;
-    }
-    50% {
-      transform: rotate(5deg);
-      -webkit-mask-position: 0% 0%;
-      mask-position: 0% 0%;
-    }
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
   }
-  .finwy-wobble {
-    animation: finwyWobble 2s ease-in-out infinite;
-    transform-origin: center center;
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%);
-    -webkit-mask-size: 200% 100%;
-    mask-size: 200% 100%;
-  }
+  .finwy-wobble { animation: finwyWobble 2s ease-in-out infinite; transform-origin: center center; }
 
   :root {
     --primary: #1a1a2e;
