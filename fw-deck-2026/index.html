@@ -609,6 +609,8 @@
     .slide-number { bottom: 4px; right: 10px; font-size: 10px; }
     /* Title slide */
     .mascot-anim { width: 160px !important; height: 178px !important; margin-bottom: 6px !important; }
+    #s1 img[src*="finwiserlogo"] { max-width: 220px !important; margin-bottom: 16px !important; }
+    #s1 img[src*="finny-wave"] { width: 120px !important; }
     .slide.center img[src*="finwiserlogo"] { max-width: 220px !important; margin-top: 8px !important; }
     .slide.center img[src*="finny-celebrate"] { width: 60px !important; height: 60px !important; margin-top: 8px !important; }
   }
@@ -621,35 +623,30 @@
 <!-- ============================================================ -->
 <div class="slide white center" id="s1" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 80px 30px">
 
-  <!-- Finwy mascot -->
-  <div class="mascot-anim" id="mascot" style="width:320px;height:356px;flex-shrink:0">
-    <img src="slides/frame-1.png" class="mascot-active" data-frame="1">
-    <img src="slides/frame-2.png" data-frame="2">
-    <img src="slides/frame-3.png" data-frame="3">
-    <img src="slides/frame-4.png" data-frame="4">
-    <img src="slides/frame-5.png" data-frame="5">
-    <img src="slides/frame-6.png" data-frame="6">
-    <img src="slides/frame-7.png" data-frame="7">
-    <img src="slides/frame-8.png" data-frame="8">
-    <img src="slides/frame-9.png" data-frame="9">
-    <img src="slides/frame-10.png" data-frame="10">
-    <img src="slides/frame-11.png" data-frame="11">
-    <img src="slides/frame-12.png" data-frame="12">
-    <img src="slides/frame-13.png" data-frame="13">
-    <img src="slides/frame-14.png" data-frame="14">
-    <img src="slides/frame-15.png" data-frame="15">
-  </div>
+  <!-- Finwiser logo — brand first -->
+  <img src="slides/finwiserlogo.svg" style="width:400px;margin-bottom:32px">
 
-  <!-- Finwiser logo -->
-  <img src="slides/finwiserlogo.svg" style="width:480px;margin-top:16px;margin-bottom:20px">
+  <!-- Finny waving + speech bubble — side by side, same height -->
+  <div style="display:flex;align-items:stretch;gap:24px;max-width:900px;width:100%">
 
-  <!-- Typewriter text — centered -->
-  <div style="display:flex;flex-direction:column;gap:2px;text-align:center">
-    <p class="type-line tl1" style="margin:0">Hey! &#128075;</p>
-    <p class="type-line tl2" style="margin:0">I'm Finwy &mdash; Finwiser's <strong>SEBI RIA licensed</strong> AI advisor.</p>
-    <p class="type-line tl3" style="margin:0">Bank, MFs, FDs, NPS, loans, credit cards &mdash; I see it all.</p>
-    <p class="type-line tl4" style="margin:0">No entries. No manual work. No guesswork.</p>
-    <p class="type-line tl5" style="margin:0">Your complete picture. All in 3 minutes.</p>
+    <!-- Finny mascot (waving) — stretches to match speech bubble height -->
+    <div style="flex-shrink:0;display:flex;align-items:center">
+      <img src="slides/finny-wave.png" style="height:100%;width:auto;object-fit:contain">
+    </div>
+
+    <!-- Speech bubble -->
+    <div style="position:relative;background:#f0f4ff;border:1.5px solid rgba(0,86,210,0.12);border-radius:4px 20px 20px 20px;padding:24px 28px;flex:1;box-shadow:0 4px 16px rgba(0,0,0,0.06);display:flex;align-items:center">
+      <!-- Bubble tail pointing left toward Finny -->
+      <div style="position:absolute;left:-12px;top:28px;width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:12px solid #f0f4ff;filter:drop-shadow(-2px 0 1px rgba(0,86,210,0.06))"></div>
+      <div style="display:flex;flex-direction:column;gap:2px;text-align:left">
+        <p class="type-line tl1" style="margin:0">Hey! &#128075;</p>
+        <p class="type-line tl2" style="margin:0">I'm Finwy &mdash; Finwiser's <strong>SEBI RIA licensed</strong> AI advisor.</p>
+        <p class="type-line tl3" style="margin:0">Bank, MFs, FDs, NPS, loans, credit cards &mdash; I see it all.</p>
+        <p class="type-line tl4" style="margin:0">No entries. No manual work. No guesswork.</p>
+        <p class="type-line tl5" style="margin:0">Your complete picture. All in 3 minutes.</p>
+      </div>
+    </div>
+
   </div>
 
   <div class="slide-bar" style="background:var(--primary);color:white">₹1-2 lakh/year for a human advisor. ₹199/month for me. 80M+ Indians can finally afford real financial advice.</div>
