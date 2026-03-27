@@ -803,96 +803,94 @@
 </div>
 
 <!-- ============================================================ -->
-<!-- SLIDE 6A: Product — Portfolio -->
+<!-- SLIDE 6: Life Keeps Asking — Why Users Come Back -->
 <!-- ============================================================ -->
-<div class="slide white" id="s6a" style="padding:30px 40px;padding-top:60px">
+<div class="slide dark" id="s6" style="padding:40px 60px 30px">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
-  <h2 style="margin-bottom:4px;font-size:30px">Your Portfolio</h2>
-  <p style="opacity:0.5;font-size:13px;margin-bottom:10px">What you own, how it's performing, and how it's allocated</p>
-  <div class="screenshot-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;min-height:0;max-height:70vh">
-    <div class="screenshot-card" style="background:#f5f5f5;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
-      <img src="slides/portfolio-tab-v10.png" style="width:100%;height:100%;object-fit:contain">
-      <div class="screenshot-label">Portfolio Dashboard</div>
+
+  <h2 style="margin-bottom:4px">Life Keeps Asking</h2>
+  <p style="font-size:17px;font-weight:300;opacity:0.45;margin-bottom:24px">Every month brings a new money question. Only Finwiser answers — it sees every account, every goal.</p>
+
+  <!-- Two-panel layout with Finwy bridge -->
+  <div style="display:flex;align-items:stretch;flex:1;position:relative">
+
+    <!-- LEFT PANEL: Anxiety zone -->
+    <div style="flex:1;background:rgba(233,69,96,0.07);border:1px solid rgba(233,69,96,0.15);border-radius:20px 0 0 20px;border-right:none;padding:32px 28px;display:flex;align-items:center;justify-content:flex-end;gap:20px">
+
+      <!-- Questions — right-aligned to sit close to mother -->
+      <div style="display:flex;flex-direction:column;gap:18px;text-align:right">
+        <div style="font-size:20px;font-weight:600;color:#ff6b81;line-height:1.3">"Where's all my money going?"</div>
+        <div style="font-size:20px;font-weight:600;color:#fdcb6e;line-height:1.3">"Can I still afford my SIPs?"</div>
+        <div style="font-size:20px;font-weight:600;color:#ff6b81;line-height:1.3">"Market crashed — am I okay?"</div>
+        <div style="font-size:20px;font-weight:600;color:#a29bfe;line-height:1.3">"Am I on track for retirement?"</div>
+        <div style="font-size:20px;font-weight:600;color:#00b894;line-height:1.3">"₹3L bonus — now what?"</div>
+        <div style="font-size:20px;font-weight:600;color:#fdcb6e;line-height:1.3">"Tax season — save how much?"</div>
+      </div>
+
+      <!-- Worried mother -->
+      <div style="flex-shrink:0;text-align:center;padding-right:80px">
+        <img src="slides/finny-mother-worried.png" style="height:260px;filter:drop-shadow(0 0 24px rgba(233,69,96,0.2))">
+      </div>
+
     </div>
-    <div class="screenshot-card" style="background:#f5f5f5;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
-      <img src="slides/portfolio-performance.png" style="width:100%;height:100%;object-fit:contain">
-      <div class="screenshot-label">Performance Detail</div>
+
+    <!-- FINWY BRIDGE — animated, overlapping center -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:0">
+      <div class="mascot-anim" id="finwy-bridge" style="width:210px;height:210px">
+        <img src="slides/finny-work-1.png" class="mascot-active" data-frame="1">
+        <img src="slides/finny-work-2.png" data-frame="2">
+        <img src="slides/finny-work-3.png" data-frame="3">
+        <img src="slides/finny-work-4.png" data-frame="4">
+        <img src="slides/finny-work-5.png" data-frame="5">
+        <img src="slides/finny-work-6.png" data-frame="6">
+        <img src="slides/finny-work-7.png" data-frame="7">
+        <img src="slides/finny-work-8.png" data-frame="8">
+      </div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.5px;opacity:0.5;font-weight:700;color:white;text-align:center">Finwiser</div>
     </div>
-    <div class="screenshot-card" style="background:#f5f5f5;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
-      <img src="slides/portfolio-wealthmix.png" style="width:100%;height:100%;object-fit:contain">
-      <div class="screenshot-label">Wealth Mix</div>
+
+    <!-- RIGHT PANEL: Clarity zone -->
+    <div style="flex:1;background:rgba(0,184,148,0.07);border:1px solid rgba(0,184,148,0.15);border-radius:0 20px 20px 0;border-left:none;padding:32px 28px;display:flex;align-items:center;gap:20px">
+
+      <!-- Happy mother -->
+      <div style="flex-shrink:0;text-align:center;padding-left:80px">
+        <img src="slides/finny-mother-happy.png" style="height:260px;filter:drop-shadow(0 0 24px rgba(0,184,148,0.2))">
+      </div>
+
+      <!-- Answer card -->
+      <div style="flex:0 1 320px">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(0,184,148,0.25);border-radius:16px;padding:20px 22px;position:relative">
+          <div style="font-size:17px;line-height:1.7;color:rgba(255,255,255,0.85)">
+            <span style="color:#00b894;font-weight:700">₹3L surplus this month.</span><br>
+            Daughter's education: <span style="color:#ff6b81;font-weight:600">₹2.1L short</span><br>
+            Emergency fund: <span style="color:#00b894;font-weight:600">on track</span><br>
+            Retirement: <span style="color:#00b894;font-weight:600">91% funded</span>
+          </div>
+
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08)">
+            <div style="font-size:17px;font-weight:700;color:white;line-height:1.5">
+              ₹2.1L → balanced advantage fund<br>₹90K → liquid fund
+            </div>
+          </div>
+
+          <div style="margin-top:14px;background:rgba(0,184,148,0.15);border:1px solid rgba(0,184,148,0.3);border-radius:10px;padding:10px 16px;text-align:center">
+            <span style="font-size:15px;font-weight:700;color:#00b894">Invest for daughter's education &#8250;</span>
+          </div>
+        </div>
+
+        <p style="font-size:13px;opacity:0.3;margin-top:12px;text-align:center;line-height:1.4">Every answer from her real bank data, real goals, real portfolio.</p>
+      </div>
+
     </div>
+
   </div>
-  <div class="slide-bar">Your 360-degree portfolio — MFs, NPS, gold, real estate — all in one view.</div>
+
+  <div class="slide-bar">Life creates the questions. Only Finwiser has the answers.</div>
   <div class="slide-number">6</div>
 </div>
 
 <!-- ============================================================ -->
-<!-- SLIDE 6B: Product — Goals & Planning -->
-<!-- ============================================================ -->
-<div class="slide dark" id="s6b" style="padding:30px 40px;padding-top:60px">
-  <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
-  <h2 style="margin-bottom:4px;font-size:30px">Your Goals & Planning</h2>
-  <p style="opacity:0.5;font-size:13px;margin-bottom:10px">Your risk profile, your goals with progress, and your budget</p>
-  <div class="screenshot-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;min-height:0;max-height:70vh">
-    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
-      <img src="slides/suitability-detail.png" style="width:100%;height:100%;object-fit:contain">
-      <div class="screenshot-label">Suitability</div>
-    </div>
-    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
-      <img src="slides/goals-dashboard.png" style="width:100%;height:100%;object-fit:contain">
-      <div class="screenshot-label">Goals Dashboard</div>
-    </div>
-    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
-      <img src="slides/budget-dashboard.png" style="width:100%;height:100%;object-fit:contain">
-      <div class="screenshot-label">Budget Dashboard</div>
-    </div>
-  </div>
-  <div class="slide-bar">Everything you see is built. Not mockups. Not Figma. Production code.</div>
-  <div class="slide-number">7</div>
-</div>
-
-<!-- ============================================================ -->
-<!-- SLIDE 7: Engagement — How Users Come Back -->
-<!-- ============================================================ -->
-<div class="slide dark" id="s7">
-  <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
-  <h2>Why Users Come Back</h2>
-  <p style="opacity:0.6;margin-bottom:20px">Financial apps die when users stop opening them. We built 12 retention hooks — all live — informed by behavioral economics research.</p>
-
-  <div class="grid-3" style="margin-top:10px">
-    <div class="card">
-      <h3 style="font-size:16px">Morning Money Pulse</h3>
-      <p style="font-size:13px">8:30 AM daily — personalized insight from 8 rotating templates. "Your food spending is up 30% this week." Keeps you aware without opening the app.</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Daily Question</h3>
-      <p style="font-size:13px">1 PM — the highest-impact unresolved transaction. "Was this ₹12K to Ajay a loan or a gift?" Your answer improves your entire financial picture.</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Advisor Nudges</h3>
-      <p style="font-size:13px">Proactive, not reactive. Large unusual expense? Spending spike? Fund drifted? We tell you before you notice — with seasonal awareness (Diwali spending isn't an anomaly).</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Goal Milestones</h3>
-      <p style="font-size:13px">"Your emergency fund crossed 50%! Keep going." Positive reinforcement at every milestone. 2:1 ratio — two celebrations for every nudge.</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Budget Alerts</h3>
-      <p style="font-size:13px">Warning at 75%, critical at 90%, overshoot at 100%. Real-time — not a surprise at month-end. CC due date reminders before you get charged interest.</p>
-    </div>
-    <div class="card">
-      <h3 style="font-size:16px">Weekly Portfolio Summary</h3>
-      <p style="font-size:13px">Goal-anchored progress — "Your retirement is 3% closer." Not raw ₹ swings that cause panic. Designed by behavioral economists to build confidence, not anxiety.</p>
-    </div>
-  </div>
-
-  <div class="slide-bar">12 retention hooks. All live. Built to keep users coming back without overwhelming them.</div>
-  <div class="slide-number">8</div>
-</div>
-
-<!-- ============================================================ -->
-<!-- SLIDE 8: WhatsApp GTM -->
+<!-- SLIDE 7: WhatsApp GTM -->
 <!-- ============================================================ -->
 <div class="slide white" id="s7">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
@@ -1012,6 +1010,56 @@
   </div>
 
   <div class="slide-bar">Your net worth in 3 minutes. No app download. Zero CAC.</div>
+  <div class="slide-number">7</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8: Product — Portfolio -->
+<!-- ============================================================ -->
+<div class="slide white" id="s6a" style="padding:30px 40px;padding-top:60px">
+  <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
+  <h2 style="margin-bottom:4px;font-size:30px">Your Portfolio</h2>
+  <p style="opacity:0.5;font-size:13px;margin-bottom:10px">What you own, how it's performing, and how it's allocated</p>
+  <div class="screenshot-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;min-height:0;max-height:70vh">
+    <div class="screenshot-card" style="background:#f5f5f5;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+      <img src="slides/portfolio-tab-v10.png" style="width:100%;height:100%;object-fit:contain">
+      <div class="screenshot-label">Portfolio Dashboard</div>
+    </div>
+    <div class="screenshot-card" style="background:#f5f5f5;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+      <img src="slides/portfolio-performance.png" style="width:100%;height:100%;object-fit:contain">
+      <div class="screenshot-label">Performance Detail</div>
+    </div>
+    <div class="screenshot-card" style="background:#f5f5f5;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+      <img src="slides/portfolio-wealthmix.png" style="width:100%;height:100%;object-fit:contain">
+      <div class="screenshot-label">Wealth Mix</div>
+    </div>
+  </div>
+  <div class="slide-bar">Your 360-degree portfolio — MFs, NPS, gold, real estate — all in one view.</div>
+  <div class="slide-number">8</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9: Product — Goals & Planning -->
+<!-- ============================================================ -->
+<div class="slide dark" id="s6b" style="padding:30px 40px;padding-top:60px">
+  <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
+  <h2 style="margin-bottom:4px;font-size:30px">Your Goals & Planning</h2>
+  <p style="opacity:0.5;font-size:13px;margin-bottom:10px">Your risk profile, your goals with progress, and your budget</p>
+  <div class="screenshot-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;min-height:0;max-height:70vh">
+    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+      <img src="slides/suitability-detail.png" style="width:100%;height:100%;object-fit:contain">
+      <div class="screenshot-label">Suitability</div>
+    </div>
+    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+      <img src="slides/goals-dashboard.png" style="width:100%;height:100%;object-fit:contain">
+      <div class="screenshot-label">Goals Dashboard</div>
+    </div>
+    <div class="screenshot-card" style="background:#fff;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative">
+      <img src="slides/budget-dashboard.png" style="width:100%;height:100%;object-fit:contain">
+      <div class="screenshot-label">Budget Dashboard</div>
+    </div>
+  </div>
+  <div class="slide-bar">Everything you see is built. Not mockups. Not Figma. Production code.</div>
   <div class="slide-number">9</div>
 </div>
 
@@ -1759,6 +1807,38 @@
   }
 
   animate();
+})();
+
+// Finwy bridge animation — loops through 8 working poses
+(function() {
+  const container = document.getElementById('finwy-bridge');
+  if (!container) return;
+  const frames = Array.from(container.querySelectorAll('img'));
+  const timing = [
+    800,   // 1: at laptop, calm
+    800,   // 2: pointing at charts
+    1200,  // 3: thinking, chin on hand
+    1000,  // 4: magnifying glass, analyzing
+    800,   // 5: happy, line chart
+    1000,  // 6: magnifying glass, excited
+    1500,  // 7: lightbulb eureka!
+    4000,  // 8: thumbs up, solved! — hold longest
+  ];
+  let current = 0;
+
+  function showFrame(n) {
+    frames.forEach(f => f.classList.remove('mascot-active'));
+    frames[n].classList.add('mascot-active');
+  }
+
+  function loop() {
+    showFrame(current);
+    const delay = timing[current];
+    current = (current + 1) % frames.length;
+    setTimeout(loop, delay);
+  }
+
+  loop();
 })();
 </script>
 
