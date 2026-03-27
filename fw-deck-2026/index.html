@@ -623,14 +623,11 @@
 <!-- ============================================================ -->
 <div class="slide white center" id="s1" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 80px 30px">
 
-  <!-- Finwiser logo — brand first -->
-  <img src="slides/finwiserlogo.svg" style="width:400px;margin-bottom:32px">
+  <!-- Finny waving + speech bubble — top, side by side -->
+  <div style="display:flex;align-items:center;gap:20px;max-width:860px;width:100%;max-height:280px">
 
-  <!-- Finny waving + speech bubble — side by side, same height -->
-  <div style="display:flex;align-items:stretch;gap:24px;max-width:900px;width:100%">
-
-    <!-- Finny mascot (animated) — stretches to match speech bubble height -->
-    <div class="mascot-anim" id="mascot" style="flex-shrink:0;display:flex;align-items:center;width:auto;height:auto;margin-bottom:0">
+    <!-- Finny mascot (animated) -->
+    <div class="mascot-anim" id="mascot" style="flex-shrink:0;display:flex;align-items:center;width:280px;height:280px;margin-bottom:0;position:relative">
       <img src="slides/frame-1.png" class="mascot-active" data-frame="1" style="position:relative;height:100%;width:auto;object-fit:contain">
       <img src="slides/frame-2.png" data-frame="2" style="position:absolute;height:100%;width:auto;object-fit:contain">
       <img src="slides/frame-3.png" data-frame="3" style="position:absolute;height:100%;width:auto;object-fit:contain">
@@ -660,6 +657,9 @@
     </div>
 
   </div>
+
+  <!-- Finwiser logo — centered below -->
+  <img src="slides/finwiserlogo.svg" style="width:520px;margin-top:28px">
 
   <div class="slide-bar" style="background:var(--primary);color:white">₹1-2 lakh/year for a human advisor. ₹199/month for me. 80M+ Indians can finally afford real financial advice.</div>
   <div class="slide-number">1</div>
@@ -738,11 +738,11 @@
 <!-- ============================================================ -->
 <div class="slide white" id="s4" style="padding:28px 60px 20px;display:flex;flex-direction:column;align-items:center">
   <div class="logo-bar"><img src="slides/finny-3d.png" style="height:80px"></div>
-  <h2 style="margin-bottom:12px;color:var(--primary);align-self:flex-start">How It Works — <span style="color:var(--accent)">Next Best Rupee</span></h2>
+  <h2 style="margin-bottom:10px;color:var(--primary);align-self:flex-start">How It Works</h2>
 
-  <!-- BAND 1: All accounts synced -->
+  <!-- BAND 1: CONNECT -->
   <div style="background:rgba(15,52,96,0.06);border-radius:10px;padding:12px 24px;margin-bottom:6px;text-align:center;width:100%">
-    <div style="font-size:16px;font-weight:700;color:var(--primary);margin-bottom:8px">One complete financial picture</div>
+    <div style="margin-bottom:8px"><span style="font-size:22px;font-weight:800;color:var(--accent)">CONNECT</span> <span style="font-size:16px;font-weight:600;color:var(--primary);margin-left:8px">One complete financial picture</span></div>
     <div style="display:flex;gap:14px;justify-content:center">
       <div style="background:white;border:1px solid rgba(15,52,96,0.12);border-radius:8px;padding:8px 20px;text-align:center">
         <div style="font-size:11px;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Account Aggregator</div>
@@ -759,9 +759,9 @@
     </div>
   </div>
 
-  <!-- BAND 2: Categorized + Surplus -->
+  <!-- BAND 2: DETECT -->
   <div style="background:rgba(0,184,148,0.06);border-radius:10px;padding:12px 24px;margin-bottom:6px;text-align:center;width:100%">
-    <div style="font-size:16px;font-weight:700;color:var(--primary);margin-bottom:8px">Every rupee tracked and categorized</div>
+    <div style="margin-bottom:8px"><span style="font-size:22px;font-weight:800;color:var(--accent)">DETECT</span> <span style="font-size:16px;font-weight:600;color:var(--primary);margin-left:8px">Your real surplus</span></div>
     <div style="display:inline-block;text-align:left">
       <div style="display:flex;justify-content:space-between;gap:40px;padding:2px 0">
         <span style="font-size:15px;color:var(--muted)">Income</span>
@@ -771,7 +771,7 @@
         <span style="font-size:15px;color:var(--muted)">Expenses</span>
         <span style="font-weight:700;font-size:18px;color:var(--accent)">₹1,08,000</span>
       </div>
-      <div style="height:1px;background:#ccc;margin:6px 0"></div>
+      <div style="height:1px;background:#ccc;margin:5px 0"></div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;gap:40px;padding:2px 0">
         <span style="font-size:15px;color:var(--muted)">Your real surplus</span>
         <span style="font-weight:800;font-size:28px;color:#00b894;line-height:1">₹42,000<span style="font-size:12px;font-weight:400;color:var(--muted)">/mo</span></span>
@@ -779,31 +779,37 @@
     </div>
   </div>
 
-  <!-- BAND 3: Next Best Rupee — HERO -->
-  <div style="background:rgba(253,203,110,0.06);border-radius:10px;padding:12px 24px 16px;text-align:center;width:100%">
+  <!-- BAND 3: DIRECT — Next Best Rupee HERO -->
+  <div style="background:rgba(253,203,110,0.06);border-radius:10px;padding:12px 24px 14px;text-align:center;width:100%">
 
-    <!-- Title -->
-    <div style="font-size:18px;font-weight:800;color:var(--primary);margin-bottom:6px">Next Best Rupee</div>
+    <!-- Heading -->
+    <div style="margin-bottom:6px"><span style="font-size:22px;font-weight:800;color:var(--accent)">DIRECT</span> <span style="font-size:16px;font-weight:600;color:var(--primary);margin-left:8px">Next Best Rupee</span></div>
 
-    <!-- 3 centered lines -->
-    <div style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:8px">
-      Goals need <strong style="color:var(--accent)">₹52,000</strong><br>
-      You have <strong style="color:#00b894">₹42,000</strong><br>
-      Prioritized by urgency and time horizon
+    <!-- Goal details — aligned pair + caption -->
+    <div style="display:inline-block;text-align:left;margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;gap:40px;padding:2px 0">
+        <span style="font-size:14px;color:var(--muted)">Goals need</span>
+        <span style="font-weight:700;font-size:16px;color:var(--accent)">₹52,000</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:40px;padding:2px 0">
+        <span style="font-size:14px;color:var(--muted)">You have</span>
+        <span style="font-weight:700;font-size:16px;color:#00b894">₹42,000</span>
+      </div>
+    </div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:6px">Prioritized by urgency and time horizon</div>
+
+    <!-- Finwy allocating — center -->
+    <div style="margin:4px 0">
+      <img src="slides/finwy-allocating.png" style="height:180px">
     </div>
 
-    <!-- Finwy allocating — center, bigger -->
-    <div style="margin:6px 0">
-      <img src="slides/finwy-allocating.png" style="height:212px">
-    </div>
-
-    <!-- Goal mascot lineup — center, bottom-aligned, bigger -->
-    <div style="display:flex;justify-content:center;gap:36px">
+    <!-- Goal mascot lineup -->
+    <div style="display:flex;justify-content:center;gap:32px">
 
       <!-- Emergency -->
       <div style="text-align:center;width:130px">
-        <div style="height:137px;display:flex;align-items:flex-end;justify-content:center"><img src="slides/goal-emergency.png" style="height:137px"></div>
-        <div style="font-size:13px;font-weight:700;color:var(--primary);margin-top:4px">Emergency</div>
+        <div style="height:115px;display:flex;align-items:flex-end;justify-content:center"><img src="slides/goal-emergency.png" style="height:115px"></div>
+        <div style="font-size:13px;font-weight:700;color:var(--primary);margin-top:3px">Emergency</div>
         <div style="font-size:16px;font-weight:800;color:#00b894">₹10,000</div>
         <div style="width:90px;height:6px;background:#e0e0e0;border-radius:3px;margin:2px auto 0">
           <div style="width:100%;height:100%;background:#00b894;border-radius:3px"></div>
@@ -813,8 +819,8 @@
 
       <!-- Retirement -->
       <div style="text-align:center;width:130px">
-        <div style="height:137px;display:flex;align-items:flex-end;justify-content:center"><img src="slides/goal-retirement.png" style="height:137px"></div>
-        <div style="font-size:13px;font-weight:700;color:var(--primary);margin-top:4px">Retirement</div>
+        <div style="height:115px;display:flex;align-items:flex-end;justify-content:center"><img src="slides/goal-retirement.png" style="height:115px"></div>
+        <div style="font-size:13px;font-weight:700;color:var(--primary);margin-top:3px">Retirement</div>
         <div style="font-size:16px;font-weight:800;color:#00b894">₹15,000</div>
         <div style="width:90px;height:6px;background:#e0e0e0;border-radius:3px;margin:2px auto 0">
           <div style="width:100%;height:100%;background:#00b894;border-radius:3px"></div>
@@ -824,8 +830,8 @@
 
       <!-- Education -->
       <div style="text-align:center;width:130px">
-        <div style="height:137px;display:flex;align-items:flex-end;justify-content:center"><img src="slides/goal-education.png" style="height:137px"></div>
-        <div style="font-size:13px;font-weight:700;color:var(--primary);margin-top:4px">Education</div>
+        <div style="height:115px;display:flex;align-items:flex-end;justify-content:center"><img src="slides/goal-education.png" style="height:115px"></div>
+        <div style="font-size:13px;font-weight:700;color:var(--primary);margin-top:3px">Education</div>
         <div style="font-size:16px;font-weight:800;color:#00b894">₹12,000</div>
         <div style="width:90px;height:6px;background:#e0e0e0;border-radius:3px;margin:2px auto 0">
           <div style="width:100%;height:100%;background:#00b894;border-radius:3px"></div>
@@ -835,8 +841,8 @@
 
       <!-- Car — partial -->
       <div style="text-align:center;width:130px">
-        <div style="height:137px;display:flex;align-items:flex-end;justify-content:center"><img src="slides/goal-car.png" style="height:119px;opacity:0.75"></div>
-        <div style="font-size:13px;font-weight:700;color:var(--primary);margin-top:4px">Dream Car</div>
+        <div style="height:115px;display:flex;align-items:flex-end;justify-content:center"><img src="slides/goal-car.png" style="height:100px;opacity:0.75"></div>
+        <div style="font-size:13px;font-weight:700;color:var(--primary);margin-top:3px">Dream Car</div>
         <div style="font-size:16px;font-weight:800;color:#e17055">₹5,000</div>
         <div style="width:90px;height:6px;background:#e0e0e0;border-radius:3px;margin:2px auto 0">
           <div style="width:33%;height:100%;background:#e17055;border-radius:3px"></div>
@@ -847,7 +853,7 @@
     </div>
   </div>
 
-  <div class="slide-bar" style="margin-top:12px">Finwiser knows where every rupee must go.</div>
+  <div class="slide-bar" style="margin-top:10px">Finwiser knows where every rupee must go.</div>
   <div class="slide-number">3</div>
 </div>
 
