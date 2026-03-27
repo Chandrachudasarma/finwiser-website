@@ -426,7 +426,7 @@
 
   /* Typewriter effect */
   @keyframes typeIn   { from { width:0 } to { width:100% } }
-  @keyframes cursorOn { 0%,100% { border-right-color:transparent } 50% { border-right-color:#0056d2 } }
+  @keyframes cursorOn { 0%,100% { border-right-color:transparent } 50% { border-right-color:#1a1a2e } }
   .type-line {
     overflow:hidden; white-space:nowrap; width:0;
     border-right:2px solid transparent;
@@ -440,7 +440,7 @@
   /* "Bank, MFs, FDs, NPS, loans, credit cards — I see it all."  ~57 chars */
   .tl3 { animation: typeIn 2.3s steps(57,end) 3.4s forwards, cursorOn .4s step-end 3.4s 6; }
   /* "No entries. No manual work. No guesswork."  ~41 chars */
-  .tl4 { animation: typeIn 1.6s steps(41,end) 5.9s forwards, cursorOn .4s step-end 5.9s 5; font-weight:600; color:#0056d2; }
+  .tl4 { animation: typeIn 1.6s steps(41,end) 5.9s forwards, cursorOn .4s step-end 5.9s 5; font-weight:600; color:#1a1a2e; }
   /* "Your complete picture. All in 3 minutes."  ~40 chars */
   .tl5 { animation: typeIn 1.6s steps(40,end) 7.7s forwards, cursorOn .4s step-end 7.7s 4; }
   .finwy-bubble {
@@ -649,9 +649,7 @@
     </div>
 
     <!-- Speech bubble -->
-    <div style="position:relative;background:#f0f4ff;border:1.5px solid rgba(0,86,210,0.12);border-radius:4px 20px 20px 20px;padding:24px 28px;flex:1;box-shadow:0 4px 16px rgba(0,0,0,0.06);display:flex;align-items:center">
-      <!-- Bubble tail pointing left toward Finny -->
-      <div style="position:absolute;left:-12px;top:28px;width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:12px solid #f0f4ff;filter:drop-shadow(-2px 0 1px rgba(0,86,210,0.06))"></div>
+    <div style="position:relative;background:transparent;padding:24px 28px;flex:1;display:flex;align-items:center">
       <div style="display:flex;flex-direction:column;gap:2px;text-align:left">
         <p class="type-line tl1" style="margin:0">Hey! &#128075;</p>
         <p class="type-line tl2" style="margin:0">I'm Finwy &mdash; Finwiser's <strong>SEBI RIA licensed</strong> AI advisor.</p>
