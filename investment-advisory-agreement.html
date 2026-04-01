@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finwiser Investment Advisory Agreement</title>
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --primary-light: #14b8a6;
+            --bg-gradient-start: #0d9488;
+            --bg-gradient-end: #115e59;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        nav {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        nav h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        nav ol {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+
+        nav li {
+            margin-bottom: 10px;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        h3 {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin: 25px 0 15px 0;
+        }
+
+        h4 {
+            color: var(--text-dark);
+            font-size: 1.05rem;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-dark);
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 16px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        .highlight-box {
+            background: #f0fdfa;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .mitc-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: var(--primary-light);
+        }
+
+        .definition-term {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background: #f0fdfa;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="top">
+        <h1>Finwiser Investment Advisory Agreement</h1>
+        <p>Last Updated: April 2026</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Regulatory Disclaimer -->
+        <div class="warning-box">
+            <p style="margin-bottom: 0;"><strong>SEBI Mandatory Disclaimer:</strong> Registration granted by SEBI, membership of BASL, and certification from NISM in no way guarantee performance of the intermediary or provide any assurance of returns to investors.</p>
+        </div>
+
+        <!-- Table of Contents -->
+        <nav>
+            <h2>Table of Contents</h2>
+            <p style="margin-bottom: 15px; color: var(--text-light);">Part A: Investment Advisory Agreement &nbsp;|&nbsp; Part B: MITC Annexure</p>
+            <ol>
+                <li><a href="#s1">Parties and Recitals</a></li>
+                <li><a href="#s2">Definitions</a></li>
+                <li><a href="#s3">Nature and Scope of Advisory Services</a></li>
+                <li><a href="#s4">Client Obligations</a></li>
+                <li><a href="#s5">Risk Profiling and Suitability</a></li>
+                <li><a href="#s6">Fee Structure and Payment</a></li>
+                <li><a href="#s7">Use of Artificial Intelligence Tools</a></li>
+                <li><a href="#s8">Conflicts of Interest</a></li>
+                <li><a href="#s9">No Execution Without Specific Consent</a></li>
+                <li><a href="#s10">Disclosure Obligations</a></li>
+                <li><a href="#s11">Record Keeping</a></li>
+                <li><a href="#s12">Confidentiality and Data Protection</a></li>
+                <li><a href="#s13">Risk Acknowledgments and Disclaimers</a></li>
+                <li><a href="#s14">Limitation of Liability</a></li>
+                <li><a href="#s15">Termination</a></li>
+                <li><a href="#s16">Grievance Redressal</a></li>
+                <li><a href="#s17">Governing Law and Dispute Resolution</a></li>
+                <li><a href="#s18">General Provisions</a></li>
+                <li><a href="#mitc">Annexure: Most Important Terms and Conditions (MITC)</a></li>
+            </ol>
+        </nav>
+
+        <!-- Preamble -->
+        <section>
+            <div class="highlight-box">
+                <p style="margin-bottom: 0;">This Investment Advisory Agreement ("Agreement") is a binding contract between you ("Client") and <strong>Chandrachuda Sarma Y</strong>, a SEBI Registered Investment Adviser &mdash; Individual (Registration No. <strong>INA000021331</strong>), operating as <strong>Finwiser</strong> ("Adviser" or "Finwiser").</p>
+            </div>
+            <p>This Agreement governs the provision of personalised investment advisory services. It is separate from and supplementary to the <a href="terms.html">Platform Terms &amp; Conditions</a> and the <a href="privacy-policy.html">Privacy Policy</a>, which govern Platform access and data processing respectively.</p>
+            <p>By executing this Agreement (including through electronic acceptance on the Finwiser Platform), you confirm that you have read, understood, and agree to be bound by the terms herein and the MITC Annexure attached hereto.</p>
+        </section>
+
+        <!-- Section 1: Parties -->
+        <section id="s1">
+            <h2>1. Parties and Recitals</h2>
+
+            <h3>1.1 The Adviser</h3>
+            <table>
+                <tr><th>Field</th><th>Details</th></tr>
+                <tr><td>Name</td><td>Chandrachuda Sarma Y</td></tr>
+                <tr><td>SEBI Registration No.</td><td>INA000021331</td></tr>
+                <tr><td>Registration Type</td><td>Investment Adviser &mdash; Individual</td></tr>
+                <tr><td>Registered Address</td><td>Bengaluru, Karnataka, India</td></tr>
+                <tr><td>Contact</td><td><a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></td></tr>
+                <tr><td>SEBI Regional Office</td><td>SEBI Southern Regional Office, Bengaluru</td></tr>
+            </table>
+
+            <h3>1.2 The Client</h3>
+            <p>The individual who executes this Agreement through the Finwiser Platform, identified by their registered name, mobile number, email address, and KYC details as provided during onboarding.</p>
+
+            <h3>1.3 Recitals</h3>
+            <p><strong>WHEREAS:</strong></p>
+            <ul>
+                <li>The Adviser is registered with SEBI as an Investment Adviser under the SEBI (Investment Advisers) Regulations, 2013 ("IA Regulations") and is authorised to provide investment advisory services;</li>
+                <li>The Client wishes to avail personalised investment advisory services from the Adviser through the Finwiser Platform;</li>
+                <li>The Adviser provides advisory services using technology-enabled tools, including artificial intelligence and machine learning systems, and wishes to clearly disclose the nature, scope, and limitations of such services;</li>
+                <li>Both parties agree to be bound by the IA Regulations, applicable SEBI circulars, and Applicable Law.</li>
+            </ul>
+            <p><strong>NOW, THEREFORE,</strong> in consideration of the mutual obligations set forth herein, the parties agree as follows:</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 2: Definitions -->
+        <section id="s2">
+            <h2>2. Definitions</h2>
+            <p>Unless otherwise defined herein, capitalised terms shall have the meanings assigned in the <a href="terms.html">Platform Terms &amp; Conditions</a>. The following additional definitions apply to this Agreement:</p>
+
+            <p><span class="definition-term">Advisory Services</span> &mdash; Personalised, suitability-based investment advice provided by the Adviser to the Client under this Agreement, including financial planning, portfolio review, goal-based allocation, and rebalancing recommendations.</p>
+
+            <p><span class="definition-term">Assets Under Advice (AUA)</span> &mdash; The aggregate net asset value of securities and investment products for which the Adviser has rendered advice to the Client, irrespective of whether implementation is concluded by the Adviser, the Client, or other service providers.</p>
+
+            <p><span class="definition-term">Client Family</span> &mdash; The Client and their dependents or related persons as may be defined under the IA Regulations for the purpose of fee aggregation.</p>
+
+            <p><span class="definition-term">IA Regulations</span> &mdash; SEBI (Investment Advisers) Regulations, 2013, as amended from time to time, including all circulars, directions, and guidance issued thereunder.</p>
+
+            <p><span class="definition-term">Investment Advice</span> &mdash; Advice relating to investing in, purchasing, selling, or otherwise dealing in securities or investment products, and advice on investment portfolio containing securities or investment products, provided for the benefit of the Client after suitability assessment, as defined under the IA Regulations.</p>
+
+            <p><span class="definition-term">MITC</span> &mdash; Most Important Terms and Conditions, as set out in the Annexure to this Agreement, in compliance with the applicable SEBI circular.</p>
+
+            <p><span class="definition-term">Risk Profile</span> &mdash; The assessment of the Client's risk appetite, risk tolerance, and risk capacity, determined through the risk profiling process described in Section 5.</p>
+
+            <p><span class="definition-term">Suitability Assessment</span> &mdash; The process of evaluating whether a specific investment recommendation is appropriate for the Client based on their Risk Profile, financial situation, investment objectives, and constraints.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 3: Nature and Scope -->
+        <section id="s3">
+            <h2>3. Nature and Scope of Advisory Services</h2>
+
+            <h3>3.1 Services Provided</h3>
+            <p>Subject to the terms of this Agreement and completion of onboarding (including KYC and risk profiling), the Adviser shall provide the Client with:</p>
+            <ul>
+                <li>Personalised assessment of the Client's financial position based on data accessed through the Account Aggregator framework, email ingestion, and Client-provided inputs;</li>
+                <li>Risk profiling and periodic reassessment of the Client's Risk Profile;</li>
+                <li>Suitability-based investment recommendations, including specific mutual fund schemes, asset allocation, and rebalancing actions;</li>
+                <li>Goal-based financial planning, including feasibility assessment and allocation strategies;</li>
+                <li>Portfolio review and diagnostics, identifying risks, concentration, and optimisation opportunities;</li>
+                <li>Surplus allocation guidance (&ldquo;Next Best Rupee&rdquo;), directing investable surplus toward prioritised goals;</li>
+                <li>Ongoing monitoring and periodic recalibration of recommendations based on market conditions, life events, and portfolio changes.</li>
+            </ul>
+
+            <h3>3.2 Services NOT Provided</h3>
+            <p>The Adviser does <strong>not</strong> provide:</p>
+            <ul>
+                <li><strong>Execution or distribution services:</strong> The Adviser does not execute trades, place orders, or distribute financial products. Implementation of advice is the Client's sole responsibility through the execution platform or intermediary of their choice.</li>
+                <li><strong>Legal, tax, or accounting advice:</strong> Recommendations may consider tax implications for informational context, but do not constitute professional legal, tax, or accounting advice.</li>
+                <li><strong>Advice on products outside SEBI's purview:</strong> The Adviser's primary scope covers securities and investment products regulated by SEBI. Where advice touches upon products outside SEBI's purview (such as insurance or bank deposits), such coverage is ancillary to financial planning and does not constitute regulated advice for those specific product categories.</li>
+                <li><strong>Guaranteed outcomes:</strong> No investment advice guarantees returns, capital protection, or goal achievement.</li>
+            </ul>
+
+            <h3>3.3 Fiduciary Capacity</h3>
+            <p>The Adviser acts in a fiduciary capacity towards the Client, as required under Regulation 15(1) of the IA Regulations. The Adviser shall act honestly, fairly, and in the Client's best interest when providing Advisory Services.</p>
+
+            <h3>3.4 Relationship with Platform Terms</h3>
+            <p>This Agreement governs personalised Advisory Services only. The Finwiser Platform's general features (including net worth dashboards, generic outputs, calculators, and educational content) remain governed by the <a href="terms.html">Platform Terms &amp; Conditions</a>. In case of conflict between this Agreement and the Platform Terms on matters relating to Advisory Services, this Agreement shall prevail.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 4: Client Obligations -->
+        <section id="s4">
+            <h2>4. Client Obligations</h2>
+
+            <h3>4.1 Disclosure of Financial Information</h3>
+            <p>The Client shall provide complete and accurate information regarding:</p>
+            <ul>
+                <li>Age and personal details relevant to financial planning;</li>
+                <li>Income details, including all sources of income;</li>
+                <li>Existing investments, assets, and liabilities;</li>
+                <li>Investment objectives, including time horizons for each goal;</li>
+                <li>Risk appetite and risk tolerance;</li>
+                <li>Any constraints, preferences, or restrictions on investments;</li>
+                <li>Such other information as may be reasonably required by the Adviser.</li>
+            </ul>
+            <p>To facilitate this, the Client may provide consent through the Account Aggregator framework to enable automated access to financial data. The nature, scope, and limitations of such access are described in the <a href="terms.html#s6">Platform Terms &amp; Conditions, Section 6</a> and the <a href="privacy-policy.html">Privacy Policy</a>.</p>
+
+            <h3>4.2 Accuracy and Updates</h3>
+            <p>The Client is responsible for ensuring that information provided is accurate, complete, and current. The Client shall promptly inform the Adviser of any material changes to their financial situation, goals, constraints, or risk appetite. Failure to provide accurate or updated information may result in advice that is not suitable for the Client's actual circumstances.</p>
+
+            <h3>4.3 KYC Compliance</h3>
+            <p>The Client shall complete Know Your Client (KYC) requirements as mandated under Applicable Law and SEBI regulations before Advisory Services commence. The Adviser may rely on KYC information obtained through in-app verification, Account Aggregator identity signals, or other SEBI-compliant methods.</p>
+
+            <h3>4.4 Independent Decision-Making</h3>
+            <p>While the Adviser provides personalised recommendations, all investment decisions and their implementation remain the Client's sole responsibility. The Client acknowledges that they retain full discretion to accept, reject, or modify any recommendation.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 5: Risk Profiling and Suitability -->
+        <section id="s5">
+            <h2>5. Risk Profiling and Suitability</h2>
+
+            <h3>5.1 Risk Profiling Process</h3>
+            <p>Before providing any Investment Advice, the Adviser shall conduct a risk profiling assessment to determine the Client's:</p>
+            <ul>
+                <li><strong>Risk appetite:</strong> The Client's willingness to take risk;</li>
+                <li><strong>Risk tolerance:</strong> The degree of variability in returns the Client can withstand;</li>
+                <li><strong>Risk capacity:</strong> The Client's financial ability to absorb losses.</li>
+            </ul>
+            <p>Risk profiling shall be conducted through a structured questionnaire and, where applicable, supplemented by analysis of the Client's financial data accessed through the Platform.</p>
+
+            <h3>5.2 Communication of Risk Profile</h3>
+            <p>The Client's assessed Risk Profile shall be communicated to the Client through the Platform. The Client shall have the opportunity to review and confirm their Risk Profile before Advisory Services are activated.</p>
+
+            <h3>5.3 Suitability Obligations</h3>
+            <p>All investment recommendations shall be:</p>
+            <ul>
+                <li>Appropriate to the Client's Risk Profile;</li>
+                <li>Based on the Client's investment objectives, financial situation, and constraints;</li>
+                <li>Made with a reasonable basis for believing the recommendation is suitable;</li>
+                <li>For complex financial products, based on reasonable assessment that the risk-reward profile is consistent with the Client's experience, knowledge, and capacity for absorbing loss.</li>
+            </ul>
+
+            <h3>5.4 Periodic Reassessment</h3>
+            <p>The Adviser shall periodically reassess the Client's Risk Profile and update recommendations accordingly. Reassessment may be triggered by:</p>
+            <ul>
+                <li>Material changes in the Client's financial situation or goals;</li>
+                <li>Significant market events affecting portfolio suitability;</li>
+                <li>Passage of time (at minimum, annually); or</li>
+                <li>Client's request for reassessment.</li>
+            </ul>
+
+            <h3>5.5 Limitations of Risk Profiling Tools</h3>
+            <p>The Client acknowledges that risk profiling tools, including questionnaires and algorithmic assessments, are designed to be fit for purpose but may have inherent limitations. Where such limitations are identified, the Adviser shall take reasonable steps to mitigate them through supplementary analysis or clarification.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 6: Fee Structure -->
+        <section id="s6">
+            <h2>6. Fee Structure and Payment</h2>
+
+            <h3>6.1 Fee Mode</h3>
+            <p>The Adviser operates on a <strong>Fixed Fee</strong> basis, as permitted under Regulation 15A of the IA Regulations. The applicable fees are:</p>
+
+            <table>
+                <tr><th>Service</th><th>Fee</th><th>Nature</th></tr>
+                <tr><td>Advisory Unlock</td><td>&#8377;49</td><td>One-time fee for initial personalised advisory report (portfolio diagnostics, problem identification, and recommended actions)</td></tr>
+                <tr><td>Ongoing Advisory</td><td>&#8377;199 per month</td><td>Continuous personalised advisory services, including portfolio monitoring, goal tracking, surplus allocation, and periodic rebalancing recommendations</td></tr>
+            </table>
+
+            <p>The total annual fee per Client Family shall not exceed the cap prescribed by SEBI under the IA Regulations (currently &#8377;1,51,000 per annum per family of clients for Fixed Fee mode).</p>
+
+            <h3>6.2 Fee Disclosure</h3>
+            <p>The fee mode and applicable amounts are disclosed to the Client before this Agreement is executed. The Adviser shall inform the Client in advance of any changes to the fee structure, which shall take effect only upon the Client's continued subscription after such notification.</p>
+
+            <h3>6.3 Mode of Payment</h3>
+            <p>Fees are payable exclusively through:</p>
+            <ul>
+                <li>Bank transfer (NEFT/RTGS/IMPS);</li>
+                <li>UPI; or</li>
+                <li>Such other electronic modes as may be permitted under the IA Regulations.</li>
+            </ul>
+            <p><strong>Cash payments are not accepted.</strong></p>
+
+            <h3>6.4 No Other Consideration</h3>
+            <p>The Adviser does not receive any remuneration, compensation, commission, referral fee, or consideration in any form from any person other than the Client in respect of the Advisory Services or underlying products for which advice is provided, in compliance with Regulation 15(2) of the IA Regulations.</p>
+
+            <h3>6.5 Refund Policy</h3>
+            <p>The one-time Advisory Unlock fee (&#8377;49) is non-refundable once the personalised advisory report has been generated and delivered. For the ongoing advisory subscription (&#8377;199/month), the Client may cancel at any time, and no further charges shall apply from the next billing cycle. Pro-rata refunds for the current billing period are not provided unless required under Applicable Law.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 7: AI Tools Disclosure -->
+        <section id="s7">
+            <h2>7. Use of Artificial Intelligence Tools</h2>
+
+            <div class="highlight-box">
+                <p style="margin-bottom: 0;">This Section constitutes disclosure under Regulation 15(14) and Regulation 18 of the SEBI (Investment Advisers) Regulations, 2013 (as amended).</p>
+            </div>
+
+            <h3>7.1 Extent of AI Usage</h3>
+            <p>Finwiser utilises artificial intelligence, machine learning, and algorithmic systems in the investment advisory process. AI tools are used in the following areas:</p>
+            <ul>
+                <li><strong>Transaction categorisation:</strong> Automated classification of financial transactions into income, expense, investment, and transfer categories using a multi-tier ML pipeline;</li>
+                <li><strong>Financial data analysis:</strong> Processing of Account Aggregator data, email statements, and credit reports to compute financial ratios, net worth, cashflow patterns, and surplus identification;</li>
+                <li><strong>Portfolio diagnostics:</strong> Identification of concentration risks, allocation imbalances, and optimisation opportunities;</li>
+                <li><strong>Goal modelling:</strong> Projections and feasibility simulations for financial goals based on stated assumptions;</li>
+                <li><strong>Advisory generation:</strong> Large language model (LLM) systems assist in generating personalised advisory communications, including portfolio reviews, surplus allocation, and rebalancing recommendations;</li>
+                <li><strong>Risk assessment support:</strong> Algorithmic analysis supplementing the risk profiling and suitability assessment process.</li>
+            </ul>
+
+            <h3>7.2 Adviser Responsibility</h3>
+            <p>Notwithstanding the use of AI tools:</p>
+            <ul>
+                <li>The Adviser remains <strong>solely responsible</strong> for the accuracy, security, confidentiality, and integrity of all Client data processed through AI systems;</li>
+                <li>The Adviser is <strong>solely responsible</strong> for all investment advice provided, irrespective of whether AI tools were used in its generation;</li>
+                <li>The Adviser is responsible for ensuring compliance with all provisions of the IA Regulations and Applicable Law, regardless of the technology employed;</li>
+                <li>AI tools do not diminish the Adviser's fiduciary obligations towards the Client.</li>
+            </ul>
+
+            <h3>7.3 Algorithmic Limitations</h3>
+            <p>The Client acknowledges that AI and algorithmic systems:</p>
+            <ul>
+                <li>Operate based on historical data, statistical models, and assumptions that may not capture all real-world scenarios;</li>
+                <li>May reflect inherent limitations or model bias arising from underlying training data or simplifications;</li>
+                <li>Are subject to periodic review, updates, and improvements;</li>
+                <li>Cannot guarantee accuracy, completeness, or reliability of outputs in all circumstances.</li>
+            </ul>
+            <p>The Adviser undertakes to periodically review algorithmic models for accuracy and appropriateness.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 8: Conflicts of Interest -->
+        <section id="s8">
+            <h2>8. Conflicts of Interest</h2>
+
+            <h3>8.1 Disclosure of Conflicts</h3>
+            <p>The Adviser shall disclose to the Client all actual or potential conflicts of interest as and when they arise, including any connection or association with issuers of products or securities that may impair objectivity or independence.</p>
+
+            <h3>8.2 Structural Safeguards</h3>
+            <p>The following structural safeguards are in place to minimise conflicts:</p>
+            <ul>
+                <li>The Adviser does not undertake distribution or execution services and holds no distribution license (ARN/AMFI registration);</li>
+                <li>The Adviser does not receive any commission, trail, referral fee, or indirect consideration from product manufacturers, AMCs, brokers, or intermediaries;</li>
+                <li>Where mutual fund investments are recommended, the Adviser recommends <strong>direct plans</strong> (not regular plans), eliminating distributor commission conflict;</li>
+                <li>The Adviser maintains arms-length relationship between advisory activities and any other activities, as required under Regulation 15(3);</li>
+                <li>At the family level, client-level segregation is maintained between advisory and any distribution services, as required under the IA Regulations.</li>
+            </ul>
+
+            <h3>8.3 Holdings Disclosure</h3>
+            <p>Where the Adviser holds a personal position in any financial product or security that is the subject matter of advice to the Client, the Adviser shall disclose such holding at the time of providing the relevant advice.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 9: No Execution Without Consent -->
+        <section id="s9">
+            <h2>9. No Execution Without Specific Consent</h2>
+
+            <div class="warning-box">
+                <p style="margin-bottom: 0;"><strong>Important:</strong> This Agreement is for investment advisory services only. The Adviser cannot execute or carry out any trade (purchase or sell transaction) on behalf of the Client without the Client's specific and positive consent on every trade.</p>
+            </div>
+
+            <h3>9.1 Advisory-Only Nature</h3>
+            <p>The Adviser provides advice and recommendations. The Adviser does <strong>not</strong> have authority, power of attorney, or access to execute any transaction on behalf of the Client. All implementation is the Client's sole responsibility.</p>
+
+            <h3>9.2 No Access to Client Accounts</h3>
+            <p>The Adviser does not and shall not request access to the Client's:</p>
+            <ul>
+                <li>Trading or demat account credentials;</li>
+                <li>Banking passwords or PINs;</li>
+                <li>One-time passwords (OTPs); or</li>
+                <li>Any other account access credentials.</li>
+            </ul>
+            <p>If any person claiming to represent Finwiser requests such credentials, the Client should immediately report it to <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 10: Disclosure Obligations -->
+        <section id="s10">
+            <h2>10. Disclosure Obligations</h2>
+
+            <h3>10.1 Disclosures by the Adviser</h3>
+            <p>The Adviser shall disclose to the Client:</p>
+            <ul>
+                <li>All material facts relating to key features of products or securities recommended, particularly performance track record;</li>
+                <li>All actual or potential conflicts of interest;</li>
+                <li>Warnings, disclaimers, and risk factors in relevant product documents and advertising materials;</li>
+                <li>The extent of use of artificial intelligence tools in providing Advisory Services (as detailed in Section 7);</li>
+                <li>Where Advisory Services cover products or services outside SEBI's purview, a clear statement to that effect;</li>
+                <li>The Adviser's personal holdings or positions in securities that are the subject of advice.</li>
+            </ul>
+
+            <h3>10.2 Regulatory Disclosures</h3>
+            <p>The following regulatory disclosures are available on the Finwiser Platform:</p>
+            <ul>
+                <li>SEBI registration details and validity;</li>
+                <li>Investor Charter for Investment Advisers;</li>
+                <li>Complaint statistics (updated periodically);</li>
+                <li>Annual compliance audit status;</li>
+                <li>Fee structure and payment modes;</li>
+                <li>Grievance redressal mechanism and SEBI SCORES link.</li>
+            </ul>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 11: Record Keeping -->
+        <section id="s11">
+            <h2>11. Record Keeping</h2>
+
+            <h3>11.1 Records Maintained</h3>
+            <p>The Adviser shall maintain the following records in compliance with Regulation 19 of the IA Regulations:</p>
+            <ul>
+                <li>KYC records of the Client;</li>
+                <li>Risk profiling and risk assessment records;</li>
+                <li>Suitability assessment for each advice provided;</li>
+                <li>Copy of this Agreement;</li>
+                <li>Investment advice provided, whether written or oral;</li>
+                <li>Rationale for arriving at each investment recommendation;</li>
+                <li>Register containing: date of advice, nature of advice, products advised, and fee charged.</li>
+            </ul>
+
+            <h3>11.2 Retention Period</h3>
+            <p>All records shall be maintained for a minimum of <strong>five (5) years</strong> from the date of the relevant transaction or advice. Where any dispute exists, records shall be maintained until final resolution of such dispute, regardless of the five-year period.</p>
+
+            <h3>11.3 Electronic Records</h3>
+            <p>Records may be maintained in electronic form. The Adviser shall ensure adequate security and backup measures for electronic records.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 12: Confidentiality and Data Protection -->
+        <section id="s12">
+            <h2>12. Confidentiality and Data Protection</h2>
+
+            <h3>12.1 Confidentiality Obligation</h3>
+            <p>The Adviser shall not divulge any confidential information about the Client without the Client's prior permission, except where such disclosure is required to be made in compliance with any law for the time being in force, as required under Regulation 15 of the IA Regulations.</p>
+
+            <h3>12.2 Data Processing</h3>
+            <p>Processing of the Client's personal data in connection with Advisory Services is governed by the <a href="privacy-policy.html">Finwiser Privacy Policy</a>, which forms an integral part of this Agreement. The Privacy Policy describes:</p>
+            <ul>
+                <li>Categories of personal data processed for Advisory Services (Privacy Policy Section 3.4);</li>
+                <li>Consent mechanisms and rights under the Digital Personal Data Protection Act, 2023;</li>
+                <li>Data retention, erasure, and security practices;</li>
+                <li>Grievance redressal for data protection concerns.</li>
+            </ul>
+
+            <h3>12.3 AI Data Security</h3>
+            <p>The Adviser is solely responsible for the security, confidentiality, and integrity of Client data processed through AI tools, as required under Regulation 15(14) of the IA Regulations.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 13: Risk Acknowledgments -->
+        <section id="s13">
+            <h2>13. Risk Acknowledgments and Disclaimers</h2>
+
+            <h3>13.1 Market Risk</h3>
+            <p>The Client acknowledges that:</p>
+            <ul>
+                <li>All investments are subject to market risks, including risk of loss of capital;</li>
+                <li>Past performance does not indicate or guarantee future results;</li>
+                <li>The Adviser does not assure returns or risk-free investments;</li>
+                <li>All advice is subject to market risks, economic conditions, regulatory changes, and factors beyond the Adviser's control.</li>
+            </ul>
+
+            <h3>13.2 No Guaranteed Returns</h3>
+            <div class="warning-box">
+                <p style="margin-bottom: 0;"><strong>The Adviser does not guarantee any specific return, minimum return, or capital protection.</strong> Any projections, simulations, or estimates are based on assumptions and historical data and may not reflect actual outcomes.</p>
+            </div>
+
+            <h3>13.3 Performance Validation</h3>
+            <p>Unless expressly stated and validated by a SEBI-recognised Performance Validation Agency, any performance figures, simulations, projections, or back-tests presented through the Platform or Advisory Services remain unaudited, unverified, and uncertified, and shall not be construed as performance claims or assurances.</p>
+
+            <h3>13.4 Dependence on Client Information</h3>
+            <p>The quality and suitability of advice depends on the accuracy and completeness of information provided by the Client and accessed through the Account Aggregator framework. Incomplete or inaccurate information may result in advice that does not fully reflect the Client's circumstances.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 14: Limitation of Liability -->
+        <section id="s14">
+            <h2>14. Limitation of Liability</h2>
+
+            <h3>14.1 Scope</h3>
+            <p>This Section applies to the Advisory Services provided under this Agreement. It is subject to and does not override the Adviser's fiduciary obligations, suitability requirements, and other obligations under the IA Regulations.</p>
+
+            <h3>14.2 Exclusion of Liability for Market Outcomes</h3>
+            <p>The Adviser shall not be liable for investment losses arising from market movements, economic conditions, regulatory changes, or other external factors, provided the advice was given in good faith, in compliance with suitability requirements, and in accordance with the Client's Risk Profile.</p>
+
+            <h3>14.3 Exclusion of Indirect Damages</h3>
+            <p>To the extent permitted under Applicable Law, the Adviser shall not be liable for any indirect, incidental, special, punitive, or consequential damages, including loss of profits or opportunity, arising from or in connection with Advisory Services.</p>
+
+            <h3>14.4 Liability Cap</h3>
+            <p>The Adviser's aggregate liability under this Agreement shall not exceed the total advisory fees paid by the Client in the twelve (12) months preceding the event giving rise to the claim.</p>
+
+            <h3>14.5 Regulatory Carve-Out</h3>
+            <p>Nothing in this Section shall:</p>
+            <ul>
+                <li>Exclude or limit liability arising from the Adviser's wilful misconduct, fraud, or gross negligence;</li>
+                <li>Override obligations imposed by the IA Regulations, including fiduciary duties and suitability requirements;</li>
+                <li>Restrict statutory rights or remedies available to the Client under Applicable Law, including rights under the Consumer Protection Act, 2019.</li>
+            </ul>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 15: Termination -->
+        <section id="s15">
+            <h2>15. Termination</h2>
+
+            <h3>15.1 Client-Initiated Termination</h3>
+            <p>The Client may terminate this Agreement at any time by:</p>
+            <ul>
+                <li>Cancelling the advisory subscription through the Platform; or</li>
+                <li>Sending written notice to <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>.</li>
+            </ul>
+            <p>Upon termination, the Adviser shall cease providing Advisory Services from the effective date. No further advisory fees shall be charged from the next billing cycle.</p>
+
+            <h3>15.2 Adviser-Initiated Termination</h3>
+            <p>The Adviser may terminate this Agreement upon reasonable notice where:</p>
+            <ul>
+                <li>The Client fails to provide required information or cooperate with KYC/risk profiling requirements;</li>
+                <li>The Client engages in conduct that materially breaches this Agreement;</li>
+                <li>Continued advisory provision becomes impracticable due to regulatory changes; or</li>
+                <li>The Adviser ceases to hold SEBI registration as an Investment Adviser.</li>
+            </ul>
+
+            <h3>15.3 Effect of Termination</h3>
+            <p>Upon termination:</p>
+            <ul>
+                <li>The Adviser shall cease providing new Advisory Services;</li>
+                <li>The Client retains access to previously delivered advice records through the Platform, subject to Platform availability;</li>
+                <li>Record-keeping obligations under Section 11 continue for the prescribed retention period;</li>
+                <li>Confidentiality obligations under Section 12 survive termination;</li>
+                <li>Pending grievances shall continue to be addressed per Section 16.</li>
+            </ul>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 16: Grievance Redressal -->
+        <section id="s16">
+            <h2>16. Grievance Redressal</h2>
+
+            <h3>16.1 Grievance Officer</h3>
+            <table>
+                <tr><th>Field</th><th>Details</th></tr>
+                <tr><td>Name</td><td>Chandrachuda Sarma Y</td></tr>
+                <tr><td>Email</td><td><a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></td></tr>
+                <tr><td>Response Time</td><td>Acknowledgment within 3 working days; resolution within 7 business working days or as prescribed by SEBI</td></tr>
+            </table>
+
+            <h3>16.2 Escalation Path</h3>
+            <p>If a grievance is not resolved satisfactorily, the Client may escalate through the following channels:</p>
+            <ol>
+                <li><strong>SEBI SCORES:</strong> <a href="https://scores.sebi.gov.in" target="_blank" rel="noopener">https://scores.sebi.gov.in</a> &mdash; SEBI's online complaint redressal system;</li>
+                <li><strong>SEBI ODR Portal:</strong> Online Dispute Resolution platform for securities market disputes;</li>
+                <li><strong>Consumer Forums:</strong> The Client's right to approach the appropriate Consumer Disputes Redressal Commission under the Consumer Protection Act, 2019 is preserved and is not restricted by this Agreement.</li>
+            </ol>
+
+            <h3>16.3 No Restriction on Statutory Rights</h3>
+            <p>Nothing in this Agreement restricts the Client's right to approach any competent regulatory authority, judicial authority, or consumer forum under Applicable Law.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 17: Governing Law -->
+        <section id="s17">
+            <h2>17. Governing Law and Dispute Resolution</h2>
+
+            <h3>17.1 Governing Law</h3>
+            <p>This Agreement shall be governed by and construed in accordance with the laws of India.</p>
+
+            <h3>17.2 Dispute Resolution</h3>
+            <p>Any dispute arising out of or in connection with this Agreement shall be resolved as follows:</p>
+            <ol>
+                <li><strong>Amicable Resolution:</strong> The parties shall attempt to resolve the dispute amicably within thirty (30) days of written notice by one party to the other;</li>
+                <li><strong>Regulatory Channels:</strong> The Client may escalate unresolved disputes through SEBI SCORES or the ODR platform;</li>
+                <li><strong>Arbitration (optional):</strong> If the parties mutually agree, disputes may be referred to arbitration under the Arbitration and Conciliation Act, 1996. The arbitration shall be conducted by a sole arbitrator mutually appointed, with Bengaluru, Karnataka as the seat and venue, and English as the language of proceedings.</li>
+            </ol>
+
+            <h3>17.3 Consumer Forum Rights Preserved</h3>
+            <p>The Client's right to approach the appropriate Consumer Disputes Redressal Commission under the Consumer Protection Act, 2019 is not restricted or waived by any provision of this Agreement, including the arbitration clause above. Arbitration is available as an <strong>option at the Client's choice</strong>, not as a mandatory requirement.</p>
+
+            <h3>17.4 Jurisdiction</h3>
+            <p>Subject to the above, the courts of Bengaluru, Karnataka shall have jurisdiction over matters arising under this Agreement.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section 18: General Provisions -->
+        <section id="s18">
+            <h2>18. General Provisions</h2>
+
+            <h3>18.1 Entire Agreement</h3>
+            <p>This Agreement, together with the <a href="terms.html">Platform Terms &amp; Conditions</a>, the <a href="privacy-policy.html">Privacy Policy</a>, and the MITC Annexure, constitutes the entire agreement between the parties for Advisory Services. In case of conflict:</p>
+            <ul>
+                <li>This Agreement (including the MITC Annexure) prevails for Advisory Services;</li>
+                <li>The Platform Terms prevail for Platform usage;</li>
+                <li>The Privacy Policy prevails for personal data processing;</li>
+                <li>All documents are subject to Applicable Law.</li>
+            </ul>
+
+            <h3>18.2 Amendments</h3>
+            <p>The Adviser may amend this Agreement from time to time to reflect regulatory changes or operational updates. Material amendments shall be communicated to the Client in advance through the Platform or electronic communication. Continued use of Advisory Services after the effective date of amendments constitutes acceptance.</p>
+
+            <h3>18.3 Severability</h3>
+            <p>If any provision is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.</p>
+
+            <h3>18.4 Assignment</h3>
+            <p>The Client may not assign this Agreement without the Adviser's prior written consent. The Adviser may assign this Agreement as part of a corporate restructuring or transition to a body corporate registration, provided such assignment does not diminish the Client's rights under Applicable Law, and the Client is given reasonable prior notice.</p>
+
+            <h3>18.5 Electronic Agreement</h3>
+            <p>This Agreement is executed electronically through the Finwiser Platform. Electronic acceptance (including checking an &ldquo;I agree&rdquo; checkbox or equivalent affirmative action) constitutes a valid and binding agreement under the Information Technology Act, 2000, Section 10A. This Agreement does not require physical or digital signatures to be enforceable.</p>
+
+            <h3>18.6 Survival</h3>
+            <p>Sections 8 (Conflicts of Interest), 11 (Record Keeping), 12 (Confidentiality), 13 (Risk Acknowledgments), 14 (Limitation of Liability), 16 (Grievance Redressal), and 17 (Governing Law) shall survive termination of this Agreement.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- MITC Annexure -->
+        <section id="mitc">
+            <h2>Annexure: Most Important Terms and Conditions (MITC)</h2>
+
+            <div class="mitc-box">
+                <p style="margin-bottom: 0;">This Annexure is issued in compliance with the SEBI Circular on Most Important Terms and Conditions for Investment Advisers (SEBI/HO/MIRSD/MIRSD-PoD/P/CIR/2025/19, dated February 17, 2025). It summarises the key terms of the Investment Advisory Agreement in a clear and accessible format.</p>
+            </div>
+
+            <!-- MITC 1 -->
+            <h3>1. Scope of Service</h3>
+            <p>Finwiser provides personalised investment advisory services using technology-enabled tools and AI systems. The Client is required to share relevant financial details (income, investments, liabilities, goals) to enable the Adviser to conduct risk profiling and provide suitable advice.</p>
+            <ul>
+                <li>The Adviser conducts risk profiling <strong>before and during</strong> the advisory engagement;</li>
+                <li>The Client's Risk Profile is communicated to the Client through the Platform;</li>
+                <li>Advice covers financial planning, portfolio review, goal-based allocation, surplus direction, and rebalancing;</li>
+                <li>Advisory Services are delivered through the Finwiser Platform (mobile application and web interface).</li>
+            </ul>
+
+            <!-- MITC 2 -->
+            <h3>2. Service Fees</h3>
+            <table>
+                <tr><th>Component</th><th>Amount</th><th>Description</th></tr>
+                <tr><td>Fee Mode</td><td colspan="2">Fixed Fee (per Regulation 15A)</td></tr>
+                <tr><td>Advisory Unlock</td><td>&#8377;49 (one-time)</td><td>Initial personalised advisory report</td></tr>
+                <tr><td>Ongoing Advisory</td><td>&#8377;199/month</td><td>Continuous advisory services</td></tr>
+                <tr><td>Annual Cap</td><td colspan="2">Total fees shall not exceed &#8377;1,51,000 per annum per Client Family</td></tr>
+                <tr><td>Payment Modes</td><td colspan="2">Bank transfer, UPI only. <strong>No cash.</strong></td></tr>
+            </table>
+
+            <!-- MITC 3 -->
+            <h3>3. No Trade Execution Without Consent</h3>
+            <div class="warning-box">
+                <p style="margin-bottom: 0;">This Agreement is for the investment advisory services provided by the Adviser. The Adviser <strong>cannot execute or carry out any trade</strong> (purchase or sell transaction) on behalf of the Client without the Client's specific and positive consent on every trade. The Adviser does not hold execution or distribution licenses and cannot place orders on the Client's behalf.</p>
+            </div>
+
+            <!-- MITC 4 -->
+            <h3>4. Conflict of Interest Disclosure</h3>
+            <ul>
+                <li>The Adviser discloses and mitigates all conflicts of interest;</li>
+                <li>The Adviser and related entities do not provide distribution services;</li>
+                <li>The Adviser does not receive commissions, trail fees, or indirect incentives from product providers;</li>
+                <li>Where mutual funds are recommended, <strong>direct plans are preferred</strong> to eliminate distributor commission conflicts;</li>
+                <li>The Adviser's personal holdings in recommended securities are disclosed.</li>
+            </ul>
+
+            <!-- MITC 5 -->
+            <h3>5. Grievance Redressal</h3>
+            <table>
+                <tr><th>Channel</th><th>Details</th></tr>
+                <tr><td>Grievance Officer</td><td>Chandrachuda Sarma Y &mdash; <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></td></tr>
+                <tr><td>Response</td><td>Acknowledgment within 3 working days; resolution within 7 business working days</td></tr>
+                <tr><td>SEBI SCORES</td><td><a href="https://scores.sebi.gov.in" target="_blank" rel="noopener">https://scores.sebi.gov.in</a></td></tr>
+                <tr><td>ODR Portal</td><td>SEBI Online Dispute Resolution platform</td></tr>
+                <tr><td>Consumer Forum</td><td>Client's right to approach Consumer Disputes Redressal Commission is preserved</td></tr>
+            </table>
+
+            <!-- MITC 6 -->
+            <h3>6. Termination</h3>
+            <ul>
+                <li>The Client may terminate this Agreement at any time by cancelling the subscription through the Platform or by emailing <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>;</li>
+                <li>No further advisory fees are charged from the next billing cycle upon termination;</li>
+                <li>The Adviser may terminate upon reasonable notice for stated grounds (non-cooperation, material breach, regulatory changes);</li>
+                <li>Record-keeping and confidentiality obligations survive termination.</li>
+            </ul>
+
+            <!-- MITC 7 -->
+            <h3>7. Data Usage and AI Disclosure</h3>
+            <ul>
+                <li>Finwiser uses <strong>artificial intelligence, machine learning, and algorithmic systems</strong> in the advisory process, including transaction categorisation, portfolio diagnostics, goal modelling, and advisory generation;</li>
+                <li>The Adviser remains solely responsible for all advice provided, regardless of AI tool usage;</li>
+                <li>Client data accessed through the Account Aggregator framework is used only for the purposes specified in the consent artefact;</li>
+                <li>Data processing practices are governed by the <a href="privacy-policy.html">Finwiser Privacy Policy</a>;</li>
+                <li>The Adviser is solely responsible for the security, confidentiality, and integrity of Client data processed through AI systems.</li>
+            </ul>
+
+            <!-- MITC 8 -->
+            <h3>8. Record Retention</h3>
+            <ul>
+                <li>The Adviser maintains records of KYC, risk profiling, suitability assessments, advice provided, and rationale for each recommendation;</li>
+                <li>All records are retained for a minimum of <strong>five (5) years</strong> from the date of the relevant transaction or advice;</li>
+                <li>In case of dispute, records are maintained until final resolution;</li>
+                <li>Records may be in electronic form with adequate security measures.</li>
+            </ul>
+
+            <!-- MITC 9 -->
+            <h3>9. No Assured Returns</h3>
+            <div class="warning-box">
+                <p><strong>The Adviser does not assure returns or risk-free investments. All advice is subject to market risks.</strong></p>
+                <p>Investments in securities are subject to market risk. Past performance does not guarantee future results. The value of investments may go up or down, and the Client may receive back less than the amount invested. Projections and simulations are based on assumptions and may not reflect actual outcomes.</p>
+                <p style="margin-bottom: 0;">Registration granted by SEBI, membership of BASL, and certification from NISM in no way guarantee performance of the intermediary or provide any assurance of returns to investors.</p>
+            </div>
+
+            <!-- MITC 10 -->
+            <h3>10. Credential Security</h3>
+            <ul>
+                <li>The Adviser shall <strong>never</strong> ask the Client for login credentials, passwords, PINs, OTPs, or account access details;</li>
+                <li>The Client should never share such credentials with anyone claiming to represent Finwiser;</li>
+                <li>If any person requests such information claiming to act on Finwiser's behalf, the Client should immediately report it to <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>;</li>
+                <li>Financial data access occurs exclusively through the consent-based Account Aggregator framework, which is read-only and non-transactional.</li>
+            </ul>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Finwiser. All rights reserved.</p>
+        <p>
+            <a href="index.html">Home</a> |
+            <a href="mailto:helpdesk@finwiser.org">Contact Us</a> |
+            <a href="terms.html">Terms &amp; Conditions</a> |
+            <a href="privacy-policy.html">Privacy Policy</a>
+        </p>
+        <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+            SEBI Registered Investment Adviser - Individual | Registration No: INA000021331
+        </p>
+    </footer>
+</body>
+</html>
