@@ -254,7 +254,7 @@
 <body>
     <header id="top">
         <h1>Finwiser Privacy Policy</h1>
-        <p>Last Updated: January 2025</p>
+        <p>Last Updated: 22 April 2026</p>
     </header>
 
     <div class="container">
@@ -271,6 +271,7 @@
                 <li><a href="#section-8">User Rights under the DPDP Act, 2023</a></li>
                 <li><a href="#section-9">Grievance Redressal</a></li>
                 <li><a href="#section-10">Updates to This Privacy Policy</a></li>
+                <li><a href="#section-11">Governing Law and Jurisdiction</a></li>
             </ol>
         </nav>
 
@@ -278,6 +279,14 @@
         <section id="section-1">
             <h2>1. Applicability and Scope</h2>
             <p>This Privacy Policy describes how Finwiser ("we", "us", "our") collects, uses, stores, shares, and protects personal data when you access or use the Finwiser Platform (website/mobile application and related services).</p>
+
+            <h3>1.1 About the entities behind Finwiser</h3>
+            <p>The Finwiser service involves two distinct legal identities, each with a different role:</p>
+            <ul>
+                <li><strong>Finwiser Technologies LLP</strong> is the platform provider. Technologies LLP publishes the Finwiser mobile app on Google Play and the iOS App Store, operates the servers, manages app distribution and technical infrastructure, and is the entity that enters into the platform agreement with you as a user.</li>
+                <li><strong>Chandrachuda Sarma Y</strong>, a SEBI Registered Investment Adviser (Individual), holds SEBI RIA registration <strong>INA000021331</strong> and provides the regulated investment advisory services offered through the platform. The RIA licence is held individually by Chandrachuda Sarma Y and will transfer to <strong>Finwiser Advisory LLP</strong> upon its formation; any future transfer will be communicated to users in advance.</li>
+            </ul>
+            <p>Both identities are collectively referred to as "Finwiser", "we", "us" or "our" in this policy. Where a right or obligation is specific to one identity, this policy names it explicitly.</p>
 
             <p>This Policy applies to:</p>
             <ul>
@@ -541,15 +550,14 @@
             <p>Finwiser may share personal data with the following categories of recipients:</p>
 
             <h4>5.2.1 Service Providers and Data Processors</h4>
-            <p>We may share personal data with vendors who process data on our behalf to operate the Platform, such as:</p>
+            <p>Finwiser uses the following named third-party service providers to deliver the service. Each processor receives only the minimum data necessary for its function, under written or published contractual terms:</p>
             <ul>
-                <li>cloud hosting and infrastructure providers;</li>
-                <li>database, storage, and backup providers;</li>
-                <li>communication providers (SMS, email, WhatsApp or equivalent channels, if used);</li>
-                <li>customer support tooling (ticketing/helpdesk);</li>
-                <li>analytics and performance monitoring tools;</li>
-                <li>security and fraud-prevention providers; and</li>
-                <li>identity verification/KYC service providers, only when required for a specific feature or onboarding step.</li>
+                <li><strong>MongoDB Atlas</strong> (hosted database, MongoDB Inc.) — stores your financial data encrypted at rest in the Mumbai, India region.</li>
+                <li><strong>MSG91</strong> (OTP SMS delivery, WALKOVER WEB SOLUTIONS PVT LTD) — delivers the one-time password to your registered mobile number during login. Receives only your mobile number and the OTP.</li>
+                <li><strong>Finvu</strong> and <strong>Saafe</strong> (RBI-licensed Account Aggregators) — receive your consent to share financial data from your banks and mutual funds, and relay encrypted data to Finwiser. Finwiser is registered as a Financial Information User (FIU) with these Account Aggregators.</li>
+                <li><strong>Google Firebase Cloud Messaging</strong> (push notifications, Google LLC) — delivers non-financial push notifications (e.g. goal reminders) to your device. Does not receive financial data.</li>
+                <li><strong>Google Cloud Platform</strong> (email push infrastructure, Google LLC) — used to receive notifications from Gmail when you have connected Gmail for email-based statement ingestion (optional, off by default).</li>
+                <li><strong>Zoho Mail</strong> (business email, Zoho Corporation Pvt Ltd) — hosts the grievance-officer mailbox (<a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>).</li>
             </ul>
             <p>These recipients act as <strong>Data Processors</strong> and are contractually required to:</p>
             <ul>
@@ -557,6 +565,7 @@
                 <li>apply appropriate security safeguards; and</li>
                 <li>not use the data for their own independent purposes.</li>
             </ul>
+            <p><strong>We do not sell your personal or financial data to any third party.</strong></p>
 
             <h4>5.2.2 Account Aggregator Ecosystem Participants</h4>
             <p>Where you provide consent through the Account Aggregator framework, Finwiser will exchange the minimum required technical and consent-related information with:</p>
@@ -679,13 +688,29 @@
             </ul>
             <p>Where you request deletion or close your account, derived data will be deleted or irreversibly anonymised unless retention is required under Applicable Law.</p>
 
-            <h3>6.3 Account Closure and Deletion Requests</h3>
-            <p>You may request account deletion or closure through the Platform or support channels. Upon closure:</p>
+            <h3>6.3 Account Deletion and Data Handling on Deletion</h3>
+            <p>You may request deletion of your Finwiser account at any time, either:</p>
             <ul>
-                <li>Finwiser will disable access to the Platform; and</li>
-                <li>commence deletion or anonymisation processes in accordance with this Policy.</li>
+                <li>in-app: Profile → "Delete my account" (two-step confirmation);</li>
+                <li>on the web: <a href="delete-account.html">https://finwiser.org/delete-account.html</a>;</li>
+                <li>by email: <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>.</li>
             </ul>
-            <p>Finwiser may retain limited information after closure where necessary for:</p>
+            <p>When you request account deletion, we take the following actions:</p>
+            <ol>
+                <li>We permanently delete the following data from our active systems:
+                    <ul>
+                        <li>your user account record (name, email, mobile number, date of birth, PAN, address, profile details);</li>
+                        <li>your onboarding progress, financial profile, risk profile, and goals;</li>
+                        <li>your budgets, holdings, transactions, net-worth snapshots, and cash-flow snapshots; and</li>
+                        <li>all JWT refresh tokens and active session credentials.</li>
+                    </ul>
+                </li>
+                <li>We delete our local copy of your Account Aggregator consent artefacts and immediately stop all scheduled data fetches against them.</li>
+                <li><strong>Important — Account Aggregator consent revocation is done by you at the Account Aggregator.</strong> Under the RBI/ReBIT Account Aggregator framework, only the user (Data Principal) can revoke a consent issued to a Financial Information User (FIU). Finwiser, as the FIU, cannot revoke your AA consents programmatically on your behalf. To fully revoke the consent at the AA provider, please open your Account Aggregator app (Finvu or Saafe) and revoke the consent there. The deletion confirmation screen in the Finwiser app displays the consent IDs you need to revoke and provides links where available. We have stopped using the consent from the moment you requested deletion; full revocation at the AA is the final step only you can take.</li>
+                <li>Backup copies of deleted data are purged from our backups within 30 days of your request.</li>
+                <li>Anonymous, non-identifying aggregate statistics (e.g. total active user counts) may persist in our analytics systems; these do not contain any data that could identify you after deletion.</li>
+            </ol>
+            <p>Finwiser may retain limited information after deletion where necessary for:</p>
             <ul>
                 <li>compliance with Applicable Law;</li>
                 <li>regulatory record-keeping (including SEBI requirements where applicable);</li>
@@ -893,6 +918,14 @@
 
             <a href="#top" class="back-to-top">Back to Top</a>
         </section>
+
+        <!-- Section 11 -->
+        <section id="section-11">
+            <h2>11. Governing Law and Jurisdiction</h2>
+            <p>This Privacy Policy is governed by and construed in accordance with the laws of India. The courts at <strong>Bengaluru, Karnataka</strong> shall have exclusive jurisdiction over any disputes arising out of or in connection with this policy.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
     </div>
 
     <footer>
@@ -900,7 +933,8 @@
         <p>
             <a href="index.html">Home</a> |
             <a href="mailto:helpdesk@finwiser.org">Contact Us</a> |
-            <a href="terms.html">Terms & Conditions</a>
+            <a href="terms.html">Terms & Conditions</a> |
+            <a href="delete-account.html">Delete Account</a>
         </p>
         <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
             SEBI Registered Investment Adviser - Individual | Registration No: INA000021331
