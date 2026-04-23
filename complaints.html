@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finwiser &mdash; Monthly Complaints Status</title>
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --primary-light: #14b8a6;
+            --bg-gradient-start: #0d9488;
+            --bg-gradient-end: #115e59;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        h3 {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin: 25px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-dark);
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight-box {
+            background: #f0fdfa;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: var(--primary-dark);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        td:first-child {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .snapshot-card {
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .snapshot-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .snapshot-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: var(--primary-light);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="top">
+        <h1>Monthly Complaints Status</h1>
+        <p>Investor Grievance Disclosure &mdash; Finwiser (SEBI RIA: INA000021331)</p>
+        <p>Last Updated: 23 April 2026</p>
+    </header>
+
+    <div class="container">
+        <!-- Snapshot -->
+        <section>
+            <h2>At-a-Glance Snapshot</h2>
+            <div class="snapshot-grid">
+                <div class="snapshot-card">
+                    <div class="snapshot-label">Current Pending</div>
+                    <div class="snapshot-value">0</div>
+                </div>
+                <div class="snapshot-card">
+                    <div class="snapshot-label">Received (This Month)</div>
+                    <div class="snapshot-value">0</div>
+                </div>
+                <div class="snapshot-card">
+                    <div class="snapshot-label">Resolved (This Month)</div>
+                    <div class="snapshot-value">0</div>
+                </div>
+                <div class="snapshot-card">
+                    <div class="snapshot-label">Pending &gt; 3 months</div>
+                    <div class="snapshot-value">0</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>No investor complaints have been received since SEBI registration on 04 November 2025.</strong></p>
+            </div>
+
+            <p><strong>Disclosure cadence:</strong> This page is updated by the 7<sup>th</sup> of each succeeding month, in compliance with SEBI's complaint-disclosure framework for Investment Advisers.</p>
+            <p><strong>Sources tracked:</strong> Direct (email / phone / letter / in-person), SEBI SCORES, SMART ODR, IAASB / BASL referrals.</p>
+        </section>
+
+        <!-- Monthly table -->
+        <section>
+            <h2>Monthly Complaints Status &mdash; FY 2025&ndash;26 (H2) &amp; FY 2026&ndash;27 (H1)</h2>
+            <p>Data is presented from the month of SEBI registration (November 2025) onwards.</p>
+
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sl.</th>
+                            <th>Month</th>
+                            <th>Pending at Start</th>
+                            <th>Received</th>
+                            <th>Resolved</th>
+                            <th>Pending at End</th>
+                            <th>Pending &gt; 3 Months</th>
+                            <th>Avg. Resolution (days)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>November 2025</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>NA</td></tr>
+                        <tr><td>2</td><td>December 2025</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>NA</td></tr>
+                        <tr><td>3</td><td>January 2026</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>NA</td></tr>
+                        <tr><td>4</td><td>February 2026</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>NA</td></tr>
+                        <tr><td>5</td><td>March 2026</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>NA</td></tr>
+                        <tr><td>6</td><td>April 2026 (current)</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>NA</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Annual aggregate -->
+        <section>
+            <h2>Annual Aggregate &mdash; Financial Year Summary</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Financial Year</th>
+                            <th>Carried Forward (Opening)</th>
+                            <th>Received</th>
+                            <th>Resolved</th>
+                            <th>Pending (Closing)</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>FY 2025&ndash;26</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Registered 04-Nov-2025</td></tr>
+                        <tr><td>FY 2024&ndash;25</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>Not registered as IA</td></tr>
+                        <tr><td>FY 2023&ndash;24</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>Not registered as IA</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- How to complain -->
+        <section>
+            <h2>How to Lodge a Complaint</h2>
+            <p>If you have a grievance regarding any advisory service provided by Finwiser, you may lodge it through any of the following channels. Full details are in the <a href="investor-charter.html#section-e">Investor Charter &mdash; Grievance Redressal</a> section.</p>
+
+            <h3>Step 1: Contact Finwiser</h3>
+            <ul>
+                <li><strong>Email:</strong> <a href="mailto:chandrachudasarma@gmail.com">chandrachudasarma@gmail.com</a> or <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></li>
+                <li><strong>Mobile:</strong> +91 8801294657</li>
+                <li><strong>Grievance Redressal Officer:</strong> Chandrachuda Sarma Yemmanuru (Proprietor)</li>
+                <li><strong>Acknowledgement:</strong> Within 1 working day. Resolution target: 7 days. Outer limit: 21 days.</li>
+            </ul>
+
+            <h3>Step 2: Escalate to IAASB (BASL)</h3>
+            <p>If unresolved, contact BSE Administration &amp; Supervision Limited (IAASB) at P. J. Towers, Dalal Street, Mumbai &ndash; 400 001. Website: <a href="https://www.bseasl.com" target="_blank" rel="noopener">www.bseasl.com</a>.</p>
+
+            <h3>Step 3: SEBI SCORES</h3>
+            <p>Lodge a complaint on the SEBI Complaints Redress System: <a href="https://scores.sebi.gov.in" target="_blank" rel="noopener">scores.sebi.gov.in</a>. SCORES is SEBI's centralised online platform for complaints against any registered intermediary.</p>
+
+            <h3>Step 4: SMART ODR</h3>
+            <p>For online mediation, conciliation, or arbitration: <a href="https://smartodr.in" target="_blank" rel="noopener">smartodr.in</a>.</p>
+
+            <div class="info-box">
+                <p>Exercising the right to escalate will not result in any adverse action by Finwiser. All complaints are treated equally, regardless of the channel.</p>
+            </div>
+        </section>
+
+        <!-- Definitions & methodology -->
+        <section>
+            <h2>Definitions &amp; Methodology</h2>
+            <ul>
+                <li><strong>Complaint:</strong> Any written or verbal expression of dissatisfaction by a client (or prospective client) regarding any aspect of Finwiser's advisory services.</li>
+                <li><strong>Received:</strong> Complaints logged in the Grievance Register during the calendar month, regardless of channel.</li>
+                <li><strong>Resolved:</strong> Complaints for which a written Final Response has been sent to the client and the complaint marked closed in the register.</li>
+                <li><strong>Pending:</strong> Complaints in the register that have been received but not yet marked resolved.</li>
+                <li><strong>Average Resolution Time:</strong> Sum of days taken to resolve each complaint resolved in the period, divided by the number of complaints resolved. &ldquo;NA&rdquo; indicates no complaints were resolved in the period.</li>
+                <li><strong>Carried Forward / Opening:</strong> Complaints pending at the start of the financial year that remained unresolved from the previous year.</li>
+            </ul>
+            <p>The methodology aligns with SEBI's complaint-disclosure requirements for Investment Advisers. Grievance-register details are retained for a minimum of five years, as required under Regulation 19 of the SEBI (IA) Regulations, 2013.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Finwiser. All rights reserved.</p>
+        <p>
+            <a href="index.html">Home</a> |
+            <a href="mailto:helpdesk@finwiser.org">Contact Us</a> |
+            <a href="terms.html">Terms &amp; Conditions</a> |
+            <a href="privacy-policy.html">Privacy Policy</a> |
+            <a href="investor-charter.html">Investor Charter</a> |
+            <a href="disclosures.html">Disclosures</a> |
+            <a href="delete-account.html">Delete Account</a>
+        </p>
+        <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+            SEBI Registered Investment Adviser &ndash; Individual | Registration No: INA000021331
+        </p>
+    </footer>
+</body>
+</html>

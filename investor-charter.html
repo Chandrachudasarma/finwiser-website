@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finwiser Investor Charter</title>
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --primary-light: #14b8a6;
+            --bg-gradient-start: #0d9488;
+            --bg-gradient-end: #115e59;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        nav {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        nav h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        nav ol {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+
+        nav li {
+            margin-bottom: 10px;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        h3 {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin: 25px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-dark);
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 16px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        .highlight-box {
+            background: #f0fdfa;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .do-dont-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .do-card {
+            background: #f0fdfa;
+            border: 1px solid #99f6e4;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .dont-card {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .do-card h4 {
+            color: #047857;
+            margin-bottom: 10px;
+        }
+
+        .dont-card h4 {
+            color: #b91c1c;
+            margin-bottom: 10px;
+        }
+
+        .contact-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .contact-card h4 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: var(--primary-light);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .do-dont-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="top">
+        <h1>Finwiser Investor Charter</h1>
+        <p>For Investment Advisers &mdash; Issued under SEBI (Investment Advisers) Regulations, 2013</p>
+        <p>Last Updated: 23 April 2026</p>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>Table of Contents</h2>
+            <ol>
+                <li><a href="#section-a">Vision</a></li>
+                <li><a href="#section-b">Mission</a></li>
+                <li><a href="#section-c">Details of Business Transacted</a></li>
+                <li><a href="#section-d">Services Offered</a></li>
+                <li><a href="#section-e">Grievance Redressal Mechanism</a></li>
+                <li><a href="#section-f">Rights of Investors</a></li>
+                <li><a href="#section-g">Responsibilities of Investors</a></li>
+                <li><a href="#section-h">DOs for Investors</a></li>
+                <li><a href="#section-i">DON'Ts for Investors</a></li>
+                <li><a href="#section-j">Code of Conduct for Investment Adviser</a></li>
+                <li><a href="#section-k">Declaration</a></li>
+            </ol>
+        </nav>
+
+        <!-- Section A: Vision -->
+        <section id="section-a">
+            <h2>A. Vision</h2>
+            <p>Every Indian earning a salary deserves a financial advisor in their pocket &mdash; one that knows their numbers, works 24/7, has zero conflicts of interest, and costs less than one dinner out.</p>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section B: Mission -->
+        <section id="section-b">
+            <h2>B. Mission</h2>
+            <p>To make high-quality, fiduciary financial guidance accessible to the underserved Indian middle class &mdash; plugging into real bank data, directing every rupee of surplus to its best use (starting with emergency fund and retirement), for a transparent flat fee, and zero commissions, ever.</p>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section C: Details of Business -->
+        <section id="section-c">
+            <h2>C. Details of Business Transacted</h2>
+            <p>Finwiser is the trade name under which <strong>Chandrachuda Sarma Yemmanuru</strong> (Sole Proprietor) operates as a <strong>SEBI-registered Investment Adviser (Individual)</strong>. The Investment Adviser provides non-binding personalised investment advice to retail clients in India, in compliance with the SEBI (Investment Advisers) Regulations, 2013.</p>
+
+            <div class="contact-card">
+                <h4>Registration Details</h4>
+                <ul>
+                    <li><strong>Registered Name:</strong> Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser)</li>
+                    <li><strong>Trade Name:</strong> Finwiser</li>
+                    <li><strong>SEBI Registration Number:</strong> INA000021331</li>
+                    <li><strong>Type of Registration:</strong> Non&ndash;Corporate (Individual)</li>
+                    <li><strong>Validity:</strong> 04 November 2025 &mdash; Perpetual (subject to renewal of fees)</li>
+                    <li><strong>BASL (IAASB) Membership:</strong> Enlistment under process with BSE Administration &amp; Supervision Limited</li>
+                    <li><strong>PAN:</strong> ADXPY4227H</li>
+                    <li><strong>GSTIN:</strong> 29ADXPY4227H1ZN</li>
+                </ul>
+            </div>
+
+            <div class="contact-card">
+                <h4>Principal / Registered Office</h4>
+                <p>H.No. 181, 14th Cross, Bluejay Atmosphere Phase II,<br>
+                Andhrahalli Main Road, Nagasandra Post,<br>
+                Bengaluru &ndash; 560073, Karnataka, India</p>
+            </div>
+
+            <div class="contact-card">
+                <h4>Contact Details</h4>
+                <ul>
+                    <li><strong>Email:</strong> <a href="mailto:chandrachudasarma@gmail.com">chandrachudasarma@gmail.com</a> / <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></li>
+                    <li><strong>Mobile:</strong> +91 8801294657</li>
+                    <li><strong>Website:</strong> <a href="https://finwiser.org">https://finwiser.org</a></li>
+                </ul>
+            </div>
+
+            <h3>Supervisory Framework</h3>
+            <p>The Investment Adviser is supervised by the <strong>Investment Adviser Administration and Supervisory Body (IAASB)</strong>, which is <strong>BSE Administration &amp; Supervision Limited (BASL)</strong>, a wholly-owned subsidiary of BSE Limited, as recognised by SEBI.</p>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section D: Services Offered -->
+        <section id="section-d">
+            <h2>D. Services Offered</h2>
+            <p>Finwiser provides personalised investment advice covering the following areas, subject to the client executing an Investment Advisory Agreement:</p>
+            <ul>
+                <li><strong>Financial planning</strong> &mdash; assessment of financial situation, goal definition, cashflow analysis, and surplus computation based on real bank data accessed via the Account Aggregator framework.</li>
+                <li><strong>Goal-based advisory</strong> &mdash; emergency fund sizing, retirement corpus projection, child education, home purchase, and other user-defined goals with feasibility checks against actual surplus.</li>
+                <li><strong>Portfolio review &amp; recommendations</strong> &mdash; analysis of existing mutual funds, equities, FDs, PPF, NPS, insurance, and other instruments; identification of Direct vs Regular plan leakage; switch-cost analysis.</li>
+                <li><strong>Risk profiling &amp; suitability assessment</strong> &mdash; questionnaire-based risk tolerance evaluation prior to any advice, with periodic reassessment.</li>
+                <li><strong>Surplus allocation guidance</strong> &mdash; &ldquo;Next Best Rupee&rdquo; ranking of where each incremental rupee of surplus should go.</li>
+                <li><strong>Periodic reviews</strong> &mdash; monthly, quarterly, and event-triggered reviews of portfolio health, goal progress, and recommended actions.</li>
+            </ul>
+            <div class="warning-box">
+                <p><strong>What Finwiser does NOT do:</strong> Finwiser does not execute trades, distribute mutual funds, sell insurance, or offer any product on which it earns a commission. The Investment Adviser does not accept any remuneration from product manufacturers, brokers, or any third party.</p>
+            </div>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section E: Grievance Redressal -->
+        <section id="section-e">
+            <h2>E. Grievance Redressal Mechanism</h2>
+            <p>Finwiser is committed to resolving client grievances fairly and within SEBI-prescribed timelines.</p>
+
+            <h3>E.1 Grievance Redressal Officer (GRO)</h3>
+            <div class="contact-card">
+                <h4>Contact the GRO</h4>
+                <ul>
+                    <li><strong>Name:</strong> Chandrachuda Sarma Yemmanuru (Proprietor &amp; GRO)</li>
+                    <li><strong>Email:</strong> <a href="mailto:chandrachudasarma@gmail.com">chandrachudasarma@gmail.com</a> / <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></li>
+                    <li><strong>Mobile:</strong> +91 8801294657</li>
+                    <li><strong>Postal Address:</strong> H.No. 181, 14th Cross, Bluejay Atmosphere Phase II, Andhrahalli Main Road, Nagasandra Post, Bengaluru &ndash; 560073, Karnataka, India</li>
+                </ul>
+            </div>
+
+            <h3>E.2 Timelines</h3>
+            <ul>
+                <li><strong>Acknowledgement:</strong> Within 1 working day of receipt of the grievance.</li>
+                <li><strong>Initial resolution target:</strong> Within 7 calendar days (internal best-effort commitment).</li>
+                <li><strong>Outer limit:</strong> 21 calendar days from receipt, as mandated by SEBI.</li>
+            </ul>
+
+            <h3>E.3 Escalation Ladder</h3>
+            <p>If the grievance is not resolved to the client's satisfaction at the Finwiser level, or remains unresolved beyond 21 days, the client has the following recourse:</p>
+            <ol>
+                <li><strong>IAASB (BASL):</strong> Lodge a complaint with the Investment Adviser Administration and Supervisory Body &mdash; BSE Administration &amp; Supervision Ltd, P. J. Towers, Dalal Street, Mumbai &ndash; 400 001. Website: <a href="https://www.bseasl.com" target="_blank" rel="noopener">www.bseasl.com</a>.</li>
+                <li><strong>SEBI SCORES:</strong> File a complaint on the SEBI Complaints Redress System at <a href="https://scores.sebi.gov.in" target="_blank" rel="noopener">scores.sebi.gov.in</a>. SCORES is SEBI's centralised platform for lodging and tracking complaints against any SEBI-registered intermediary.</li>
+                <li><strong>SMART ODR (Online Dispute Resolution):</strong> Unresolved matters may be escalated for online mediation, conciliation, or arbitration at <a href="https://smartodr.in" target="_blank" rel="noopener">smartodr.in</a>, the SEBI-recognised ODR platform.</li>
+                <li><strong>Legal / Ombudsman:</strong> The client retains all legal remedies under Applicable Law.</li>
+            </ol>
+
+            <div class="info-box">
+                <p>Exercising the right to escalate a grievance will not result in any adverse action by Finwiser. Clients are encouraged to approach external forums freely if they are not satisfied with internal resolution.</p>
+            </div>
+
+            <p>For current complaints data, see the <a href="complaints.html">Monthly Complaints Status</a> page.</p>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section F: Rights of Investors -->
+        <section id="section-f">
+            <h2>F. Rights of Investors</h2>
+            <p>As a client of Finwiser, you have the following rights:</p>
+            <ul>
+                <li><strong>Right to unbiased advice</strong> &mdash; advice rendered solely in your best interest, free from any commission or product-related conflict.</li>
+                <li><strong>Right to full disclosure</strong> &mdash; clear disclosure of fees, risks, conflicts of interest (if any), and the basis of advice given.</li>
+                <li><strong>Right to a written agreement</strong> &mdash; a duly executed Investment Advisory Agreement prior to any advice being rendered.</li>
+                <li><strong>Right to risk profiling</strong> &mdash; assessment of your risk tolerance prior to recommendation of any product.</li>
+                <li><strong>Right to suitable advice</strong> &mdash; only recommendations suitable to your risk profile, financial situation, and goals.</li>
+                <li><strong>Right to privacy and confidentiality</strong> &mdash; protection of personal and financial data as per the DPDP Act, 2023 and SEBI regulations.</li>
+                <li><strong>Right to records</strong> &mdash; access to records of advice given, fees charged, and related communications.</li>
+                <li><strong>Right to grievance redressal</strong> &mdash; access to a clear, timely, and free complaint mechanism, including escalation to IAASB, SEBI SCORES, and SMART ODR.</li>
+                <li><strong>Right to terminate</strong> &mdash; the right to cancel the advisory subscription at any time, without penalty, from the next billing cycle.</li>
+                <li><strong>Right to verify SEBI registration</strong> &mdash; to verify the Adviser's registration status at <a href="https://www.sebi.gov.in" target="_blank" rel="noopener">www.sebi.gov.in</a> before engaging.</li>
+            </ul>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section G: Responsibilities of Investors -->
+        <section id="section-g">
+            <h2>G. Responsibilities of Investors</h2>
+            <p>For the advisory relationship to produce reliable outcomes, investors are expected to:</p>
+            <ul>
+                <li><strong>Provide accurate information</strong> &mdash; honest disclosure of income, expenses, assets, liabilities, dependents, and financial goals.</li>
+                <li><strong>Read and understand</strong> the Investment Advisory Agreement, Risk Profile report, and Most Important Terms &amp; Conditions (MITC) before proceeding.</li>
+                <li><strong>Participate in risk profiling</strong> &mdash; complete the risk questionnaire truthfully and update it when circumstances change.</li>
+                <li><strong>Keep KYC and contact details updated</strong> &mdash; notify Finwiser of changes in mobile number, email, PAN, income, or risk-relevant life events (marriage, children, job change).</li>
+                <li><strong>Review advice before acting</strong> &mdash; understand each recommendation and ask questions if anything is unclear.</li>
+                <li><strong>Pay fees only via declared channels</strong> &mdash; to the Finwiser bank account disclosed in the agreement; never in cash; never to any personal account of the Adviser or any third party.</li>
+                <li><strong>Report grievances promptly</strong> &mdash; raise concerns through the official channels rather than via informal or social channels.</li>
+                <li><strong>Maintain records</strong> &mdash; retain copies of the advisory agreement, risk profile, and advice delivered, for your own reference.</li>
+            </ul>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section H: DOs -->
+        <section id="section-h">
+            <h2>H. DOs for Investors</h2>
+            <div class="do-dont-grid">
+                <div class="do-card">
+                    <h4>&#10004; Verify registration</h4>
+                    <p>Verify the Investment Adviser's SEBI registration on <a href="https://www.sebi.gov.in" target="_blank" rel="noopener">sebi.gov.in</a> before engaging. Registration number: INA000021331.</p>
+                </div>
+                <div class="do-card">
+                    <h4>&#10004; Sign an agreement first</h4>
+                    <p>Ensure a written Investment Advisory Agreement is executed before any advice is rendered.</p>
+                </div>
+                <div class="do-card">
+                    <h4>&#10004; Pay only to declared account</h4>
+                    <p>Pay advisory fees only to the Finwiser bank account disclosed in the agreement. Never to personal accounts.</p>
+                </div>
+                <div class="do-card">
+                    <h4>&#10004; Get it in writing</h4>
+                    <p>Insist on written advice (email, app, PDF). Verbal advice cannot be audited or escalated.</p>
+                </div>
+                <div class="do-card">
+                    <h4>&#10004; Complete risk profiling</h4>
+                    <p>Answer the risk questionnaire honestly. Advice is only suitable if your risk profile reflects reality.</p>
+                </div>
+                <div class="do-card">
+                    <h4>&#10004; Read MITC and fees</h4>
+                    <p>Read the Most Important Terms &amp; Conditions and the fee schedule. Ask for clarification on anything unclear.</p>
+                </div>
+                <div class="do-card">
+                    <h4>&#10004; Keep records</h4>
+                    <p>Preserve copies of the advisory agreement, risk profile, advice delivered, and payment receipts.</p>
+                </div>
+                <div class="do-card">
+                    <h4>&#10004; Escalate if needed</h4>
+                    <p>Use the grievance ladder: Finwiser GRO &rarr; IAASB &rarr; SCORES &rarr; SMART ODR. No retaliation for escalation.</p>
+                </div>
+            </div>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section I: DON'Ts -->
+        <section id="section-i">
+            <h2>I. DON'Ts for Investors</h2>
+            <div class="do-dont-grid">
+                <div class="dont-card">
+                    <h4>&#10060; Don't pay cash</h4>
+                    <p>Never pay advisory fees in cash. All payments must go through declared electronic channels with a paper trail.</p>
+                </div>
+                <div class="dont-card">
+                    <h4>&#10060; Don't deal with unregistered advisers</h4>
+                    <p>Do not take investment advice for a fee from anyone who is not SEBI-registered. Verify registration first.</p>
+                </div>
+                <div class="dont-card">
+                    <h4>&#10060; Don't fall for assured-return claims</h4>
+                    <p>No genuine adviser guarantees returns. Market-linked investments carry risk; anyone promising fixed returns is misleading you.</p>
+                </div>
+                <div class="dont-card">
+                    <h4>&#10060; Don't accept off-record advice</h4>
+                    <p>Avoid WhatsApp tips, stock calls, or verbal recommendations outside the formal advisory process. These are not advice &mdash; they are pitches.</p>
+                </div>
+                <div class="dont-card">
+                    <h4>&#10060; Don't share OTPs or credentials</h4>
+                    <p>Finwiser will never ask for OTPs, banking passwords, or UPI PINs. Do not share them with anyone claiming to represent Finwiser.</p>
+                </div>
+                <div class="dont-card">
+                    <h4>&#10060; Don't sign blank documents</h4>
+                    <p>Do not sign blank cheques, agreements, or forms. Every document should be fully completed before signing.</p>
+                </div>
+                <div class="dont-card">
+                    <h4>&#10060; Don't ignore risk profiling</h4>
+                    <p>Do not skip or game the risk questionnaire. Inaccurate inputs produce unsuitable advice.</p>
+                </div>
+                <div class="dont-card">
+                    <h4>&#10060; Don't hide relevant information</h4>
+                    <p>Do not withhold financial details (loans, dependents, goals). The adviser can only work with what you share.</p>
+                </div>
+            </div>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section J: Code of Conduct -->
+        <section id="section-j">
+            <h2>J. Code of Conduct for the Investment Adviser</h2>
+            <p>Finwiser adheres to the Code of Conduct specified in the Third Schedule of the SEBI (Investment Advisers) Regulations, 2013, including (but not limited to):</p>
+            <ol>
+                <li><strong>Honesty and fairness</strong> &mdash; the Adviser shall act honestly, fairly, and in the best interests of clients and the integrity of the market.</li>
+                <li><strong>Due skill, care, and diligence</strong> &mdash; the Adviser shall act with due skill, care, and diligence in the conduct of business.</li>
+                <li><strong>Information about clients</strong> &mdash; the Adviser shall seek information about clients' financial situation, investment experience, and objectives relevant to the services provided.</li>
+                <li><strong>Information for clients</strong> &mdash; the Adviser shall make adequate disclosures of relevant material information, including conflicts of interest.</li>
+                <li><strong>Fair and reasonable charges</strong> &mdash; fees charged shall be fair and reasonable, within SEBI-prescribed limits.</li>
+                <li><strong>Conflicts of interest</strong> &mdash; the Adviser shall not conduct business in a manner that amounts to a conflict of interest; where conflicts are unavoidable, they shall be fully disclosed, and clients shall be fairly treated.</li>
+                <li><strong>Compliance</strong> &mdash; the Adviser shall comply with all regulatory requirements applicable to the conduct of its business to promote the best interests of clients and the integrity of the market.</li>
+                <li><strong>Responsibility of senior management</strong> &mdash; senior management (in this case, the sole proprietor) shall bear primary responsibility for compliance with the applicable regulatory system.</li>
+            </ol>
+            <p>The full Code of Conduct is available in the <a href="https://www.sebi.gov.in" target="_blank" rel="noopener">SEBI (Investment Advisers) Regulations, 2013</a>.</p>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+        <!-- Section K: Declaration -->
+        <section id="section-k">
+            <h2>K. Declaration</h2>
+            <p>This Investor Charter is displayed in compliance with the circulars and directives issued by the Securities and Exchange Board of India (SEBI) and the Investment Adviser Administration and Supervisory Body (IAASB) / BSE Administration &amp; Supervision Limited (BASL), governing Investment Advisers registered under the SEBI (Investment Advisers) Regulations, 2013.</p>
+
+            <p>This Charter is:</p>
+            <ul>
+                <li>displayed prominently on the Finwiser website at <a href="https://finwiser.org/investor-charter.html">finwiser.org/investor-charter.html</a>;</li>
+                <li>made available in the client onboarding kit (along with the Investment Advisory Agreement); and</li>
+                <li>furnished to every client at the time of executing the advisory agreement.</li>
+            </ul>
+
+            <div class="highlight-box">
+                <p><strong>Issued by:</strong> Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser)<br>
+                <strong>SEBI Registration No.:</strong> INA000021331<br>
+                <strong>Effective Date:</strong> 04 November 2025<br>
+                <strong>Last Updated:</strong> 23 April 2026</p>
+            </div>
+
+            <p>For questions about this Charter, please write to <a href="mailto:chandrachudasarma@gmail.com">chandrachudasarma@gmail.com</a> or <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>.</p>
+
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Finwiser. All rights reserved.</p>
+        <p>
+            <a href="index.html">Home</a> |
+            <a href="mailto:helpdesk@finwiser.org">Contact Us</a> |
+            <a href="terms.html">Terms &amp; Conditions</a> |
+            <a href="privacy-policy.html">Privacy Policy</a> |
+            <a href="complaints.html">Complaints</a> |
+            <a href="disclosures.html">Disclosures</a> |
+            <a href="delete-account.html">Delete Account</a>
+        </p>
+        <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+            SEBI Registered Investment Adviser &ndash; Individual | Registration No: INA000021331
+        </p>
+    </footer>
+</body>
+</html>
