@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessibility Statement — Finwiser</title>
+  <meta name="description" content="Finwiser's accessibility commitment under SEBI Circular SEBI/HO/ITD-1/ITD_VIAP/P/CIR/2025/111. WCAG 2.1 AA, IS 17802:2022, GIGW 3.0.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #002d56;
+      --navy-deep: #001f3d;
+      --mint: #35d6c6;
+      --teal: #00b6ad;
+      --white: #ffffff;
+      --off-white: #f7f9fb;
+      --text-on-light: #002d56;
+      --text-on-light-muted: #5a6b7d;
+      --text-on-dark: rgba(255,255,255,0.94);
+      --text-on-dark-muted: rgba(255,255,255,0.74);
+      --border-on-light: rgba(0,45,86,0.10);
+
+      /* Type — shared site-wide */
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --fs-nano:  11px;
+      --fs-micro: 13px;
+      --fs-body:  15px;
+      --fs-lead:  17px;
+      --fs-h3:    clamp(20px, 2.5vw, 26px);
+      --fs-h2:    clamp(28px, 4vw, 44px);
+      --fs-h1:    clamp(36px, 6vw, 60px);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      line-height: 1.65; color: var(--text-on-light); background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+    .skip-link { position: absolute; top: -100px; left: 16px; padding: 12px 20px; background: var(--mint); color: var(--navy-deep); font-weight: 600; text-decoration: none; border-radius: 6px; z-index: 1000; transition: top 200ms; }
+    .skip-link:focus { top: 16px; outline: 3px solid var(--navy-deep); outline-offset: 2px; }
+    a:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; border-radius: 4px; }
+    header.page-head {
+      background: var(--navy); color: var(--text-on-dark); padding: 28px 0;
+    }
+    header .inner { max-width: 880px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+    header a.logo { font: 700 19px/1 'Inter', sans-serif; letter-spacing: -0.4px; color: var(--text-on-dark); text-decoration: none; }
+    header a.back { font-size: var(--fs-micro); color: var(--text-on-dark-muted); text-decoration: none; }
+    header a.back:hover { color: var(--text-on-dark); }
+    main { max-width: 880px; margin: 0 auto; padding: 64px 32px 96px; }
+    h1 { font-size: var(--fs-h2); font-weight: 700; letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 12px; color: var(--navy); }
+    .updated { color: var(--text-on-light-muted); font-size: var(--fs-micro); margin-bottom: 40px; }
+    h2 { font-size: var(--fs-h3); font-weight: 700; margin: 40px 0 14px; color: var(--navy); }
+    h3 { font-size: var(--fs-body); font-weight: 600; margin: 24px 0 8px; color: var(--navy); }
+    p, li { font-size: var(--fs-body); color: var(--text-on-light); }
+    p + p, p + ul, p + ol { margin-top: 12px; }
+    ul, ol { padding-left: 22px; }
+    li + li { margin-top: 6px; }
+    .callout {
+      background: var(--off-white); border-left: 3px solid var(--mint);
+      padding: 18px 22px; border-radius: 0 8px 8px 0;
+      margin: 20px 0; font-size: var(--fs-body);
+    }
+    .callout strong { color: var(--navy); }
+    a { color: var(--teal); }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-on-light); font-size: var(--fs-micro); vertical-align: top; }
+    th { background: var(--off-white); font-weight: 600; color: var(--navy); }
+    code { font-family: var(--font-mono); font-size: var(--fs-micro); background: var(--off-white); padding: 2px 6px; border-radius: 4px; }
+    footer.page-foot {
+      background: var(--navy-deep); color: rgba(255,255,255,0.55);
+      padding: 32px 0; font-size: var(--fs-micro); line-height: 1.7;
+    }
+    footer .inner { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+    footer a { color: rgba(255,255,255,0.78); }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <header class="page-head">
+    <div class="inner">
+      <a class="logo" href="/" aria-label="Finwiser home">Finwiser</a>
+      <a class="back" href="/">&larr; Back to home</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <h1>Accessibility Statement</h1>
+    <p class="updated">Last reviewed: 7 May 2026.</p>
+
+    <div class="callout">
+      <strong>Status:</strong> Finwiser is in private beta. This statement is a working document. We are actively engaging an IAAP-certified third-party auditor and will publish the audit outcome and remediation status here when available.
+    </div>
+
+    <h2>Our commitment</h2>
+    <p>Finwiser is committed to making its digital platforms accessible to all investors, including persons with disabilities. We aim to conform with WCAG 2.1 Level AA, IS 17802:2022, and GIGW 3.0, as required for SEBI-registered intermediaries under <a href="https://www.sebi.gov.in/legal/circulars/sep-2025/compliance-guidelines-for-digital-accessibility-circular-rights-of-persons-with-disabilities-act-2016-and-rules-made-thereunder-mandatory-compliance-by-all-regulated-entities-dated-july-31-2025-_96862.html" target="_blank" rel="noopener noreferrer">SEBI Circular SEBI/HO/ITD-1/ITD_VIAP/P/CIR/2025/111</a> dated 31 July 2025 and the Rights of Persons with Disabilities Act, 2016.</p>
+
+    <h2>What we have done</h2>
+    <ul>
+      <li>Built the marketing website with semantic HTML, single <code>&lt;main&gt;</code> landmark, <code>&lt;nav aria-label&gt;</code> on each navigation region, and a skip-to-main link as the first focusable element.</li>
+      <li>Verified colour contrast across the brand palette: all body text passes 4.5:1; large text and UI components pass 3:1; brand mint <code>#35d6c6</code> on navy <code>#002d56</code> measures approximately 8.4:1.</li>
+      <li>Implemented visible <code>:focus-visible</code> states on every interactive element with a 2px mint outline and 3px offset.</li>
+      <li>Honoured <code>prefers-reduced-motion: reduce</code> across all animations &mdash; under the reduced-motion preference, all content is visible immediately with no stagger, no scroll-driven motion, and no transforms.</li>
+      <li>Designed the navigation drawer for keyboard users (Escape closes; focus returns to the toggle).</li>
+      <li>Used native <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> for the FAQ accordion to preserve assistive-technology semantics.</li>
+      <li>Specified <code>lang="en-IN"</code> at the document root.</li>
+      <li>Filed Finwiser&rsquo;s Digital Accessibility Readiness Report with the BSE under Circular 2025/111 (Case 38717, submitted 31 March 2026).</li>
+    </ul>
+
+    <h2>Known limitations</h2>
+    <ul>
+      <li>The mobile application is in Google Play Closed Testing. Accessibility conformance for the app is being expanded as part of the public release plan, with TalkBack compatibility and contrast review across all screens.</li>
+      <li>Several compliance documents (Investor Charter, Advisory Agreement) are presented as long HTML pages; tagged-PDF alternatives are scheduled for the next iteration.</li>
+      <li>Hindi and other regional-language alternatives are not yet available; these are scheduled for the public release.</li>
+      <li>Full third-party IAAP audit is in progress; remediation of any findings will be tracked publicly here.</li>
+    </ul>
+
+    <h2>Standards we conform with (target)</h2>
+    <table>
+      <tr><th>Standard</th><th>Target level</th><th>Status</th></tr>
+      <tr><td>WCAG 2.1</td><td>Level AA</td><td>Working towards full conformance</td></tr>
+      <tr><td>IS 17802:2022 (BIS, India)</td><td>Required</td><td>Working towards full conformance</td></tr>
+      <tr><td>GIGW 3.0</td><td>Required</td><td>Working towards full conformance</td></tr>
+    </table>
+
+    <h2>Accessibility complaints &mdash; how to escalate</h2>
+    <p>If you encounter any accessibility barrier on Finwiser&rsquo;s website or app, please write to us first. We will acknowledge your message within one working day and resolve it within seven working days where possible (outer limit: twenty-one days).</p>
+
+    <h3>Nodal Officer for Accessibility</h3>
+    <p>
+      Chandrachuda Sarma Yemmanuru<br>
+      <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a><br>
+      +91 88012 94657<br>
+      H.No. 181, 14th Cross, Bluejay Atmosphere Phase II, Andhrahalli Main Road, Nagasandra Post, Bengaluru &ndash; 560073, Karnataka, India.
+    </p>
+
+    <h3>Escalation</h3>
+    <p>If your accessibility complaint is not resolved to your satisfaction, you may escalate to:</p>
+    <ul>
+      <li>SEBI SCORES &mdash; <a href="https://scores.sebi.gov.in" target="_blank" rel="noopener noreferrer">scores.sebi.gov.in</a> (use the &ldquo;Accessibility&rdquo; complaint category)</li>
+      <li>SmartODR &mdash; <a href="https://smartodr.in" target="_blank" rel="noopener noreferrer">smartodr.in</a></li>
+      <li>SEBI Toll-free: 1800 22 7575 / 1800 266 7575</li>
+    </ul>
+
+    <h2>Format alternatives</h2>
+    <p>If you need any document on this site in an alternative format &mdash; large print, tagged PDF, plain-text, or read aloud &mdash; please email <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>. We will provide it within fourteen days at no charge.</p>
+
+    <h2>Updates to this statement</h2>
+    <p>This statement will be updated at least once every twelve months, and within thirty days of any third-party accessibility audit.</p>
+  </main>
+
+  <footer class="page-foot">
+    <div class="inner">
+      <p><strong style="color:rgba(255,255,255,0.78);">Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser)</strong> &middot; SEBI Registered Investment Adviser &middot; Reg. No. INA000021331 &middot; BSE Enlistment 2408</p>
+      <p style="margin-top:8px;">&copy; 2025&ndash;2026 Finwiser. All rights reserved. <a href="/">Back to home</a> &middot; <a href="/privacy-policy.html">Privacy Policy</a> &middot; <a href="/terms.html">Terms</a></p>
+    </div>
+  </footer>
+</body>
+</html>
