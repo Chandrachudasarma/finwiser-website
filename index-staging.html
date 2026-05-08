@@ -577,7 +577,7 @@
       position: relative;
       width: 260px;
       max-width: 100%;
-      filter: drop-shadow(0 18px 40px rgba(0,0,0,0.6));
+      filter: drop-shadow(0 18px 40px var(--black-45));
       pointer-events: none;
       z-index: 4;
     }
@@ -666,7 +666,7 @@
       text-align: left;
       display: flex; flex-direction: column; justify-content: center;
     }
-    .seen__pane--surplus { border-color: rgba(245,194,107,0.42); }
+    .seen__pane--surplus { border-color: var(--gold-50); }
     .seen__pane-row {
       display: flex; align-items: baseline; justify-content: space-between;
       gap: 12px;
@@ -817,7 +817,7 @@
       }
       @keyframes seen-pane-land-gold {
         0%, 100% { box-shadow: 0 12px 28px var(--black-45); }
-        50%      { box-shadow: 0 0 0 6px rgba(245,194,107,0.22), 0 12px 28px var(--black-45); }
+        50%      { box-shadow: 0 0 0 6px var(--gold-20), 0 12px 28px var(--black-45); }
       }
     }
 
@@ -1058,7 +1058,7 @@
       opacity: 1; pointer-events: auto;
       z-index: 100;
       border-color: var(--mint-56);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.50),
+      box-shadow: 0 12px 32px var(--black-45),
                   0 0 0 1px var(--mint-16);
     }
     /* Settled cards: layered approach.
@@ -1201,9 +1201,9 @@
     }
     .connect-stat.is-flash .connect-stat__value { color: var(--mint); }
     .connect-stat--protection.is-flash {
-      border-color: rgba(245,194,107,0.55);
+      border-color: var(--gold-50);
       background: var(--gold-08);
-      box-shadow: 0 0 0 3px rgba(245,194,107,0.10);
+      box-shadow: 0 0 0 3px var(--gold-08);
     }
     .connect-stat--protection.is-flash .connect-stat__value { color: #f5c26b; }
 
@@ -1860,7 +1860,7 @@
     }
     .flow__lane--structure {
       display: flex; flex-direction: column;
-      background: rgba(255,255,255,0.02);
+      background: var(--white-04);
       border: 1px solid var(--white-08);
       border-radius: 10px; padding: 14px 16px 0; overflow: hidden;
     }
@@ -1931,7 +1931,7 @@
     }
     .txn[data-cat="income"].is-classified   { border-color: var(--mint-56); background: var(--mint-08); }
     .txn[data-cat="fixed"].is-classified    { border-color: var(--teal-56);  background: var(--teal-08);  }
-    .txn[data-cat="variable"].is-classified { border-color: var(--gold-50); background: rgba(245,194,107,0.06); }
+    .txn[data-cat="variable"].is-classified { border-color: var(--gold-50); background: var(--gold-08); }
     .txn.is-routed {
       opacity: 0;
       transform: translate(var(--route-x, 360px), var(--route-y, 0)) scale(0.42);
@@ -1982,7 +1982,7 @@
     }
     .insight--score    { border-left-color: var(--rose); background: var(--rose-05); }
     .insight--shield   { border-left-color: var(--rose); background: var(--rose-05); }
-    .insight--runway   { border-left-color: var(--gold); background: rgba(245,194,107,0.05); }
+    .insight--runway   { border-left-color: var(--gold); background: var(--gold-08); }
     .insight--idle     { border-left-color: var(--mint); background: var(--mint-04); }
     .is-insighting .insight { opacity: 1; transform: none; }
     .is-insighting .insight:nth-child(1) { transition-delay: 0ms; }
@@ -2316,7 +2316,7 @@
       opacity: 0.55;
       transform: translateY(4px);
       border: 1px dashed var(--white-16);
-      background: rgba(255,255,255,0.012);
+      background: var(--white-04);
     }
     .steps__concept--allocate .cascade__row--deferred.is-fallen .name__title {
       color: var(--white-56);
