@@ -162,19 +162,40 @@
     }
 
     /* ============================================================ */
+    /* SCROLL SNAP — desktop, motion-allowed                         */
+    /* Snap stops: problem (page 2) + each .steps__row.              */
+    /* ============================================================ */
+    @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+      html {
+        scroll-snap-type: y mandatory;
+        scroll-padding-top: 64px;
+      }
+      .hero          { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .problem       { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .seen          { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .steps__intro  { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .steps__row    { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .case-card     { scroll-snap-align: start; scroll-snap-stop: normal; scroll-margin-top: 160px; }
+      .caps          { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .compare       { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .pricing       { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .testify       { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .secure        { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .faq           { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .final-cta     { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .site-footer   { scroll-snap-align: start; scroll-snap-stop: normal; }
+    }
+
+    /* ============================================================ */
     /* §1 — NAV                                                      */
     /* ============================================================ */
     .fw-nav {
       position: sticky; top: 0; left: 0; right: 0; z-index: 50;
-      height: 64px; background: transparent;
-      transition: background-color 240ms cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 240ms, border-color 240ms;
-      border-bottom: 1px solid transparent;
-    }
-    .fw-nav[data-state="scrolled"] {
+      height: 64px;
       background: color-mix(in srgb, var(--navy-deep) 88%, transparent);
       -webkit-backdrop-filter: saturate(140%) blur(12px);
       backdrop-filter: saturate(140%) blur(12px);
-      border-bottom-color: var(--white-08);
+      border-bottom: 1px solid var(--white-08);
     }
     .fw-nav__inner {
       max-width: 1200px; height: 100%; margin: 0 auto; padding: 0 24px;
@@ -374,8 +395,10 @@
     .problem {
       background: var(--off-white); color: var(--text-on-light);
       padding: clamp(64px, 10vw, 100px) 0;
+      min-height: calc(100vh - 64px);
+      display: flex; align-items: center;
     }
-    .problem__inner { max-width: 1100px; margin: 0 auto; padding: 0 32px; text-align: center; }
+    .problem__inner { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 32px; text-align: center; }
     .problem__mascot {
       width: 110px; margin: 0 auto 24px;
       filter: drop-shadow(0 10px 22px rgba(0,45,86,0.18));
@@ -847,7 +870,11 @@
       background: var(--navy); color: var(--text-on-dark);
       padding: clamp(70px, 11vw, 110px) 0 0;
     }
-    .steps__intro { max-width: 1100px; margin: 0 auto 60px; padding: 0 32px; text-align: center; }
+    .steps__intro {
+      max-width: 1100px; margin: 0 auto 60px; padding: 0 32px; text-align: center;
+      min-height: calc(100vh - 64px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
     .steps__heading {
       font-size: var(--fs-h2); font-weight: 700;
       letter-spacing: -0.4px; line-height: 1.18; margin-bottom: 12px;
@@ -1234,82 +1261,648 @@
     }
 
     /* ============================================================ */
-    /* §7 — PERSONA FINDER                                           */
+    /* §7 — THE ENGINE (Two of you. Two answers.)                   */
     /* ============================================================ */
-    .personas {
-      background: var(--off-white); color: var(--text-on-light);
-      padding: clamp(64px, 10vw, 100px) 0;
+    /* Tokens needed only in this section — kept local so the global
+       :root stays untouched. */
+    .engine {
+      --shadow-card: 0 8px 28px rgba(0,45,86,0.06);
+      --border-on-light-strong: rgba(0,45,86,0.20);
+      --mint-12: rgba(53,214,198,0.12);
+      --mint-24: rgba(53,214,198,0.24);
+      --mint-48: rgba(53,214,198,0.48);
+      --teal-04: rgba(0,182,173,0.04);
+      --teal-12: rgba(0,182,173,0.12);
+      --teal-24: rgba(0,182,173,0.24);
+      --teal-32: rgba(0,182,173,0.32);
+      --slate: #5a6b7d;
+      --ease-out-cubic: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-spring:    cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-in-out:    cubic-bezier(0.45, 0, 0.55, 1);
+
+      background: var(--off-white);
+      padding: clamp(28px, 4.5vw, 56px) 0;
     }
-    .personas__inner { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
-    .personas__heading {
-      font-size: var(--fs-h2); font-weight: 700;
-      letter-spacing: -0.4px; line-height: 1.18; text-align: center; margin-bottom: 10px;
+    .engine__inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .engine__intro { text-align: center; margin-bottom: 24px; }
+    .engine__intro-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      margin-bottom: 8px;
     }
-    .personas__sub {
-      font-size: var(--fs-lead); color: var(--text-on-light-muted);
-      text-align: center; max-width: 50ch; margin: 0 auto 40px;
+    .engine__intro-title {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: 500; line-height: 1.1; letter-spacing: -0.015em;
+      color: var(--navy);
     }
-    .personas__tiles {
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
-      margin-bottom: 40px;
+    .engine__intro-title em { font-style: italic; color: var(--teal); }
+
+    /* Sticky shared head — sits at top of engine while user scrolls cards */
+    .engine__shared-head {
+      position: sticky; top: 64px; z-index: 5;
+      background: var(--off-white);
+      padding: 18px 0 14px;
+      border-bottom: 1px solid var(--border-on-light);
     }
-    .persona-tile {
-      background: var(--white); border: 1px solid var(--border-on-light);
-      border-radius: 12px; padding: 18px 14px; cursor: pointer;
-      font-family: inherit; text-align: left; color: var(--text-on-light);
-      transition: transform 200ms ease-out, border-color 200ms, background 200ms;
+    .engine__shared-inner {
+      max-width: 1180px; margin: 0 auto; padding: 0 32px;
+      text-align: center;
     }
-    .persona-tile:hover { transform: translateY(-1px); border-color: var(--teal); }
-    .persona-tile[aria-pressed="true"] {
-      border-color: var(--mint); background: var(--mint-08); transform: scale(1.02);
+    .engine__shared-head .engine__intro-eyebrow { margin-bottom: 6px; }
+    .engine__shared-head .engine__intro-title { margin-bottom: 10px; }
+    .engine__case-tagline {
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 500; line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--navy);
+      margin-bottom: 4px;
     }
-    .persona-tile__icon { width: 22px; height: 22px; stroke: var(--teal); fill: none; stroke-width: 1.5; margin-bottom: 10px; }
-    .persona-tile__label { font-size: var(--fs-micro); font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
-    .persona-tile__meta { font-size: var(--fs-micro); color: var(--text-on-light-muted); line-height: 1.4; }
-    .persona-stage {
-      min-height: 200px; padding: 24px;
-      background: var(--white); border-radius: 14px; border: 1px solid var(--border-on-light);
-      display: flex; flex-direction: column; gap: 14px;
-      box-shadow: var(--shadow-soft);
+    .engine__case-sub {
+      font-family: var(--font-serif);
+      font-size: var(--fs-micro);
+      font-style: italic;
+      color: var(--text-on-light-muted);
     }
-    .persona-stage[data-empty="true"] {
+    /* Per-letter flap span */
+    .flap-char {
+      display: inline-block;
+      transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center top;
+      backface-visibility: hidden;
+      white-space: pre;
+    }
+    .flap-char.is-flipping {
+      transform: rotateX(-90deg);
+      opacity: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .flap-char { transition: none; }
+      .flap-char.is-flipping { transform: none; opacity: 1; }
+    }
+
+    /* Pair card */
+    .case-card {
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 14px;
+      padding: clamp(14px, 1.8vw, 22px);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-card);
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 540ms var(--ease-out-cubic),
+                  transform 540ms var(--ease-out-cubic);
+    }
+    .case-card.is-revealed { opacity: 1; transform: none; }
+    .case-card:last-of-type { margin-bottom: 18px; }
+    .case-card__head { text-align: center; margin-bottom: 14px; }
+    .case-card__head h3 {
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 500; line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--navy);
+    }
+    .case-card__head-sub {
+      font-family: var(--font-serif);
+      font-size: var(--fs-micro);
+      font-style: italic;
+      color: var(--text-on-light-muted);
+      margin-top: 4px;
+    }
+
+    /* Engine trail */
+    .trail {
+      position: relative;
+      background: var(--off-white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 10px;
+      padding: 16px 18px 38px;
+      margin-bottom: 12px;
+      overflow: visible;
+    }
+    .trail__row {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 0 8px;
+    }
+    .trail__row::before {
+      content: '';
+      position: absolute;
+      left: 36px; right: 36px;
+      top: 50%; height: 2px;
+      background: var(--border-on-light-strong);
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+    .factor {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      color: var(--text-on-light-muted); font-style: italic;
-      min-height: 160px;
+      width: 46px; height: 46px;
+      background: var(--white);
+      border: 1.6px solid var(--border-on-light-strong);
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,45,86,0.06);
+      flex-shrink: 0;
+      transition: background 360ms var(--ease-spring),
+                  border-color 360ms var(--ease-spring),
+                  box-shadow 360ms var(--ease-spring),
+                  transform 420ms var(--ease-spring);
     }
-    .persona-bubble {
-      display: flex; gap: 12px; align-items: flex-start;
-      opacity: 0; transform: translateY(8px);
-      transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1), transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    .factor svg {
+      width: 17px; height: 17px;
+      stroke: var(--text-on-light-muted);
+      fill: none; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 280ms ease;
     }
-    .persona-bubble.is-shown { opacity: 1; transform: translateY(0); }
-    .persona-bubble__avatar {
-      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-      background: var(--off-white); padding: 4px;
+    .factor__label {
+      position: absolute;
+      top: calc(100% + 6px); left: 50%;
+      transform: translateX(-50%);
+      font-size: 8.5px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      white-space: nowrap;
+      transition: color 280ms ease;
     }
-    .persona-bubble__body {
-      background: var(--off-white); padding: 12px 16px;
-      border-radius: 16px 16px 16px 4px;
-      font-size: var(--fs-micro); line-height: 1.55; color: var(--text-on-light);
-      max-width: 56ch;
+    .factor__readout {
+      position: absolute;
+      top: calc(100% + 18px); left: 50%;
+      transform: translate(-50%, -4px);
+      font-size: 11px; font-weight: 700;
+      color: var(--navy);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.1px;
+      opacity: 0;
+      transition: opacity 240ms var(--ease-out-cubic),
+                  transform 360ms var(--ease-spring);
     }
-    .persona-typing {
-      display: inline-flex; gap: 4px; padding: 12px 16px; align-items: center;
-      background: var(--off-white); border-radius: 16px;
+    .factor.is-active {
+      background: var(--mint-08);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 5px var(--mint-16),
+                  0 6px 18px rgba(53,214,198,0.20);
+      transform: scale(1.18);
     }
-    .persona-typing span {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--text-on-light-muted);
-      animation: typing 1.4s ease-in-out infinite;
+    .factor.is-active svg { stroke: var(--mint); }
+    .factor.is-active .factor__label { color: var(--navy); font-weight: 800; }
+    .factor.is-active .factor__readout { opacity: 1; transform: translate(-50%, 0); }
+    .factor.is-considered { border-color: var(--mint-32); }
+    .factor.is-considered svg { stroke: var(--mint); }
+    .factor.is-considered .factor__readout { opacity: 1; transform: translate(-50%, 0); }
+    .factor.is-considered::after {
+      content: '\2713';
+      position: absolute;
+      top: -5px; right: -5px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--mint); color: var(--white);
+      font-size: 10px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,45,86,0.18);
+      animation: engineTickPop 420ms var(--ease-overshoot);
     }
-    .persona-typing span:nth-child(2) { animation-delay: 0.2s; }
-    .persona-typing span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typing { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-3px); opacity: 1; } }
-    @media (prefers-reduced-motion: reduce) { .persona-typing { display: none; } }
-    @media (max-width: 900px) {
-      .personas__tiles { grid-template-columns: repeat(2, 1fr); }
+    @keyframes engineTickPop {
+      0%   { opacity: 0; transform: scale(0.4); }
+      60%  { transform: scale(1.18); }
+      100% { opacity: 1; transform: scale(1); }
     }
-    @media (max-width: 480px) {
-      .personas__tiles { grid-template-columns: 1fr; }
+    .factor.is-decisive-hold {
+      background: var(--mint-12);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 7px var(--mint-24),
+                  0 0 0 16px var(--mint-08),
+                  0 8px 22px rgba(53,214,198,0.32);
+      transform: scale(1.28);
+      transition: background 480ms var(--ease-spring),
+                  border-color 480ms var(--ease-spring),
+                  box-shadow 480ms var(--ease-spring),
+                  transform 540ms var(--ease-spring);
+    }
+    .factor.is-decisive-hold svg { stroke: var(--mint); }
+    .factor.is-decisive-hold .factor__readout {
+      opacity: 1; transform: translate(-50%, 0);
+      font-weight: 800;
+    }
+    .factor.is-decisive {
+      background: var(--mint);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 5px var(--mint-32),
+                  0 6px 20px rgba(53,214,198,0.32);
+      transform: scale(1.16);
+    }
+    .factor.is-decisive svg { stroke: var(--white); }
+    .factor.is-decisive .factor__label { color: var(--mint); font-weight: 800; }
+    .factor.is-decisive .factor__readout { opacity: 1; transform: translate(-50%, 0); font-weight: 800; }
+    .factor.is-decisive::after {
+      content: '\2605';
+      position: absolute;
+      top: -7px; right: -7px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--gold); color: var(--navy-deep);
+      font-size: 10px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(245,194,107,0.5);
+      animation: engineTickPop 460ms var(--ease-overshoot);
+    }
+    .factor.is-handing-off::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 100%;
+      width: 3px; height: 0;
+      background: linear-gradient(to bottom,
+        var(--mint) 0%, var(--mint-32) 50%, transparent 100%);
+      transform: translateX(-50%);
+      opacity: 0.85;
+      pointer-events: none;
+      animation: engineHandoffStream 720ms var(--ease-spring) forwards;
+    }
+    @keyframes engineHandoffStream {
+      0%   { height: 0;   opacity: 0; }
+      30%  { opacity: 1; }
+      100% { height: 200px; opacity: 0; }
+    }
+
+    /* Mascot */
+    .trail__mascot {
+      position: absolute;
+      left: 0;
+      top: calc(50% + 14px);
+      width: 48px; height: 48px;
+      transition: transform 540ms var(--ease-spring),
+                  opacity 320ms var(--ease-out-cubic),
+                  width 540ms var(--ease-spring),
+                  height 540ms var(--ease-spring),
+                  top 540ms var(--ease-spring);
+      opacity: 0;
+      z-index: 4;
+      pointer-events: none;
+      will-change: transform;
+    }
+    .trail__mascot img {
+      width: 100%; height: 100%;
+      filter: drop-shadow(0 5px 12px rgba(0,45,86,0.18));
+      transform-origin: bottom center;
+      animation: engineMascotBreathe 3200ms ease-in-out infinite;
+    }
+    @keyframes engineMascotBreathe {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.018); }
+    }
+    .case-card.is-revealed .trail__mascot { opacity: 1; }
+    .trail__mascot.is-stepping img {
+      animation: engineMascotStep 540ms var(--ease-spring),
+                 engineMascotBreathe 3200ms ease-in-out infinite 540ms;
+    }
+    @keyframes engineMascotStep {
+      0%   { transform: translateY(0)    rotate(0deg)  scale(1); }
+      24%  { transform: translateY(-3px) rotate(-2deg) scale(0.97); }
+      48%  { transform: translateY(-8px) rotate(0deg)  scale(1.04); }
+      72%  { transform: translateY(-3px) rotate(3deg)  scale(1.0); }
+      100% { transform: translateY(0)    rotate(0deg)  scale(1); }
+    }
+    .trail__mascot.is-leaning img {
+      animation: engineMascotLean 600ms var(--ease-spring) forwards;
+    }
+    @keyframes engineMascotLean {
+      0%   { transform: rotate(0deg) translateY(0); }
+      40%  { transform: rotate(5deg) translateY(-2px); }
+      75%  { transform: rotate(2deg) translateY(0); }
+      100% { transform: rotate(2deg) translateY(0); }
+    }
+    .trail__mascot.is-docked {
+      width: 26px; height: 26px;
+      top: -14px;
+      right: 12px;
+      left: auto;
+      bottom: auto;
+    }
+    .trail__mascot::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--mint-12) 0%, transparent 65%);
+      opacity: 0;
+      transition: opacity 600ms var(--ease-spring), inset 600ms var(--ease-spring);
+      pointer-events: none;
+    }
+    .trail__mascot[data-loaded="1"]::after { opacity: 0.5; }
+    .trail__mascot[data-loaded="2"]::after { opacity: 0.7; }
+    .trail__mascot[data-loaded="3"]::after { opacity: 0.85; inset: -10px; }
+    .trail__mascot[data-loaded="4"]::after { opacity: 1.0; inset: -12px; }
+    .trail__mascot[data-loaded="5"]::after { opacity: 1.0; inset: -14px;
+      background: radial-gradient(circle, var(--mint-24) 0%, transparent 65%); }
+    .trail__mascot[data-loaded="6"]::after { opacity: 1.0; inset: -16px;
+      background: radial-gradient(circle, var(--mint-32) 0%, transparent 65%); }
+    .trail__mascot.is-docked::after { opacity: 0.4 !important; inset: -4px !important; }
+    .trail__caption { display: none; }
+
+    /* Lanes */
+    .lane {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      border: 1px solid;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      position: relative;
+      transition: box-shadow 360ms var(--ease-spring);
+    }
+    .lane:last-child { margin-bottom: 0; }
+    .lane--mint { background: var(--mint-04); border-color: var(--mint-32); }
+    .lane--teal { background: var(--teal-04); border-color: var(--teal-32); }
+    .lane.is-receiving { box-shadow: 0 0 0 4px var(--mint-24), 0 8px 26px rgba(53,214,198,0.18); }
+    .lane--teal.is-receiving { box-shadow: 0 0 0 4px var(--teal-24), 0 8px 26px rgba(0,182,173,0.18); }
+    .lane__input {
+      padding: 11px 14px;
+      border-right: 1px solid;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .lane--mint .lane__input { border-right-color: var(--mint-24); }
+    .lane--teal .lane__input { border-right-color: var(--teal-24); }
+    .input__name { font-size: var(--fs-body); font-weight: 700; color: var(--navy); letter-spacing: -0.1px; }
+    .input__meta {
+      font-size: var(--fs-nano); color: var(--text-on-light-muted);
+      letter-spacing: 0.04em; margin-bottom: 4px;
+    }
+    .input-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .input-stat__num {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 800;
+      line-height: 0.95; letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+      color: var(--mint);
+    }
+    .lane--teal .input-stat__num { color: var(--teal); }
+    .input-stat__num--loss { color: var(--rose) !important; }
+    .input-stat__num small {
+      font-size: 0.42em; font-weight: 700;
+      color: var(--navy);
+      vertical-align: 0.2em; margin-left: 0.04em;
+    }
+    .input-stat__label {
+      font-size: var(--fs-micro); font-weight: 600;
+      color: var(--text-on-light); letter-spacing: 0;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+    .input__rating {
+      font-size: var(--fs-micro); color: var(--text-on-light-muted);
+      font-weight: 500; margin-top: 6px;
+    }
+    .lane--mint .input__rating-key { color: var(--mint); font-weight: 700; }
+    .lane--teal .input__rating-key { color: var(--teal); font-weight: 700; }
+    .input__trigger {
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* Verdict side */
+    .lane__verdict {
+      padding: 11px 14px;
+      display: flex; flex-direction: column; gap: 4px;
+      position: relative;
+    }
+    .lane--mint .lane__verdict { background: linear-gradient(180deg, transparent 0%, var(--mint-08) 100%); }
+    .lane--teal .lane__verdict { background: linear-gradient(180deg, transparent 0%, var(--teal-08) 100%); }
+    .verdict__attr {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: var(--fs-nano); font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 320ms var(--ease-out-cubic),
+                  transform 320ms var(--ease-out-cubic);
+    }
+    .verdict__avatar {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid var(--mint);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800;
+      color: var(--mint);
+    }
+    .lane--teal .verdict__avatar { color: var(--teal); border-color: var(--teal); }
+    .verdict__verb {
+      font-family: var(--font-sans);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--navy-deep);
+      margin: 2px 0 2px;
+      opacity: 0; transform: scale(0.94);
+      transition: opacity 540ms var(--ease-overshoot),
+                  transform 720ms var(--ease-overshoot);
+    }
+    .verdict__line {
+      font-size: var(--fs-micro); font-weight: 600;
+      line-height: 1.4; letter-spacing: -0.05px;
+      color: var(--text-on-light);
+      opacity: 0; transform: translateY(6px);
+      transition: opacity 420ms var(--ease-out-cubic),
+                  transform 420ms var(--ease-out-cubic);
+    }
+    .lane.is-revealed .verdict__attr { opacity: 1; transform: none; transition-delay: 80ms; }
+    .lane.is-revealed .verdict__verb { opacity: 1; transform: scale(1); }
+    .lane.is-revealed .verdict__line { opacity: 1; transform: none; transition-delay: 220ms; }
+    .lane:not(.is-revealed) .lane__verdict::before {
+      content: '';
+      position: absolute;
+      inset: 11px 14px;
+      border: 1px dashed var(--border-on-light-strong);
+      border-radius: 8px;
+      opacity: 0.4;
+    }
+
+    /* Allocation viz */
+    .allocation {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border-on-light);
+    }
+    .allocation__head {
+      font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      margin-bottom: 6px;
+      opacity: 0;
+      transition: opacity 320ms var(--ease-out-cubic);
+    }
+    .lane.is-revealed .allocation__head { opacity: 1; transition-delay: 460ms; }
+    .allocation__head strong { color: var(--navy); font-weight: 800; }
+    .allocation__bar {
+      display: flex;
+      height: 7px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--border-on-light);
+      margin-bottom: 6px;
+    }
+    .allocation__seg {
+      height: 100%;
+      width: 0;
+      transition: width 720ms var(--ease-spring);
+    }
+    .lane.is-revealed .allocation__seg { width: var(--seg-w, 0); }
+    .lane.is-revealed .allocation__seg:nth-child(1) { transition-delay: 600ms; }
+    .lane.is-revealed .allocation__seg:nth-child(2) { transition-delay: 700ms; }
+    .lane.is-revealed .allocation__seg:nth-child(3) { transition-delay: 800ms; }
+    .lane.is-revealed .allocation__seg:nth-child(4) { transition-delay: 900ms; }
+    .allocation__legend {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px 14px;
+    }
+    .allocation__row {
+      display: flex; align-items: baseline; gap: 6px;
+      font-size: 10.5px;
+      opacity: 0; transform: translateY(3px);
+      transition: opacity 320ms var(--ease-out-cubic),
+                  transform 320ms var(--ease-out-cubic);
+    }
+    .lane.is-revealed .allocation__row { opacity: 1; transform: none; }
+    .lane.is-revealed .allocation__row:nth-child(1) { transition-delay: 1100ms; }
+    .lane.is-revealed .allocation__row:nth-child(2) { transition-delay: 1180ms; }
+    .lane.is-revealed .allocation__row:nth-child(3) { transition-delay: 1260ms; }
+    .lane.is-revealed .allocation__row:nth-child(4) { transition-delay: 1340ms; }
+    .allocation__dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .allocation__name {
+      flex: 1;
+      color: var(--text-on-light);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .allocation__amount {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--navy);
+      flex-shrink: 0;
+    }
+    .a-mint  { background: var(--mint); }
+    .a-teal  { background: var(--teal); }
+    .a-gold  { background: var(--gold); }
+    .a-rose  { background: var(--rose); }
+    .a-slate { background: var(--slate); }
+
+    /* Closer */
+    .engine__close {
+      margin-top: 44px; text-align: center;
+      display: flex; flex-direction: column; gap: 10px; align-items: center;
+    }
+    .engine__close-mascot {
+      width: 72px; height: 72px;
+      filter: drop-shadow(0 6px 16px rgba(0,45,86,0.12));
+      transform-origin: bottom center;
+      margin-bottom: 4px;
+    }
+    .engine__close-mascot.is-waving {
+      animation: engineMascotWave 1500ms cubic-bezier(0.36, 0, 0.18, 1);
+    }
+    @keyframes engineMascotWave {
+      0%   { transform: rotate(0deg) scale(1); }
+      18%  { transform: rotate(-7deg) scale(1.06); }
+      36%  { transform: rotate(8deg) scale(1.06); }
+      54%  { transform: rotate(-5deg) scale(1.04); }
+      72%  { transform: rotate(5deg) scale(1.02); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    .engine__close-line {
+      font-family: var(--font-serif);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 500; color: var(--navy);
+      max-width: 720px; line-height: 1.3;
+      letter-spacing: -0.012em;
+    }
+    .engine__close-line em { font-style: italic; color: var(--teal); }
+    .engine__close-finwy {
+      font-family: var(--font-serif);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 600; font-style: italic;
+      color: var(--teal); line-height: 1.3;
+      margin-top: 2px;
+    }
+    .engine__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font: 700 15px/1 var(--font-sans);
+      padding: 14px 26px; border-radius: 10px;
+      background: var(--mint); color: var(--navy-deep);
+      text-decoration: none;
+      margin-top: 10px;
+      transition: background 200ms, transform 200ms, box-shadow 200ms;
+      box-shadow: 0 4px 14px rgba(53,214,198,0.28);
+    }
+    .engine__cta:hover {
+      background: var(--teal); color: var(--white);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0,182,173,0.32);
+    }
+    .engine__footnote {
+      margin: 28px auto 0; text-align: center;
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      max-width: 720px; line-height: 1.55;
+    }
+
+    /* Mobile */
+    @media (max-width: 880px) {
+      .engine .lane { grid-template-columns: 1fr; }
+      .engine .lane__input { border-right: 0; border-bottom: 1px solid; }
+      .engine .lane--mint .lane__input { border-bottom-color: var(--mint-24); }
+      .engine .lane--teal .lane__input { border-bottom-color: var(--teal-24); }
+      .engine .factor { width: 40px; height: 40px; }
+      .engine .factor svg { width: 15px; height: 15px; }
+      .engine .factor__label { font-size: 7.5px; }
+      .engine .factor__readout { font-size: 10px; top: calc(100% + 16px); }
+      .engine .trail { padding: 14px 10px 36px; }
+      .engine .trail__row { padding: 0; gap: 4px; }
+      .engine .trail__row::before { left: 22px; right: 22px; }
+      .engine .trail__mascot { width: 42px; height: 42px; top: calc(50% + 12px); }
+      .engine .trail__mascot.is-docked { width: 24px; height: 24px; top: -12px; }
+      .engine .input-stats { gap: 16px; }
+      .engine .input-stat__num { font-size: clamp(18px, 5.5vw, 22px); }
+      .engine .verdict__verb { font-size: clamp(18px, 5.5vw, 22px); }
+      .engine .allocation__legend { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .engine .case-card, .engine .lane, .engine .factor, .engine .trail__mascot,
+      .engine .verdict__attr, .engine .verdict__verb, .engine .verdict__line,
+      .engine .allocation__head, .engine .allocation__seg, .engine .allocation__row,
+      .engine .engine__close-mascot {
+        transition: none !important; animation: none !important;
+        transform: none !important; opacity: 1 !important;
+      }
+      .engine .trail__mascot img { animation: none !important; }
     }
 
     /* ============================================================ */
@@ -1600,9 +2193,11 @@
     /* ============================================================ */
     .final-cta {
       background: var(--navy); color: var(--text-on-dark);
-      padding: clamp(80px, 12vw, 120px) 0; text-align: center;
+      padding: clamp(48px, 6vw, 72px) 0; text-align: center;
+      min-height: calc(100vh - 64px);
+      display: flex; align-items: center; justify-content: center;
     }
-    .final-cta__inner { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+    .final-cta__inner { width: 100%; max-width: 800px; margin: 0 auto; padding: 0 32px; }
     .final-cta__mascot {
       width: 140px; margin: 0 auto 28px;
       filter: drop-shadow(0 16px 32px var(--black-32));
@@ -2188,13 +2783,13 @@
     /* Cascade table */
     .steps__concept--allocate .cascade {
       list-style: none; padding: 0; margin: 0;
-      display: flex; flex-direction: column; gap: 6px;
+      display: flex; flex-direction: column; gap: 4px;
     }
     .steps__concept--allocate .cascade__colheads {
       display: grid;
       grid-template-columns: 48px 1fr 130px 110px 130px;
       column-gap: 12px;
-      padding: 0 14px 6px;
+      padding: 0 14px 4px;
       font: 600 10px/1 'Inter', sans-serif;
       letter-spacing: 0.8px; text-transform: uppercase;
       color: var(--white-32);
@@ -2208,7 +2803,7 @@
       grid-template-columns: 48px 1fr 130px 110px 130px;
       column-gap: 12px;
       align-items: center;
-      padding: 12px 14px;
+      padding: 8px 14px;
       background: var(--white-04);
       border: 1px solid var(--white-08);
       border-radius: 10px;
@@ -2425,7 +3020,7 @@
   <!-- ============================================================ -->
   <!-- §1 — NAV                                                      -->
   <!-- ============================================================ -->
-  <header class="fw-nav" data-state="top" role="banner">
+  <header class="fw-nav" role="banner">
     <div class="fw-nav__inner">
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">Finwiser</a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
@@ -2539,12 +3134,12 @@
     <!-- ============================================================ -->
     <!-- §5 — WHAT FINWY SEES                                          -->
     <!-- ============================================================ -->
-    <section class="seen" aria-labelledby="seen-heading">
+    <section class="seen" aria-labelledby="seen-heading" data-snap-anim="seen">
       <div class="seen__inner">
         <h2 id="seen-heading" class="seen__heading">You&rsquo;ll find money you forgot you had.</h2>
         <p class="seen__sub">Watch your money come together.</p>
 
-        <figure class="seen__stage" data-reveal>
+        <figure class="seen__stage">
           <figcaption class="visually-hidden">Finwy reads thirty-plus account types across seven buckets &mdash; banking, investments, pensions and provident, insurance, loans and cards, business, and physical assets &mdash; and produces a single composite picture: net worth, real monthly surplus, goals on track, and risk score.</figcaption>
 
           <!-- LEFT — Scan band -->
@@ -2808,13 +3403,13 @@
     <!-- ============================================================ -->
     <section class="steps" id="how" aria-labelledby="steps-heading">
       <div class="steps__intro">
-        <h2 id="steps-heading" class="steps__heading">Three minutes. Three steps. Here&rsquo;s what happens.</h2>
+        <h2 id="steps-heading" class="steps__heading">Three minutes. Three steps.</h2>
         <p class="steps__sub">Connect once. Finwiser handles the rest &mdash; and recalibrates as life changes.</p>
       </div>
       <div class="steps__rail">
         <div class="steps__line" aria-hidden="true"><div class="steps__line-fill" id="steps-line-fill"></div></div>
 
-        <div class="steps__row" data-step="1" id="connect-step-row">
+        <div class="steps__row" data-step="1" id="connect-step-row" data-snap-anim="step-1-connect">
           <div class="steps__num-col"><div class="steps__num">01</div></div>
           <div class="steps__card">
             <h3>Few taps. Connect every account you have.</h3>
@@ -3009,7 +3604,7 @@
           </div>
         </div>
 
-        <div class="steps__row" data-step="2" id="s2-row">
+        <div class="steps__row" data-step="2" id="s2-row" data-snap-anim="step-2-surplus">
           <div class="steps__num-col"><div class="steps__num">02</div></div>
           <div class="steps__card">
             <h3>What Finwy notices that you don&rsquo;t.</h3>
@@ -3193,7 +3788,7 @@
           </div>
         </div>
 
-        <div class="steps__row" data-step="3" id="s3-row">
+        <div class="steps__row" data-step="3" id="s3-row" data-snap-anim="step-3-allocation">
           <div class="steps__num-col"><div class="steps__num">03</div></div>
           <div class="steps__card">
             <h3>Some of your goals don&rsquo;t fit. We tell you which.</h3>
@@ -3318,44 +3913,302 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- §7 — PERSONA FINDER                                           -->
+    <!-- §7 — THE ENGINE (Two of you. Two answers.)                   -->
     <!-- ============================================================ -->
-    <section class="personas" aria-labelledby="personas-heading">
-      <div class="personas__inner">
-        <h2 id="personas-heading" class="personas__heading">Which one is closest to you?</h2>
-        <p class="personas__sub">Pick yours. See what Finwiser would actually say.</p>
+    <section class="engine" aria-label="Two of you. Two answers.">
+      <div class="engine__shared-head">
+        <div class="engine__shared-inner">
+          <p class="engine__intro-eyebrow">Watch how Finwy reasons</p>
+          <p class="engine__intro-title">Two of you. <em>Two answers.</em></p>
+          <h3 class="engine__case-tagline" id="engine-case-tagline" data-flap-text>Same surplus. Opposite portfolios.</h3>
+          <p class="engine__case-sub" id="engine-case-sub" data-flap-text>Both 35. Both earn &#8377;52,000 surplus a month.</p>
+        </div>
+      </div>
+      <div class="engine__inner">
 
-        <div class="personas__tiles" role="group" aria-label="Your life situation">
-          <button class="persona-tile" type="button" aria-pressed="false" data-persona="1">
-            <svg class="persona-tile__icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3" stroke-width="1.5"/><path d="M5 20c0-4 3-7 7-7s7 3 7 7" stroke-width="1.5"/></svg>
-            <div class="persona-tile__label">Just started earning</div>
-            <div class="persona-tile__meta">23&ndash;26 &middot; first job</div>
-          </button>
-          <button class="persona-tile" type="button" aria-pressed="false" data-persona="2">
-            <svg class="persona-tile__icon" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="9" r="3" stroke-width="1.5"/><circle cx="16" cy="9" r="3" stroke-width="1.5"/><path d="M2 21c0-3 3-6 6-6M22 21c0-3-3-6-6-6" stroke-width="1.5"/></svg>
-            <div class="persona-tile__label">Married, planning kids</div>
-            <div class="persona-tile__meta">28&ndash;33</div>
-          </button>
-          <button class="persona-tile" type="button" aria-pressed="false" data-persona="3">
-            <svg class="persona-tile__icon" viewBox="0 0 24 24" fill="none"><path d="M3 10l9-7 9 7v11H3z" stroke-width="1.5"/><path d="M9 21v-7h6v7" stroke-width="1.5"/></svg>
-            <div class="persona-tile__label">Buying first home</div>
-            <div class="persona-tile__meta">30&ndash;38</div>
-          </button>
-          <button class="persona-tile" type="button" aria-pressed="false" data-persona="4">
-            <svg class="persona-tile__icon" viewBox="0 0 24 24" fill="none"><path d="M2 9l10-5 10 5-10 5z" stroke-width="1.5"/><path d="M5 11v5c0 1 3 3 7 3s7-2 7-3v-5" stroke-width="1.5"/></svg>
-            <div class="persona-tile__label">Mid-career, kids in school</div>
-            <div class="persona-tile__meta">38&ndash;48</div>
-          </button>
-          <button class="persona-tile" type="button" aria-pressed="false" data-persona="5">
-            <svg class="persona-tile__icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke-width="1.5"/></svg>
-            <div class="persona-tile__label">Approaching retirement</div>
-            <div class="persona-tile__meta">50&ndash;60</div>
-          </button>
+        <!-- 1 — Same surplus. Opposite portfolios. -->
+        <article class="case-card" id="pair-portfolios" data-pair="portfolios" data-decisive="4" data-snap-anim="engine-portfolios" data-tagline="Same surplus. Opposite portfolios." data-sub="Both 35. Both earn &#8377;52,000 surplus a month." aria-labelledby="engine-case-tagline">
+          <p class="visually-hidden">Both 35-year-olds with 52,000 surplus. Riya has 83 percent in equity in a 46-lakh portfolio. Aman has zero, with 6 lakh sitting in fixed deposit. Risk is the decisive factor. Riya is told to stop adding equity and rebalance. Aman to start equity.</p>
+
+          <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Risk">
+            <div class="trail__row" aria-hidden="true">
+              <div class="factor" data-pos="0">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span class="factor__label">Age</span>
+                <span class="factor__readout">35 yrs</span>
+              </div>
+              <div class="factor" data-pos="1">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+                <span class="factor__label">Goals</span>
+                <span class="factor__readout">retirement &middot; 25y</span>
+              </div>
+              <div class="factor" data-pos="2">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg>
+                <span class="factor__label">Surplus</span>
+                <span class="factor__readout">&#8377;52K/mo</span>
+              </div>
+              <div class="factor" data-pos="3">
+                <svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg>
+                <span class="factor__label">Portfolio</span>
+                <span class="factor__readout">&#8377;46L vs &#8377;6L</span>
+              </div>
+              <div class="factor" data-pos="4">
+                <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg>
+                <span class="factor__label">Risk</span>
+                <span class="factor__readout">83% vs 0% equity</span>
+              </div>
+              <div class="factor" data-pos="5">
+                <svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg>
+                <span class="factor__label">Priorities</span>
+                <span class="factor__readout">comparable</span>
+              </div>
+            </div>
+            <div class="trail__mascot" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+          </div>
+
+          <div class="lane lane--mint" data-i="0">
+            <div class="lane__input">
+              <p class="input__name">Riya M.</p>
+              <p class="input__meta">35 &middot; BENGALURU &middot; SOFTWARE ENG.</p>
+              <div class="input-stats">
+                <div class="input-stat"><span class="input-stat__num">83<small>%</small></span><span class="input-stat__label">in equity</span></div>
+                <div class="input-stat"><span class="input-stat__num">&#8377;46L</span><span class="input-stat__label">portfolio</span></div>
+              </div>
+              <p class="input__rating">Self-rated <span class="input__rating-key">Conservative</span></p>
+              <p class="input__trigger">Opened Finwy after a colleague&rsquo;s heart attack at 38.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">R</span> Riya</p>
+              <p class="verdict__verb">STOP</p>
+              <p class="verdict__line">Stop adding equity. Buy term. Build liquidity.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;52K/mo</strong> &middot; allocated</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-rose"  style="--seg-w: 6%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 29%;"></span>
+                  <span class="allocation__seg a-slate" style="--seg-w: 38%;"></span>
+                  <span class="allocation__seg a-mint"  style="--seg-w: 27%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-rose"></span><span class="allocation__name">Term insurance</span><span class="allocation__amount">&#8377;3K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;15K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt funds</span><span class="allocation__amount">&#8377;20K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity (reduced)</span><span class="allocation__amount">&#8377;14K</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lane lane--teal" data-i="1">
+            <div class="lane__input">
+              <p class="input__name">Aman K.</p>
+              <p class="input__meta">35 &middot; PUNE &middot; SALES LEAD</p>
+              <div class="input-stats">
+                <div class="input-stat"><span class="input-stat__num">0<small>%</small></span><span class="input-stat__label">in equity</span></div>
+                <div class="input-stat"><span class="input-stat__num">&#8377;6L</span><span class="input-stat__label">all in FD</span></div>
+              </div>
+              <p class="input__rating">Self-rated <span class="input__rating-key">Aggressive</span></p>
+              <p class="input__trigger">Opened Finwy after his crypto-friend&rsquo;s third disaster.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">A</span> Aman</p>
+              <p class="verdict__verb">START</p>
+              <p class="verdict__line">Start equity. Today. Skip the side bets.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;52K/mo</strong> &middot; allocated</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-rose"  style="--seg-w: 6%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 19%;"></span>
+                  <span class="allocation__seg a-slate" style="--seg-w: 8%;"></span>
+                  <span class="allocation__seg a-mint"  style="--seg-w: 67%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-rose"></span><span class="allocation__name">Term insurance</span><span class="allocation__amount">&#8377;3K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;10K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt funds</span><span class="allocation__amount">&#8377;4K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity SIP</span><span class="allocation__amount">&#8377;35K</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2 — Same portfolio. Different goals. -->
+        <article class="case-card" id="pair-goals" data-pair="goals" data-decisive="1" data-snap-anim="engine-goals" data-tagline="Same portfolio. Different goals." data-sub="Both 35. Both have an identical &#8377;25L portfolio: 60% equity, 30% debt, 10% cash." aria-labelledby="engine-case-tagline">
+          <p class="visually-hidden">Both 35, identical 25-lakh portfolio at 60 percent equity. Arjun's primary goal is buying a 50-lakh flat in 5 years. Suresh's primary goal is his daughter's college, also 50 lakh, in 12 years. Goals is decisive. Arjun shifts to a balanced fund. Suresh holds steady at 60 percent equity.</p>
+
+          <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Goals">
+            <div class="trail__row" aria-hidden="true">
+              <div class="factor" data-pos="0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="factor__label">Age</span><span class="factor__readout">35 yrs</span></div>
+              <div class="factor" data-pos="1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="factor__label">Goals</span><span class="factor__readout">5y vs 12y</span></div>
+              <div class="factor" data-pos="2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg><span class="factor__label">Surplus</span><span class="factor__readout">comparable</span></div>
+              <div class="factor" data-pos="3"><svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg><span class="factor__label">Portfolio</span><span class="factor__readout">&#8377;25L &middot; identical</span></div>
+              <div class="factor" data-pos="4"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg><span class="factor__label">Risk</span><span class="factor__readout">moderate</span></div>
+              <div class="factor" data-pos="5"><svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg><span class="factor__label">Priorities</span><span class="factor__readout">self &middot; family</span></div>
+            </div>
+            <div class="trail__mascot" aria-hidden="true"><img src="fw-deck-2026/slides/finny-3d.png" alt="" /></div>
+          </div>
+
+          <div class="lane lane--mint" data-i="0">
+            <div class="lane__input">
+              <p class="input__name">Arjun S.</p>
+              <p class="input__meta">35 &middot; HYDERABAD &middot; PRODUCT MGR.</p>
+              <div class="input-stats">
+                <div class="input-stat"><span class="input-stat__num">5<small>y</small></span><span class="input-stat__label">Own flat</span></div>
+                <div class="input-stat"><span class="input-stat__num">&#8377;50L</span><span class="input-stat__label">primary goal</span></div>
+              </div>
+              <p class="input__rating">Time horizon <span class="input__rating-key">short &middot; near-term</span></p>
+              <p class="input__trigger">Opened Finwy after a builder&rsquo;s sales-pitch dinner.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">A</span> Arjun</p>
+              <p class="verdict__verb">SHIFT</p>
+              <p class="verdict__line">Move 40% to balanced. 5 years can&rsquo;t survive a 25% drop.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;25L</strong> &middot; rebalanced</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-teal"  style="--seg-w: 40%;"></span>
+                  <span class="allocation__seg a-mint"  style="--seg-w: 20%;"></span>
+                  <span class="allocation__seg a-slate" style="--seg-w: 30%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 10%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-teal"></span><span class="allocation__name">Balanced fund</span><span class="allocation__amount">&#8377;10L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity (reduced)</span><span class="allocation__amount">&#8377;5L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt</span><span class="allocation__amount">&#8377;7.5L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Cash</span><span class="allocation__amount">&#8377;2.5L</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lane lane--teal" data-i="1">
+            <div class="lane__input">
+              <p class="input__name">Suresh R.</p>
+              <p class="input__meta">35 &middot; MUMBAI &middot; TECH LEAD</p>
+              <div class="input-stats">
+                <div class="input-stat"><span class="input-stat__num">12<small>y</small></span><span class="input-stat__label">Child&rsquo;s education</span></div>
+                <div class="input-stat"><span class="input-stat__num">&#8377;50L</span><span class="input-stat__label">primary goal</span></div>
+              </div>
+              <p class="input__rating">Time horizon <span class="input__rating-key">long &middot; multi-cycle</span></p>
+              <p class="input__trigger">Opened Finwy on his daughter&rsquo;s 4th birthday.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">S</span> Suresh</p>
+              <p class="verdict__verb">HOLD</p>
+              <p class="verdict__line">Stay 60% equity. 12 years rewards the volatility.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;25L</strong> &middot; held</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-mint"  style="--seg-w: 60%;"></span>
+                  <span class="allocation__seg a-slate" style="--seg-w: 30%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 10%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity</span><span class="allocation__amount">&#8377;15L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt</span><span class="allocation__amount">&#8377;7.5L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Cash</span><span class="allocation__amount">&#8377;2.5L</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3 — Same income. Different lives. -->
+        <article class="case-card" id="pair-expenses" data-pair="expenses" data-decisive="5" data-snap-anim="engine-expenses" data-tagline="Same income. Different lives." data-sub="Both 35. Both senior engineers in Pune. Both bring home &#8377;1,60,000." aria-labelledby="engine-case-tagline">
+          <p class="visually-hidden">Both 35-year-old senior engineers in Pune earning 1.6 lakh, both with about 50,000 surplus. Vivek has one active goal — retirement. Karan has four — kids' education, parents' health buffer, retirement, emergency. Priorities is decisive. Vivek concentrates. Karan sequences.</p>
+
+          <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Priorities">
+            <div class="trail__row" aria-hidden="true">
+              <div class="factor" data-pos="0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="factor__label">Age</span><span class="factor__readout">35 yrs</span></div>
+              <div class="factor" data-pos="1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="factor__label">Goals</span><span class="factor__readout">1 vs 4 active</span></div>
+              <div class="factor" data-pos="2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg><span class="factor__label">Surplus</span><span class="factor__readout">~&#8377;50K</span></div>
+              <div class="factor" data-pos="3"><svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg><span class="factor__label">Portfolio</span><span class="factor__readout">comparable</span></div>
+              <div class="factor" data-pos="4"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg><span class="factor__label">Risk</span><span class="factor__readout">moderate</span></div>
+              <div class="factor" data-pos="5"><svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg><span class="factor__label">Priorities</span><span class="factor__readout">focus vs sequence</span></div>
+            </div>
+            <div class="trail__mascot" aria-hidden="true"><img src="fw-deck-2026/slides/finny-3d.png" alt="" /></div>
+          </div>
+
+          <div class="lane lane--mint" data-i="0">
+            <div class="lane__input">
+              <p class="input__name">Vivek N.</p>
+              <p class="input__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+              <div class="input-stats">
+                <div class="input-stat"><span class="input-stat__num">1</span><span class="input-stat__label">primary goal</span></div>
+                <div class="input-stat"><span class="input-stat__num">25<small>y</small></span><span class="input-stat__label">retirement horizon</span></div>
+              </div>
+              <p class="input__rating">Life stage <span class="input__rating-key">single &middot; independent parents</span></p>
+              <p class="input__trigger">Opened Finwy after a friend lost &#8377;15L on tips.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">V</span> Vivek</p>
+              <p class="verdict__verb">FOCUS</p>
+              <p class="verdict__line">One goal, deeply funded. Time does the rest.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;50K/mo</strong> &middot; allocated</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-mint"  style="--seg-w: 70%;"></span>
+                  <span class="allocation__seg a-teal"  style="--seg-w: 20%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 10%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Retirement</span><span class="allocation__amount">&#8377;35K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-teal"></span><span class="allocation__name">Mid-term (flat)</span><span class="allocation__amount">&#8377;10K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;5K</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lane lane--teal" data-i="1">
+            <div class="lane__input">
+              <p class="input__name">Karan M.</p>
+              <p class="input__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+              <div class="input-stats">
+                <div class="input-stat"><span class="input-stat__num">4</span><span class="input-stat__label">active goals</span></div>
+                <div class="input-stat"><span class="input-stat__num">3<small>+</small></span><span class="input-stat__label">dependents</span></div>
+              </div>
+              <p class="input__rating">Life stage <span class="input__rating-key">2 kids &middot; father on dialysis</span></p>
+              <p class="input__trigger">Opened Finwy when his daughter started kindergarten.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">K</span> Karan</p>
+              <p class="verdict__verb">SEQUENCE</p>
+              <p class="verdict__line">Education first. Parents next. Retirement third. Order matters.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;50K/mo</strong> &middot; allocated</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-teal"  style="--seg-w: 30%;"></span>
+                  <span class="allocation__seg a-rose"  style="--seg-w: 25%;"></span>
+                  <span class="allocation__seg a-mint"  style="--seg-w: 25%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 20%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-teal"></span><span class="allocation__name">Kids&rsquo; education</span><span class="allocation__amount">&#8377;15K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-rose"></span><span class="allocation__name">Parents&rsquo; health</span><span class="allocation__amount">&#8377;12.5K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Retirement</span><span class="allocation__amount">&#8377;12.5K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;10K</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <div class="engine__close">
+          <img class="engine__close-mascot" id="engine-closer-mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
+          <p class="engine__close-line">Six 35-year-olds. Six allocations &mdash; and they keep changing.</p>
+          <p class="engine__close-finwy">Finwy keeps watching.</p>
+          <a class="engine__cta" href="/demo-app">Get yours &rarr;</a>
         </div>
 
-        <div class="persona-stage" id="persona-stage" role="region" aria-live="polite" aria-label="Finwiser&rsquo;s response" data-empty="true">
-          <span>Pick a tile to see what Finwiser would say.</span>
-        </div>
+        <p class="engine__footnote">
+          Illustrative cases. Names changed; details composed.
+          Your data drives your allocation, not these.
+        </p>
+
       </div>
     </section>
 
@@ -3629,24 +4482,195 @@
     (function () {
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // ---- Nav: scroll state + hamburger ----
-      var nav = document.querySelector('.fw-nav');
+      // ============================================================
+      // SnapAnim — snap-aware animation registry
+      // Drives play / loop / reset based on which snap target is locked.
+      // Public API:
+      //   SnapAnim.register(name, { play, reset, stop, loop })
+      //     play():   returns a Promise that resolves when one round ends
+      //     reset():  put DOM back to initial state
+      //     stop():   cancel pending timers (called before reset)
+      //     loop:     boolean — replay after a 1.5s hold while parked
+      //   SnapAnim.init()  — start watching scroll
+      // Mark a snap target with: data-snap-anim="<name>"
+      // ============================================================
+      var SnapAnim = (function () {
+        var LOOP_HOLD_MS = 1500;
+        var SETTLE_DEBOUNCE_MS = 160;
+        var ALIGN_TOLERANCE = 48; // px — how close to scroll-padding-top counts as "locked"
+        var navOffset = 64;
+
+        var handlers = {};        // name -> handler
+        var entries = [];         // [{ el, name }]
+        var current = null;       // active entry
+        var settleTimer = null;
+        var hasNativeScrollEnd = 'onscrollend' in window;
+
+        function refreshEntries() {
+          entries = Array.prototype.slice
+            .call(document.querySelectorAll('[data-snap-anim]'))
+            .map(function (el) { return { el: el, name: el.getAttribute('data-snap-anim') }; });
+        }
+
+        function findActive() {
+          var best = null, bestDist = Infinity;
+          for (var i = 0; i < entries.length; i++) {
+            var e = entries[i];
+            var r = e.el.getBoundingClientRect();
+            if (r.bottom < 0 || r.top > window.innerHeight) continue;
+            // Account for per-element scroll-margin-top so cards with sticky
+            // headers above them are still recognised when snapped.
+            var sm = parseFloat(getComputedStyle(e.el).scrollMarginTop) || 0;
+            var expectedTop = navOffset + sm;
+            var dist = Math.abs(r.top - expectedTop);
+            if (dist < bestDist) { bestDist = dist; best = e; }
+          }
+          return (best && bestDist < ALIGN_TOLERANCE) ? best : null;
+        }
+
+        function activate(entry) {
+          current = entry;
+          var h = handlers[entry.name];
+          if (!h) return;
+          h._running = true;
+          var tick = function () {
+            if (!h._running) return;
+            var p;
+            try { p = h.play(); } catch (err) { return; }
+            Promise.resolve(p).then(function () {
+              if (!h._running) return;
+              if (h.loop && !reduce) {
+                h._loopTimer = setTimeout(tick, LOOP_HOLD_MS);
+              }
+            });
+          };
+          tick();
+        }
+
+        function deactivate(entry) {
+          if (!entry) return;
+          var h = handlers[entry.name];
+          if (!h) return;
+          h._running = false;
+          clearTimeout(h._loopTimer);
+          if (h.stop)  { try { h.stop();  } catch (e) {} }
+          if (h.reset) { try { h.reset(); } catch (e) {} }
+        }
+
+        function onSettle() {
+          var next = findActive();
+          if (!next) {
+            if (current) { deactivate(current); current = null; }
+            return;
+          }
+          if (!current || current.el !== next.el) {
+            if (current) deactivate(current);
+            activate(next);
+          }
+        }
+
+        function scheduleSettle() {
+          clearTimeout(settleTimer);
+          settleTimer = setTimeout(onSettle, SETTLE_DEBOUNCE_MS);
+        }
+
+        return {
+          register: function (name, handler) {
+            handlers[name] = handler;
+            refreshEntries();
+            // If this registration matches the currently-active element, kick it.
+            if (current && current.name === name) activate(current);
+            else scheduleSettle();
+          },
+          init: function () {
+            refreshEntries();
+            if (hasNativeScrollEnd) {
+              window.addEventListener('scrollend', onSettle, { passive: true });
+            }
+            window.addEventListener('scroll', scheduleSettle, { passive: true });
+            window.addEventListener('resize', scheduleSettle, { passive: true });
+            // Activate whatever is parked at first paint.
+            setTimeout(onSettle, 250);
+          }
+        };
+      })();
+
+      // ============================================================
+      // Per-letter "split-flap" morph — used by the engine sticky head
+      // to morph case tagline + sub from one card to the next.
+      // ============================================================
+      var FLAP_STAGGER  = 28;   // ms between successive letter flips
+      var FLAP_DURATION = 200;  // ms per individual letter flip
+      var flapTimers = {};
+
+      function flapInit(el) {
+        if (!el) return;
+        var text = el.textContent || '';
+        el.textContent = '';
+        el.dataset.flapCurrent = text;
+        for (var i = 0; i < text.length; i++) {
+          var span = document.createElement('span');
+          span.className = 'flap-char';
+          span.textContent = text[i];
+          el.appendChild(span);
+        }
+      }
+
+      function flapMorph(el, newText) {
+        if (!el) return;
+        if (reduce) {
+          el.textContent = newText;
+          flapInit(el);
+          return;
+        }
+        if (!el.id) el.id = 'flap-' + Math.random().toString(36).slice(2, 7);
+        var key = el.id;
+        if (flapTimers[key]) flapTimers[key].forEach(clearTimeout);
+        flapTimers[key] = [];
+
+        var oldText = el.dataset.flapCurrent || '';
+        if (oldText === newText) return;
+        el.dataset.flapCurrent = newText;
+
+        // Grow the span list to cover the longer of old/new length.
+        var spans = el.querySelectorAll('.flap-char');
+        while (spans.length < newText.length) {
+          var span = document.createElement('span');
+          span.className = 'flap-char is-flipping';
+          span.textContent = ' ';
+          el.appendChild(span);
+          spans = el.querySelectorAll('.flap-char');
+        }
+
+        var flipIndex = 0;
+        var maxLen = Math.max(oldText.length, newText.length);
+        for (var i = 0; i < maxLen; i++) {
+          var oldCh = oldText[i] || '';
+          var newCh = newText[i] || '';
+          if (oldCh === newCh) continue;
+          var s = spans[i];
+          if (!s) continue;
+          var d = flipIndex * FLAP_STAGGER;
+          flipIndex++;
+          (function (span, ch, delay) {
+            flapTimers[key].push(setTimeout(function () {
+              span.classList.add('is-flipping');
+            }, delay));
+            flapTimers[key].push(setTimeout(function () {
+              if (ch === '') {
+                span.remove();
+              } else {
+                span.textContent = ch;
+                span.classList.remove('is-flipping');
+              }
+            }, delay + FLAP_DURATION));
+          })(s, newCh, d);
+        }
+      }
+
+      // ---- Nav: hamburger ----
       var toggle = document.querySelector('.fw-nav__toggle');
       var menu = document.getElementById('fw-nav-menu');
-
-      if (nav) {
-        var ticking = false;
-        function setNavState() {
-          if (ticking) return;
-          ticking = true;
-          requestAnimationFrame(function () {
-            nav.setAttribute('data-state', window.scrollY > 60 ? 'scrolled' : 'top');
-            ticking = false;
-          });
-        }
-        setNavState();
-        window.addEventListener('scroll', setNavState, { passive: true });
-      }
 
       function closeMenu() {
         if (!toggle) return;
@@ -3701,66 +4725,99 @@
         else                   el.textContent = Math.floor(t).toLocaleString('en-IN');
       }
 
-      // Reset §5 composite counters to 0 so they can animate up
-      var seenStage = document.querySelector('.seen__stage');
-      if (seenStage && !reduce) {
-        seenStage.querySelectorAll('[data-target]').forEach(seenSnapToZero);
-      }
-
       // ---- §5 cluster-scan choreography (vertical layout) ----
+      var seenStage = document.querySelector('.seen__stage');
       var SEEN_SCAN_START_MS     = 320;
       var SEEN_SCAN_DURATION_MS  = 2600;
       var SEEN_DOT_INTERVAL_MS   = 50;
       var SEEN_COMPOSITE_LAND_MS = 4700;
 
+      var seenTimers = [];
+      function seenClearTimers() { seenTimers.forEach(clearTimeout); seenTimers = []; }
+      function seenDelay(fn, ms) { seenTimers.push(setTimeout(fn, ms)); }
+
+      function seenReset() {
+        seenClearTimers();
+        if (!seenStage) return;
+        seenStage.classList.remove('is-in');
+        seenStage.querySelectorAll('.seen__cluster').forEach(function (c) {
+          c.classList.remove('is-lit', 'is-done');
+          c.querySelectorAll('.seen__cluster-dot').forEach(function (d) { d.classList.remove('is-on'); });
+        });
+        seenStage.querySelectorAll('[data-target]').forEach(seenSnapToZero);
+      }
+
       function runSeenStage(stage) {
-        if (reduce) {
-          stage.querySelectorAll('.seen__cluster').forEach(function (c) {
-            c.classList.add('is-lit', 'is-done');
-            c.querySelectorAll('.seen__cluster-dot').forEach(function (d) { d.classList.add('is-on'); });
+        return new Promise(function (resolve) {
+          seenReset();
+          // Force reflow so removing/re-adding is-in restarts CSS animations cleanly.
+          void stage.offsetWidth;
+          stage.classList.add('is-in');
+
+          if (reduce) {
+            stage.querySelectorAll('.seen__cluster').forEach(function (c) {
+              c.classList.add('is-lit', 'is-done');
+              c.querySelectorAll('.seen__cluster-dot').forEach(function (d) { d.classList.add('is-on'); });
+            });
+            stage.querySelectorAll('[data-target]').forEach(seenSnapToTarget);
+            resolve();
+            return;
+          }
+
+          var clusters = stage.querySelectorAll('.seen__cluster');
+          if (!clusters.length) { resolve(); return; }
+          var step = SEEN_SCAN_DURATION_MS / clusters.length;
+          var lastTimerMs = 0;
+          clusters.forEach(function (cluster, i) {
+            var reachAt = SEEN_SCAN_START_MS + (i + 0.5) * step - 180;
+            if (reachAt < 0) reachAt = 0;
+            seenDelay(function () { cluster.classList.add('is-lit'); }, reachAt);
+            var dots = cluster.querySelectorAll('.seen__cluster-dot');
+            dots.forEach(function (dot, j) {
+              var dotAt = reachAt + j * SEEN_DOT_INTERVAL_MS;
+              seenDelay(function () { dot.classList.add('is-on'); }, dotAt);
+              if (dotAt > lastTimerMs) lastTimerMs = dotAt;
+            });
+            var doneAt = reachAt + dots.length * SEEN_DOT_INTERVAL_MS + 80;
+            seenDelay(function () { cluster.classList.add('is-done'); }, doneAt);
+            if (doneAt > lastTimerMs) lastTimerMs = doneAt;
           });
-          stage.querySelectorAll('[data-target]').forEach(seenSnapToTarget);
-          return;
+          stage.querySelectorAll('[data-target]').forEach(function (el, i) {
+            var t = parseFloat(el.getAttribute('data-target'));
+            var f = el.getAttribute('data-format') || 'rupee';
+            var counterAt = SEEN_COMPOSITE_LAND_MS + i * 90;
+            seenDelay(function () { animateCounter(el, t, 1100, f); }, counterAt);
+            var endAt = counterAt + 1100;
+            if (endAt > lastTimerMs) lastTimerMs = endAt;
+          });
+          seenDelay(function () { resolve(); }, lastTimerMs + 200);
+        });
+      }
+
+      if (seenStage) {
+        if (reduce || !('IntersectionObserver' in window)) {
+          runSeenStage(seenStage);
+        } else {
+          seenStage.querySelectorAll('[data-target]').forEach(seenSnapToZero);
+          SnapAnim.register('seen', {
+            play:  function () { return runSeenStage(seenStage); },
+            reset: seenReset,
+            stop:  seenClearTimers,
+            loop:  true
+          });
         }
-        var clusters = stage.querySelectorAll('.seen__cluster');
-        if (!clusters.length) return;
-        var step = SEEN_SCAN_DURATION_MS / clusters.length;
-        clusters.forEach(function (cluster, i) {
-          var reachAt = SEEN_SCAN_START_MS + (i + 0.5) * step - 180;
-          if (reachAt < 0) reachAt = 0;
-          setTimeout(function () { cluster.classList.add('is-lit'); }, reachAt);
-          var dots = cluster.querySelectorAll('.seen__cluster-dot');
-          dots.forEach(function (dot, j) {
-            setTimeout(function () { dot.classList.add('is-on'); },
-                       reachAt + j * SEEN_DOT_INTERVAL_MS);
-          });
-          setTimeout(function () { cluster.classList.add('is-done'); },
-                     reachAt + dots.length * SEEN_DOT_INTERVAL_MS + 80);
-        });
-        stage.querySelectorAll('[data-target]').forEach(function (el, i) {
-          var t = parseFloat(el.getAttribute('data-target'));
-          var f = el.getAttribute('data-format') || 'rupee';
-          setTimeout(function () { animateCounter(el, t, 1100, f); },
-                     SEEN_COMPOSITE_LAND_MS + i * 90);
-        });
       }
 
       // ---- Shared IntersectionObserver: data-reveal + .is-in ----
       var revealEls = document.querySelectorAll('[data-reveal]');
       if (revealEls.length) {
         if (reduce || !('IntersectionObserver' in window)) {
-          revealEls.forEach(function (el) {
-            el.classList.add('is-in');
-            if (el.classList.contains('seen__stage')) runSeenStage(el);
-          });
+          revealEls.forEach(function (el) { el.classList.add('is-in'); });
         } else {
           var io = new IntersectionObserver(function (entries, obs) {
             entries.forEach(function (entry) {
               if (entry.isIntersecting) {
                 entry.target.classList.add('is-in');
-                if (entry.target.classList.contains('seen__stage')) {
-                  runSeenStage(entry.target);
-                }
                 obs.unobserve(entry.target);
               }
             });
@@ -3924,61 +4981,60 @@
         }
 
         function connectRunFeed() {
-          connectReset();
-          if (reduce) { connectSettleAll(); return; }
+          return new Promise(function (resolve) {
+            connectReset();
+            if (reduce) { connectSettleAll(); resolve(); return; }
 
-          var t = 320;
-          var settledCount = 0;
+            var t = 320;
+            var settledCount = 0;
 
-          connectCards.forEach(function (card, i) {
-            var dwell = CONNECT_DWELL[i] || 200;
-            var gap   = CONNECT_GAP[i]   || 200;
-            var startAt = t;
+            connectCards.forEach(function (card, i) {
+              var dwell = CONNECT_DWELL[i] || 200;
+              var gap   = CONNECT_GAP[i]   || 200;
+              var startAt = t;
 
-            connectDelay(function () { card.classList.add('is-active'); }, startAt);
+              connectDelay(function () { card.classList.add('is-active'); }, startAt);
 
-            var tapAt = startAt + Math.max(dwell - CONNECT_TAP_MS, 80);
-            connectDelay(function () { card.classList.add('is-tapping'); }, tapAt);
+              var tapAt = startAt + Math.max(dwell - CONNECT_TAP_MS, 80);
+              connectDelay(function () { card.classList.add('is-tapping'); }, tapAt);
 
-            var approveAt = startAt + dwell;
+              var approveAt = startAt + dwell;
+              connectDelay(function () {
+                card.classList.remove('is-tapping');
+                card.classList.add('is-approved');
+                var cat = card.getAttribute('data-cat');
+                var val = parseInt(card.getAttribute('data-value'), 10) || 0;
+                connectUpdateStat(cat, val);
+                if (connectCounter) connectCounter.textContent = i + 1;
+              }, approveAt);
+
+              var settleAt = approveAt + CONNECT_SETTLE_PAUSE_MS;
+              connectDelay(function () {
+                card.style.setProperty('--si', settledCount);
+                settledCount++;
+                card.classList.remove('is-active');
+                card.classList.add('is-settled');
+              }, settleAt);
+
+              t += gap;
+            });
+
             connectDelay(function () {
-              card.classList.remove('is-tapping');
-              card.classList.add('is-approved');
-              var cat = card.getAttribute('data-cat');
-              var val = parseInt(card.getAttribute('data-value'), 10) || 0;
-              connectUpdateStat(cat, val);
-              if (connectCounter) connectCounter.textContent = i + 1;
-            }, approveAt);
-
-            var settleAt = approveAt + CONNECT_SETTLE_PAUSE_MS;
-            connectDelay(function () {
-              card.style.setProperty('--si', settledCount);
-              settledCount++;
-              card.classList.remove('is-active');
-              card.classList.add('is-settled');
-            }, settleAt);
-
-            t += gap;
+              connectFeed.classList.add('is-done');
+              resolve();
+            }, t + 500);
           });
-
-          connectDelay(function () { connectFeed.classList.add('is-done'); }, t + 500);
         }
 
-        var connectHasFired = false;
         if (reduce || !('IntersectionObserver' in window)) {
           connectSettleAll();
-          connectHasFired = true;
         } else {
-          var connectIO = new IntersectionObserver(function (entries, obs) {
-            entries.forEach(function (e) {
-              if (e.isIntersecting && !connectHasFired) {
-                connectHasFired = true;
-                connectRunFeed();
-                obs.unobserve(e.target);
-              }
-            });
-          }, { threshold: 0.25, rootMargin: '-5% 0px -5% 0px' });
-          connectIO.observe(connectRow);
+          SnapAnim.register('step-1-connect', {
+            play:  connectRunFeed,
+            reset: connectReset,
+            stop:  connectClearTimers,
+            loop:  true
+          });
         }
       }
 
@@ -4119,106 +5175,98 @@
           surplusFlow.classList.add('is-revealed', 'is-insighting', 'is-done', 'is-streaming-active');
         }
         function surplusRunFeed() {
-          surplusReset();
-          if (reduce) { surplusRow.classList.add('is-active'); surplusSettleAll(); return; }
-          surplusRow.classList.add('is-active');
-          var t = 320, streamSlot = 0, classifiedCount = 0;
-          surplusDelay(function () { surplusFlow.classList.add('is-streaming-active'); }, t);
+          return new Promise(function (resolve) {
+            surplusReset();
+            if (reduce) { surplusRow.classList.add('is-active'); surplusSettleAll(); resolve(); return; }
+            surplusRow.classList.add('is-active');
+            var t = 320, streamSlot = 0, classifiedCount = 0;
+            surplusDelay(function () { surplusFlow.classList.add('is-streaming-active'); }, t);
 
-          surplusTxns.forEach(function (chip, i) {
-            var dwell = SURPLUS_DWELL[i] || 200;
-            var gap   = SURPLUS_GAP[i]   || 200;
-            var enterAt    = t;
-            var classifyAt = enterAt + dwell;
-            var routeAt    = classifyAt + SURPLUS_ROUTE_DELAY;
+            surplusTxns.forEach(function (chip, i) {
+              var dwell = SURPLUS_DWELL[i] || 200;
+              var gap   = SURPLUS_GAP[i]   || 200;
+              var enterAt    = t;
+              var classifyAt = enterAt + dwell;
+              var routeAt    = classifyAt + SURPLUS_ROUTE_DELAY;
+              surplusDelay(function () {
+                chip.style.top = surplusStreamTopFor(streamSlot) + 'px';
+                chip.classList.add('is-streaming');
+                streamSlot++;
+                surplusFlow.classList.add('is-reading');
+              }, enterAt);
+              surplusDelay(function () { chip.classList.add('is-classified'); }, classifyAt);
+              surplusDelay(function () {
+                var off = surplusRouteOffsetFor(chip, chip.getAttribute('data-cat'));
+                chip.style.setProperty('--route-x', off.x + 'px');
+                chip.style.setProperty('--route-y', off.y + 'px');
+                chip.classList.add('is-routed');
+                var cat = chip.getAttribute('data-cat');
+                var val = parseInt(chip.getAttribute('data-value'), 10) || 0;
+                surplusUpdateRow(cat, val);
+                classifiedCount++;
+                surplusSetCounter(classifiedCount);
+                surplusBumpBreakdown(cat);
+                streamSlot = Math.max(0, streamSlot - 1);
+              }, routeAt);
+              surplusDelay(function () {
+                if (!surplusAura) return;
+                surplusAura.classList.remove('is-pulse');
+                void surplusAura.offsetWidth;
+                surplusAura.classList.add('is-pulse');
+              }, routeAt + 140);
+              t += gap;
+            });
+
+            var rollAt = t + 380;
             surplusDelay(function () {
-              chip.style.top = surplusStreamTopFor(streamSlot) + 'px';
-              chip.classList.add('is-streaming');
-              streamSlot++;
-              surplusFlow.classList.add('is-reading');
-            }, enterAt);
-            surplusDelay(function () { chip.classList.add('is-classified'); }, classifyAt);
+              var startCounter = classifiedCount;
+              var startBd = {
+                income:   surplusBreakdown.income,
+                fixed:    surplusBreakdown.fixed,
+                variable: surplusBreakdown.variable
+              };
+              var rollDuration = 1500;
+              var rollStart = performance.now();
+              (function tick(now) {
+                var p = Math.min((now - rollStart) / rollDuration, 1);
+                var eased = 1 - Math.pow(1 - p, 2.4);
+                surplusSetCounter(startCounter + (COUNTER_FINAL - startCounter) * eased);
+                surplusSetBreakdown(
+                  startBd.income   + (BREAKDOWN_FINAL.income   - startBd.income)   * eased,
+                  startBd.fixed    + (BREAKDOWN_FINAL.fixed    - startBd.fixed)    * eased,
+                  startBd.variable + (BREAKDOWN_FINAL.variable - startBd.variable) * eased
+                );
+                if (p < 1) requestAnimationFrame(tick);
+              })(rollStart);
+            }, rollAt);
+
+            var revealAt = rollAt + 380;
             surplusDelay(function () {
-              var off = surplusRouteOffsetFor(chip, chip.getAttribute('data-cat'));
-              chip.style.setProperty('--route-x', off.x + 'px');
-              chip.style.setProperty('--route-y', off.y + 'px');
-              chip.classList.add('is-routed');
-              var cat = chip.getAttribute('data-cat');
-              var val = parseInt(chip.getAttribute('data-value'), 10) || 0;
-              surplusUpdateRow(cat, val);
-              classifiedCount++;
-              surplusSetCounter(classifiedCount);
-              surplusBumpBreakdown(cat);
-              streamSlot = Math.max(0, streamSlot - 1);
-            }, routeAt);
-            // Pulse aura at chip-mid-flight (chip crossing Finwy)
+              surplusFlow.classList.remove('is-reading');
+              surplusFlow.classList.add('is-revealed');
+              surplusAnimateNumber(surplusTotalEl, 0, SURPLUS_FINAL, 720, surplusFormatINR);
+            }, revealAt);
+
+            var insightsAt = revealAt + 480;
+            surplusDelay(function () { surplusFlow.classList.add('is-insighting'); }, insightsAt);
             surplusDelay(function () {
-              if (!surplusAura) return;
-              surplusAura.classList.remove('is-pulse');
-              void surplusAura.offsetWidth;
-              surplusAura.classList.add('is-pulse');
-            }, routeAt + 140);
-            t += gap;
+              surplusFlow.classList.add('is-done');
+              if (surplusCaption) surplusCaption.textContent = 'Done';
+              resolve();
+            }, insightsAt + 900);
           });
-
-          var rollAt = t + 380;
-          surplusDelay(function () {
-            if (reduce) {
-              surplusSetCounter(COUNTER_FINAL);
-              surplusSetBreakdown(BREAKDOWN_FINAL.income, BREAKDOWN_FINAL.fixed, BREAKDOWN_FINAL.variable);
-              return;
-            }
-            var startCounter = classifiedCount;
-            var startBd = {
-              income:   surplusBreakdown.income,
-              fixed:    surplusBreakdown.fixed,
-              variable: surplusBreakdown.variable
-            };
-            var rollDuration = 1500;
-            var rollStart = performance.now();
-            (function tick(now) {
-              var p = Math.min((now - rollStart) / rollDuration, 1);
-              var eased = 1 - Math.pow(1 - p, 2.4);
-              surplusSetCounter(startCounter + (COUNTER_FINAL - startCounter) * eased);
-              surplusSetBreakdown(
-                startBd.income   + (BREAKDOWN_FINAL.income   - startBd.income)   * eased,
-                startBd.fixed    + (BREAKDOWN_FINAL.fixed    - startBd.fixed)    * eased,
-                startBd.variable + (BREAKDOWN_FINAL.variable - startBd.variable) * eased
-              );
-              if (p < 1) requestAnimationFrame(tick);
-            })(rollStart);
-          }, rollAt);
-
-          var revealAt = rollAt + 380;
-          surplusDelay(function () {
-            surplusFlow.classList.remove('is-reading');
-            surplusFlow.classList.add('is-revealed');
-            surplusAnimateNumber(surplusTotalEl, 0, SURPLUS_FINAL, 720, surplusFormatINR);
-          }, revealAt);
-
-          var insightsAt = revealAt + 480;
-          surplusDelay(function () { surplusFlow.classList.add('is-insighting'); }, insightsAt);
-          surplusDelay(function () {
-            surplusFlow.classList.add('is-done');
-            if (surplusCaption) surplusCaption.textContent = 'Done';
-          }, insightsAt + 900);
         }
 
-        var surplusFired = false;
         if (reduce || !('IntersectionObserver' in window)) {
           surplusRow.classList.add('is-active');
           surplusSettleAll();
         } else {
-          var surplusIO = new IntersectionObserver(function (entries, obs) {
-            entries.forEach(function (e) {
-              if (e.isIntersecting && !surplusFired) {
-                surplusFired = true;
-                surplusRunFeed();
-                obs.unobserve(e.target);
-              }
-            });
-          }, { threshold: 0.20, rootMargin: '-5% 0px -5% 0px' });
-          surplusIO.observe(surplusRow);
+          SnapAnim.register('step-2-surplus', {
+            play:  surplusRunFeed,
+            reset: surplusReset,
+            stop:  surplusClearTimers,
+            loop:  true
+          });
         }
       }
 
@@ -4365,109 +5413,289 @@
         }
 
         function allocRun() {
-          allocReset();
-          if (reduce) { allocSettleFinal(); return; }
+          return new Promise(function (resolve) {
+            allocReset();
+            if (reduce) { allocSettleFinal(); resolve(); return; }
 
-          // ACT 1
-          allocLater(function () { allocSrcStage.classList.add('is-act1-in'); }, 60);
-          allocLater(function () { allocSrcStage.classList.add('is-dissolving'); }, 1100);
-          [1100, 1320, 1540, 1760, 1980].forEach(function (t) {
-            allocLater(allocPulseFinwy, t + 480);
+            // ACT 1
+            allocLater(function () { allocSrcStage.classList.add('is-act1-in'); }, 60);
+            allocLater(function () { allocSrcStage.classList.add('is-dissolving'); }, 1100);
+            [1100, 1320, 1540, 1760, 1980].forEach(function (t) {
+              allocLater(allocPulseFinwy, t + 480);
+            });
+            allocLater(function () { allocSrcStage.classList.add('is-replaced'); }, 2500);
+
+            // ACT 2 — top banner reveals
+            allocLater(function () { allocBlock.classList.add('is-act2'); }, 3000);
+
+            var rows = allocBlock.querySelectorAll('.cascade__row');
+            var t0 = 3300;
+            var stagger = 720;
+
+            allocLater(function () { allocRevealFunded(rows[0]); }, t0);
+            allocLater(function () { allocRevealFunded(rows[1]); }, t0 + stagger * 1);
+            allocLater(function () { allocRevealFunded(rows[2]); }, t0 + stagger * 2);
+            allocLater(function () { allocRevealFunded(rows[3]); }, t0 + stagger * 3);
+            allocLater(function () { allocRevealDeferred(rows[4]); }, t0 + stagger * 4);
+            allocLater(function () { allocRevealDeferred(rows[5]); }, t0 + stagger * 5);
+
+            var afterRows = t0 + stagger * 5 + 600;
+            allocLater(function () { allocBlock.classList.add('is-starred'); }, afterRows);
+            allocLater(function () {
+              allocBlock.classList.add('is-caption');
+              resolve();
+            }, afterRows + 720);
           });
-          allocLater(function () { allocSrcStage.classList.add('is-replaced'); }, 2500);
-
-          // ACT 2 — top banner reveals
-          allocLater(function () { allocBlock.classList.add('is-act2'); }, 3000);
-
-          var rows = allocBlock.querySelectorAll('.cascade__row');
-          var t0 = 3300;
-          var stagger = 720;
-
-          allocLater(function () { allocRevealFunded(rows[0]); }, t0);
-          allocLater(function () { allocRevealFunded(rows[1]); }, t0 + stagger * 1);
-          allocLater(function () { allocRevealFunded(rows[2]); }, t0 + stagger * 2);
-          allocLater(function () { allocRevealFunded(rows[3]); }, t0 + stagger * 3);
-          allocLater(function () { allocRevealDeferred(rows[4]); }, t0 + stagger * 4);
-          allocLater(function () { allocRevealDeferred(rows[5]); }, t0 + stagger * 5);
-
-          var afterRows = t0 + stagger * 5 + 600;
-          allocLater(function () { allocBlock.classList.add('is-starred'); }, afterRows);
-          allocLater(function () { allocBlock.classList.add('is-caption'); }, afterRows + 720);
         }
 
-        var allocFired = false;
         if (reduce || !('IntersectionObserver' in window)) {
           allocSettleFinal();
         } else {
-          var allocIO = new IntersectionObserver(function (entries, obs) {
-            entries.forEach(function (e) {
-              if (e.isIntersecting && !allocFired) {
-                allocFired = true;
-                allocRun();
-                obs.unobserve(e.target);
-              }
-            });
-          }, { threshold: 0.20, rootMargin: '-5% 0px -5% 0px' });
-          allocIO.observe(allocStep);
+          SnapAnim.register('step-3-allocation', {
+            play:  allocRun,
+            reset: allocReset,
+            stop:  allocClearAll,
+            loop:  true
+          });
         }
       }
 
-      // ---- §7 Persona finder ----
-      var stage = document.getElementById('persona-stage');
-      var tiles = document.querySelectorAll('.persona-tile');
-      var personas = {
-        '1': [
-          'Fifty-two thousand a month income. Six thousand rent. Eight thousand savings sitting at three-and-a-half percent. Inflation is six. You’re losing roughly fifteen hundred a year.',
-          'Open a basic emergency fund first. Then a single index SIP at three thousand. Skip ELSS until you’re paying tax.',
-          'Three SIPs in three different apps is not diversification. It’s confusion. Pick one fund. Start there.'
-        ],
-        '2': [
-          'Joint income one-point-eight lakh. Forty-seven thousand monthly surplus. You’re saving twenty-six percent — better than seventy percent of couples your age.',
-          'Your daughter (planned for twenty twenty-eight) needs about four lakh a year in eighteen years. Start a kids-fund SIP at six-and-a-half thousand. Specifically not in your retirement fund.',
-          'Term insurance for both of you, before next year’s premium bump. One-and-a-half crore each. Not ULIPs.'
-        ],
-        '3': [
-          'EMI of thirty-eight thousand on a fifty-four thousand monthly surplus. Tight but workable IF your emergency fund covers six months.',
-          'Don’t pause SIPs to make the down payment. Use FDs maturing in the next twelve months instead.',
-          'Your home loan is at eight-point-six. Your equity SIPs averaged twelve over five years. Don’t prepay yet.'
-        ],
-        '4': [
-          'Two goals are competing: kids’ college (eight years) and retirement (eighteen years). Both can be funded — at different risk profiles.',
-          'Move fifteen thousand a month from your large-cap SIPs into a balanced advantage fund for the education goal. Equity stays for retirement.',
-          'Your term insurance hasn’t been refreshed since the kids were born. Two crore now, not later.'
-        ],
-        '5': [
-          'Seventy percent in equity at fifty-six with four years to retirement is dangerous. One bad year erases two years of returns.',
-          'Move eight lakh gradually to debt over the next twelve months. Keep three lakh in equity. Don’t sell during a fall.',
-          'Your retirement number is four-point-two crore. You’re at three-point-six. Achievable. Tighten spending by eight thousand a month for four years and you’re there.'
-        ]
-      };
-      var timers = [];
-      function clearAll() { timers.forEach(function (t) { clearTimeout(t); }); timers = []; }
-      function showPersona(id) {
-        clearAll();
-        var bubbles = personas[id]; if (!bubbles) return;
-        stage.removeAttribute('data-empty');
-        stage.innerHTML = '';
-        bubbles.forEach(function (text, i) {
-          var bubble = document.createElement('div');
-          bubble.className = 'persona-bubble';
-          bubble.innerHTML = '<img class="persona-bubble__avatar" src="fw-deck-2026/slides/finny-3d.png" alt=""><div class="persona-bubble__body">' + text + '</div>';
-          stage.appendChild(bubble);
-          if (reduce) {
-            bubble.classList.add('is-shown');
-          } else {
-            timers.push(setTimeout(function () { bubble.classList.add('is-shown'); }, 700 + i * 800));
+      // ---- §7 The Engine (Two of you. Two answers.) ----
+      // Wrapped in its own IIFE so its var declarations (timers, revealed)
+      // don't collide with the parent IIFE's vars.
+      (function () {
+        var engineReduce = reduce; // inherited from parent IIFE
+        var PACE = {
+          portfolios: { step: 360, decisive: 900, gap: 60,  handoff: 520 },
+          goals:      { step: 280, decisive: 720, gap: 50,  handoff: 460 },
+          expenses:   { step: 220, decisive: 600, gap: 40,  handoff: 420 }
+        };
+        var revealed = new WeakSet();
+        var engineTimers = [];
+
+        function clearEngineTimers() {
+          engineTimers.forEach(function (t) { clearTimeout(t); });
+          engineTimers = [];
+        }
+
+        function moveMascotTo(card, position) {
+          var mascot  = card.querySelector('.trail__mascot');
+          var factors = card.querySelectorAll('.factor');
+          var trail   = card.querySelector('.trail');
+          if (!mascot || !factors[position] || !trail) return;
+          var trailRect  = trail.getBoundingClientRect();
+          var factorRect = factors[position].getBoundingClientRect();
+          var mascotW    = mascot.offsetWidth || 48;
+          var x = factorRect.left + factorRect.width / 2 - trailRect.left - mascotW / 2;
+          mascot.style.transform = 'translateX(' + x + 'px)';
+        }
+
+        function dockMascot(card) {
+          var mascot = card.querySelector('.trail__mascot');
+          if (!mascot) return;
+          mascot.classList.add('is-docked');
+          mascot.style.transform = '';
+        }
+
+        function setMascotLoad(card, loaded) {
+          var mascot = card.querySelector('.trail__mascot');
+          if (mascot) mascot.dataset.loaded = String(Math.min(loaded, 6));
+        }
+
+        function stepMascot(card) {
+          var mascot = card.querySelector('.trail__mascot');
+          if (!mascot) return;
+          mascot.classList.remove('is-stepping');
+          void mascot.offsetWidth;
+          mascot.classList.add('is-stepping');
+        }
+
+        function leanMascot(card) {
+          var mascot = card.querySelector('.trail__mascot');
+          if (!mascot) return;
+          mascot.classList.remove('is-leaning');
+          void mascot.offsetWidth;
+          mascot.classList.add('is-leaning');
+        }
+
+        function runEngine(card) {
+          return new Promise(function (resolve) {
+            var pairKey  = card.dataset.pair;
+            var pace     = PACE[pairKey];
+            var decisive = parseInt(card.dataset.decisive, 10);
+            var factors  = card.querySelectorAll('.factor');
+            var lanes    = card.querySelectorAll('.lane');
+
+            var t = 700;
+
+            for (var i = 0; i < 6; i++) {
+              (function (idx) {
+                var isDecisive = (idx === decisive);
+                var hold = isDecisive ? pace.decisive : pace.step;
+
+                engineTimers.push(setTimeout(function () {
+                  moveMascotTo(card, idx);
+                  stepMascot(card);
+                  factors[idx].classList.add(isDecisive ? 'is-decisive-hold' : 'is-active');
+                  engineTimers.push(setTimeout(function () { leanMascot(card); }, 180));
+                }, t));
+
+                engineTimers.push(setTimeout(function () {
+                  factors[idx].classList.remove('is-active', 'is-decisive-hold');
+                  if (isDecisive) {
+                    factors[idx].classList.add('is-decisive');
+                  } else {
+                    factors[idx].classList.add('is-considered');
+                  }
+                  setMascotLoad(card, idx + 1);
+                }, t + hold));
+              })(i);
+
+              t += (i === decisive ? pace.decisive : pace.step) + pace.gap;
+            }
+
+            var handoffStart = t;
+            engineTimers.push(setTimeout(function () {
+              factors[decisive].classList.add('is-handing-off');
+            }, handoffStart));
+
+            engineTimers.push(setTimeout(function () {
+              lanes[0].classList.add('is-receiving', 'is-revealed');
+            }, handoffStart + Math.round(pace.handoff * 0.55)));
+
+            engineTimers.push(setTimeout(function () {
+              lanes[1].classList.add('is-receiving', 'is-revealed');
+            }, handoffStart + Math.round(pace.handoff * 0.55) + 220));
+
+            engineTimers.push(setTimeout(function () {
+              lanes[0].classList.remove('is-receiving');
+              lanes[1].classList.remove('is-receiving');
+            }, handoffStart + pace.handoff + 900));
+
+            var settle = handoffStart + pace.handoff + 240;
+            engineTimers.push(setTimeout(function () {
+              dockMascot(card);
+              resolve();
+            }, settle + 320));
+          });
+        }
+
+        function engineResetCard(card) {
+          card.classList.remove('is-revealed');
+          card.querySelectorAll('.factor').forEach(function (f) {
+            f.classList.remove('is-active', 'is-decisive-hold', 'is-considered', 'is-decisive', 'is-handing-off');
+          });
+          card.querySelectorAll('.lane').forEach(function (l) {
+            l.classList.remove('is-revealed', 'is-receiving');
+          });
+          var mascot = card.querySelector('.trail__mascot');
+          if (mascot) {
+            mascot.classList.remove('is-docked', 'is-stepping', 'is-leaning');
+            mascot.style.transform = '';
+            mascot.dataset.loaded = '0';
           }
+          revealed.delete(card);
+        }
+
+        function engineRunCard(card) {
+          clearEngineTimers();
+          engineResetCard(card);
+          card.classList.add('is-revealed');
+          revealed.add(card);
+
+          if (engineReduce) {
+            settleFinalState(card);
+            return Promise.resolve();
+          }
+
+          return new Promise(function (resolve) {
+            requestAnimationFrame(function () {
+              moveMascotTo(card, 0);
+              engineTimers.push(setTimeout(function () {
+                runEngine(card).then(resolve);
+              }, 100));
+            });
+          });
+        }
+
+        function settleFinalState(card) {
+          var decisive = parseInt(card.dataset.decisive, 10);
+          var factors  = card.querySelectorAll('.factor');
+          var lanes    = card.querySelectorAll('.lane');
+
+          factors.forEach(function (f, i) {
+            f.classList.remove('is-active', 'is-decisive-hold', 'is-considered', 'is-decisive', 'is-handing-off');
+            if (i === decisive) f.classList.add('is-decisive');
+            else f.classList.add('is-considered');
+          });
+          lanes.forEach(function (l) { l.classList.add('is-revealed'); });
+          setMascotLoad(card, 6);
+          requestAnimationFrame(function () { dockMascot(card); });
+        }
+
+        function revealCard(card) {
+          if (revealed.has(card)) return;
+          revealed.add(card);
+          card.classList.add('is-revealed');
+
+          if (engineReduce) {
+            settleFinalState(card);
+            return;
+          }
+          requestAnimationFrame(function () {
+            moveMascotTo(card, 0);
+            engineTimers.push(setTimeout(function () { runEngine(card); }, 100));
+          });
+        }
+
+        var engineCards = document.querySelectorAll('.engine .case-card');
+
+        if (engineReduce || !('IntersectionObserver' in window)) {
+          engineCards.forEach(revealCard);
+        } else {
+          var taglineEl = document.getElementById('engine-case-tagline');
+          var subEl     = document.getElementById('engine-case-sub');
+          engineCards.forEach(function (card) {
+            SnapAnim.register('engine-' + card.dataset.pair, {
+              play:  function () {
+                flapMorph(taglineEl, card.dataset.tagline || '');
+                flapMorph(subEl,     card.dataset.sub     || '');
+                return engineRunCard(card);
+              },
+              reset: function () { engineResetCard(card); },
+              stop:  clearEngineTimers,
+              loop:  true
+            });
+          });
+        }
+
+        var engineCloserMascot = document.getElementById('engine-closer-mascot');
+        if (engineCloserMascot && !engineReduce && 'IntersectionObserver' in window) {
+          var mIO = new IntersectionObserver(function (entries, obs) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) { engineCloserMascot.classList.add('is-waving'); obs.disconnect(); }
+            });
+          }, { threshold: 0.6 });
+          mIO.observe(engineCloserMascot);
+        }
+
+        window.addEventListener('resize', function () {
+          engineCards.forEach(function (c) {
+            if (!revealed.has(c)) return;
+            var mascot = c.querySelector('.trail__mascot');
+            if (mascot && mascot.classList.contains('is-docked')) {
+              dockMascot(c);
+            }
+          });
         });
-      }
-      tiles.forEach(function (tile) {
-        tile.addEventListener('click', function () {
-          tiles.forEach(function (t) { t.setAttribute('aria-pressed', 'false'); });
-          tile.setAttribute('aria-pressed', 'true');
-          showPersona(tile.dataset.persona);
-        });
-      });
+      })();
+
+      // Initialise per-letter flap spans for the engine sticky head.
+      flapInit(document.getElementById('engine-case-tagline'));
+      flapInit(document.getElementById('engine-case-sub'));
+
+      // Boot the snap-aware animation registry after all animations have registered.
+      SnapAnim.init();
     })();
   </script>
 </body>
