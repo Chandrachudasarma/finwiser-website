@@ -176,6 +176,7 @@
       .steps__intro  { scroll-snap-align: start; scroll-snap-stop: normal; }
       .steps__row    { scroll-snap-align: start; scroll-snap-stop: normal; }
       .case-card     { scroll-snap-align: start; scroll-snap-stop: normal; scroll-margin-top: 160px; }
+      .engine-finale { scroll-snap-align: start; scroll-snap-stop: normal; }
       .caps          { scroll-snap-align: start; scroll-snap-stop: normal; }
       .compare       { scroll-snap-align: start; scroll-snap-stop: normal; }
       .pricing       { scroll-snap-align: start; scroll-snap-stop: normal; }
@@ -303,14 +304,22 @@
     .hero__visual {
       position: relative; aspect-ratio: 1 / 1; max-width: 460px; width: 100%; justify-self: end;
       opacity: 0; transform: translateY(16px);
-      animation: hero-rise 600ms cubic-bezier(0.16, 1, 0.3, 1) 1500ms forwards;
+      animation: hero-rise 600ms cubic-bezier(0.16, 1, 0.3, 1) 0ms forwards;
     }
     .hero__halo {
       position: absolute; inset: 8% 8%;
       background: radial-gradient(closest-side, var(--mint-16), transparent 70%);
       filter: blur(2px);
     }
-    .hero__mascot { position: relative; width: 100%; filter: drop-shadow(0 24px 48px var(--black-32)); }
+    .hero__mascot { position: relative; width: 100%; aspect-ratio: 409 / 455; filter: drop-shadow(1.5px 0 0 var(--mint)) drop-shadow(-1.5px 0 0 var(--mint)) drop-shadow(0 1.5px 0 var(--mint)) drop-shadow(0 -1.5px 0 var(--mint)) drop-shadow(0 0 22px color-mix(in srgb, var(--mint) 55%, transparent)) drop-shadow(0 24px 48px var(--black-32)); }
+    .hero__mascot img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 80ms ease;
+    }
+    .hero__mascot img.is-active { opacity: 1; }
     .hero__chip {
       position: absolute; display: inline-flex; align-items: center; gap: 8px;
       background: var(--navy-deep); border: 1px solid var(--border-on-dark); color: var(--text-on-dark);
@@ -1328,22 +1337,47 @@
       font-style: italic;
       color: var(--text-on-light-muted);
     }
-    /* Per-letter flap span */
-    .flap-char {
+    /* Split-flap cell — top half rotates around the split line. */
+    .flap-cell {
       display: inline-block;
-      transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
-                  opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
-      transform-origin: center top;
-      backface-visibility: hidden;
+      position: relative;
+      line-height: 1;
+      vertical-align: top;
       white-space: pre;
     }
-    .flap-char.is-flipping {
-      transform: rotateX(-90deg);
-      opacity: 0;
+    .flap-spacer {
+      display: inline-block;
+      visibility: hidden;
+      line-height: 1;
     }
+    .flap-top, .flap-bottom {
+      position: absolute;
+      left: 0; right: 0;
+      height: 50%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .flap-top {
+      top: 0;
+      transform-origin: center bottom;
+      transition: transform 200ms cubic-bezier(0.4, 0, 0.6, 1);
+      backface-visibility: hidden;
+    }
+    .flap-bottom { bottom: 0; }
+    .flap-letter {
+      position: absolute; left: 0; right: 0;
+      display: block;
+      line-height: 1;
+    }
+    .flap-top .flap-letter    { top: 0; }
+    .flap-bottom .flap-letter { bottom: 0; }
+    /* Initial-blank state — top rotated up out of view, bottom faded out. */
+    .flap-cell--blank .flap-top    { transform: rotateX(90deg); }
+    .flap-cell--blank .flap-bottom { opacity: 0; transition: opacity 240ms ease; }
     @media (prefers-reduced-motion: reduce) {
-      .flap-char { transition: none; }
-      .flap-char.is-flipping { transform: none; opacity: 1; }
+      .flap-top { transition: none; }
+      .flap-cell--blank .flap-top    { transform: none; }
+      .flap-cell--blank .flap-bottom { opacity: 1; }
     }
 
     /* Pair card */
@@ -1815,8 +1849,19 @@
     .a-slate { background: var(--slate); }
 
     /* Closer */
+    /* Engine finale — its own snap-stop page after the 3 case cards. */
+    .engine-finale {
+      background: var(--off-white); color: var(--text-on-light);
+      min-height: calc(100vh - 64px);
+      padding: clamp(48px, 6vw, 72px) 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .engine-finale__inner {
+      width: 100%; max-width: 880px; margin: 0 auto; padding: 0 32px;
+      text-align: center;
+    }
     .engine__close {
-      margin-top: 44px; text-align: center;
+      margin-top: 0; text-align: center;
       display: flex; flex-direction: column; gap: 10px; align-items: center;
     }
     .engine__close-mascot {
@@ -3044,7 +3089,7 @@
     <!-- ============================================================ -->
     <!-- §2 — HERO                                                     -->
     <!-- ============================================================ -->
-    <section class="hero" aria-labelledby="hero-heading">
+    <section class="hero" aria-labelledby="hero-heading" data-snap-anim="hero-wakeup">
       <div class="hero__inner">
         <div class="hero__copy">
           <p class="hero__eyebrow">
@@ -3062,7 +3107,23 @@
         </div>
         <div class="hero__visual" aria-hidden="true">
           <div class="hero__halo"></div>
-          <img class="hero__mascot" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="eager" decoding="async" width="420" height="420">
+          <div class="hero__mascot" id="hero-mascot" role="img" aria-label="Finwy mascot waking up to say hi">
+            <img src="fw-deck-2026/slides/frame-1.png" class="is-active" data-frame="1" alt="" loading="eager" decoding="async">
+            <img src="fw-deck-2026/slides/frame-2.png" data-frame="2" alt="" loading="eager" decoding="async">
+            <img src="fw-deck-2026/slides/frame-3.png" data-frame="3" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-4.png" data-frame="4" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-5.png" data-frame="5" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-6.png" data-frame="6" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-7.png" data-frame="7" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-8.png" data-frame="8" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-9.png" data-frame="9" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-10.png" data-frame="10" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-11.png" data-frame="11" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-12.png" data-frame="12" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-13.png" data-frame="13" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-14.png" data-frame="14" alt="" loading="lazy" decoding="async">
+            <img src="fw-deck-2026/slides/frame-15.png" data-frame="15" alt="" loading="lazy" decoding="async">
+          </div>
           <div class="hero__chip hero__chip--bank">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10 12 4l9 6v2H3zM5 13h2v6H5zm4 0h2v6H9zm4 0h2v6h-2zm4 0h2v6h-2zM3 20h18v2H3z"/></svg>
             <span>Bank</span>
@@ -4197,18 +4258,24 @@
           </div>
         </article>
 
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §7b — ENGINE FINALE (closing thought)                         -->
+    <!-- ============================================================ -->
+    <section class="engine-finale" aria-label="Six 35-year-olds. Six allocations.">
+      <div class="engine-finale__inner">
         <div class="engine__close">
           <img class="engine__close-mascot" id="engine-closer-mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
           <p class="engine__close-line">Six 35-year-olds. Six allocations &mdash; and they keep changing.</p>
           <p class="engine__close-finwy">Finwy keeps watching.</p>
           <a class="engine__cta" href="/demo-app">Get yours &rarr;</a>
         </div>
-
         <p class="engine__footnote">
           Illustrative cases. Names changed; details composed.
           Your data drives your allocation, not these.
         </p>
-
       </div>
     </section>
 
@@ -4503,6 +4570,7 @@
         var handlers = {};        // name -> handler
         var entries = [];         // [{ el, name }]
         var current = null;       // active entry
+        var lastActivatedName = null; // most recent snap target activated (kept across deactivations)
         var settleTimer = null;
         var hasNativeScrollEnd = 'onscrollend' in window;
 
@@ -4529,22 +4597,28 @@
         }
 
         function activate(entry) {
+          var previousName = lastActivatedName;
           current = entry;
+          lastActivatedName = entry.name;
           var h = handlers[entry.name];
           if (!h) return;
           h._running = true;
-          var tick = function () {
+          var tick = function (isLoopTick) {
             if (!h._running) return;
             var p;
-            try { p = h.play(); } catch (err) { return; }
+            try {
+              // First tick gets previousName (so handlers can detect "fresh
+              // entry" from outside their group). Loop ticks pass null.
+              p = h.play(isLoopTick ? null : previousName);
+            } catch (err) { return; }
             Promise.resolve(p).then(function () {
               if (!h._running) return;
               if (h.loop && !reduce) {
-                h._loopTimer = setTimeout(tick, LOOP_HOLD_MS);
+                h._loopTimer = setTimeout(function () { tick(true); }, LOOP_HOLD_MS);
               }
             });
           };
-          tick();
+          tick(false);
         }
 
         function deactivate(entry) {
@@ -4589,31 +4663,141 @@
             }
             window.addEventListener('scroll', scheduleSettle, { passive: true });
             window.addEventListener('resize', scheduleSettle, { passive: true });
-            // Activate whatever is parked at first paint.
-            setTimeout(onSettle, 250);
+            // Activate whatever is parked on the next paint frame.
+            requestAnimationFrame(onSettle);
           }
         };
       })();
 
       // ============================================================
-      // Per-letter "split-flap" morph — used by the engine sticky head
-      // to morph case tagline + sub from one card to the next.
+      // Split-flap morph — used by the engine sticky head to morph
+      // case tagline + sub from one card to the next. Each character
+      // is rendered as a 2-half "cell" (top half + bottom half clipped
+      // from the same letter). On change, the top half pivots forward
+      // around the split line (rotateX 0 → -90), then snaps to +90 with
+      // the new letter and pivots back down to 0. The bottom updates
+      // at the swap moment when the top is invisible.
       // ============================================================
-      var FLAP_STAGGER  = 28;   // ms between successive letter flips
-      var FLAP_DURATION = 200;  // ms per individual letter flip
+      var FLAP_STAGGER     = 28;   // ms between cell flips along the line
+      var FLAP_FALL_MS     = 200;  // top falls from 0 → -90
+      var FLAP_RISE_MS     = 200;  // top rises from +90 → 0
       var flapTimers = {};
 
-      function flapInit(el) {
+      function makeFlapCell(ch, blank) {
+        var cell = document.createElement('span');
+        cell.className = 'flap-cell' + (blank ? ' flap-cell--blank' : '');
+        cell.dataset.letter = blank ? '' : ch;
+
+        var spacer = document.createElement('span');
+        spacer.className = 'flap-spacer';
+        spacer.textContent = ch;
+        cell.appendChild(spacer);
+
+        var top = document.createElement('span');
+        top.className = 'flap-top';
+        var topL = document.createElement('span');
+        topL.className = 'flap-letter';
+        topL.textContent = ch;
+        top.appendChild(topL);
+        cell.appendChild(top);
+
+        var bot = document.createElement('span');
+        bot.className = 'flap-bottom';
+        var botL = document.createElement('span');
+        botL.className = 'flap-letter';
+        botL.textContent = ch;
+        bot.appendChild(botL);
+        cell.appendChild(bot);
+
+        return cell;
+      }
+
+      function flapInit(el, blankInitial) {
         if (!el) return;
         var text = el.textContent || '';
         el.textContent = '';
-        el.dataset.flapCurrent = text;
+        el.dataset.flapCurrent = blankInitial ? '' : text;
         for (var i = 0; i < text.length; i++) {
-          var span = document.createElement('span');
-          span.className = 'flap-char';
-          span.textContent = text[i];
-          el.appendChild(span);
+          el.appendChild(makeFlapCell(text[i], !!blankInitial));
         }
+      }
+
+      // Restore an already-initialised flap element to the blank-initial state
+      // so the next morph animates every cell back in (used when re-entering
+      // the engine from a non-engine section).
+      function flapBlank(el) {
+        if (!el) return;
+        var key = el.id;
+        if (key && flapTimers[key]) {
+          flapTimers[key].forEach(clearTimeout);
+          flapTimers[key] = [];
+        }
+        el.dataset.flapCurrent = '';
+        var cells = el.querySelectorAll('.flap-cell');
+        cells.forEach(function (cell) {
+          cell.classList.add('flap-cell--blank');
+          // Clear the per-cell letter marker so the next flipCellTo() actually
+          // runs (otherwise oldCh === newCh and the cell stays blank).
+          cell.dataset.letter = '';
+          var top = cell.querySelector('.flap-top');
+          var bot = cell.querySelector('.flap-bottom');
+          if (!top || !bot) return;
+          top.style.transition = 'none';
+          top.style.transform  = 'rotateX(90deg)';
+          bot.style.opacity    = '0';
+          void top.offsetWidth;
+          top.style.transition = '';
+        });
+      }
+
+      // Animate a single cell: fall the old top away, snap-update letter,
+      // rise the new top into place. Schedules timers on the supplied key.
+      function flipCellTo(cell, newCh, delay, key) {
+        var oldCh  = cell.dataset.letter || '';
+        if (oldCh === newCh) return;
+        cell.dataset.letter = newCh;
+
+        var top    = cell.querySelector('.flap-top');
+        var topL   = top.querySelector('.flap-letter');
+        var bot    = cell.querySelector('.flap-bottom');
+        var botL   = bot.querySelector('.flap-letter');
+        var spacer = cell.querySelector('.flap-spacer');
+
+        // Initial reveal (cell was blank): just rise into place.
+        if (cell.classList.contains('flap-cell--blank')) {
+          flapTimers[key].push(setTimeout(function () {
+            spacer.textContent = newCh;
+            topL.textContent   = newCh;
+            botL.textContent   = newCh;
+            cell.classList.remove('flap-cell--blank');
+            // Now the CSS transition kicks in (top: 90 → 0, bottom opacity 0 → 1).
+            top.style.transform = '';
+            bot.style.opacity   = '';
+          }, delay));
+          return;
+        }
+
+        // 1) Fall: top pivots forward from 0 to -90 (origin = split line).
+        flapTimers[key].push(setTimeout(function () {
+          top.style.transform = 'rotateX(-90deg)';
+        }, delay));
+
+        // 2) At -90, top is invisible. Swap inner letters, snap top to +90
+        //    (now invisible from above), force reflow, then re-enable transition.
+        flapTimers[key].push(setTimeout(function () {
+          top.style.transition = 'none';
+          top.style.transform  = 'rotateX(90deg)';
+          topL.textContent     = newCh;
+          botL.textContent     = newCh;
+          spacer.textContent   = newCh;
+          void top.offsetWidth;
+          top.style.transition = '';
+        }, delay + FLAP_FALL_MS));
+
+        // 3) Rise: top pivots from +90 down to 0 (lands flush on split line).
+        flapTimers[key].push(setTimeout(function () {
+          top.style.transform = 'rotateX(0deg)';
+        }, delay + FLAP_FALL_MS + 12));
       }
 
       function flapMorph(el, newText) {
@@ -4632,14 +4816,11 @@
         if (oldText === newText) return;
         el.dataset.flapCurrent = newText;
 
-        // Grow the span list to cover the longer of old/new length.
-        var spans = el.querySelectorAll('.flap-char');
-        while (spans.length < newText.length) {
-          var span = document.createElement('span');
-          span.className = 'flap-char is-flipping';
-          span.textContent = ' ';
-          el.appendChild(span);
-          spans = el.querySelectorAll('.flap-char');
+        // Grow cell list to cover the longer of old/new lengths.
+        var cells = el.querySelectorAll('.flap-cell');
+        while (cells.length < newText.length) {
+          el.appendChild(makeFlapCell(' ', true));
+          cells = el.querySelectorAll('.flap-cell');
         }
 
         var flipIndex = 0;
@@ -4648,24 +4829,104 @@
           var oldCh = oldText[i] || '';
           var newCh = newText[i] || '';
           if (oldCh === newCh) continue;
-          var s = spans[i];
-          if (!s) continue;
+          var cell = cells[i];
+          if (!cell) continue;
           var d = flipIndex * FLAP_STAGGER;
           flipIndex++;
-          (function (span, ch, delay) {
-            flapTimers[key].push(setTimeout(function () {
-              span.classList.add('is-flipping');
-            }, delay));
-            flapTimers[key].push(setTimeout(function () {
-              if (ch === '') {
-                span.remove();
-              } else {
-                span.textContent = ch;
-                span.classList.remove('is-flipping');
-              }
-            }, delay + FLAP_DURATION));
-          })(s, newCh, d);
+          if (newCh === '') {
+            // Trailing char dropped — fade and remove the cell.
+            (function (c, delay) {
+              flapTimers[key].push(setTimeout(function () {
+                c.style.transition = 'opacity 200ms ease';
+                c.style.opacity = '0';
+              }, delay));
+              flapTimers[key].push(setTimeout(function () { c.remove(); },
+                                              delay + 220));
+            })(cell, d);
+            continue;
+          }
+          flipCellTo(cell, newCh, d, key);
         }
+      }
+
+      // ============================================================
+      // Hero mascot frame-flipbook: sleeping → waking → waving.
+      // The 15 frames are pre-loaded as stacked <img>s inside #hero-mascot;
+      // we toggle .is-active to swap which frame is visible.
+      // Plays once at first paint (parallel with the text reveals) and
+      // replays on return via SnapAnim. Final state: frame 15 (waving).
+      // ============================================================
+      var heroMascot       = document.getElementById('hero-mascot');
+      var heroFrames       = heroMascot ? heroMascot.querySelectorAll('img[data-frame]') : [];
+      var HERO_FRAME_MS    = 90;
+      var HERO_SLEEP_HOLD  = 1400;  // ms — hold frame 1 (sleeping) before flipbook starts
+      var heroTimers       = [];
+
+      function heroClearTimers() {
+        heroTimers.forEach(clearTimeout);
+        heroTimers = [];
+      }
+
+      function heroShowFrame(n) {
+        for (var i = 0; i < heroFrames.length; i++) {
+          if (i === n) heroFrames[i].classList.add('is-active');
+          else         heroFrames[i].classList.remove('is-active');
+        }
+      }
+
+      function heroResetMascot() {
+        heroClearTimers();
+        heroShowFrame(0); // frame 1
+      }
+
+      function heroPlaySequence() {
+        if (!heroFrames.length) return Promise.resolve();
+        heroClearTimers();
+        if (reduce) {
+          heroShowFrame(heroFrames.length - 1);
+          return Promise.resolve();
+        }
+        // Make sure frame 1 is the active frame from the very start of the
+        // sequence — it's the "sleeping" pose and we want it clearly visible
+        // before the flipbook begins.
+        heroShowFrame(0);
+        return new Promise(function (resolve) {
+          for (var i = 0; i < heroFrames.length; i++) {
+            (function (idx) {
+              heroTimers.push(setTimeout(function () {
+                heroShowFrame(idx);
+                if (idx === heroFrames.length - 1) resolve();
+              }, HERO_SLEEP_HOLD + idx * HERO_FRAME_MS));
+            })(i);
+          }
+        });
+      }
+
+      // Track whether the hero already played in this session so SnapAnim's
+      // first activation doesn't double-fire alongside the immediate trigger.
+      var heroPlayedInSession = false;
+
+      if (heroMascot && heroFrames.length) {
+        SnapAnim.register('hero-wakeup', {
+          play: function () {
+            if (heroPlayedInSession) return Promise.resolve();
+            heroPlayedInSession = true;
+            return heroPlaySequence();
+          },
+          reset: function () {
+            // Called when the user leaves hero. Mark unplayed so re-entry
+            // replays the sequence; reset frames back to frame 1.
+            heroPlayedInSession = false;
+            heroResetMascot();
+          },
+          stop: heroClearTimers,
+          loop: false
+        });
+
+        // Fire the sequence immediately so it starts on the same paint frame
+        // as the CSS text-reveal animations — no SnapAnim activation lag.
+        heroPlayedInSession = true;
+        heroPlaySequence();
       }
 
       // ---- Nav: hamburger ----
@@ -5655,9 +5916,19 @@
         } else {
           var taglineEl = document.getElementById('engine-case-tagline');
           var subEl     = document.getElementById('engine-case-sub');
+          var ENGINE_NAMES = {
+            'engine-portfolios': 1, 'engine-goals': 1, 'engine-expenses': 1
+          };
           engineCards.forEach(function (card) {
             SnapAnim.register('engine-' + card.dataset.pair, {
-              play:  function () {
+              play:  function (previousName) {
+                // Fresh entry into engine (came from outside or first land):
+                // reset flap to blank so every letter animates in. Returning
+                // from another engine card just diffs+morphs.
+                if (previousName !== null && !ENGINE_NAMES[previousName]) {
+                  flapBlank(taglineEl);
+                  flapBlank(subEl);
+                }
                 flapMorph(taglineEl, card.dataset.tagline || '');
                 flapMorph(subEl,     card.dataset.sub     || '');
                 return engineRunCard(card);
@@ -5691,12 +5962,59 @@
       })();
 
       // Initialise per-letter flap spans for the engine sticky head.
-      flapInit(document.getElementById('engine-case-tagline'));
-      flapInit(document.getElementById('engine-case-sub'));
+      // blankInitial=true → letters flip in on the first card-1 activation.
+      flapInit(document.getElementById('engine-case-tagline'), true);
+      flapInit(document.getElementById('engine-case-sub'),     true);
 
       // Boot the snap-aware animation registry after all animations have registered.
       SnapAnim.init();
     })();
+  </script>
+
+  <script>
+  // Hero mascot — sleep → wake → hi (mirrors deck slide 1 timing)
+  (function() {
+    const root = document.getElementById('hero-mascot');
+    if (!root) return;
+    const frames = Array.from(root.querySelectorAll('img'));
+    if (frames.length < 15) return;
+    const timing = [700, 700, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2000];
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function show(n) {
+      frames.forEach(f => f.classList.remove('is-active'));
+      frames[n].classList.add('is-active');
+    }
+    if (reduced) { show(14); return; }
+    let started = false;
+    function play() {
+      if (started) return;
+      started = true;
+      let i = 0;
+      function step() {
+        show(i);
+        if (i >= 14) return;
+        setTimeout(() => { i++; step(); }, timing[i]);
+      }
+      step();
+    }
+    // Wait for hero-rise (1500ms delay + 600ms duration) so Finwy is visibly asleep when revealed
+    const visual = root.closest('.hero__visual');
+    function startWhenVisible() {
+      if (!('IntersectionObserver' in window)) { play(); return; }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { play(); io.disconnect(); } });
+      }, { threshold: 0.4 });
+      io.observe(root);
+    }
+    if (visual) {
+      let armed = false;
+      const arm = () => { if (armed) return; armed = true; startWhenVisible(); };
+      visual.addEventListener('animationend', arm, { once: true });
+      setTimeout(arm, 2400); // safety net if animationend never fires
+    } else {
+      setTimeout(startWhenVisible, 2100);
+    }
+  })();
   </script>
 </body>
 </html>
