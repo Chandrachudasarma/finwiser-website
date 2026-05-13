@@ -206,8 +206,13 @@
       display: inline-flex; align-items: center;
       text-decoration: none; line-height: 0;
     }
-    .fw-nav__logo-img { height: 36px; width: auto; display: block; }
-    @media (max-width: 899px) { .fw-nav__logo-img { height: 28px; } }
+    .fw-nav__logo-img {
+      height: 52px; width: auto; display: block;
+      filter:
+        drop-shadow(0 0 6px rgba(255, 255, 255, 0.35))
+        drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+    }
+    @media (max-width: 899px) { .fw-nav__logo-img { height: 40px; } }
     .fw-nav__list { list-style: none; display: flex; align-items: center; gap: 28px; }
     .fw-nav__link {
       font: 500 14px/1 'Inter', sans-serif; color: var(--text-on-dark-muted);
@@ -3348,7 +3353,7 @@
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
         <picture>
           <source media="(max-width: 899px)" srcset="logo-mobile.png">
-          <img class="fw-nav__logo-img" src="logo-desktop.png" alt="Finwiser" width="84" height="36">
+          <img class="fw-nav__logo-img" src="logo-desktop.png" alt="Finwiser" width="122" height="52">
         </picture>
       </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
