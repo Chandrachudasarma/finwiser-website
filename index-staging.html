@@ -31,6 +31,8 @@
       --border-on-light: rgba(0,45,86,0.10);
       --shadow-soft: 0 4px 18px rgba(0,45,86,0.08);
 
+      --nav-h: 68px;
+
       --gold: #f5c26b;
       --rose: #e87b6f;
 
@@ -76,6 +78,10 @@
       --fs-h1:    clamp(36px, 6vw, 60px);
 
       interpolate-size: allow-keywords;
+    }
+
+    @media (max-width: 899px) {
+      :root { --nav-h: 56px; }
     }
 
     /* ============================================================ */
@@ -168,7 +174,7 @@
     @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
       html {
         scroll-snap-type: y mandatory;
-        scroll-padding-top: 64px;
+        scroll-padding-top: var(--nav-h);
       }
       .hero          { scroll-snap-align: start; scroll-snap-stop: normal; }
       .problem       { scroll-snap-align: start; scroll-snap-stop: normal; }
@@ -192,11 +198,9 @@
     /* ============================================================ */
     .fw-nav {
       position: sticky; top: 0; left: 0; right: 0; z-index: 50;
-      height: 64px;
-      background: color-mix(in srgb, var(--navy-deep) 88%, transparent);
-      -webkit-backdrop-filter: saturate(140%) blur(12px);
-      backdrop-filter: saturate(140%) blur(12px);
-      border-bottom: 1px solid var(--white-08);
+      height: var(--nav-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border-on-light);
     }
     .fw-nav__inner {
       max-width: 1200px; height: 100%; margin: 0 auto; padding: 0 24px;
@@ -206,19 +210,14 @@
       display: inline-flex; align-items: center;
       text-decoration: none; line-height: 0;
     }
-    .fw-nav__logo-img {
-      height: 52px; width: auto; display: block;
-      filter:
-        drop-shadow(0 0 6px rgba(255, 255, 255, 0.35))
-        drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
-    }
+    .fw-nav__logo-img { height: 54px; width: auto; display: block; }
     @media (max-width: 899px) { .fw-nav__logo-img { height: 40px; } }
     .fw-nav__list { list-style: none; display: flex; align-items: center; gap: 28px; }
     .fw-nav__link {
-      font: 500 14px/1 'Inter', sans-serif; color: var(--text-on-dark-muted);
+      font: 500 14px/1 'Inter', sans-serif; color: var(--navy-deep);
       text-decoration: none; transition: color 200ms ease-out;
     }
-    .fw-nav__link:hover { color: var(--text-on-dark); }
+    .fw-nav__link:hover { color: var(--teal); }
     .fw-nav__cta {
       display: inline-flex; align-items: center; height: 36px; padding: 0 18px;
       border-radius: 6px; background: var(--mint); color: var(--navy-deep) !important;
@@ -229,7 +228,7 @@
     .fw-nav__toggle { display: none; background: transparent; border: 0; width: 40px; height: 40px; cursor: pointer; padding: 0; }
     .fw-nav__toggle-bar {
       display: block; width: 22px; height: 2px; margin: 5px auto;
-      background: var(--text-on-dark);
+      background: var(--navy-deep);
       transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease-out;
     }
     .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -237,11 +236,10 @@
     .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     @media (max-width: 899px) {
-      .fw-nav { height: 56px; }
       .fw-nav__toggle { display: inline-block; }
       .fw-nav__menu {
-        position: fixed; inset: 56px 0 0 auto;
-        width: min(320px, 86vw); height: calc(100vh - 56px);
+        position: fixed; inset: var(--nav-h) 0 0 auto;
+        width: min(320px, 86vw); height: calc(100vh - var(--nav-h));
         background: var(--navy-deep);
         transform: translateX(16px); opacity: 0; visibility: hidden;
         transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 240ms, visibility 0s linear 320ms;
@@ -411,7 +409,7 @@
     .problem {
       background: var(--off-white); color: var(--text-on-light);
       padding: clamp(64px, 10vw, 100px) 0;
-      min-height: calc(100vh - 64px);
+      min-height: calc(100vh - var(--nav-h));
       display: flex; align-items: center;
     }
     .problem__inner { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 32px; text-align: center; }
@@ -1006,7 +1004,7 @@
     }
     .steps__intro {
       max-width: 1100px; margin: 0 auto 60px; padding: 0 32px; text-align: center;
-      min-height: calc(100vh - 64px);
+      min-height: calc(100vh - var(--nav-h));
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
     .steps__heading {
@@ -1470,7 +1468,7 @@
 
     /* Sticky shared head — sits at top of engine while user scrolls cards */
     .engine__shared-head {
-      position: sticky; top: 64px; z-index: 5;
+      position: sticky; top: var(--nav-h); z-index: 5;
       background: var(--off-white);
       padding: 18px 0 14px;
       border-bottom: 1px solid var(--border-on-light);
@@ -2010,7 +2008,7 @@
     /* Engine finale — its own snap-stop page after the 3 case cards. */
     .engine-finale {
       background: var(--off-white); color: var(--text-on-light);
-      min-height: calc(100vh - 64px);
+      min-height: calc(100vh - var(--nav-h));
       padding: clamp(48px, 6vw, 72px) 0;
       display: flex; align-items: center; justify-content: center;
     }
@@ -2522,7 +2520,7 @@
     .final-cta {
       background: var(--navy); color: var(--text-on-dark);
       padding: clamp(48px, 6vw, 72px) 0; text-align: center;
-      min-height: calc(100vh - 64px);
+      min-height: calc(100vh - var(--nav-h));
       display: flex; align-items: center; justify-content: center;
     }
     .final-cta__inner { width: 100%; max-width: 800px; margin: 0 auto; padding: 0 32px; }
@@ -3351,10 +3349,7 @@
   <header class="fw-nav" role="banner">
     <div class="fw-nav__inner">
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
-        <picture>
-          <source media="(max-width: 899px)" srcset="logo-mobile.png">
-          <img class="fw-nav__logo-img" src="logo-desktop.png" alt="Finwiser" width="122" height="52">
-        </picture>
+        <img class="fw-nav__logo-img" src="finwiserlogo.svg" alt="Finwiser" width="274" height="54">
       </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
