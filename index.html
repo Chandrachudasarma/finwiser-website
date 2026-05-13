@@ -203,9 +203,11 @@
       display: flex; align-items: center; justify-content: space-between; gap: 24px;
     }
     .fw-nav__logo {
-      font: 600 19px/1 'Inter', sans-serif; letter-spacing: -0.4px;
-      color: var(--text-on-dark); text-decoration: none;
+      display: inline-flex; align-items: center;
+      text-decoration: none; line-height: 0;
     }
+    .fw-nav__logo-img { height: 36px; width: auto; display: block; }
+    @media (max-width: 899px) { .fw-nav__logo-img { height: 28px; } }
     .fw-nav__list { list-style: none; display: flex; align-items: center; gap: 28px; }
     .fw-nav__link {
       font: 500 14px/1 'Inter', sans-serif; color: var(--text-on-dark-muted);
@@ -3343,7 +3345,12 @@
   <!-- ============================================================ -->
   <header class="fw-nav" role="banner">
     <div class="fw-nav__inner">
-      <a class="fw-nav__logo" href="/" aria-label="Finwiser home">Finwiser</a>
+      <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
+        <picture>
+          <source media="(max-width: 899px)" srcset="logo-mobile.png">
+          <img class="fw-nav__logo-img" src="logo-desktop.png" alt="Finwiser" width="84" height="36">
+        </picture>
+      </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
