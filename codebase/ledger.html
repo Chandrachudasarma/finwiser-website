@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinWiser — Ledger Module Workflow</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+       background: #0a0a14; color: #e0e0e0; }
+
+/* ── Header ── */
+.header { padding: 22px 32px; background: #16213e; border-bottom: 2px solid #0f3460; }
+.header h1 { font-size: 21px; color: #fff; margin-bottom: 4px; }
+.header .sub { font-size: 13px; color: #8899aa; margin-bottom: 4px; }
+.header .meta { font-size: 11px; color: #445; }
+.header .meta b { color: #667; }
+
+/* ── Nav ── */
+.nav-bar { position: sticky; top: 0; z-index: 100; padding: 10px 32px;
+           background: #0d1b2a; border-bottom: 2px solid #1a3a6a;
+           display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+           box-shadow: 0 2px 12px rgba(0,0,0,.5); }
+.nav-label { color: #667; font-size: 11px; font-weight: 600;
+             text-transform: uppercase; letter-spacing: 1px; margin-right: 6px; }
+.nav-btn { padding: 6px 13px; border-radius: 6px; border: 1px solid #2a3a5a;
+           background: #1a1a2e; color: #8899aa; font-size: 12px; cursor: pointer;
+           transition: all .2s; }
+.nav-btn:hover  { background: #1a2a4e; color: #aabbcc; border-color: #3a5a8a; }
+.nav-btn.active { background: #1a3a6a; color: #fff; border-color: #3498db;
+                  box-shadow: 0 0 8px rgba(52,152,219,.3); }
+.nav-all        { border-color: #2ecc71; color: #2ecc71; }
+.nav-all.active { background: #1a3a2e; border-color: #2ecc71;
+                  box-shadow: 0 0 8px rgba(46,204,113,.3); }
+.nav-sep { width: 1px; height: 22px; background: #2a3a5a; margin: 0 2px; }
+
+/* ── Phase ── */
+.phase { padding: 26px 32px; border-bottom: 1px solid #0f3460; }
+.phase.hidden { display: none; }
+.phase-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.phase-num  { width: 36px; height: 36px; border-radius: 50%; display: flex;
+              align-items: center; justify-content: center; font-weight: 700;
+              font-size: 16px; flex-shrink: 0; color: #fff; }
+.phase-title { font-size: 17px; color: #fff; }
+.phase-sub   { font-size: 13px; color: #8899aa; margin-top: 2px; }
+
+/* ── Connections bar ── */
+.conn-bar { margin-bottom: 14px; padding: 10px 14px; background: #0d0d1a;
+            border: 1px solid #1a1a2e; border-radius: 6px; }
+.conn-row  { display: flex; gap: 8px; align-items: flex-start;
+             flex-wrap: wrap; margin-bottom: 6px; }
+.conn-row:last-child { margin-bottom: 0; }
+.conn-label { font-size: 10px; font-weight: 700; color: #445;
+              text-transform: uppercase; letter-spacing: 1px;
+              padding-top: 3px; white-space: nowrap; min-width: 58px; }
+.pill      { font-size: 12px; padding: 2px 9px; border-radius: 4px;
+             border: 1px solid; line-height: 1.6; }
+.pill em   { font-style: normal; opacity: .85; }
+.pill-in   { color: #7eb8da; background: #1a2a4e; border-color: #2a3a5a; }
+.pill-out  { color: #f0c070; background: #2e2a1a; border-color: #3a3a1a; }
+.pill-none { color: #334; border-color: transparent; background: transparent; }
+
+/* ── Diagram ── */
+.diagram-wrap { overflow: auto; padding: 12px 0; width: 100%; }
+.diagram-wrap svg { width: 100% !important; height: auto !important; max-width: 100% !important; }
+
+/* ── File ref ── */
+.file-ref { font-size: 11px; color: #445; margin-top: 10px; padding: 8px 12px;
+            background: #0d0d1a; border: 1px solid #1a1a2e; border-radius: 4px;
+            line-height: 1.9; }
+.file-ref code { color: #e8a87c; }
+
+/* ── Footer / hint ── */
+.footer   { padding: 12px 32px; text-align: center; font-size: 11px; color: #223; }
+.kb-hint  { position: fixed; bottom: 12px; right: 12px; background: #1a1a2e;
+            border: 1px solid #2a3a5a; border-radius: 6px; padding: 8px 12px;
+            font-size: 11px; color: #445; z-index: 200; opacity: .6; }
+.kb-hint:hover { opacity: 1; }
+.kb-hint kbd   { background: #2a3a5a; color: #aabbcc; padding: 1px 5px;
+                 border-radius: 3px; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>FinWiser — Ledger Module Workflow</h1>
+  <div class="sub">
+    How data flows from Ingestion through the 7 Analysis sub-modules:
+    Categorization → Cashflow → Financial Profile → Budget Tracking,
+    Transaction Analytics, Learning Loop, Notifications &amp; Digest
+  </div>
+  <div class="meta">
+    <b>Generated:</b> 2026-05-15 07:48:17 UTC &nbsp;·&nbsp;
+    <b>Sub-modules:</b> 5 &nbsp;·&nbsp;
+    <b>Curated files:</b> 50 &nbsp;·&nbsp;
+    <b>Auto-detected cross-module connections:</b> 10
+    &nbsp;·&nbsp; <b>Script:</b> scripts/module-diagram.js
+  </div>
+</div>
+
+<div class="nav-bar">
+  <span class="nav-label">View:</span>
+  <button class="nav-btn nav-all active" data-s="overview" onclick="showOnly('overview')">Overview</button>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" data-s="portfolioNetworth" onclick="toggle('portfolioNetworth',this)"><kbd>1</kbd> Portfolio & Networth</button>
+    <button class="nav-btn" data-s="holdingsAssets" onclick="toggle('holdingsAssets',this)"><kbd>2</kbd> Holdings & Assets</button>
+    <button class="nav-btn" data-s="marketDataAnalytics" onclick="toggle('marketDataAnalytics',this)"><kbd>3</kbd> Market Data & Analytics</button>
+    <button class="nav-btn" data-s="insuranceLiabilities" onclick="toggle('insuranceLiabilities',this)"><kbd>4</kbd> Insurance & Liabilities</button>
+    <button class="nav-btn" data-s="nudgeSystem" onclick="toggle('nudgeSystem',this)"><kbd>5</kbd> Nudge System</button>
+</div>
+
+<!-- ══ OVERVIEW ══ -->
+<div class="phase" id="overview">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#2ecc71;color:#0a0a14">∞</div>
+    <div>
+      <div class="phase-title">Ledger Module — Complete Interaction Overview</div>
+      <div class="phase-sub">
+        All 7 sub-modules and how they connect.
+        Arrows are auto-detected from actual require() calls in curated files.
+        Labels from config edgeLabels or auto-extracted function names.
+      </div>
+    </div>
+  </div>
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  INGESTION(["INGESTION LAYER<br/>Transaction · TransactionsNew<br/><i>narration · amount · mode · date · fipId</i>"])
+
+  PORTFOLIONETWORTH["<b>Portfolio & Networth</b><br/>─────────────────<br/>networth-calculator.service.js<br/>unified-networth.service.js<br/>unified-portfolio.service.js<br/>portfolioController.js"]
+  HOLDINGSASSETS["<b>Holdings & Assets</b><br/>─────────────────<br/>asset-linking.service.js<br/>holdingController.js<br/>holding.model.js<br/>manual-asset.model.js"]
+  MARKETDATAANALYTICS["<b>Market Data & Analytics</b><br/>─────────────────<br/>amfi-ingestion.service.js<br/>analytics-compute.service.js<br/>nav-history.service.js<br/>portfolio-intelligence.service.js"]
+  INSURANCELIABILITIES["<b>Insurance & Liabilities</b><br/>─────────────────<br/>protection-assessment.service.js<br/>insuranceController.js<br/>equifax-report.model.js<br/>insurance.model.js"]
+  NUDGESYSTEM["<b>Nudge System</b><br/>─────────────────<br/>nudge.controller.js<br/>nudge-selector.service.js<br/>nudge-llm.service.js<br/>nudge-definitions.js"]
+
+  GOALS(["GOALS MODULE<br/>goal feasibility · recommender<br/><i>emergency fund · retirement calc</i>"])
+
+  INGESTION -->|"raw transactions"| CATEGORIZATION
+
+  PORTFOLIONETWORTH -->|"account-level holdings for enrichment · GoalSyncAsset links"| HOLDINGSASSETS
+  PORTFOLIONETWORTH -->|"Equifax liabilities supplement · insurance accounts from AA"| INSURANCELIABILITIES
+  PORTFOLIONETWORTH -->|"snapshot accounts[] for instrument resolution · NAV lookups"| MARKETDATAANALYTICS
+  MARKETDATAANALYTICS -->|"asset-class breakdown · concentration metrics · beta · volatility"| PORTFOLIONETWORTH
+  MARKETDATAANALYTICS -->|"resolved ISIN → instrumentId + amfiCode for enrichment"| HOLDINGSASSETS
+  INSURANCELIABILITIES -->|"Equifax liabilities totals · insurance coverage from AA"| PORTFOLIONETWORTH
+  NUDGESYSTEM -->|"nudge responses create simplified insurance policies"| INSURANCELIABILITIES
+  NUDGESYSTEM -->|"nudge responses create manual assets + insurance policies"| HOLDINGSASSETS
+  NUDGESYSTEM -->|"nudge responses create manual assets → networth recalc"| PORTFOLIONETWORTH
+  NUDGESYSTEM -->|"getPortfolioIntelligence · getEnrichedHoldings · getDailyChange"| MARKETDATAANALYTICS
+
+  FINANCIALPROFILE -->|"effectiveSurplus · Q1-Q10 metrics"| GOALS
+
+  style PORTFOLIONETWORTH fill:#1a2e1a,stroke:#2ecc71,color:#8fdd8f,font-size:13px
+  style HOLDINGSASSETS fill:#1a2a4e,stroke:#3498db,color:#7eb8da,font-size:13px
+  style MARKETDATAANALYTICS fill:#2e2a1a,stroke:#e67e22,color:#f0c070,font-size:13px
+  style INSURANCELIABILITIES fill:#2a1a3e,stroke:#9b59b6,color:#c89ef0,font-size:13px
+  style NUDGESYSTEM fill:#2e1a1a,stroke:#e74c3c,color:#f99090,font-size:13px
+  style INGESTION fill:#2a1a3e,stroke:#9b59b6,color:#c89ef0,font-style:italic
+  style GOALS     fill:#1a1a2e,stroke:#95a5a6,color:#aaaaaa,font-style:italic
+    </pre>
+  </div>
+</div>
+
+
+<!-- ══ PORTFOLIONETWORTH ══ -->
+<div class="phase" id="portfolioNetworth">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#2ecc71">1</div>
+    <div>
+      <div class="phase-title">Portfolio & Networth</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-in">← Market Data & Analytics: <em>asset-class breakdown · concentration metrics · beta · volatility</em></span>
+          <span class="pill pill-in">← Insurance & Liabilities: <em>Equifax liabilities totals · insurance coverage from AA</em></span>
+          <span class="pill pill-in">← Nudge System: <em>nudge responses create manual assets → networth recalc</em></span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-out">→ Holdings & Assets: <em>account-level holdings for enrichment · GoalSyncAsset links</em></span>
+          <span class="pill pill-out">→ Insurance & Liabilities: <em>Equifax liabilities supplement · insurance accounts from AA</em></span>
+          <span class="pill pill-out">→ Market Data & Analytics: <em>snapshot accounts[] for instrument resolution · NAV lookups</em></span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["networth-calculator.service.js<br/><i>2077L · SERVICE</i>"]
+  N2["unified-networth.service.js<br/><i>234L · SERVICE</i>"]
+  N3["unified-portfolio.service.js<br/><i>628L · SERVICE</i>"]
+  N4["portfolioTransformService.js<br/><i>507L · SERVICE</i>"]
+  N5["portfolioTransformServiceBuckets.js<br/><i>352L · SERVICE</i>"]
+  N6["portfolioController.js<br/><i>528L · SERVICE</i>"]
+  N7["portfolioroute.js<br/><i>210L · SERVICE</i>"]
+  N8["networth-snapshot.model.js<br/><i>220L · SERVICE</i>"]
+  N9["assetBuckets.js<br/><i>104L · SERVICE</i>"]
+  N10["ledger.interface.js<br/><i>395L · SERVICE</i>"]
+
+  N1 --> N8
+  N2 --> N8
+  N2 --> N1
+  N3 --> N8
+  N4 --> N8
+  N5 --> N9
+  N5 --> N8
+  N6 --> N4
+  N6 --> N5
+  N6 --> N8
+  N6 --> N1
+  N6 --> N2
+  N6 --> N3
+  N7 --> N6
+  N7 --> N3
+  N7 --> N8
+  N7 --> N1
+  N10 --> N1
+  N10 --> N3
+  N10 --> N8
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N6 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N7 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N8 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N9 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N10 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>networth-calculator.service.js</code>&nbsp;(2077L) &nbsp;·&nbsp; <code>unified-networth.service.js</code>&nbsp;(234L) &nbsp;·&nbsp; <code>unified-portfolio.service.js</code>&nbsp;(628L) &nbsp;·&nbsp; <code>portfolioTransformService.js</code>&nbsp;(507L) &nbsp;·&nbsp; <code>portfolioTransformServiceBuckets.js</code>&nbsp;(352L) &nbsp;·&nbsp; <code>portfolioController.js</code>&nbsp;(528L) &nbsp;·&nbsp; <code>portfolioroute.js</code>&nbsp;(210L) &nbsp;·&nbsp; <code>networth-snapshot.model.js</code>&nbsp;(220L) &nbsp;·&nbsp; <code>assetBuckets.js</code>&nbsp;(104L) &nbsp;·&nbsp; <code>ledger.interface.js</code>&nbsp;(395L)</div>
+</div>
+
+<!-- ══ HOLDINGSASSETS ══ -->
+<div class="phase" id="holdingsAssets">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#3498db">2</div>
+    <div>
+      <div class="phase-title">Holdings & Assets</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-in">← Portfolio & Networth: <em>account-level holdings for enrichment · GoalSyncAsset links</em></span>
+          <span class="pill pill-in">← Market Data & Analytics: <em>resolved ISIN → instrumentId + amfiCode for enrichment</em></span>
+          <span class="pill pill-in">← Nudge System: <em>nudge responses create manual assets + insurance policies</em></span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-none">No outgoing connections within Analysis module</span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["asset-linking.service.js<br/><i>741L · SERVICE</i>"]
+  N2["holdingController.js<br/><i>979L · SERVICE</i>"]
+  N3["holdingsroute.js<br/><i>340L · SERVICE</i>"]
+  N4["assetsroute.js<br/><i>199L · SERVICE</i>"]
+  N5["holding.model.js<br/><i>565L · SERVICE</i>"]
+  N6["assetsmodel.js<br/><i>136L · SERVICE</i>"]
+  N7["manual-asset.model.js<br/><i>155L · SERVICE</i>"]
+
+  N2 --> N5
+  N3 --> N2
+  N4 --> N7
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N6 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N7 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>asset-linking.service.js</code>&nbsp;(741L) &nbsp;·&nbsp; <code>holdingController.js</code>&nbsp;(979L) &nbsp;·&nbsp; <code>holdingsroute.js</code>&nbsp;(340L) &nbsp;·&nbsp; <code>assetsroute.js</code>&nbsp;(199L) &nbsp;·&nbsp; <code>holding.model.js</code>&nbsp;(565L) &nbsp;·&nbsp; <code>assetsmodel.js</code>&nbsp;(136L) &nbsp;·&nbsp; <code>manual-asset.model.js</code>&nbsp;(155L)</div>
+</div>
+
+<!-- ══ MARKETDATAANALYTICS ══ -->
+<div class="phase" id="marketDataAnalytics">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#e67e22">3</div>
+    <div>
+      <div class="phase-title">Market Data & Analytics</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-in">← Portfolio & Networth: <em>snapshot accounts[] for instrument resolution · NAV lookups</em></span>
+          <span class="pill pill-in">← Nudge System: <em>getPortfolioIntelligence · getEnrichedHoldings · getDailyChange</em></span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-out">→ Portfolio & Networth: <em>asset-class breakdown · concentration metrics · beta · volatility</em></span>
+          <span class="pill pill-out">→ Holdings & Assets: <em>resolved ISIN → instrumentId + amfiCode for enrichment</em></span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["amfi-ingestion.service.js<br/><i>366L · SERVICE</i>"]
+  N2["analytics-compute.service.js<br/><i>946L · SERVICE</i>"]
+  N3["nav-history.service.js<br/><i>305L · SERVICE</i>"]
+  N4["portfolio-intelligence.service.js<br/><i>1045L · SERVICE</i>"]
+  N5["holding-enrichment.service.js<br/><i>264L · SERVICE</i>"]
+  N6["isin-resolver.service.js<br/><i>156L · SERVICE</i>"]
+  N7["benchmark-proxy.service.js<br/><i>234L · SERVICE</i>"]
+  N8["portfolio-intelligence.controller.js<br/><i>805L · SERVICE</i>"]
+  N9["portfolio-intelligence.routes.js<br/><i>50L · SERVICE</i>"]
+  N10["financial-metrics.route.js<br/><i>562L · SERVICE</i>"]
+  N11["instrument-master.model.js<br/><i>182L · SERVICE</i>"]
+  N12["nav-history.model.js<br/><i>90L · SERVICE</i>"]
+  N13["analytics-cache.model.js<br/><i>179L · SERVICE</i>"]
+  N14["benchmark-mapping.js<br/><i>38L · SERVICE</i>"]
+  N15["financial-constants.js<br/><i>37L · SERVICE</i>"]
+  N16["index-proxies.js<br/><i>109L · SERVICE</i>"]
+  N17["nps-asset-class-map.js<br/><i>44L · SERVICE</i>"]
+  N18["amfi-daily-ingestion.job.js<br/><i>129L · SERVICE</i>"]
+
+  N1 --> N14
+  N1 --> N11
+  N2 --> N7
+  N2 --> N15
+  N2 --> N12
+  N2 --> N13
+  N2 --> N11
+  N3 --> N7
+  N3 --> N12
+  N3 --> N13
+  N3 --> N11
+  N4 --> N17
+  N4 --> N2
+  N4 --> N11
+  N4 --> N12
+  N5 --> N6
+  N5 --> N3
+  N5 --> N7
+  N5 --> N11
+  N5 --> N12
+  N6 --> N1
+  N6 --> N11
+  N7 --> N16
+  N7 --> N14
+  N7 --> N12
+  N9 --> N8
+  N18 --> N1
+  N18 --> N3
+  N18 --> N7
+  N18 --> N12
+  N18 --> N11
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N6 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N7 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N8 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N9 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N10 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N11 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N12 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N13 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N14 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N15 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N16 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N17 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N18 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>amfi-ingestion.service.js</code>&nbsp;(366L) &nbsp;·&nbsp; <code>analytics-compute.service.js</code>&nbsp;(946L) &nbsp;·&nbsp; <code>nav-history.service.js</code>&nbsp;(305L) &nbsp;·&nbsp; <code>portfolio-intelligence.service.js</code>&nbsp;(1045L) &nbsp;·&nbsp; <code>holding-enrichment.service.js</code>&nbsp;(264L) &nbsp;·&nbsp; <code>isin-resolver.service.js</code>&nbsp;(156L) &nbsp;·&nbsp; <code>benchmark-proxy.service.js</code>&nbsp;(234L) &nbsp;·&nbsp; <code>portfolio-intelligence.controller.js</code>&nbsp;(805L) &nbsp;·&nbsp; <code>portfolio-intelligence.routes.js</code>&nbsp;(50L) &nbsp;·&nbsp; <code>financial-metrics.route.js</code>&nbsp;(562L) &nbsp;·&nbsp; <code>instrument-master.model.js</code>&nbsp;(182L) &nbsp;·&nbsp; <code>nav-history.model.js</code>&nbsp;(90L) &nbsp;·&nbsp; <code>analytics-cache.model.js</code>&nbsp;(179L) &nbsp;·&nbsp; <code>benchmark-mapping.js</code>&nbsp;(38L) &nbsp;·&nbsp; <code>financial-constants.js</code>&nbsp;(37L) &nbsp;·&nbsp; <code>index-proxies.js</code>&nbsp;(109L) &nbsp;·&nbsp; <code>nps-asset-class-map.js</code>&nbsp;(44L) &nbsp;·&nbsp; <code>amfi-daily-ingestion.job.js</code>&nbsp;(129L)</div>
+</div>
+
+<!-- ══ INSURANCELIABILITIES ══ -->
+<div class="phase" id="insuranceLiabilities">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#9b59b6">4</div>
+    <div>
+      <div class="phase-title">Insurance & Liabilities</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-in">← Portfolio & Networth: <em>Equifax liabilities supplement · insurance accounts from AA</em></span>
+          <span class="pill pill-in">← Nudge System: <em>nudge responses create simplified insurance policies</em></span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-out">→ Portfolio & Networth: <em>Equifax liabilities totals · insurance coverage from AA</em></span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["protection-assessment.service.js<br/><i>275L · SERVICE</i>"]
+  N2["insuranceController.js<br/><i>689L · SERVICE</i>"]
+  N3["insuranceroute.js<br/><i>25L · SERVICE</i>"]
+  N4["liabilitiesroute.js<br/><i>13L · SERVICE</i>"]
+  N5["insurance.model.js<br/><i>295L · SERVICE</i>"]
+  N6["liabilitiesmodel.js<br/><i>46L · SERVICE</i>"]
+  N7["equifax-report.model.js<br/><i>205L · SERVICE</i>"]
+
+  N2 --> N5
+  N3 --> N2
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N6 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N7 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>protection-assessment.service.js</code>&nbsp;(275L) &nbsp;·&nbsp; <code>insuranceController.js</code>&nbsp;(689L) &nbsp;·&nbsp; <code>insuranceroute.js</code>&nbsp;(25L) &nbsp;·&nbsp; <code>liabilitiesroute.js</code>&nbsp;(13L) &nbsp;·&nbsp; <code>insurance.model.js</code>&nbsp;(295L) &nbsp;·&nbsp; <code>liabilitiesmodel.js</code>&nbsp;(46L) &nbsp;·&nbsp; <code>equifax-report.model.js</code>&nbsp;(205L)</div>
+</div>
+
+<!-- ══ NUDGESYSTEM ══ -->
+<div class="phase" id="nudgeSystem">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#e74c3c">5</div>
+    <div>
+      <div class="phase-title">Nudge System</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-none">No incoming connections within Analysis module</span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-out">→ Insurance & Liabilities: <em>nudge responses create simplified insurance policies</em></span>
+          <span class="pill pill-out">→ Holdings & Assets: <em>nudge responses create manual assets + insurance policies</em></span>
+          <span class="pill pill-out">→ Portfolio & Networth: <em>nudge responses create manual assets → networth recalc</em></span>
+          <span class="pill pill-out">→ Market Data & Analytics: <em>getPortfolioIntelligence · getEnrichedHoldings · getDailyChange</em></span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["nudge.controller.js<br/><i>405L · SERVICE</i>"]
+  N2["nudge.routes.js<br/><i>31L · SERVICE</i>"]
+  N3["nudge-selector.service.js<br/><i>165L · SERVICE</i>"]
+  N4["nudge-llm.service.js<br/><i>109L · SERVICE</i>"]
+  N5["signal-detector.service.js<br/><i>390L · SERVICE</i>"]
+  N6["nudge-definitions.js<br/><i>592L · SERVICE</i>"]
+  N7["nudge-history.model.js<br/><i>117L · SERVICE</i>"]
+  N8["daily-change-notification.job.js<br/><i>114L · SERVICE</i>"]
+
+  N1 --> N6
+  N1 --> N3
+  N1 --> N5
+  N1 --> N4
+  N1 --> N7
+  N2 --> N1
+  N3 --> N6
+  N3 --> N7
+  N3 --> N5
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N6 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N7 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N8 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>nudge.controller.js</code>&nbsp;(405L) &nbsp;·&nbsp; <code>nudge.routes.js</code>&nbsp;(31L) &nbsp;·&nbsp; <code>nudge-selector.service.js</code>&nbsp;(165L) &nbsp;·&nbsp; <code>nudge-llm.service.js</code>&nbsp;(109L) &nbsp;·&nbsp; <code>signal-detector.service.js</code>&nbsp;(390L) &nbsp;·&nbsp; <code>nudge-definitions.js</code>&nbsp;(592L) &nbsp;·&nbsp; <code>nudge-history.model.js</code>&nbsp;(117L) &nbsp;·&nbsp; <code>daily-change-notification.job.js</code>&nbsp;(114L)</div>
+</div>
+
+<div class="footer">
+  FinWiser Analysis Module Workflow &bull; Auto-generated 2026-05-15 07:48:17 UTC &bull;
+  Edit the module config file to add/remove files or override edge labels
+</div>
+
+<div class="kb-hint">
+  <kbd>0</kbd> Overview &nbsp;
+  <kbd>1</kbd>–<kbd>7</kbd> Sub-modules &nbsp;
+  <kbd>Esc</kbd> Reset
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'dark',
+  flowchart: {
+    useMaxWidth: true, htmlLabels: true, curve: 'basis',
+    nodeSpacing: 30, rankSpacing: 45,
+  },
+  themeVariables: {
+    darkMode: true,
+    background:          '#0a0a14',
+    primaryColor:        '#1a2a4e',
+    primaryTextColor:    '#e0e0e0',
+    primaryBorderColor:  '#3498db',
+    lineColor:           '#5a6a8a',
+    secondaryColor:      '#2a1a3e',
+    tertiaryColor:       '#1a2e1a',
+  },
+});
+
+const ALL_PHASES = ['overview', 'overview', 'portfolioNetworth', 'holdingsAssets', 'marketDataAnalytics', 'insuranceLiabilities', 'nudgeSystem'];
+let active = 'overview';
+
+// Render ALL diagrams first (nothing hidden yet), then hide sub-modules.
+// If we hide before mermaid renders, display:none panels are skipped.
+mermaid.run().then(() => {
+  ALL_PHASES.forEach(p => { if (p !== 'overview') document.getElementById(p).classList.add('hidden'); });
+});
+
+function showOnly(id) {
+  active = id;
+  ALL_PHASES.forEach(p => {
+    document.getElementById(p).classList[p === id ? 'remove' : 'add']('hidden');
+  });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.nav-btn[data-s="${id}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+function toggle(id) {
+  active === id ? showOnly('overview') : showOnly(id);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === '0' || e.key === 'Escape') { showOnly('overview'); return; }
+  const n = parseInt(e.key);
+  if (n >= 1 && n <= 7) {
+    const id = ALL_PHASES[n]; // ALL_PHASES[0]=overview, [1..7]=submodules
+    if (id) toggle(id);
+  }
+});
+</script>
+</body>
+</html>

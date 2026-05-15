@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinWiser — Goals Module Workflow</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+       background: #0a0a14; color: #e0e0e0; }
+
+/* ── Header ── */
+.header { padding: 22px 32px; background: #16213e; border-bottom: 2px solid #0f3460; }
+.header h1 { font-size: 21px; color: #fff; margin-bottom: 4px; }
+.header .sub { font-size: 13px; color: #8899aa; margin-bottom: 4px; }
+.header .meta { font-size: 11px; color: #445; }
+.header .meta b { color: #667; }
+
+/* ── Nav ── */
+.nav-bar { position: sticky; top: 0; z-index: 100; padding: 10px 32px;
+           background: #0d1b2a; border-bottom: 2px solid #1a3a6a;
+           display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+           box-shadow: 0 2px 12px rgba(0,0,0,.5); }
+.nav-label { color: #667; font-size: 11px; font-weight: 600;
+             text-transform: uppercase; letter-spacing: 1px; margin-right: 6px; }
+.nav-btn { padding: 6px 13px; border-radius: 6px; border: 1px solid #2a3a5a;
+           background: #1a1a2e; color: #8899aa; font-size: 12px; cursor: pointer;
+           transition: all .2s; }
+.nav-btn:hover  { background: #1a2a4e; color: #aabbcc; border-color: #3a5a8a; }
+.nav-btn.active { background: #1a3a6a; color: #fff; border-color: #3498db;
+                  box-shadow: 0 0 8px rgba(52,152,219,.3); }
+.nav-all        { border-color: #2ecc71; color: #2ecc71; }
+.nav-all.active { background: #1a3a2e; border-color: #2ecc71;
+                  box-shadow: 0 0 8px rgba(46,204,113,.3); }
+.nav-sep { width: 1px; height: 22px; background: #2a3a5a; margin: 0 2px; }
+
+/* ── Phase ── */
+.phase { padding: 26px 32px; border-bottom: 1px solid #0f3460; }
+.phase.hidden { display: none; }
+.phase-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.phase-num  { width: 36px; height: 36px; border-radius: 50%; display: flex;
+              align-items: center; justify-content: center; font-weight: 700;
+              font-size: 16px; flex-shrink: 0; color: #fff; }
+.phase-title { font-size: 17px; color: #fff; }
+.phase-sub   { font-size: 13px; color: #8899aa; margin-top: 2px; }
+
+/* ── Connections bar ── */
+.conn-bar { margin-bottom: 14px; padding: 10px 14px; background: #0d0d1a;
+            border: 1px solid #1a1a2e; border-radius: 6px; }
+.conn-row  { display: flex; gap: 8px; align-items: flex-start;
+             flex-wrap: wrap; margin-bottom: 6px; }
+.conn-row:last-child { margin-bottom: 0; }
+.conn-label { font-size: 10px; font-weight: 700; color: #445;
+              text-transform: uppercase; letter-spacing: 1px;
+              padding-top: 3px; white-space: nowrap; min-width: 58px; }
+.pill      { font-size: 12px; padding: 2px 9px; border-radius: 4px;
+             border: 1px solid; line-height: 1.6; }
+.pill em   { font-style: normal; opacity: .85; }
+.pill-in   { color: #7eb8da; background: #1a2a4e; border-color: #2a3a5a; }
+.pill-out  { color: #f0c070; background: #2e2a1a; border-color: #3a3a1a; }
+.pill-none { color: #334; border-color: transparent; background: transparent; }
+
+/* ── Diagram ── */
+.diagram-wrap { overflow: auto; padding: 12px 0; width: 100%; }
+.diagram-wrap svg { width: 100% !important; height: auto !important; max-width: 100% !important; }
+
+/* ── File ref ── */
+.file-ref { font-size: 11px; color: #445; margin-top: 10px; padding: 8px 12px;
+            background: #0d0d1a; border: 1px solid #1a1a2e; border-radius: 4px;
+            line-height: 1.9; }
+.file-ref code { color: #e8a87c; }
+
+/* ── Footer / hint ── */
+.footer   { padding: 12px 32px; text-align: center; font-size: 11px; color: #223; }
+.kb-hint  { position: fixed; bottom: 12px; right: 12px; background: #1a1a2e;
+            border: 1px solid #2a3a5a; border-radius: 6px; padding: 8px 12px;
+            font-size: 11px; color: #445; z-index: 200; opacity: .6; }
+.kb-hint:hover { opacity: 1; }
+.kb-hint kbd   { background: #2a3a5a; color: #aabbcc; padding: 1px 5px;
+                 border-radius: 3px; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>FinWiser — Goals Module Workflow</h1>
+  <div class="sub">
+    How data flows from Ingestion through the 7 Analysis sub-modules:
+    Categorization → Cashflow → Financial Profile → Budget Tracking,
+    Transaction Analytics, Learning Loop, Notifications &amp; Digest
+  </div>
+  <div class="meta">
+    <b>Generated:</b> 2026-05-15 07:48:18 UTC &nbsp;·&nbsp;
+    <b>Sub-modules:</b> 5 &nbsp;·&nbsp;
+    <b>Curated files:</b> 59 &nbsp;·&nbsp;
+    <b>Auto-detected cross-module connections:</b> 13
+    &nbsp;·&nbsp; <b>Script:</b> scripts/module-diagram.js
+  </div>
+</div>
+
+<div class="nav-bar">
+  <span class="nav-label">View:</span>
+  <button class="nav-btn nav-all active" data-s="overview" onclick="showOnly('overview')">Overview</button>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" data-s="goalLifecycle" onclick="toggle('goalLifecycle',this)"><kbd>1</kbd> Goal Lifecycle</button>
+    <button class="nav-btn" data-s="goalsyncEngine" onclick="toggle('goalsyncEngine',this)"><kbd>2</kbd> GoalSync Engine</button>
+    <button class="nav-btn" data-s="goalAchievement" onclick="toggle('goalAchievement',this)"><kbd>3</kbd> Goal Achievement</button>
+    <button class="nav-btn" data-s="feasibilityPlanning" onclick="toggle('feasibilityPlanning',this)"><kbd>4</kbd> Feasibility & Planning</button>
+    <button class="nav-btn" data-s="assetRecommender" onclick="toggle('assetRecommender',this)"><kbd>5</kbd> Asset Recommender</button>
+</div>
+
+<!-- ══ OVERVIEW ══ -->
+<div class="phase" id="overview">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#2ecc71;color:#0a0a14">∞</div>
+    <div>
+      <div class="phase-title">Goals Module — Complete Interaction Overview</div>
+      <div class="phase-sub">
+        All 7 sub-modules and how they connect.
+        Arrows are auto-detected from actual require() calls in curated files.
+        Labels from config edgeLabels or auto-extracted function names.
+      </div>
+    </div>
+  </div>
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  INGESTION(["INGESTION LAYER<br/>Transaction · TransactionsNew<br/><i>narration · amount · mode · date · fipId</i>"])
+
+  GOALLIFECYCLE["<b>Goal Lifecycle</b><br/>─────────────────<br/>goal-operations.service.js<br/>goalController.js<br/>goal.model.js<br/>mandatory-goals-service.js"]
+  GOALSYNCENGINE["<b>GoalSync Engine</b><br/>─────────────────<br/>index.js<br/>goalSyncController.js<br/>goalsync-asset-processor.service.js<br/>bulk-goal-sync.service.js"]
+  GOALACHIEVEMENT["<b>Goal Achievement</b><br/>─────────────────<br/>goal-achievement.service.js<br/>goal-achievement-operations.service.js<br/>goalAchievementController.js<br/>goal-commitments.service.js"]
+  FEASIBILITYPLANNING["<b>Feasibility & Planning</b><br/>─────────────────<br/>goal-feasibility.service.js<br/>emergency-fund-auto-calculator.service.js<br/>retirement-fund-auto-calculator.service.js<br/>glide-path.service.js"]
+  ASSETRECOMMENDER["<b>Asset Recommender</b><br/>─────────────────<br/>smart-asset-recommender.service.js<br/>recommender-overview.service.js<br/>policy-bands.service.js<br/>portfolio-score.service.js"]
+
+  GOALS(["GOALS MODULE<br/>goal feasibility · recommender<br/><i>emergency fund · retirement calc</i>"])
+
+  INGESTION -->|"raw transactions"| CATEGORIZATION
+
+  GOALLIFECYCLE -->|"active goals → feasibility assessment + SIP requirements"| FEASIBILITYPLANNING
+  GOALLIFECYCLE -->|"goal document → milestone creation + progress tracking"| GOALACHIEVEMENT
+  GOALSYNCENGINE -->|"synced currentAmount + totalLinkedAmount back to Goal"| GOALLIFECYCLE
+  GOALSYNCENGINE -->|"linked asset coverage → feasibility inputs"| FEASIBILITYPLANNING
+  GOALSYNCENGINE -->|"suitability scores + discovery results → recommendation context"| ASSETRECOMMENDER
+  GOALACHIEVEMENT -->|"milestone status → goal progress update"| GOALLIFECYCLE
+  GOALACHIEVEMENT -->|"reads linked asset values for achievement %"| GOALSYNCENGINE
+  FEASIBILITYPLANNING -->|"feasibility status + SIP amount → goal metadata"| GOALLIFECYCLE
+  FEASIBILITYPLANNING -->|"surplus stability + funding scenarios"| GOALACHIEVEMENT
+  FEASIBILITYPLANNING -->|"GoalSyncAsset"| GOALSYNCENGINE
+  ASSETRECOMMENDER -->|"portfolio score → goal readiness pillar"| GOALLIFECYCLE
+  ASSETRECOMMENDER -->|"policy bands + NBR → feasibility overlay"| FEASIBILITYPLANNING
+  ASSETRECOMMENDER -->|"recommended assets → smart-link candidates"| GOALSYNCENGINE
+
+  FINANCIALPROFILE -->|"effectiveSurplus · Q1-Q10 metrics"| GOALS
+
+  style GOALLIFECYCLE fill:#1a2e2e,stroke:#1abc9c,color:#7edcc0,font-size:13px
+  style GOALSYNCENGINE fill:#2e2a1a,stroke:#e67e22,color:#f0c070,font-size:13px
+  style GOALACHIEVEMENT fill:#1a2a4e,stroke:#3498db,color:#7eb8da,font-size:13px
+  style FEASIBILITYPLANNING fill:#2a1a3e,stroke:#9b59b6,color:#c89ef0,font-size:13px
+  style ASSETRECOMMENDER fill:#2e1a1a,stroke:#e74c3c,color:#f99090,font-size:13px
+  style INGESTION fill:#2a1a3e,stroke:#9b59b6,color:#c89ef0,font-style:italic
+  style GOALS     fill:#1a1a2e,stroke:#95a5a6,color:#aaaaaa,font-style:italic
+    </pre>
+  </div>
+</div>
+
+
+<!-- ══ GOALLIFECYCLE ══ -->
+<div class="phase" id="goalLifecycle">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#1abc9c">1</div>
+    <div>
+      <div class="phase-title">Goal Lifecycle</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-in">← GoalSync Engine: <em>synced currentAmount + totalLinkedAmount back to Goal</em></span>
+          <span class="pill pill-in">← Goal Achievement: <em>milestone status → goal progress update</em></span>
+          <span class="pill pill-in">← Feasibility & Planning: <em>feasibility status + SIP amount → goal metadata</em></span>
+          <span class="pill pill-in">← Asset Recommender: <em>portfolio score → goal readiness pillar</em></span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-out">→ Feasibility & Planning: <em>active goals → feasibility assessment + SIP requirements</em></span>
+          <span class="pill pill-out">→ Goal Achievement: <em>goal document → milestone creation + progress tracking</em></span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["goal-operations.service.js<br/><i>215L · SERVICE</i>"]
+  N2["goalController.js<br/><i>545L · SERVICE</i>"]
+  N3["goal.model.js<br/><i>1243L · SERVICE</i>"]
+  N4["mandatory-goals-service.js<br/><i>575L · SERVICE</i>"]
+  N5["goal-policy.service.js<br/><i>247L · SERVICE</i>"]
+  N6["goal_policy.json<br/><i>48L · SERVICE</i>"]
+  N7["user-goal-configuration.service.js<br/><i>457L · SERVICE</i>"]
+  N8["user-goal-configuration.model.js<br/><i>396L · SERVICE</i>"]
+  N9["goalroute.js<br/><i>121L · SERVICE</i>"]
+  N10["goals-auth.middleware.js<br/><i>100L · SERVICE</i>"]
+  N11["goals.interface.js<br/><i>298L · SERVICE</i>"]
+
+  N1 --> N3
+  N2 --> N1
+  N4 --> N3
+  N7 --> N8
+  N7 --> N3
+  N9 --> N2
+  N9 --> N10
+  N9 --> N11
+  N11 --> N1
+  N11 --> N5
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N6 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N7 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N8 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N9 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N10 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N11 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>goal-operations.service.js</code>&nbsp;(215L) &nbsp;·&nbsp; <code>goalController.js</code>&nbsp;(545L) &nbsp;·&nbsp; <code>goal.model.js</code>&nbsp;(1243L) &nbsp;·&nbsp; <code>mandatory-goals-service.js</code>&nbsp;(575L) &nbsp;·&nbsp; <code>goal-policy.service.js</code>&nbsp;(247L) &nbsp;·&nbsp; <code>goal_policy.json</code>&nbsp;(48L) &nbsp;·&nbsp; <code>user-goal-configuration.service.js</code>&nbsp;(457L) &nbsp;·&nbsp; <code>user-goal-configuration.model.js</code>&nbsp;(396L) &nbsp;·&nbsp; <code>goalroute.js</code>&nbsp;(121L) &nbsp;·&nbsp; <code>goals-auth.middleware.js</code>&nbsp;(100L) &nbsp;·&nbsp; <code>goals.interface.js</code>&nbsp;(298L)</div>
+</div>
+
+<!-- ══ GOALSYNCENGINE ══ -->
+<div class="phase" id="goalsyncEngine">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#e67e22">2</div>
+    <div>
+      <div class="phase-title">GoalSync Engine</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-in">← Goal Achievement: <em>reads linked asset values for achievement %</em></span>
+          <span class="pill pill-in">← Feasibility & Planning: <em>GoalSyncAsset</em></span>
+          <span class="pill pill-in">← Asset Recommender: <em>recommended assets → smart-link candidates</em></span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-out">→ Goal Lifecycle: <em>synced currentAmount + totalLinkedAmount back to Goal</em></span>
+          <span class="pill pill-out">→ Feasibility & Planning: <em>linked asset coverage → feasibility inputs</em></span>
+          <span class="pill pill-out">→ Asset Recommender: <em>suitability scores + discovery results → recommendation context</em></span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["index.js<br/><i>40L · SERVICE</i>"]
+  N2["goalsync-core-operations.service.js<br/><i>243L · SERVICE</i>"]
+  N3["goalsync-asset-operations.service.js<br/><i>301L · SERVICE</i>"]
+  N4["goalsync-bulk-operations.service.js<br/><i>157L · SERVICE</i>"]
+  N5["goalsync-smart-link.service.js<br/><i>340L · SERVICE</i>"]
+  N6["goalsync-allocation.service.js<br/><i>123L · SERVICE</i>"]
+  N7["goalsync-linked-assets.service.js<br/><i>220L · SERVICE</i>"]
+  N8["goalsync-override.service.js<br/><i>387L · SERVICE</i>"]
+  N9["goalsync-preview.service.js<br/><i>124L · SERVICE</i>"]
+  N10["goalsync-asset-discovery.service.js<br/><i>534L · SERVICE</i>"]
+  N11["goalsync-recommendation.service.js<br/><i>65L · SERVICE</i>"]
+  N12["goalsync-smart-recommendations.service.js<br/><i>477L · SERVICE</i>"]
+  N13["goalsync-suitability.service.js<br/><i>331L · SERVICE</i>"]
+  N14["goalsync-asset-processor.service.js<br/><i>981L · SERVICE</i>"]
+  N15["bulk-goal-sync.service.js<br/><i>602L · SERVICE</i>"]
+  N16["bulk-sync-log.model.js<br/><i>20L · SERVICE</i>"]
+  N17["goal-data-consistency.service.js<br/><i>1053L · SERVICE</i>"]
+  N18["goalSyncController.js<br/><i>826L · SERVICE</i>"]
+  N19["goalSyncAssetController.js<br/><i>643L · SERVICE</i>"]
+  N20["goalsync.routes.js<br/><i>131L · SERVICE</i>"]
+  N21["goalsync-asset.model.js<br/><i>685L · SERVICE</i>"]
+  N22["data-consistency.js<br/><i>199L · SERVICE</i>"]
+
+  N1 --> N13
+  N1 --> N6
+  N1 --> N10
+  N1 --> N5
+  N1 --> N11
+  N1 --> N7
+  N1 --> N12
+  N1 --> N8
+  N1 --> N9
+  N1 --> N3
+  N1 --> N2
+  N1 --> N4
+  N3 --> N6
+  N3 --> N17
+  N4 --> N15
+  N5 --> N6
+  N5 --> N21
+  N5 --> N17
+  N7 --> N13
+  N7 --> N21
+  N10 --> N13
+  N10 --> N21
+  N10 --> N14
+  N12 --> N13
+  N14 --> N21
+  N15 --> N16
+  N15 --> N21
+  N17 --> N21
+  N17 --> N15
+  N18 --> N17
+  N18 --> N2
+  N18 --> N4
+  N18 --> N19
+  N19 --> N11
+  N19 --> N7
+  N19 --> N12
+  N19 --> N9
+  N19 --> N10
+  N19 --> N5
+  N19 --> N8
+  N19 --> N3
+  N19 --> N2
+  N20 --> N18
+  N22 --> N17
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N6 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N7 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N8 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N9 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N10 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N11 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N12 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N13 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N14 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N15 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N16 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N17 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N18 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N19 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N20 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N21 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N22 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>index.js</code>&nbsp;(40L) &nbsp;·&nbsp; <code>goalsync-core-operations.service.js</code>&nbsp;(243L) &nbsp;·&nbsp; <code>goalsync-asset-operations.service.js</code>&nbsp;(301L) &nbsp;·&nbsp; <code>goalsync-bulk-operations.service.js</code>&nbsp;(157L) &nbsp;·&nbsp; <code>goalsync-smart-link.service.js</code>&nbsp;(340L) &nbsp;·&nbsp; <code>goalsync-allocation.service.js</code>&nbsp;(123L) &nbsp;·&nbsp; <code>goalsync-linked-assets.service.js</code>&nbsp;(220L) &nbsp;·&nbsp; <code>goalsync-override.service.js</code>&nbsp;(387L) &nbsp;·&nbsp; <code>goalsync-preview.service.js</code>&nbsp;(124L) &nbsp;·&nbsp; <code>goalsync-asset-discovery.service.js</code>&nbsp;(534L) &nbsp;·&nbsp; <code>goalsync-recommendation.service.js</code>&nbsp;(65L) &nbsp;·&nbsp; <code>goalsync-smart-recommendations.service.js</code>&nbsp;(477L) &nbsp;·&nbsp; <code>goalsync-suitability.service.js</code>&nbsp;(331L) &nbsp;·&nbsp; <code>goalsync-asset-processor.service.js</code>&nbsp;(981L) &nbsp;·&nbsp; <code>bulk-goal-sync.service.js</code>&nbsp;(602L) &nbsp;·&nbsp; <code>bulk-sync-log.model.js</code>&nbsp;(20L) &nbsp;·&nbsp; <code>goal-data-consistency.service.js</code>&nbsp;(1053L) &nbsp;·&nbsp; <code>goalSyncController.js</code>&nbsp;(826L) &nbsp;·&nbsp; <code>goalSyncAssetController.js</code>&nbsp;(643L) &nbsp;·&nbsp; <code>goalsync.routes.js</code>&nbsp;(131L) &nbsp;·&nbsp; <code>goalsync-asset.model.js</code>&nbsp;(685L) &nbsp;·&nbsp; <code>data-consistency.js</code>&nbsp;(199L)</div>
+</div>
+
+<!-- ══ GOALACHIEVEMENT ══ -->
+<div class="phase" id="goalAchievement">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#3498db">3</div>
+    <div>
+      <div class="phase-title">Goal Achievement</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-in">← Goal Lifecycle: <em>goal document → milestone creation + progress tracking</em></span>
+          <span class="pill pill-in">← Feasibility & Planning: <em>surplus stability + funding scenarios</em></span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-out">→ Goal Lifecycle: <em>milestone status → goal progress update</em></span>
+          <span class="pill pill-out">→ GoalSync Engine: <em>reads linked asset values for achievement %</em></span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["goal-achievement.service.js<br/><i>510L · SERVICE</i>"]
+  N2["goal-achievement-operations.service.js<br/><i>573L · SERVICE</i>"]
+  N3["goal-commitments.service.js<br/><i>565L · SERVICE</i>"]
+  N4["goal-plan-commitment.model.js<br/><i>122L · SERVICE</i>"]
+  N5["goalAchievementController.js<br/><i>188L · SERVICE</i>"]
+  N6["goal-achievement.routes.js<br/><i>45L · SERVICE</i>"]
+
+  N2 --> N1
+  N3 --> N4
+  N5 --> N2
+  N5 --> N1
+  N6 --> N5
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N6 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>goal-achievement.service.js</code>&nbsp;(510L) &nbsp;·&nbsp; <code>goal-achievement-operations.service.js</code>&nbsp;(573L) &nbsp;·&nbsp; <code>goal-commitments.service.js</code>&nbsp;(565L) &nbsp;·&nbsp; <code>goal-plan-commitment.model.js</code>&nbsp;(122L) &nbsp;·&nbsp; <code>goalAchievementController.js</code>&nbsp;(188L) &nbsp;·&nbsp; <code>goal-achievement.routes.js</code>&nbsp;(45L)</div>
+</div>
+
+<!-- ══ FEASIBILITYPLANNING ══ -->
+<div class="phase" id="feasibilityPlanning">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#9b59b6">4</div>
+    <div>
+      <div class="phase-title">Feasibility & Planning</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-in">← Goal Lifecycle: <em>active goals → feasibility assessment + SIP requirements</em></span>
+          <span class="pill pill-in">← GoalSync Engine: <em>linked asset coverage → feasibility inputs</em></span>
+          <span class="pill pill-in">← Asset Recommender: <em>policy bands + NBR → feasibility overlay</em></span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-out">→ Goal Lifecycle: <em>feasibility status + SIP amount → goal metadata</em></span>
+          <span class="pill pill-out">→ Goal Achievement: <em>surplus stability + funding scenarios</em></span>
+          <span class="pill pill-out">→ GoalSync Engine: <em>GoalSyncAsset</em></span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["goal-feasibility.service.js<br/><i>475L · SERVICE</i>"]
+  N2["goal-feasibility.routes.js<br/><i>254L · SERVICE</i>"]
+  N3["emergency-fund-auto-calculator.service.js<br/><i>338L · SERVICE</i>"]
+  N4["emergency-fund-planner.service.js<br/><i>483L · SERVICE</i>"]
+  N5["retirement-fund-auto-calculator.service.js<br/><i>615L · SERVICE</i>"]
+  N6["retirement-fund-planner.service.js<br/><i>858L · SERVICE</i>"]
+  N7["retirement-calc-adapter.js<br/><i>183L · SERVICE</i>"]
+  N8["financial-constants.js<br/><i>10L · SERVICE</i>"]
+  N9["educational-goal-service.js<br/><i>551L · SERVICE</i>"]
+  N10["educational-goals.routes.js<br/><i>1772L · SERVICE</i>"]
+  N11["glide-path.service.js<br/><i>529L · SERVICE</i>"]
+  N12["glide-path.routes.js<br/><i>203L · SERVICE</i>"]
+  N13["goals-cashflow-integration.service.js<br/><i>226L · SERVICE</i>"]
+  N14["next-best-rupee.service.js<br/><i>342L · SERVICE</i>"]
+
+  N2 --> N1
+  N2 --> N14
+  N4 --> N3
+  N5 --> N8
+  N6 --> N8
+  N6 --> N5
+  N6 --> N7
+  N7 --> N8
+  N9 --> N3
+  N9 --> N5
+  N10 --> N9
+  N10 --> N4
+  N10 --> N6
+  N12 --> N11
+  N14 --> N1
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N6 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N7 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N8 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N9 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N10 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N11 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N12 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N13 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N14 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>goal-feasibility.service.js</code>&nbsp;(475L) &nbsp;·&nbsp; <code>goal-feasibility.routes.js</code>&nbsp;(254L) &nbsp;·&nbsp; <code>emergency-fund-auto-calculator.service.js</code>&nbsp;(338L) &nbsp;·&nbsp; <code>emergency-fund-planner.service.js</code>&nbsp;(483L) &nbsp;·&nbsp; <code>retirement-fund-auto-calculator.service.js</code>&nbsp;(615L) &nbsp;·&nbsp; <code>retirement-fund-planner.service.js</code>&nbsp;(858L) &nbsp;·&nbsp; <code>retirement-calc-adapter.js</code>&nbsp;(183L) &nbsp;·&nbsp; <code>financial-constants.js</code>&nbsp;(10L) &nbsp;·&nbsp; <code>educational-goal-service.js</code>&nbsp;(551L) &nbsp;·&nbsp; <code>educational-goals.routes.js</code>&nbsp;(1772L) &nbsp;·&nbsp; <code>glide-path.service.js</code>&nbsp;(529L) &nbsp;·&nbsp; <code>glide-path.routes.js</code>&nbsp;(203L) &nbsp;·&nbsp; <code>goals-cashflow-integration.service.js</code>&nbsp;(226L) &nbsp;·&nbsp; <code>next-best-rupee.service.js</code>&nbsp;(342L)</div>
+</div>
+
+<!-- ══ ASSETRECOMMENDER ══ -->
+<div class="phase" id="assetRecommender">
+  <div class="phase-header">
+    <div class="phase-num" style="background:#e74c3c">5</div>
+    <div>
+      <div class="phase-title">Asset Recommender</div>
+      <div class="phase-sub">Internal file structure and cross-module connections</div>
+    </div>
+  </div>
+
+  <div class="conn-bar">
+    <div class="conn-row">
+      <span class="conn-label">RECEIVES</span>
+      <span class="pill pill-in">← GoalSync Engine: <em>suitability scores + discovery results → recommendation context</em></span>
+    </div>
+    <div class="conn-row">
+      <span class="conn-label">SENDS</span>
+      <span class="pill pill-out">→ Goal Lifecycle: <em>portfolio score → goal readiness pillar</em></span>
+          <span class="pill pill-out">→ Feasibility & Planning: <em>policy bands + NBR → feasibility overlay</em></span>
+          <span class="pill pill-out">→ GoalSync Engine: <em>recommended assets → smart-link candidates</em></span>
+    </div>
+  </div>
+
+  <div class="diagram-wrap">
+    <pre class="mermaid">
+flowchart TB
+  N1["smart-asset-recommender.service.js<br/><i>1563L · SERVICE</i>"]
+  N2["recommender-overview.service.js<br/><i>836L · SERVICE</i>"]
+  N3["policy-bands.service.js<br/><i>321L · SERVICE</i>"]
+  N4["policy-bands.routes.js<br/><i>207L · SERVICE</i>"]
+  N5["recommender.routes.js<br/><i>151L · SERVICE</i>"]
+
+  N2 --> N3
+  N4 --> N3
+  N5 --> N2
+
+  style N1 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N2 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N3 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N4 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+  style N5 fill:#1a2a3e,stroke:#3498db,color:#7eb8da
+    </pre>
+  </div>
+  <div class="file-ref"><strong>All curated files:</strong> <code>smart-asset-recommender.service.js</code>&nbsp;(1563L) &nbsp;·&nbsp; <code>recommender-overview.service.js</code>&nbsp;(836L) &nbsp;·&nbsp; <code>policy-bands.service.js</code>&nbsp;(321L) &nbsp;·&nbsp; <code>policy-bands.routes.js</code>&nbsp;(207L) &nbsp;·&nbsp; <code>portfolio-score.service.js</code>&nbsp;(?L) &nbsp;·&nbsp; <code>recommender.routes.js</code>&nbsp;(151L)</div>
+</div>
+
+<div class="footer">
+  FinWiser Analysis Module Workflow &bull; Auto-generated 2026-05-15 07:48:18 UTC &bull;
+  Edit the module config file to add/remove files or override edge labels
+</div>
+
+<div class="kb-hint">
+  <kbd>0</kbd> Overview &nbsp;
+  <kbd>1</kbd>–<kbd>7</kbd> Sub-modules &nbsp;
+  <kbd>Esc</kbd> Reset
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'dark',
+  flowchart: {
+    useMaxWidth: true, htmlLabels: true, curve: 'basis',
+    nodeSpacing: 30, rankSpacing: 45,
+  },
+  themeVariables: {
+    darkMode: true,
+    background:          '#0a0a14',
+    primaryColor:        '#1a2a4e',
+    primaryTextColor:    '#e0e0e0',
+    primaryBorderColor:  '#3498db',
+    lineColor:           '#5a6a8a',
+    secondaryColor:      '#2a1a3e',
+    tertiaryColor:       '#1a2e1a',
+  },
+});
+
+const ALL_PHASES = ['overview', 'overview', 'goalLifecycle', 'goalsyncEngine', 'goalAchievement', 'feasibilityPlanning', 'assetRecommender'];
+let active = 'overview';
+
+// Render ALL diagrams first (nothing hidden yet), then hide sub-modules.
+// If we hide before mermaid renders, display:none panels are skipped.
+mermaid.run().then(() => {
+  ALL_PHASES.forEach(p => { if (p !== 'overview') document.getElementById(p).classList.add('hidden'); });
+});
+
+function showOnly(id) {
+  active = id;
+  ALL_PHASES.forEach(p => {
+    document.getElementById(p).classList[p === id ? 'remove' : 'add']('hidden');
+  });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.nav-btn[data-s="${id}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+function toggle(id) {
+  active === id ? showOnly('overview') : showOnly(id);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === '0' || e.key === 'Escape') { showOnly('overview'); return; }
+  const n = parseInt(e.key);
+  if (n >= 1 && n <= 7) {
+    const id = ALL_PHASES[n]; // ALL_PHASES[0]=overview, [1..7]=submodules
+    if (id) toggle(id);
+  }
+});
+</script>
+</body>
+</html>
