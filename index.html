@@ -146,6 +146,7 @@
     html:not(.js) [data-reveal],
     html:not(.js) .cap,
     html:not(.js) .secure__card,
+    html:not(.js) .team__card,
     html:not(.js) .compare tbody tr,
     html:not(.js) .steps__card {
       opacity: 1 !important;
@@ -188,6 +189,7 @@
       .pricing       { scroll-snap-align: start; scroll-snap-stop: normal; }
       .testify       { scroll-snap-align: start; scroll-snap-stop: normal; }
       .secure        { scroll-snap-align: start; scroll-snap-stop: normal; }
+      .team          { scroll-snap-align: start; scroll-snap-stop: normal; }
       .faq           { scroll-snap-align: start; scroll-snap-stop: normal; }
       .final-cta     { scroll-snap-align: start; scroll-snap-stop: normal; }
       .site-footer   { scroll-snap-align: start; scroll-snap-stop: normal; }
@@ -2472,6 +2474,46 @@
     @media (max-width: 700px) { .secure__grid { grid-template-columns: 1fr; } }
 
     /* ============================================================ */
+    /* §12.5 — TEAM / FOUNDER (compact)                              */
+    /* ============================================================ */
+    .team { background: var(--off-white); color: var(--text-on-light); padding: clamp(54px, 8vw, 84px) 0; }
+    .team__inner { max-width: 620px; margin: 0 auto; padding: 0 32px; text-align: center; }
+    .team__eyebrow {
+      font-size: var(--fs-nano); font-weight: 700; letter-spacing: 1.4px;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 24px;
+    }
+    .team__card {
+      display: flex; align-items: center; gap: 20px; text-align: left;
+      background: var(--white); border: 1px solid var(--border-on-light);
+      border-radius: 16px; padding: 22px 24px; box-shadow: var(--shadow-soft);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .is-in .team__card { opacity: 1; transform: translateY(0); }
+    .team__avatar {
+      flex: 0 0 auto; width: 88px; height: 88px; border-radius: 14px;
+      object-fit: cover; object-position: center top;
+      border: 1px solid var(--border-on-light); background: var(--off-white);
+    }
+    .team__name { font-size: var(--fs-lead); font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+    .team__role { font-size: var(--fs-nano); color: var(--text-on-light-muted); line-height: 1.5; margin-bottom: 10px; }
+    .team__linkedin {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: var(--fs-micro); font-weight: 600; color: var(--teal);
+      text-decoration: none; transition: color 200ms ease;
+    }
+    .team__linkedin:hover { color: var(--navy); }
+    .team__linkedin svg { width: 15px; height: 15px; fill: currentColor; }
+    .team__entity {
+      margin-top: 18px; font-size: var(--fs-nano); color: var(--text-on-light-muted); line-height: 1.6;
+    }
+    .team__entity strong { color: var(--navy); font-weight: 700; }
+    @media (max-width: 560px) {
+      .team__card { flex-direction: column; text-align: center; gap: 14px; }
+      .team__linkedin { justify-content: center; }
+    }
+
+    /* ============================================================ */
     /* §13 — FAQ                                                     */
     /* ============================================================ */
     .faq {
@@ -3360,6 +3402,7 @@
         <ul class="fw-nav__list">
           <li><a class="fw-nav__link" href="#how">How it works</a></li>
           <li><a class="fw-nav__link" href="#pricing">Pricing</a></li>
+          <li><a class="fw-nav__link" href="#team">Team</a></li>
           <li><a class="fw-nav__link" href="#faq">Help</a></li>
           <li><a class="fw-nav__cta" href="/demo-app">Install</a></li>
         </ul>
@@ -4786,6 +4829,27 @@
     </section>
 
     <!-- ============================================================ -->
+    <!-- §12.5 — TEAM / FOUNDER                                        -->
+    <!-- ============================================================ -->
+    <section class="team" id="team" aria-labelledby="team-heading" data-reveal>
+      <div class="team__inner">
+        <h2 id="team-heading" class="team__eyebrow">The human behind Finwiser</h2>
+        <article class="team__card">
+          <img class="team__avatar" src="founder-chandrachuda.png" alt="Chandrachuda Sarma Yemmanuru, founder of Finwiser" width="168" height="168" loading="lazy">
+          <div class="team__info">
+            <p class="team__name">Chandrachuda Sarma Yemmanuru</p>
+            <p class="team__role">Founder &amp; Designated Partner, Finwiser Technologies LLP &middot; SEBI Registered Investment Adviser</p>
+            <a class="team__linkedin" href="https://www.linkedin.com/in/chandrachudasarma/" target="_blank" rel="noopener noreferrer" aria-label="Chandrachuda Sarma Yemmanuru on LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+              <span>View LinkedIn profile</span>
+            </a>
+          </div>
+        </article>
+        <p class="team__entity">Finwiser is built by <strong>Finwiser Technologies LLP</strong> (LLPIN ACT-7598), the technology entity. Regulated investment advice is provided by the founder as a SEBI Registered Investment Adviser (INA000021331).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
     <!-- §13 — FAQ                                                     -->
     <!-- ============================================================ -->
     <section class="faq" id="faq" aria-labelledby="faq-heading">
@@ -4850,6 +4914,7 @@
             <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play (closed beta)</a></li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#how">How it works</a></li>
+            <li><a href="#team">Team</a></li>
             <li><a href="#faq">FAQ</a></li>
           </ul>
         </nav>
