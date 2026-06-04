@@ -15,16 +15,15 @@
     }
 
     /* ── top bar ── */
+    .accent { flex: 0 0 auto; height: 3px; background: linear-gradient(90deg, #2563eb, #f59e0b); }
     .top {
-      flex: 0 0 auto; background: #0f2557; color: #fff;
-      padding: 11px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      border-bottom: 3px solid transparent;
-      border-image: linear-gradient(90deg, #2563eb, #f59e0b) 1;
+      flex: 0 0 auto; background: #fff; color: #1a1a2e;
+      padding: 9px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      border-bottom: 1px solid #e4e8f0;
     }
-    .meta { color: #cfe0fb; font-size: 0.82rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .logo-badge { flex: 0 0 auto; background: #fff; border-radius: 9px; padding: 5px 12px; display: flex; align-items: center; box-shadow: 0 1px 5px rgba(0,0,0,0.18); }
-    .logo-badge img { height: 22px; width: auto; display: block; }
-    @media (max-width: 560px) { .meta { font-size: 0.74rem; } .logo-badge img { height: 18px; } .logo-badge { padding: 4px 9px; } }
+    .meta { color: #475569; font-size: 0.84rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .logo { height: 38px; width: auto; display: block; flex: 0 0 auto; }
+    @media (max-width: 560px) { .meta { font-size: 0.76rem; } .logo { height: 30px; } }
 
     /* ── horizontal scrolling link strip ── */
     .strip {
@@ -55,9 +54,10 @@
   </style>
 </head>
 <body>
+  <div class="accent"></div>
   <div class="top">
-    <div class="meta">Chandrachuda Sarma · Founder, Finwiser</div>
-    <span class="logo-badge"><img src="/ewor/finwiser-logo-dark.png" alt="Finwiser"></span>
+    <div class="meta">Chandrachuda Sarma · Founder</div>
+    <img class="logo" src="/finwiserlogo.svg" alt="Finwiser">
   </div>
 
   <nav class="strip" id="strip" aria-label="Materials">
