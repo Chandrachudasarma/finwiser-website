@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Get the Finwiser App</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+      background: #eef0f3; color: #1a1a2e; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center; padding: 28px;
+    }
+    .card {
+      background: #fff; border-radius: 16px; padding: 38px 34px; max-width: 460px; width: 100%;
+      text-align: center; box-shadow: 0 10px 40px rgba(15,37,87,0.12); border: 1px solid #e4e8f0;
+    }
+    .icon { font-size: 2.6rem; }
+    h1 { font-size: 1.35rem; color: #0f2557; margin: 10px 0 12px; }
+    p { font-size: 0.92rem; color: #444; line-height: 1.6; }
+    .btn {
+      display: inline-block; margin: 22px 0 8px; background: #0f2557; color: #fff;
+      text-decoration: none; font-weight: 700; font-size: 0.95rem;
+      padding: 13px 26px; border-radius: 10px; transition: background .15s;
+    }
+    .btn:hover { background: #1d3a7a; }
+    .creds {
+      margin: 20px auto 6px; background: #f1f4fa; border: 1px solid #dde4f1; border-radius: 12px;
+      padding: 16px 20px; max-width: 300px; text-align: left;
+    }
+    .creds .lbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6b7a99; margin-bottom: 8px; }
+    .creds .row { display: flex; justify-content: space-between; font-size: 0.95rem; padding: 3px 0; }
+    .creds .row span { color: #6b7a99; }
+    .creds .row b { font-family: ui-monospace, Menlo, monospace; color: #0f2557; }
+    .alt { margin-top: 22px; font-size: 0.86rem; color: #555; }
+    .alt b { color: #0f2557; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📱</div>
+    <h1>Get the Finwiser App</h1>
+    <p>Finwiser is an <strong>Android app</strong>, currently in <strong>Google Play closed testing</strong>. Install it to try the live product on your phone.</p>
+    <a class="btn" href="/demo-app" target="_blank" rel="noopener">Install on Google Play ↗</a>
+    <div class="creds">
+      <div class="lbl">Test login</div>
+      <div class="row"><span>Phone</span><b>9876543210</b></div>
+      <div class="row"><span>OTP</span><b>123456</b></div>
+    </div>
+    <p class="alt">Prefer not to install? <b>Open the “Demo Video” tab above</b> to see the full product in action, in your browser.</p>
+  </div>
+</body>
+</html>
