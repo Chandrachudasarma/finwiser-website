@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Finwiser — Founder</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --navy: #0f2557; --ink: #1a1a2e; --slate: #475569; --muted: #64748b;
+      --line: #e4e8f0; --bg: #f4f6fb; --blue: #2563eb; --amber: #f59e0b;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+      background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased;
+      display: flex; align-items: center; justify-content: center; padding: 24px; line-height: 1.6;
+    }
+    .card {
+      max-width: 680px; width: 100%; background: #fff; border: 1px solid var(--line);
+      border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(15,37,87,0.08);
+    }
+    .card__accent { height: 4px; background: linear-gradient(90deg, var(--blue), var(--amber)); }
+    .card__body { padding: 28px; }
+    .head { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+    .photo {
+      width: 96px; height: 96px; border-radius: 18px; object-fit: cover;
+      border: 1px solid var(--line); flex: 0 0 auto; background: var(--navy);
+    }
+    .name { font-size: 1.4rem; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; }
+    .role { color: var(--muted); font-weight: 600; margin-top: 3px; font-size: 0.98rem; }
+    .links { margin-top: 12px; }
+    .links a {
+      display: inline-block; background: var(--navy); color: #fff; text-decoration: none;
+      font-weight: 700; padding: 9px 16px; border-radius: 999px; font-size: 0.9rem; margin: 4px 8px 0 0;
+    }
+    .links a.ghost { background: #fff; color: var(--blue); border: 1px solid var(--line); }
+    .bio { margin-top: 20px; color: var(--slate); }
+    .bio p { margin-bottom: 12px; }
+    .entity {
+      margin-top: 18px; padding: 14px 16px; background: var(--bg);
+      border-radius: 12px; font-size: 0.88rem; color: var(--muted);
+    }
+    .entity strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card__accent"></div>
+    <div class="card__body">
+      <div class="head">
+        <img class="photo" src="/founder-chandrachuda.png" alt="Chandrachuda Sarma Yemmanuru">
+        <div>
+          <div class="name">Chandrachuda Sarma Yemmanuru</div>
+          <div class="role">Founder &amp; Designated Partner, Finwiser Technologies LLP · SEBI Registered Investment Adviser</div>
+          <div class="links">
+            <a href="https://www.linkedin.com/in/chandrachudasarma/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="ghost" href="mailto:chandrachudasarma@finwiser.org">chandrachudasarma@finwiser.org</a>
+          </div>
+        </div>
+      </div>
+      <div class="bio">
+        <p>Solo founder of Finwiser. I build the product end to end and run the regulated advisory practice it operates under — bringing compliance-first, explainable financial decisioning to India's salaried middle class.</p>
+        <p>Finwiser ingests consented financial data through the Account Aggregator framework, normalises it into a single financial ledger, and turns it into clear, goal-based money decisions — delivered fee-only under a SEBI Registered Investment Adviser practice.</p>
+      </div>
+      <div class="entity">
+        <strong>Finwiser Technologies LLP</strong> (LLPIN ACT-7598) is the technology entity behind the product. The investment-advisory activity is held under the founder's SEBI Registered Investment Adviser registration (INA000021331).
+      </div>
+    </div>
+  </div>
+</body>
+</html>
