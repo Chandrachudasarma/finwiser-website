@@ -142,13 +142,16 @@
     [data-reveal] { opacity: 0; transform: translateY(8px); transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
     [data-reveal].is-in { opacity: 1; transform: translateY(0); }
 
-    /* Progressive enhancement — without JS, all reveal states fall back to visible */
-    html:not(.js) [data-reveal],
-    html:not(.js) .cap,
-    html:not(.js) .secure__card,
-    html:not(.js) .team__card,
-    html:not(.js) .compare tbody tr,
-    html:not(.js) .steps__card {
+    /* Progressive enhancement — without JS, all reveal states fall back to visible.
+       Safety-net: JS also adds .reveal-all shortly after load (see reveal setup),
+       so any client that runs JS but never scrolls — e.g. an automated website
+       verifier — still ends up seeing the full, un-hidden page content. */
+    html:not(.js) [data-reveal],      html.reveal-all [data-reveal],
+    html:not(.js) .cap,               html.reveal-all .cap,
+    html:not(.js) .secure__card,      html.reveal-all .secure__card,
+    html:not(.js) .team__card,        html.reveal-all .team__card,
+    html:not(.js) .compare tbody tr,  html.reveal-all .compare tbody tr,
+    html:not(.js) .steps__card,       html.reveal-all .steps__card {
       opacity: 1 !important;
       transform: none !important;
       clip-path: none !important;
@@ -5493,6 +5496,16 @@
             });
           }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
           revealEls.forEach(function (el) { io.observe(el); });
+
+          // Crawler / no-scroll safety-net: a client that runs JS but never
+          // scrolls (automated site verifiers) would leave below-the-fold
+          // reveal content stuck at opacity:0. Force every reveal system to its
+          // visible end-state a short moment after load. Real users have
+          // already scrolled (and animated) well before this fires.
+          setTimeout(function () {
+            document.documentElement.classList.add('reveal-all');
+            revealEls.forEach(function (el) { el.classList.add('is-in'); });
+          }, 1600);
         }
       }
 
