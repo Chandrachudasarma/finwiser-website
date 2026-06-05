@@ -32,6 +32,10 @@
     .accent { height: 4px; background: linear-gradient(90deg, var(--blue), var(--amber)); }
     .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px; }
 
+    .topbar { background: #fff; padding: 14px 0; }
+    .topbar a { display: inline-block; line-height: 0; }
+    .topbar .logo { height: 38px; width: auto; display: block; }
+
     header.hero { background: var(--navy); color: #fff; padding: 44px 0 40px; }
     .brand { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
     .brand span { color: var(--amber); }
@@ -80,10 +84,12 @@
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <div class="wrap"><a href="https://finwiser.org" aria-label="Finwiser home"><img class="logo" src="finwiserlogo.svg" alt="Finwiser"></a></div>
+  </header>
   <div class="accent"></div>
   <header class="hero">
     <div class="wrap">
-      <div class="brand">Fin<span>wiser</span></div>
       <h1>AI-led, compliance-first personal finance decisioning for India</h1>
       <p>Finwiser helps India's salaried middle class connect their accounts once through the Account Aggregator framework, see everything in one place, and get explainable, goal-based, fee-only financial advice in minutes.</p>
       <a class="site" href="https://finwiser.org">finwiser.org</a>
