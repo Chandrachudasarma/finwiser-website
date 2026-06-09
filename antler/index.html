@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Finwiser — Antler India · Chandrachuda Sarma</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+      display: flex; flex-direction: column; background: #0f2557; color: #1a1a2e;
+      -webkit-font-smoothing: antialiased; overflow: hidden;
+    }
+
+    /* ── top bar ── */
+    .accent { flex: 0 0 auto; height: 3px; background: linear-gradient(90deg, #2563eb, #f59e0b); }
+    .top {
+      flex: 0 0 auto; background: #fff; color: #1a1a2e;
+      padding: 9px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      border-bottom: 1px solid #e4e8f0;
+    }
+    .meta { color: #64748b; font-size: 1.05rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .meta b { color: #0f2557; font-weight: 800; }
+    .logo { height: 38px; width: auto; display: block; flex: 0 0 auto; }
+    @media (max-width: 560px) { .meta { font-size: 0.9rem; } .logo { height: 30px; } }
+
+    /* ── horizontal scrolling link strip ── */
+    .strip {
+      flex: 0 0 auto; display: flex; gap: 8px; justify-content: safe center;
+      overflow-x: auto; white-space: nowrap;
+      padding: 10px 14px; background: #fff; border-bottom: 1px solid #e4e8f0;
+      -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+    }
+    .strip::-webkit-scrollbar { height: 6px; }
+    .strip::-webkit-scrollbar-thumb { background: #c4cde0; border-radius: 6px; }
+    .chip {
+      flex: 0 0 auto; border: 1px solid #d8deea; background: #f4f6fb; color: #0f2557;
+      border-radius: 999px; padding: 8px 15px; font-size: 0.86rem; font-weight: 600;
+      cursor: pointer; white-space: nowrap; transition: background .12s, color .12s, border-color .12s;
+      font-family: inherit;
+    }
+    .chip:hover { border-color: #2563eb; }
+    .chip.active { background: #0f2557; color: #fff; border-color: #0f2557; }
+
+    /* ── viewer pane ── */
+    .viewer { flex: 1 1 auto; min-height: 0; background: #525659; position: relative; }
+    .viewer iframe { width: 100%; height: 100%; border: 0; display: block; }
+  </style>
+</head>
+<body>
+  <div class="accent"></div>
+  <div class="top">
+    <div class="meta"><b>Chandrachuda Sarma</b> · Founder, Finwiser · Bengaluru</div>
+    <img class="logo" src="/finwiserlogo.svg" alt="Finwiser">
+  </div>
+
+  <nav class="strip" id="strip" aria-label="Materials">
+    <button class="chip active" data-src="/antler/demo.mp4"                    data-id="demo">▶️ Demo Video</button>
+    <button class="chip"        data-src="/founder-pitch.mp4"                  data-id="pitch">🎤 Founder Pitch</button>
+    <button class="chip"        data-src="/fw-deck-2026/"                      data-id="deck">📊 Pitch Deck</button>
+    <button class="chip"        data-src="/antler/get-app.html"               data-id="app">📱 Get the App</button>
+    <button class="chip"        data-src="/credentials/finwiser-credentials.pdf" data-id="creds">🏛️ Credentials</button>
+    <button class="chip"        data-src="/antler/chandrachuda-resume.pdf"    data-id="founder">👤 Founder</button>
+    <button class="chip"        data-src="/antler/technical-documentation.pdf" data-id="tech">📄 Technical Doc</button>
+  </nav>
+
+  <main class="viewer">
+    <iframe id="frame" title="Material viewer" src="/antler/demo.mp4" allow="fullscreen; encrypted-media" allowfullscreen></iframe>
+  </main>
+
+  <script>
+    (function () {
+      var frame = document.getElementById('frame');
+      var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+
+      function activate(chip, push) {
+        chips.forEach(function (c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        frame.src = chip.getAttribute('data-src');
+        if (push) history.replaceState(null, '', '#' + chip.getAttribute('data-id'));
+        chip.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      }
+
+      chips.forEach(function (c) {
+        c.addEventListener('click', function () { activate(c, true); });
+      });
+
+      var hash = (location.hash || '').replace('#', '');
+      var initial = chips.filter(function (c) { return c.getAttribute('data-id') === hash; })[0] || chips[0];
+      activate(initial, false);
+    })();
+  </script>
+</body>
+</html>
