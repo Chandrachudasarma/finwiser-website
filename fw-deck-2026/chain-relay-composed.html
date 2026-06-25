@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real advice isn't an app. It's a team. — composed problem slide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #1a1a2e;
+    --accent: #e94560;
+    --accent-soft: #ff6b81;
+    --accent2: #0f3460;
+    --green: #00b894;
+    --muted: rgba(255,255,255,0.45);
+  }
+
+  html, body { background: #111; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  /* ===================================================================== */
+  /* THE SLIDE — fixed 1280 x 720, 16:9, print-to-PDF clean landscape page */
+  /* ===================================================================== */
+  .slide {
+    width: 1280px;
+    height: 720px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-radius: 12px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 38px 40px 0;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  }
+
+  /* ---- TOP: headline + sub-line ---- */
+  .slide-head {
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .slide-head h2 {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    line-height: 1.1;
+  }
+  .slide-head .sub {
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: 400;
+    opacity: 0.8;
+  }
+  .slide-head .sub .hot { color: var(--accent-soft); font-weight: 600; }
+
+  /* ---- MIDDLE: the relay row, uniformly scaled to fit ---- */
+  .relay-wrap {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+  .relay-row {
+    display: flex;
+    align-items: flex-start;       /* tops aligned */
+    justify-content: center;
+    gap: 0;
+    transform: scale(0.84);
+    transform-origin: center center;
+  }
+  /* each lifted column keeps its raw 290 x 560 contract */
+  .node-col {
+    width: 290px;
+    height: 560px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  /* subtle box per step: containment, not a heavy card. Each step reads as its
+     own separate piece — and the broken links sit in the daylight between boxes. */
+  .step-box {
+    background: rgba(255,255,255,0.022);
+    border: 1px solid rgba(255,255,255,0.085);
+    border-radius: 16px;
+    box-shadow: 0 10px 34px rgba(0,0,0,0.20);
+    padding: 12px 8px 0;
+  }
+  /* ④ is the dead step: a LIGHT "document" card — warm light panel, light
+     dashed border, soft dark glow. Only .step-box.dead (#s4) uses this. */
+  .step-box.dead {
+    background: linear-gradient(180deg,#f7eef0 0%,#efe2e4 100%);
+    border: 1.5px dashed rgba(150,92,106,0.40);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+  }
+
+  /* ===================================================================== */
+  /* BROKEN CONNECTOR — the snapped handoff between adjacent columns       */
+  /* ===================================================================== */
+  .connector {
+    width: 86px;
+    height: 560px;            /* match column height, snapped link sits near top */
+    flex-shrink: 0;
+    position: relative;
+  }
+  /* the snapped-link SVG is anchored so its y=110 link-centre lands on the
+     ~250px column mid-line; the viewBox is 86 x 300 so the label sits just below.
+     top = 250 - 110 = 140 */
+  .connector .brk-svg {
+    position: absolute;
+    top: 140px;
+    left: 0;
+    width: 86px;
+    height: 300px;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  /* ---- BOTTOM: white slide bar + slide number ---- */
+  .slide-foot {
+    flex-shrink: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 26px;
+  }
+  .slide-bar {
+    background: #fff;
+    color: #1a1a2e;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 12px;
+    font-size: 17px;
+    padding: 14px 30px;
+    max-width: 1040px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+  }
+  .slide-number {
+    position: absolute;
+    right: 20px;
+    bottom: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.30);
+    letter-spacing: 1px;
+  }
+
+  /* ===================================================================== */
+  /* ============  NODE ①  — The Goal Planner (resolved/green)  =========== */
+  /* lifted from v2-step-1-goal-setter.html, scoped under #s1; positions    */
+  /* avatar/role/question/card(top152,h168)/chip(c344)/why(top410) on grid  */
+  /* ===================================================================== */
+  #s1 { position: absolute; inset: 0; }
+
+  #s1 .avatar {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 54px; height: 54px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: #fff;
+    border: 2px solid var(--green);
+    background: rgba(0,184,148,0.18);
+    box-shadow: 0 0 26px rgba(0,184,148,0.5);
+  }
+  #s1 .avatar .ring { position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(0,184,148,0.4); }
+
+  #s1 .role {
+    position: absolute; top: 74px; left: 0; right: 0; text-align: center;
+    font-size: 18px; font-weight: 800; letter-spacing: -0.2px; color: var(--green); line-height: 1;
+  }
+
+  #s1 .question {
+    position: absolute; top: 100px; left: 18px; right: 18px;
+    min-height: 38px;
+    font-size: 13px; line-height: 1.45; opacity: 0.82; font-weight: 400; text-align: center;
+  }
+  #s1 .question .strong { font-weight: 700; opacity: 0.97; }
+
+  #s1 .ans-card {
+    position: absolute; top: 152px; left: 18px; right: 18px; height: 168px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px 13px;
+    box-shadow: 0 0 26px rgba(0,184,148,0.10), inset 0 0 0 1px rgba(0,184,148,0.06);
+    display: flex; flex-direction: column;
+  }
+
+  #s1 .ans-card .axis {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 8.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 8px;
+  }
+  #s1 .ans-card .axis .near { color: var(--accent-soft); }
+  #s1 .ans-card .axis .far  { color: #6cc8ff; }
+  #s1 .ans-card .axis .line {
+    flex: 1; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, rgba(233,69,96,0.55) 0%, rgba(255,255,255,0.16) 50%, rgba(108,200,255,0.55) 100%);
+  }
+
+  #s1 .ladder { display: flex; flex-direction: column; gap: 6px; }
+  #s1 .rung {
+    display: flex; align-items: center; gap: 9px;
+    height: 26px; padding: 0 4px;
+  }
+  #s1 .rung .rank {
+    flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Courier Prime', Courier, monospace; font-size: 11px; font-weight: 700;
+    color: var(--green); background: rgba(0,184,148,0.14); border: 1px solid rgba(0,184,148,0.4);
+  }
+  #s1 .rung .goal {
+    flex: 1; min-width: 0;
+    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.92); line-height: 1.1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #s1 .rung .horizon {
+    flex-shrink: 0;
+    font-family: 'Courier Prime', Courier, monospace; font-size: 11px; font-weight: 700;
+    text-align: center; min-width: 46px;
+    padding: 2px 8px; border-radius: 999px; white-space: nowrap; line-height: 1.25;
+  }
+  #s1 .horizon.h-now { color: #ff8a9c; background: rgba(233,69,96,0.15); border: 1px solid rgba(255,107,129,0.5); }
+  #s1 .horizon.h-near { color: #ffb39c; background: rgba(255,140,90,0.12); border: 1px solid rgba(255,160,110,0.40); }
+  #s1 .horizon.h-far { color: #9ec8e8; background: rgba(120,170,220,0.10); border: 1px solid rgba(140,185,230,0.35); }
+  #s1 .horizon.h-farthest { color: #6cc8ff; background: rgba(108,200,255,0.12); border: 1px solid rgba(108,200,255,0.45); }
+
+  #s1 .cap-chip {
+    position: absolute; top: 344px; left: 50%; transform: translate(-50%, -50%);
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 999px;
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+    color: var(--green); background: rgba(0,184,148,0.08); border: 1px solid rgba(0,184,148,0.35);
+    box-shadow: 0 0 22px rgba(0,184,148,0.22);
+  }
+  #s1 .cap-chip .tick { font-size: 11px; font-weight: 800; }
+
+  #s1 .why {
+    position: absolute; top: 410px; left: 18px; right: 18px;
+    padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.10); text-align: left;
+  }
+  #s1 .why .why-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;
+    color: var(--muted); margin-bottom: 7px;
+  }
+  #s1 .why-list { list-style: none; margin: 0; padding: 0; }
+  #s1 .why-list li {
+    position: relative; padding-left: 15px;
+    font-size: 12.5px; line-height: 1.38; font-weight: 500; color: rgba(255,255,255,0.86);
+    margin-bottom: 6px;
+  }
+  #s1 .why-list li:last-child { margin-bottom: 0; }
+  #s1 .why-list li::before {
+    content: "—"; position: absolute; left: 0; color: var(--accent-soft); font-weight: 700;
+  }
+  #s1 .why-list em { font-style: normal; }
+
+  /* ===================================================================== */
+  /* ========  NODE ②  — The Portfolio Analyst (resolved/green)  ========= */
+  /* lifted from v2-step-2-portfolio-analyst.html, scoped under #s2        */
+  /* ===================================================================== */
+  /* static (not relative) so the absolutely-positioned card/chip/why anchor to
+     the .node-col box edge — landing on the shared 152/344/410 grid — instead of
+     to #s2 itself, which sits 12px below (the box's top padding). */
+  #s2 { position: static; width: 100%; height: 100%; text-align: center; }
+
+  #s2 .avatar {
+    width: 54px; height: 54px;
+    margin: 0 auto;
+    border-radius: 50%;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,184,148,0.18);
+    border: 2px solid var(--green);
+    box-shadow: 0 0 26px rgba(0,184,148,0.5);
+    font-weight: 800; font-size: 22px; color: #fff;
+  }
+  #s2 .avatar .ring { position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(0,184,148,0.4); }
+
+  #s2 .role {
+    margin-top: 12px;
+    font-size: 18px; font-weight: 800; letter-spacing: -0.2px;
+    line-height: 1.1; color: var(--green);
+  }
+
+  #s2 .question {
+    margin-top: 8px;
+    min-height: 38px;
+    font-size: 13px; line-height: 1.45; font-weight: 400;
+    opacity: 0.82;
+    max-width: 250px; margin-left: auto; margin-right: auto;
+  }
+  #s2 .question .strong { font-weight: 700; opacity: 0.97; }
+
+  #s2 .ans-card {
+    position: absolute;
+    top: 152px; left: 18px; right: 18px;
+    height: 168px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px 13px;
+    box-shadow: 0 0 26px rgba(0,184,148,0.10), inset 0 0 0 1px rgba(0,184,148,0.06);
+    text-align: left;
+    display: flex; flex-direction: column;
+  }
+
+  #s2 .card-label {
+    text-transform: uppercase;
+    font-weight: 700; font-size: 8.5px; letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  #s2 .ownowe {
+    display: flex;
+    margin-top: 6px;
+    gap: 8px;
+  }
+  #s2 .oo {
+    flex: 1;
+    display: flex; flex-direction: column;
+  }
+  #s2 .oo .oo-k {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; font-size: 11px; letter-spacing: normal;
+    color: rgba(255,255,255,0.60);
+  }
+  #s2 .oo .oo-v {
+    font-family: 'Courier Prime', Courier, monospace;
+    font-size: 13px; font-weight: 700; color: #fff;
+    line-height: 1.1; margin-top: 2px;
+  }
+  #s2 .oo.owe .oo-v { color: rgba(255,255,255,0.78); }
+  #s2 .oo-div {
+    width: 1px;
+    background: rgba(255,255,255,0.10);
+    align-self: stretch;
+  }
+
+  #s2 .hero {
+    margin-top: 9px;
+    padding-top: 9px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  #s2 .hero .hero-k {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; font-size: 11px; letter-spacing: normal;
+    color: rgba(255,255,255,0.60);
+  }
+  #s2 .hero .hero-v {
+    font-family: 'Courier Prime', Courier, monospace;
+    font-weight: 700; font-size: 26px; line-height: 0.9;
+    color: var(--green);
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 14px rgba(0,184,148,0.40);
+  }
+
+  #s2 .protect {
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.14);
+  }
+  #s2 .protect .p-top {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  #s2 .protect .p-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; font-size: 11px; letter-spacing: normal;
+    color: rgba(255,255,255,0.60);
+  }
+  #s2 .protect .p-gap {
+    font-family: 'Courier Prime', Courier, monospace;
+    font-size: 11px; font-weight: 600;
+    color: var(--accent-soft);
+  }
+
+  #s2 .cover-bar {
+    position: relative;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255,107,129,0.16);
+    overflow: hidden;
+    border: 1px solid rgba(255,107,129,0.28);
+  }
+  #s2 .cover-bar .fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 29%;
+    border-radius: 999px;
+    background: var(--green);
+    box-shadow: 0 0 8px rgba(0,184,148,0.5);
+  }
+  #s2 .cover-legend {
+    display: flex; justify-content: space-between;
+    margin-top: 4px;
+    font-family: 'Courier Prime', Courier, monospace;
+    font-size: 11px; font-weight: 600;
+  }
+  #s2 .cover-legend .cov { color: var(--green); }
+  #s2 .cover-legend .need { color: rgba(255,255,255,0.5); }
+  #s2 .cover-legend .need b { color: var(--accent-soft); font-weight: 600; }
+
+  #s2 .cap-chip {
+    position: absolute;
+    left: 50%;
+    top: 344px;
+    transform: translate(-50%, -50%);
+    display: inline-flex; align-items: center; gap: 5px;
+    white-space: nowrap;
+    background: rgba(0,184,148,0.08);
+    border: 1px solid rgba(0,184,148,0.35);
+    color: var(--green);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 12px; font-weight: 600;
+    box-shadow: 0 0 22px rgba(0,184,148,0.22);
+  }
+  #s2 .cap-chip::before { content: '✓'; font-weight: 800; }
+
+  #s2 .why {
+    position: absolute;
+    top: 410px;
+    left: 18px; right: 18px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    text-align: left;
+  }
+  #s2 .why .why-label {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  #s2 .why-list {
+    list-style: none; margin: 5px 0 0; padding: 0;
+  }
+  #s2 .why-list li {
+    position: relative;
+    padding-left: 15px;
+    font-size: 12.5px; line-height: 1.38;
+    font-weight: 500;
+    color: rgba(255,255,255,0.86);
+    margin-bottom: 6px;
+  }
+  #s2 .why-list li:last-child { margin-bottom: 0; }
+  #s2 .why-list li::before {
+    content: "—";
+    position: absolute; left: 0;
+    color: var(--accent-soft); font-weight: 700;
+  }
+
+  /* ===================================================================== */
+  /* ========  NODE ③  — The Cashflow Analyst (resolved/green)  ========= */
+  /* lifted from v2-step-3-cashflow-reader.html, scoped under #s3;          */
+  /* #s3 stays static so absolute children anchor to the .node-col box.     */
+  /* ===================================================================== */
+  #s3 { position: static; width: 100%; height: 100%; color: #fff; text-align: center; }
+
+  #s3 .avatar {
+    width: 54px; height: 54px; margin: 0 auto;
+    border-radius: 50%;
+    background: rgba(0,184,148,0.18);
+    border: 2px solid var(--green);
+    box-shadow: 0 0 26px rgba(0,184,148,0.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: #fff;
+    position: relative;
+  }
+  #s3 .avatar .ring {
+    position: absolute; inset: -6px; border-radius: 50%;
+    border: 1px solid rgba(0,184,148,0.40);
+  }
+
+  #s3 .role {
+    margin-top: 12px;
+    font-size: 18px; font-weight: 800; letter-spacing: -0.2px;
+    color: var(--green); line-height: 1;
+  }
+
+  #s3 .question {
+    margin-top: 12px;
+    min-height: 38px;
+    font-size: 13px; line-height: 1.45; font-weight: 400;
+    opacity: 0.82; max-width: 250px; margin-left: auto; margin-right: auto;
+  }
+  #s3 .question .strong { font-weight: 700; opacity: 0.97; }
+
+  #s3 .ans-card {
+    position: absolute;
+    top: 152px; left: 8px; right: 8px;
+    height: 168px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px 13px;
+    box-shadow: 0 0 26px rgba(0,184,148,0.10), inset 0 0 0 1px rgba(0,184,148,0.06);
+    text-align: left;
+    display: flex; flex-direction: column;
+  }
+  #s3 .ans-card .card-label {
+    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700; font-size: 8.5px; letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  #s3 .bars { margin-top: 11px; }
+  #s3 .bar-row { margin-bottom: 9px; }
+  #s3 .bar-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  #s3 .bar-head .lab {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+    color: rgba(255,255,255,0.60);
+  }
+  #s3 .bar-head .amt {
+    font-family: 'Courier Prime', monospace; font-size: 13px; font-weight: 700;
+    letter-spacing: 0;
+  }
+  #s3 .bar-head .amt.in  { color: #fff; }
+  #s3 .bar-head .amt.out { color: var(--accent-soft); }
+
+  #s3 .track {
+    position: relative;
+    height: 13px; border-radius: 4px;
+    background: rgba(255,255,255,0.05);
+    overflow: hidden;
+  }
+  #s3 .fill-in {
+    position: absolute; inset: 0;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.30), rgba(255,255,255,0.18));
+    border-radius: 4px;
+  }
+  #s3 .fill-out {
+    position: absolute; top: 0; bottom: 0; left: 0;
+    width: 71.4%;
+    background: linear-gradient(90deg, rgba(233,69,96,0.55), rgba(255,107,129,0.55));
+    border-radius: 4px;
+  }
+  #s3 .fill-left {
+    position: absolute; top: 0; bottom: 0; right: 0;
+    width: 28.6%;
+    background: linear-gradient(90deg, rgba(0,184,148,0.85), rgba(0,184,148,0.65));
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 8px rgba(0,184,148,0.5);
+  }
+  #s3 .seam {
+    position: absolute; top: -1px; bottom: -1px; left: 71.4%;
+    width: 1px; background: rgba(0,0,0,0.45);
+  }
+
+  #s3 .hero {
+    margin-top: auto;
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0,184,148,0.30);
+  }
+  #s3 .hero .h-lab {
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+    color: var(--green);
+  }
+  #s3 .hero .h-lab .swatch {
+    width: 9px; height: 9px; border-radius: 2px;
+    background: var(--green); box-shadow: 0 0 8px rgba(0,184,148,0.5);
+  }
+  #s3 .hero .h-val {
+    font-family: 'Courier Prime', monospace;
+    font-size: 26px; font-weight: 700; letter-spacing: -0.5px;
+    color: var(--green); line-height: 1;
+    text-shadow: 0 0 14px rgba(0,184,148,0.40);
+  }
+  #s3 .hero .h-val .per {
+    font-size: 10px; font-weight: 600; letter-spacing: 0;
+    color: rgba(255,255,255,0.45);
+  }
+
+  #s3 .cap-chip {
+    position: absolute;
+    top: 344px; left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(0,184,148,0.08);
+    border: 1px solid rgba(0,184,148,0.35);
+    color: var(--green);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 12px; font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 0 22px rgba(0,184,148,0.22);
+  }
+  #s3 .cap-chip .glyph { font-family: 'Courier Prime', monospace; font-weight: 700; }
+
+  #s3 .why {
+    position: absolute;
+    top: 410px; left: 18px; right: 18px;
+    text-align: left;
+  }
+  #s3 .why .why-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--muted); margin-bottom: 7px;
+  }
+  #s3 .why-list { list-style: none; }
+  #s3 .why-list li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 12.5px; line-height: 1.42;
+    font-weight: 500;
+    color: rgba(255,255,255,0.86);
+    margin-bottom: 5px;
+  }
+  #s3 .why-list li::before {
+    content: "—";
+    position: absolute; left: 0; top: 0;
+    color: var(--accent-soft); font-weight: 700;
+  }
+
+  /* ===================================================================== */
+  /* ====  NODE ④  — The Investment Adviser (DEAD / climax)  ============= */
+  /* lifted from v2-step-4g-error-stamp.html, scoped under #s4              */
+  /* LIGHT "document" card: avatar(top12)/role(top78) on the shared top grid;*/
+  /* below the role box-④ uses its OWN layout: framing → triangle (three     */
+  /* black wavy snapped chains + shatter bursts, label corners) → clean RED  */
+  /* ERROR / INCOMPLETE ADVICE stamp → bottom takeaway.                      */
+  /* ===================================================================== */
+  /* static (not relative) so the absolutely-positioned children anchor to the
+     .node-col box edge — instead of to #s4 itself, which sits 12px below. */
+  #s4 { position: static; width: 100%; height: 100%; text-align: center; color: #1a1a2e; }
+
+  /* ① AVATAR — locked, dark ring, dark numeral on the light page */
+  #s4 .avatar {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 54px; height: 54px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800;
+    z-index: 6;
+    border: 2px solid #2a2230; background: rgba(255,255,255,0.6);
+    color: #1a1a2e; box-shadow: 0 0 14px rgba(42,34,48,0.12);
+  }
+  #s4 .avatar .lock {
+    position: absolute; right: -4px; bottom: -4px; width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    background: #2a2230; border: 1px solid #2a2230;
+    color: rgba(247,238,240,0.96);
+  }
+
+  /* ② ROLE — dark ink; aligned to the ①②③ role band (their roles land ~74-79) */
+  #s4 .role {
+    position: absolute; top: 78px; left: 0; right: 0;
+    font-size: 18px; font-weight: 800; letter-spacing: -0.2px; line-height: 1;
+    z-index: 6;
+    color: #1a1a2e;
+  }
+
+  /* ③ FRAMING LINE — dark ink */
+  #s4 .frame {
+    position: absolute; top: 104px; left: 22px; right: 22px;
+    font-size: 13px; line-height: 1.45; font-weight: 400;
+    z-index: 6;
+    color: rgba(26,26,46,0.72);
+  }
+  #s4 .frame .strong { font-weight: 700; color: #1a1a2e; }
+
+  /* ④ THE TRIANGLE — container spans the full 290×560 card so SVG units and
+     pill positions are expressed directly in card-space coordinates. */
+  #s4 .triangle { position: absolute; inset: 0; }
+  #s4 .tri-svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* CORNER NODES — OPAQUE white pills sitting ON TOP of the chains so the
+     opaque pills occlude the chain ends. Each pill centered on its vertex. */
+  #s4 .node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center;
+    z-index: 5;             /* ON TOP of chains so opaque pills occlude chain ends */
+  }
+  #s4 .node .nlabel {
+    font-size: 10.5px; line-height: 1.18; font-weight: 700;
+    letter-spacing: 0.1px;
+    border-radius: 8px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    color: #1a1a2e;
+    background: #ffffff;
+    border: 1px solid rgba(150,92,106,0.30);
+    box-shadow: 0 2px 7px rgba(0,0,0,0.20), 0 0 0 3px #ffffff;
+  }
+  /* APEX = Goal Planning, centered at (145, 175) */
+  #s4 .node.apex  { left: 145px; top: 175px; }
+  /* BOTTOM-LEFT = Portfolio Analysis, centered at (62, 350) */
+  #s4 .node.left  { left: 62px;  top: 350px; }
+  /* BOTTOM-RIGHT = Cashflow Analysis, centered at (228, 350) */
+  #s4 .node.right { left: 228px; top: 350px; }
+
+  /* ERROR STAMP — CLEAN, crisp, highly-legible (non-grunge); lives in the
+     CLEAR interior band between the upper breaks and the base break. */
+  #s4 .stamp { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+  #s4 .stamp .stamp-svg {
+    position: absolute; left: 145px; top: 300px;
+    transform: translate(-50%, -50%) rotate(-7deg);
+    width: 206px; height: 44px;
+    display: block;
+    opacity: 0.98;
+    /* white outline halo so the stamp reads clearly over the chains behind it */
+    filter:
+      drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff)
+      drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff)
+      drop-shadow(0 1px 3px rgba(210,58,77,0.18));
+  }
+
+  /* ⑤ BOTTOM TAKEAWAY — dark ink */
+  #s4 .verdict {
+    position: absolute; top: 392px; left: 20px; right: 20px;
+    padding-top: 18px;
+    text-align: center;
+    z-index: 6;
+    border-top: 1px solid rgba(150,92,106,0.30);
+  }
+  #s4 .verdict .principle {
+    font-size: 14px; line-height: 1.45; font-weight: 700;
+    letter-spacing: 0.1px;
+    max-width: 250px; margin: 0 auto;
+    color: #1a1a2e;
+  }
+
+  /* REALISTIC INTERLOCKING BLACK BROKEN CHAINS */
+  #s4 .chain path {
+    fill: #1f1a2b;          /* near-black, crisp on the light page */
+    fill-rule: evenodd;     /* punched hole = real link */
+    stroke: rgba(10,8,16,0.55);
+    stroke-width: 0.5;
+  }
+  #s4 .shatter path {
+    fill: #1f1a2b;          /* black shards */
+    stroke: none;
+    opacity: 0.92;
+  }
+
+  /* ===================================================================== */
+  /* PRINT — exactly one 1280 x 720 landscape page, slide at full bleed     */
+  /* ===================================================================== */
+  @page { size: 1280px 720px; margin: 0; }
+  @media print {
+    html, body { background: #fff; width: 1280px; height: 720px; }
+    body { padding: 0; display: block; }
+    .slide { border-radius: 0; box-shadow: none; width: 1280px; height: 720px; }
+  }
+  .slide-number{display:none}
+</style>
+</head>
+<body>
+
+  <div class="slide">
+
+    <!-- ===== TOP: headline + sub-line ===== -->
+    <div class="slide-head">
+      <h2>Real advice isn't an app. It's a team.</h2>
+      <p class="sub">The wealthy hire that team. <span class="hot">You can't.</span></p>
+    </div>
+
+    <!-- ===== MIDDLE: four columns + broken connectors (scaled to fit) ===== -->
+    <div class="relay-wrap">
+      <div class="relay-row">
+
+        <!-- ===== NODE ① — The Goal-Setter ===== -->
+        <div class="node-col step-box">
+          <div id="s1">
+
+            <!-- Avatar -->
+            <div class="avatar">1<span class="ring"></span></div>
+
+            <!-- Role -->
+            <div class="role">The Goal Planner</div>
+
+            <!-- Question (reserved 2-line band) -->
+            <div class="question">What matters most — <span class="strong">and by when?</span></div>
+
+            <!-- ANSWER CARD: prioritized goal ladder on a NEAR→FAR axis -->
+            <div class="ans-card">
+              <div class="axis">
+                <span class="near">Near</span>
+                <span class="line"></span>
+                <span class="far">Far</span>
+              </div>
+              <div class="ladder">
+                <div class="rung">
+                  <span class="rank">1</span>
+                  <span class="goal">Emergency fund</span>
+                  <span class="horizon h-now">now</span>
+                </div>
+                <div class="rung">
+                  <span class="rank">2</span>
+                  <span class="goal">New car</span>
+                  <span class="horizon h-near">2 yr</span>
+                </div>
+                <div class="rung">
+                  <span class="rank">3</span>
+                  <span class="goal">Kids' education</span>
+                  <span class="horizon h-far">15 yr</span>
+                </div>
+                <div class="rung">
+                  <span class="rank">4</span>
+                  <span class="goal">Retirement</span>
+                  <span class="horizon h-farthest">25 yr</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ANSWER CHIP -->
+            <div class="cap-chip"><span class="tick">✓</span>Priorities + timelines</div>
+
+            <!-- WHY band -->
+            <div class="why">
+              <div class="why-label">Why this is hard</div>
+              <ul class="why-list">
+                <li>People can't rank their own goals</li>
+                <li>No real dates or amounts on them</li>
+                <li>The same money can't cover a 2-yr <em>and</em> a 20-yr goal</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ===== CONNECTOR ①→② (broken — snapped link, quiet label) ===== -->
+        <div class="connector">
+          <svg class="brk-svg" viewBox="0 0 86 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><filter id="g-c1" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <!-- UPPER half: shifted upper-right, shallow tilt -30deg; torn end points down to break -->
+            <g transform="translate(7 -3) rotate(-30 43 96)">
+              <g filter="url(#g-c1)" stroke="#ff6b81" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M34 96 v-22 a9 9 0 0 1 18 0 v22"/>
+              </g>
+              <g filter="url(#g-c1)" stroke="#e94560" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M34 96 l6 5 l6 -5 l6 5"/>
+              </g>
+            </g>
+            <!-- LOWER half: shifted lower-left + offset axis, steep tilt -58deg; torn end points up to break -->
+            <g transform="translate(-9 4) rotate(-58 43 124)">
+              <g filter="url(#g-c1)" stroke="#ff6b81" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M34 124 v22 a9 9 0 0 0 18 0 v-22"/>
+              </g>
+              <g filter="url(#g-c1)" stroke="#e94560" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M34 124 l6 -5 l6 5 l6 -5"/>
+              </g>
+            </g>
+            <!-- burst: short dashes clustered upper-left of the gap -->
+            <g filter="url(#g-c1)" stroke="#ff5470" stroke-width="3" stroke-linecap="round">
+              <path d="M22 96 l-8 -3"/><path d="M27 90 l-5 -7"/>
+              <path d="M35 88 l-2 -8"/><path d="M44 90 l3 -7"/>
+              <path d="M30 104 l-9 1"/>
+            </g>
+            <text x="43" y="184" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" font-weight="600"
+                  letter-spacing="1" fill="rgba(233,69,96,0.6)">BROKEN</text>
+          </svg>
+        </div>
+
+        <!-- ===== NODE ② — The Portfolio Analyst ===== -->
+        <div class="node-col step-box">
+          <div id="s2">
+            <div class="avatar">2<span class="ring"></span></div>
+            <div class="role">The Portfolio Analyst</div>
+            <div class="question">What you <span class="strong">OWN</span>, what you <span class="strong">OWE</span>, what <span class="strong">PROTECTS</span> you.</div>
+
+            <!-- ANSWER CARD -->
+            <div class="ans-card">
+              <div class="card-label">Your money, in one truth</div>
+
+              <div class="ownowe">
+                <div class="oo own">
+                  <span class="oo-k">Own · assets</span>
+                  <span class="oo-v">₹42.6L</span>
+                </div>
+                <div class="oo-div"></div>
+                <div class="oo owe">
+                  <span class="oo-k">Owe · liabilities</span>
+                  <span class="oo-v">₹18.2L</span>
+                </div>
+              </div>
+
+              <div class="hero">
+                <span class="hero-k">Net worth</span>
+                <span class="hero-v">₹24.4L</span>
+              </div>
+
+              <div class="protect">
+                <div class="p-top">
+                  <span class="p-label">Protect · cover vs need</span>
+                  <span class="p-gap">−₹1.2Cr gap</span>
+                </div>
+                <div class="cover-bar"><div class="fill"></div></div>
+                <div class="cover-legend">
+                  <span class="cov">Cover ₹50L</span>
+                  <span class="need">Need <b>₹1.7Cr</b></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ANSWER CHIP -->
+            <div class="cap-chip">One net-worth + protection truth</div>
+
+            <!-- WHY band -->
+            <div class="why">
+              <div class="why-label">Why this is hard</div>
+              <ul class="why-list">
+                <li>Money sits in 30+ different places</li>
+                <li>Nothing shows it all in one place</li>
+                <li>You never see your real worth — or if you're covered</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== CONNECTOR ②→③ (broken — snapped link, quiet label) ===== -->
+        <div class="connector">
+          <svg class="brk-svg" viewBox="0 0 86 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><filter id="g-c2" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <!-- UPPER half: shifted upper-right, shallow tilt -33deg; torn end points down to break -->
+            <g transform="translate(8 -2) rotate(-33 43 96)">
+              <g filter="url(#g-c2)" stroke="#ff6b81" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M34 96 v-22 a9 9 0 0 1 18 0 v22"/>
+              </g>
+              <g filter="url(#g-c2)" stroke="#e94560" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M34 96 l6 5 l6 -5 l6 5"/>
+              </g>
+            </g>
+            <!-- LOWER half: shifted lower-left + offset axis, steep tilt -60deg; torn end points up to break -->
+            <g transform="translate(-10 5) rotate(-60 43 124)">
+              <g filter="url(#g-c2)" stroke="#ff6b81" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M34 124 v22 a9 9 0 0 0 18 0 v-22"/>
+              </g>
+              <g filter="url(#g-c2)" stroke="#e94560" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M34 124 l6 -5 l6 5 l6 -5"/>
+              </g>
+            </g>
+            <!-- burst: short dashes clustered upper-left of the gap -->
+            <g filter="url(#g-c2)" stroke="#ff5470" stroke-width="3" stroke-linecap="round">
+              <path d="M22 96 l-8 -3"/><path d="M27 90 l-5 -7"/>
+              <path d="M35 88 l-2 -8"/><path d="M44 90 l3 -7"/>
+              <path d="M30 104 l-9 1"/>
+            </g>
+            <text x="43" y="184" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" font-weight="600"
+                  letter-spacing="1" fill="rgba(233,69,96,0.6)">BROKEN</text>
+          </svg>
+        </div>
+
+        <!-- ===== NODE ③ — The Cashflow Reader ===== -->
+        <div class="node-col step-box">
+          <div id="s3">
+            <div class="avatar">3<span class="ring"></span></div>
+            <div class="role">The Cashflow Analyst</div>
+            <div class="question">Money <span class="strong">in</span>, money <span class="strong">out</span> — what's <span class="strong">really left to invest</span>.</div>
+
+            <div class="ans-card">
+              <div class="card-label">Monthly cashflow · resolved</div>
+              <div class="bars">
+                <!-- INCOME: the full bar = 100% -->
+                <div class="bar-row">
+                  <div class="bar-head">
+                    <span class="lab">Income in</span>
+                    <span class="amt in">&#8377;1,85,000</span>
+                  </div>
+                  <div class="track">
+                    <div class="fill-in"></div>
+                  </div>
+                </div>
+                <!-- EXPENSES: consumes most of the same width; leftover slice = green surplus -->
+                <div class="bar-row">
+                  <div class="bar-head">
+                    <span class="lab">Real expenses out</span>
+                    <span class="amt out">&#8377;1,32,000</span>
+                  </div>
+                  <div class="track">
+                    <div class="fill-out"></div>
+                    <div class="fill-left"></div>
+                    <div class="seam"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="hero">
+                <span class="h-lab"><span class="swatch"></span>Real surplus</span>
+                <span class="h-val">&#8377;53,000<span class="per">/mo</span></span>
+              </div>
+            </div>
+
+            <div class="cap-chip"><span class="glyph">&#8377;</span> real investable surplus</div>
+
+            <div class="why">
+              <div class="why-label">Why this is hard</div>
+              <ul class="why-list">
+                <li>1,000s of transactions, across every bank + card</li>
+                <li>Tracking by hand means logging every spend, every day</li>
+                <li>So people guess their surplus — and guess high</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== CONNECTOR ③→④ (the hardest, most final break — bold link, loud label) ===== -->
+        <div class="connector final">
+          <svg class="brk-svg" viewBox="0 0 86 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><filter id="g-cf" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <!-- brighter + a touch bolder for the final, hardest break; widest kink -->
+            <!-- UPPER half: shifted upper-right, shallow tilt -28deg; torn end points down to break -->
+            <g transform="translate(8 -3) rotate(-28 43 95)">
+              <g filter="url(#g-cf)" stroke="#ff5470" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M33 95 v-23 a10 10 0 0 1 20 0 v23"/>
+              </g>
+              <g filter="url(#g-cf)" stroke="#e94560" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M33 95 l6.5 6 l6.5 -6 l6.5 6"/>
+              </g>
+            </g>
+            <!-- LOWER half: shifted lower-left + offset axis, steep tilt -63deg; torn end points up to break -->
+            <g transform="translate(-11 5) rotate(-63 43 125)">
+              <g filter="url(#g-cf)" stroke="#ff5470" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M33 125 v23 a10 10 0 0 0 20 0 v-23"/>
+              </g>
+              <g filter="url(#g-cf)" stroke="#e94560" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M33 125 l6.5 -6 l6.5 6 l6.5 -6"/>
+              </g>
+            </g>
+            <!-- bigger burst: more + longer dashes clustered upper-left of the gap -->
+            <g filter="url(#g-cf)" stroke="#ff5470" stroke-width="3.2" stroke-linecap="round">
+              <path d="M21 95 l-10 -4"/><path d="M26 88 l-6 -9"/>
+              <path d="M34 86 l-2 -10"/><path d="M44 88 l4 -9"/>
+              <path d="M29 105 l-11 1"/><path d="M51 94 l8 -4"/>
+            </g>
+            <text x="43" y="184" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" font-weight="600"
+                  letter-spacing="1" fill="rgba(233,69,96,0.6)">BROKEN</text>
+          </svg>
+        </div>
+
+        <!-- ===== NODE ④ — The Investment Adviser (DEAD / climax) ===== -->
+        <div class="node-col step-box dead">
+          <div id="s4">
+
+            <!-- ① AVATAR — locked, dead -->
+            <div class="avatar">4<span class="lock">&#128274;</span></div>
+
+            <!-- ② ROLE -->
+            <div class="role">The Investment Adviser</div>
+
+            <!-- ③ FRAMING LINE -->
+            <div class="frame">Holistic advice forms only where <span class="strong">all three connect.</span></div>
+
+            <!-- ④ THE TRIANGLE -->
+            <div class="triangle">
+              <svg class="tri-svg" viewBox="0 0 290 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="s4-chain-shadow" x="-40%" y="-40%" width="180%" height="180%">
+                    <feDropShadow dx="0" dy="0.7" stdDeviation="0.9"
+                                  flood-color="rgba(120,80,90,0.40)"/>
+                  </filter>
+                </defs>
+
+                <g filter="url(#s4-chain-shadow)">
+                <!-- EDGE A (apex -> left) -->
+                <g class="chain">
+                  <path d="M149.62 176.13 L147.50 179.04 A4.40 4.40 0 0 1 140.38 173.87 L142.50 170.96 A4.40 4.40 0 0 1 149.62 176.13 Z M147.21 175.37 L146.03 176.98 A2.00 2.00 0 0 1 142.79 174.63 L143.97 173.02 A2.00 2.00 0 0 1 147.21 175.37 Z"/>
+                  <path d="M142.77 182.92 L139.55 189.13 A2.50 2.50 0 0 1 135.11 186.84 L138.32 180.62 A2.50 2.50 0 0 1 142.77 182.92 Z M140.81 183.31 L138.75 187.31 A0.95 0.95 0 0 1 137.06 186.44 L139.13 182.44 A0.95 0.95 0 0 1 140.81 183.31 Z"/>
+                  <path d="M139.03 195.33 L137.79 198.71 A4.40 4.40 0 0 1 129.53 195.66 L130.78 192.28 A4.40 4.40 0 0 1 139.03 195.33 Z M136.51 195.25 L135.81 197.12 A2.00 2.00 0 0 1 132.06 195.74 L132.75 193.86 A2.00 2.00 0 0 1 136.51 195.25 Z"/>
+                  <path d="M134.14 203.81 L132.37 210.58 A2.50 2.50 0 0 1 127.53 209.32 L129.30 202.55 A2.50 2.50 0 0 1 134.14 203.81 Z M132.32 204.63 L131.19 208.98 A0.95 0.95 0 0 1 129.35 208.50 L130.48 204.15 A0.95 0.95 0 0 1 132.32 204.63 Z"/>
+                  <path d="M133.00 216.91 L132.36 220.45 A4.40 4.40 0 0 1 123.70 218.88 L124.35 215.33 A4.40 4.40 0 0 1 133.00 216.91 Z M130.50 217.27 L130.14 219.24 A2.00 2.00 0 0 1 126.21 218.52 L126.56 216.55 A2.00 2.00 0 0 1 130.50 217.27 Z"/>
+                  <path d="M129.52 226.21 L128.62 233.15 A2.50 2.50 0 0 1 123.66 232.51 L124.56 225.56 A2.50 2.50 0 0 1 129.52 226.21 Z M127.82 227.25 L127.24 231.71 A0.95 0.95 0 0 1 125.36 231.47 L125.94 227.00 A0.95 0.95 0 0 1 127.82 227.25 Z"/>
+                  <path d="M129.82 239.57 L129.43 243.15 A4.40 4.40 0 0 1 120.68 242.19 L121.07 238.61 A4.40 4.40 0 0 1 129.82 239.57 Z M127.35 240.10 L127.13 242.09 A2.00 2.00 0 0 1 123.16 241.66 L123.37 239.67 A2.00 2.00 0 0 1 127.35 240.10 Z"/>
+                  <path d="M126.85 249.35 L125.70 256.25 A2.50 2.50 0 0 1 120.77 255.43 L121.92 248.52 A2.50 2.50 0 0 1 126.85 249.35 Z M125.12 250.33 L124.37 254.76 A0.95 0.95 0 0 1 122.50 254.45 L123.24 250.01 A0.95 0.95 0 0 1 125.12 250.33 Z"/>
+                  <path d="M94.43 281.81 L91.79 284.26 A4.40 4.40 0 0 1 85.80 277.82 L88.44 275.37 A4.40 4.40 0 0 1 94.43 281.81 Z M92.21 280.60 L90.75 281.96 A2.00 2.00 0 0 1 88.02 279.03 L89.49 277.67 A2.00 2.00 0 0 1 92.21 280.60 Z"/>
+                  <path d="M86.68 287.14 L82.80 292.96 A2.50 2.50 0 0 1 78.64 290.19 L82.52 284.36 A2.50 2.50 0 0 1 86.68 287.14 Z M84.70 287.32 L82.20 291.06 A0.95 0.95 0 0 1 80.62 290.01 L83.12 286.26 A0.95 0.95 0 0 1 84.70 287.32 Z"/>
+                  <path d="M81.83 299.01 L80.33 302.29 A4.40 4.40 0 0 1 72.33 298.62 L73.83 295.35 A4.40 4.40 0 0 1 81.83 299.01 Z M79.31 298.74 L78.48 300.56 A2.00 2.00 0 0 1 74.84 298.90 L75.68 297.08 A2.00 2.00 0 0 1 79.31 298.74 Z"/>
+                  <path d="M76.31 307.11 L74.02 313.72 A2.50 2.50 0 0 1 69.29 312.08 L71.59 305.47 A2.50 2.50 0 0 1 76.31 307.11 Z M74.44 307.78 L72.96 312.03 A0.95 0.95 0 0 1 71.17 311.41 L72.65 307.16 A0.95 0.95 0 0 1 74.44 307.78 Z"/>
+                  <path d="M74.05 320.15 L73.06 323.61 A4.40 4.40 0 0 1 64.60 321.18 L65.59 317.72 A4.40 4.40 0 0 1 74.05 320.15 Z M71.52 320.25 L70.97 322.18 A2.00 2.00 0 0 1 67.13 321.07 L67.68 319.15 A2.00 2.00 0 0 1 71.52 320.25 Z"/>
+                  <path d="M69.60 329.08 L67.88 335.87 A2.50 2.50 0 0 1 63.03 334.64 L64.75 327.86 A2.50 2.50 0 0 1 69.60 329.08 Z M67.79 329.92 L66.68 334.28 A0.95 0.95 0 0 1 64.84 333.81 L65.95 329.45 A0.95 0.95 0 0 1 67.79 329.92 Z"/>
+                  <path d="M68.27 342.39 L67.45 345.89 A4.40 4.40 0 0 1 58.88 343.89 L59.70 340.38 A4.40 4.40 0 0 1 68.27 342.39 Z M65.75 342.62 L65.30 344.57 A2.00 2.00 0 0 1 61.40 343.66 L61.86 341.71 A2.00 2.00 0 0 1 65.75 342.62 Z"/>
+                </g>
+                <g class="shatter">
+                  <path d="M105.64 270.12 L113.35 271.68 L105.49 271.37 Z"/>
+                  <path d="M105.93 271.40 L110.31 277.06 L104.49 272.89 Z"/>
+                  <path d="M105.20 272.89 L105.65 275.87 L103.92 273.40 Z"/>
+                  <path d="M103.38 273.11 L100.70 276.44 L101.56 272.25 Z"/>
+                  <path d="M101.73 272.75 L95.72 276.95 L100.96 271.83 Z"/>
+                  <path d="M101.23 270.70 L96.98 269.76 L101.33 269.79 Z"/>
+                  <path d="M101.24 270.17 L93.81 266.90 L101.57 269.28 Z"/>
+                  <path d="M101.41 268.22 L99.31 263.56 L102.46 267.58 Z"/>
+                  <path d="M102.50 267.49 L102.77 260.94 L104.02 267.38 Z"/>
+                  <path d="M104.09 268.54 L108.89 264.05 L105.32 269.57 Z"/>
+                  <path d="M105.46 268.44 L109.67 266.94 L106.27 269.84 Z"/>
+                </g>
+                <!-- EDGE B (apex -> right) -->
+                <g class="chain">
+                  <path d="M147.50 170.96 L149.62 173.87 A4.40 4.40 0 0 1 142.50 179.04 L140.38 176.13 A4.40 4.40 0 0 1 147.50 170.96 Z M146.03 173.02 L147.21 174.63 A2.00 2.00 0 0 1 143.97 176.98 L142.79 175.37 A2.00 2.00 0 0 1 146.03 173.02 Z"/>
+                  <path d="M151.77 180.16 L155.77 185.90 A2.50 2.50 0 0 1 151.66 188.76 L147.67 183.01 A2.50 2.50 0 0 1 151.77 180.16 Z M151.21 182.07 L153.78 185.76 A0.95 0.95 0 0 1 152.22 186.85 L149.65 183.15 A0.95 0.95 0 0 1 151.21 182.07 Z"/>
+                  <path d="M160.91 190.11 L162.90 193.10 A4.40 4.40 0 0 1 155.58 197.98 L153.59 194.99 A4.40 4.40 0 0 1 160.91 190.11 Z M159.35 192.10 L160.46 193.77 A2.00 2.00 0 0 1 157.14 195.99 L156.03 194.32 A2.00 2.00 0 0 1 159.35 192.10 Z"/>
+                  <path d="M164.81 199.47 L168.57 205.37 A2.50 2.50 0 0 1 164.35 208.06 L160.59 202.15 A2.50 2.50 0 0 1 164.81 199.47 Z M164.17 201.36 L166.59 205.15 A0.95 0.95 0 0 1 164.99 206.17 L162.57 202.38 A0.95 0.95 0 0 1 164.17 201.36 Z"/>
+                  <path d="M173.53 209.80 L175.39 212.88 A4.40 4.40 0 0 1 167.86 217.43 L166.00 214.35 A4.40 4.40 0 0 1 173.53 209.80 Z M171.89 211.73 L172.93 213.44 A2.00 2.00 0 0 1 169.50 215.51 L168.47 213.80 A2.00 2.00 0 0 1 171.89 211.73 Z"/>
+                  <path d="M177.01 219.35 L180.45 225.45 A2.50 2.50 0 0 1 176.10 227.91 L172.66 221.81 A2.50 2.50 0 0 1 177.01 219.35 Z M176.28 221.20 L178.49 225.12 A0.95 0.95 0 0 1 176.84 226.06 L174.62 222.14 A0.95 0.95 0 0 1 176.28 221.20 Z"/>
+                  <path d="M185.16 230.25 L186.79 233.46 A4.40 4.40 0 0 1 178.94 237.44 L177.31 234.23 A4.40 4.40 0 0 1 185.16 230.25 Z M183.38 232.05 L184.29 233.83 A2.00 2.00 0 0 1 180.72 235.64 L179.81 233.86 A2.00 2.00 0 0 1 183.38 232.05 Z"/>
+                  <path d="M187.93 240.23 L190.45 246.76 A2.50 2.50 0 0 1 185.78 248.56 L183.27 242.03 A2.50 2.50 0 0 1 187.93 240.23 Z M186.93 241.96 L188.55 246.15 A0.95 0.95 0 0 1 186.78 246.84 L185.16 242.64 A0.95 0.95 0 0 1 186.93 241.96 Z"/>
+                  <path d="M189.97 286.26 L188.96 289.72 A4.40 4.40 0 0 1 180.52 287.25 L181.53 283.80 A4.40 4.40 0 0 1 189.97 286.26 Z M187.45 286.36 L186.88 288.28 A2.00 2.00 0 0 1 183.05 287.16 L183.61 285.24 A2.00 2.00 0 0 1 187.45 286.36 Z"/>
+                  <path d="M186.93 293.70 L190.30 299.84 A2.50 2.50 0 0 1 185.92 302.24 L182.55 296.11 A2.50 2.50 0 0 1 186.93 293.70 Z M186.18 295.54 L188.34 299.49 A0.95 0.95 0 0 1 186.68 300.40 L184.51 296.46 A0.95 0.95 0 0 1 186.18 295.54 Z"/>
+                  <path d="M195.58 302.18 L198.28 304.56 A4.40 4.40 0 0 1 192.46 311.16 L189.76 308.77 A4.40 4.40 0 0 1 195.58 302.18 Z M194.59 304.51 L196.09 305.83 A2.00 2.00 0 0 1 193.44 308.83 L191.95 307.50 A2.00 2.00 0 0 1 194.59 304.51 Z"/>
+                  <path d="M201.84 309.91 L207.24 314.36 A2.50 2.50 0 0 1 204.06 318.22 L198.66 313.77 A2.50 2.50 0 0 1 201.84 309.91 Z M201.82 311.91 L205.29 314.77 A0.95 0.95 0 0 1 204.08 316.23 L200.61 313.37 A0.95 0.95 0 0 1 201.82 311.91 Z"/>
+                  <path d="M213.43 317.37 L215.99 319.90 A4.40 4.40 0 0 1 209.81 326.16 L207.25 323.64 A4.40 4.40 0 0 1 213.43 317.37 Z M212.31 319.64 L213.74 321.05 A2.00 2.00 0 0 1 210.93 323.89 L209.50 322.49 A2.00 2.00 0 0 1 212.31 319.64 Z"/>
+                  <path d="M219.19 326.23 L223.28 331.91 A2.50 2.50 0 0 1 219.22 334.83 L215.13 329.15 A2.50 2.50 0 0 1 219.19 326.23 Z M218.66 328.15 L221.29 331.80 A0.95 0.95 0 0 1 219.75 332.91 L217.12 329.26 A0.95 0.95 0 0 1 218.66 328.15 Z"/>
+                  <path d="M228.26 337.19 L229.69 340.49 A4.40 4.40 0 0 1 221.61 343.99 L220.18 340.68 A4.40 4.40 0 0 1 228.26 337.19 Z M226.37 338.87 L227.17 340.71 A2.00 2.00 0 0 1 223.50 342.30 L222.70 340.46 A2.00 2.00 0 0 1 226.37 338.87 Z"/>
+                </g>
+                <g class="shatter">
+                  <path d="M188.60 270.72 L193.37 272.72 L188.33 271.55 Z"/>
+                  <path d="M188.80 271.58 L189.98 274.16 L187.47 272.85 Z"/>
+                  <path d="M188.21 272.92 L187.88 277.22 L185.88 273.40 Z"/>
+                  <path d="M185.85 273.26 L183.39 276.18 L184.53 272.53 Z"/>
+                  <path d="M184.84 273.17 L182.77 274.48 L183.94 272.33 Z"/>
+                  <path d="M184.42 271.70 L181.43 271.49 L184.13 270.17 Z"/>
+                  <path d="M184.02 270.25 L179.53 266.64 L184.98 268.53 Z"/>
+                  <path d="M184.58 268.83 L184.04 265.40 L186.38 267.95 Z"/>
+                  <path d="M186.07 267.89 L188.37 260.69 L187.86 268.23 Z"/>
+                  <path d="M187.69 267.47 L192.53 262.69 L189.13 268.58 Z"/>
+                  <path d="M188.67 268.55 L195.35 267.54 L189.40 270.75 Z"/>
+                </g>
+                <!-- EDGE C (left -> right) -->
+                <g class="chain">
+                  <path d="M62.42 345.26 L65.62 346.92 A4.40 4.40 0 0 1 61.58 354.74 L58.38 353.08 A4.40 4.40 0 0 1 62.42 345.26 Z M62.03 347.76 L63.81 348.68 A2.00 2.00 0 0 1 61.97 352.24 L60.19 351.32 A2.00 2.00 0 0 1 62.03 347.76 Z"/>
+                  <path d="M70.15 351.09 L76.77 353.38 A2.50 2.50 0 0 1 75.13 358.10 L68.51 355.81 A2.50 2.50 0 0 1 70.15 351.09 Z M70.83 352.96 L75.08 354.43 A0.95 0.95 0 0 1 74.46 356.23 L70.20 354.76 A0.95 0.95 0 0 1 70.83 352.96 Z"/>
+                  <path d="M82.80 352.83 L86.35 353.41 A4.40 4.40 0 0 1 84.93 362.09 L81.38 361.51 A4.40 4.40 0 0 1 82.80 352.83 Z M83.20 355.33 L85.18 355.65 A2.00 2.00 0 0 1 84.53 359.60 L82.56 359.27 A2.00 2.00 0 0 1 83.20 355.33 Z"/>
+                  <path d="M91.85 355.84 L98.85 355.65 A2.50 2.50 0 0 1 98.99 360.65 L91.99 360.84 A2.50 2.50 0 0 1 91.85 355.84 Z M93.15 357.36 L97.65 357.23 A0.95 0.95 0 0 1 97.70 359.13 L93.20 359.26 A0.95 0.95 0 0 1 93.15 357.36 Z"/>
+                  <path d="M104.26 352.93 L107.79 352.19 A4.40 4.40 0 0 1 109.59 360.80 L106.06 361.54 A4.40 4.40 0 0 1 104.26 352.93 Z M105.54 355.11 L107.49 354.70 A2.00 2.00 0 0 1 108.31 358.62 L106.35 359.03 A2.00 2.00 0 0 1 105.54 355.11 Z"/>
+                  <path d="M113.98 352.47 L120.63 350.28 A2.50 2.50 0 0 1 122.20 355.02 L115.55 357.22 A2.50 2.50 0 0 1 113.98 352.47 Z M115.66 353.55 L119.93 352.14 A0.95 0.95 0 0 1 120.53 353.94 L116.25 355.36 A0.95 0.95 0 0 1 115.66 353.55 Z"/>
+                  <path d="M164.99 365.77 L166.25 369.14 A4.40 4.40 0 0 1 158.01 372.23 L156.75 368.86 A4.40 4.40 0 0 1 164.99 365.77 Z M163.02 367.36 L163.72 369.23 A2.00 2.00 0 0 1 159.98 370.64 L159.28 368.77 A2.00 2.00 0 0 1 163.02 367.36 Z"/>
+                  <path d="M166.35 374.17 L172.68 377.17 A2.50 2.50 0 0 1 170.54 381.69 L164.21 378.70 A2.50 2.50 0 0 1 166.35 374.17 Z M166.82 376.11 L170.89 378.03 A0.95 0.95 0 0 1 170.07 379.75 L166.01 377.83 A0.95 0.95 0 0 1 166.82 376.11 Z"/>
+                  <path d="M176.58 373.98 L179.97 372.79 A4.40 4.40 0 0 1 182.90 381.08 L179.51 382.28 A4.40 4.40 0 0 1 176.58 373.98 Z M178.13 375.98 L180.02 375.31 A2.00 2.00 0 0 1 181.35 379.09 L179.46 379.75 A2.00 2.00 0 0 1 178.13 375.98 Z"/>
+                  <path d="M185.90 372.07 L191.98 368.60 A2.50 2.50 0 0 1 194.46 372.94 L188.38 376.41 A2.50 2.50 0 0 1 185.90 372.07 Z M187.75 372.79 L191.66 370.57 A0.95 0.95 0 0 1 192.60 372.22 L188.69 374.44 A0.95 0.95 0 0 1 187.75 372.79 Z"/>
+                  <path d="M196.24 363.72 L199.29 361.81 A4.40 4.40 0 0 1 203.96 369.27 L200.91 371.18 A4.40 4.40 0 0 1 196.24 363.72 Z M198.19 365.33 L199.88 364.27 A2.00 2.00 0 0 1 202.01 367.66 L200.31 368.72 A2.00 2.00 0 0 1 198.19 365.33 Z"/>
+                  <path d="M205.64 360.05 L211.60 356.38 A2.50 2.50 0 0 1 214.22 360.64 L208.27 364.31 A2.50 2.50 0 0 1 205.64 360.05 Z M207.52 360.72 L211.35 358.35 A0.95 0.95 0 0 1 212.35 359.97 L208.52 362.33 A0.95 0.95 0 0 1 207.52 360.72 Z"/>
+                  <path d="M216.16 351.48 L219.28 349.69 A4.40 4.40 0 0 1 223.64 357.34 L220.51 359.12 A4.40 4.40 0 0 1 216.16 351.48 Z M218.04 353.17 L219.78 352.18 A2.00 2.00 0 0 1 221.76 355.65 L220.02 356.64 A2.00 2.00 0 0 1 218.04 353.17 Z"/>
+                </g>
+                <g class="shatter">
+                  <path d="M147.46 359.49 L154.56 361.98 L147.06 361.44 Z"/>
+                  <path d="M146.89 360.69 L151.45 364.27 L146.37 361.47 Z"/>
+                  <path d="M146.03 362.55 L145.06 367.03 L144.01 362.57 Z"/>
+                  <path d="M144.92 363.18 L142.34 365.79 L142.64 362.13 Z"/>
+                  <path d="M143.74 362.56 L137.25 366.91 L142.31 360.96 Z"/>
+                  <path d="M142.99 361.08 L139.88 360.37 L142.86 359.21 Z"/>
+                  <path d="M142.65 360.21 L136.52 357.33 L143.19 358.48 Z"/>
+                  <path d="M143.21 358.96 L141.41 355.84 L144.24 358.08 Z"/>
+                  <path d="M144.63 357.83 L145.54 352.10 L145.66 357.90 Z"/>
+                  <path d="M145.80 357.94 L151.12 352.12 L146.80 358.71 Z"/>
+                  <path d="M147.92 358.94 L152.70 359.20 L148.08 360.44 Z"/>
+                </g>
+                </g>
+              </svg>
+
+              <!-- CORNER NODES — opaque white pills, occlude chain ends -->
+              <div class="node apex">
+                <div class="nlabel">Goal Planning</div>
+              </div>
+              <div class="node left">
+                <div class="nlabel">Portfolio<br>Analysis</div>
+              </div>
+              <div class="node right">
+                <div class="nlabel">Cashflow<br>Analysis</div>
+              </div>
+
+              <!-- BELOW THE UPPER BREAKS — CLEAN, crisp RED-bordered ERROR STAMP -->
+              <div class="stamp">
+                <svg class="stamp-svg" viewBox="0 0 320 72" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <!-- VERY light edge distress only: a hint of "stamp", stays crisp -->
+                    <filter id="s4g-distress" x="-8%" y="-8%" width="116%" height="116%"
+                            filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
+                      <feTurbulence type="fractalNoise" baseFrequency="0.020 0.028"
+                                    numOctaves="2" seed="5" result="s4gWarp"/>
+                      <feDisplacementMap in="SourceGraphic" in2="s4gWarp"
+                                         scale="0.6" xChannelSelector="R" yChannelSelector="G"/>
+                    </filter>
+                  </defs>
+
+                  <g filter="url(#s4g-distress)">
+                    <!-- RED clean rounded-rectangle border -->
+                    <rect x="4.5" y="4.5" width="311" height="63" rx="11" ry="11"
+                          fill="none" stroke="#e8112d" stroke-width="2.4"/>
+
+                    <!-- LEFT: black warning triangle (rounded corners) + exclamation -->
+                    <g>
+                      <path d="M38 16 L57 49 L19 49 Z"
+                            fill="none" stroke="#1a1a2e" stroke-width="2.6"
+                            stroke-linejoin="round"/>
+                      <rect x="36.2" y="27" width="3.6" height="11" rx="1.6" fill="#1a1a2e"/>
+                      <circle cx="38" cy="44" r="2.1" fill="#1a1a2e"/>
+                    </g>
+
+                    <!-- thin red vertical divider between icon and text -->
+                    <line x1="70" y1="14" x2="70" y2="58" stroke="#e8112d" stroke-width="1.3"/>
+
+                    <!-- RIGHT, TOP line: ERROR (red) -->
+                    <text x="82" y="31" text-anchor="start"
+                          font-family="'Inter', sans-serif" font-weight="900"
+                          font-size="24" letter-spacing="0.4"
+                          fill="#e8112d">ERROR</text>
+
+                    <!-- RIGHT, BOTTOM line: INCOMPLETE ADVICE (black), full + legible -->
+                    <text x="82" y="58" text-anchor="start"
+                          font-family="'Inter', sans-serif" font-weight="900"
+                          font-size="20" letter-spacing="-0.3"
+                          fill="#1a1a2e">INCOMPLETE ADVICE</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <!-- ⑤ BOTTOM TAKEAWAY -->
+            <div class="verdict">
+              <div class="principle">When goals, cashflow, and portfolio don&rsquo;t connect, advice stays incomplete.</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== BOTTOM: white bar + slide number ===== -->
+    <div class="slide-foot">
+      <div class="slide-bar">80M+ salaried Indians need an adviser. Apps hand them blocks, not advice.</div>
+    </div>
+    <div class="slide-number">01</div>
+
+  </div>
+
+</body>
+</html>
