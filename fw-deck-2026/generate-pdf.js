@@ -86,6 +86,65 @@ function revealAll(killCss) {
   // Stop motion + reveal hidden content in the main document.
   await page.evaluate(revealAll, KILL_MOTION_CSS);
 
+  // -------------------------------------------------------------------------
+  // RASTERIZE THE GAP SLIDE (slide 3 / #sGap -> chain-relay-composed.html).
+  //
+  // Apple's PDF renderer (Preview / Quick Look / CoreGraphics) flattens the
+  // gap slide's many semi-transparent green panels (rgba(0,184,148,0.08..0.18))
+  // into SOLID opaque green rectangular blocks smeared across cards 1-3.
+  // Poppler and Chrome render the same vector PDF correctly. To make the slide
+  // render identically in EVERY viewer, we flatten the whole gap slide to a
+  // single PNG (in headless Chrome, which renders it correctly) and embed that
+  // bitmap in place of the live iframe. The bitmap has no semi-transparent
+  // vector panels for Apple's engine to mis-composite, so the blocks vanish.
+  //
+  // chain-relay-composed.html has NO rAF / setInterval animation loop (CSS
+  // only), so the off-screen screenshot cannot hang.
+  // -------------------------------------------------------------------------
+  let gapDataUrl = null;
+  try {
+    const gapPage = await browser.newPage();
+    await gapPage.setViewport({ width: WIDTH, height: HEIGHT, deviceScaleFactor: 2 });
+    const gapFile = 'file://' + path.resolve(__dirname, 'chain-relay-composed.html');
+    await gapPage.goto(gapFile, { waitUntil: 'networkidle0', timeout: 30000 });
+    await gapPage.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
+    // Freeze motion + reveal any base-hidden content, exactly like the main doc.
+    await gapPage.evaluate(revealAll, KILL_MOTION_CSS).catch(() => {});
+    await sleep(800);
+    const buf = await gapPage.screenshot({
+      type: 'png',
+      clip: { x: 0, y: 0, width: WIDTH, height: HEIGHT },
+    });
+    gapDataUrl = 'data:image/png;base64,' + Buffer.from(buf).toString('base64');
+    await gapPage.close();
+    console.log('  Gap slide rasterized to PNG (' + buf.length + ' bytes)');
+  } catch (e) {
+    console.warn('  (gap-slide raster FAILED: ' + e.message + ' — leaving iframe as-is)');
+    gapDataUrl = null;
+  }
+
+  // Replace the live #gapFrame iframe in the MAIN page with the flat PNG, sized
+  // to fill the 1280x720 slide edge-to-edge. Done BEFORE the slide-wrap/scale
+  // step so the <img> is treated as the slide's content. #sGap already has
+  // padding:0; we absolutely-position the img to cover the slide so there is no
+  // inset regardless of the wrapper's flex centering.
+  if (gapDataUrl) {
+    await page.evaluate((dataUrl, W, H) => {
+      const frame = document.querySelector('#gapFrame');
+      if (!frame) return;
+      const img = document.createElement('img');
+      img.id = 'gapFrame';
+      img.src = dataUrl;
+      img.style.cssText =
+        'position:absolute; top:0; left:0; width:' + W + 'px; height:' + H +
+        'px; object-fit:fill; display:block; border:0; margin:0; padding:0;';
+      frame.parentNode.replaceChild(img, frame);
+    }, gapDataUrl, WIDTH, HEIGHT).catch((e) => {
+      console.warn('  (gap-slide img inject warning: ' + e.message + ')');
+    });
+    console.log('  Slide-3 iframe replaced with flat PNG <img>');
+  }
+
   // Lay out each slide as an exact 1280x720 page. To handle slides whose content
   // is taller than 720px, wrap each slide's content in an inner div: the OUTER
   // slide is a fixed 1280x720 clip box (overflow:hidden, keeps its background +
@@ -198,44 +257,8 @@ function revealAll(killCss) {
     );
   });
 
-  // Slide 3 embeds chain-relay-composed.html. Settle + stop its motion / reveal.
-  const gapHandle = await page.$('#gapFrame');
-  if (gapHandle) {
-    try {
-      await page.waitForFunction(() => {
-        const f = document.querySelector('#gapFrame');
-        if (!f) return true;
-        try {
-          const doc = f.contentDocument;
-          return !!doc && doc.readyState === 'complete';
-        } catch (e) {
-          return true;
-        }
-      }, { timeout: 10000 });
-    } catch (e) {
-      console.warn(`  (iframe readyState wait: ${e.message} — continuing)`);
-    }
-    try {
-      const gapFrame = await gapHandle.contentFrame();
-      if (gapFrame) {
-        await gapFrame.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
-        await gapFrame.evaluate(revealAll, KILL_MOTION_CSS).catch(() => {});
-        // Hide any corner logo INSIDE the iframe so it doesn't double up with
-        // the deck-level stamped logo on #sGap (the gap slide IS stamped too).
-        await gapFrame.evaluate(() => {
-          document.querySelectorAll('img').forEach((im) => {
-            if (im.src && im.src.toLowerCase().includes('finny')) im.style.display = 'none';
-          });
-          document.querySelectorAll('.logo, .logo-bar').forEach((el) => {
-            el.style.display = 'none';
-          });
-        }).catch(() => {});
-        console.log('  Slide-3 iframe revealed + motion stopped');
-      }
-    } catch (e) {
-      console.warn(`  (iframe reveal warning: ${e.message})`);
-    }
-  }
+  // (The slide-3 iframe is replaced above by a flat PNG <img>, so there is no
+  // live iframe left to settle / reveal here.)
 
   // Render exactly like the live on-screen deck (not the print stylesheet).
   await page.emulateMediaType('screen');
