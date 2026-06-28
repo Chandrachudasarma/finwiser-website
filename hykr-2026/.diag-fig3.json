@@ -1,0 +1,137 @@
+{
+  "viewBox": "0 0 820 760",
+  "boxes": [
+    {
+      "rectIdx": 0,
+      "rect": {
+        "x": 90,
+        "y": 40,
+        "w": 640,
+        "h": 70,
+        "fill": "#f8f9fa",
+        "stroke": "#cbd5e0"
+      },
+      "textCount": 2,
+      "firstText": "Meera connects · 11 accounts · Gmail · 1 locked PDF",
+      "padLeft": 143.8,
+      "padRight": 143.8,
+      "padTop": 14.7,
+      "padBottom": 17.4,
+      "hPadRatio": 0.44926085472106936,
+      "vPadRatio": 0.458749144417899,
+      "textFillRatio": 0.23391715167856092,
+      "capHeightRatio": 0.2,
+      "maxFontSize": 14
+    },
+    {
+      "rectIdx": 1,
+      "rect": {
+        "x": 90,
+        "y": 162,
+        "w": 640,
+        "h": 72,
+        "fill": "#fff",
+        "stroke": "#1a1a2e"
+      },
+      "textCount": 3,
+      "firstText": "M1 · INGESTION — Get it in, intact and once",
+      "padLeft": 18,
+      "padRight": 80.8,
+      "padTop": 5.2,
+      "padBottom": 7.4,
+      "hPadRatio": 0.1543722152709961,
+      "vPadRatio": 0.17534658643934461,
+      "textFillRatio": 0.35548217282399086,
+      "capHeightRatio": 0.18055555555555555,
+      "maxFontSize": 13
+    },
+    {
+      "rectIdx": 2,
+      "rect": {
+        "x": 90,
+        "y": 280,
+        "w": 640,
+        "h": 72,
+        "fill": "#fff",
+        "stroke": "#1a1a2e"
+      },
+      "textCount": 3,
+      "firstText": "M2 · LEDGER — Numbers that are honest",
+      "padLeft": 18,
+      "padRight": 81,
+      "padTop": 5.2,
+      "padBottom": 7.4,
+      "hPadRatio": 0.15464744567871094,
+      "vPadRatio": 0.17534679836697048,
+      "textFillRatio": 0.3514049575612944,
+      "capHeightRatio": 0.18055555555555555,
+      "maxFontSize": 13
+    },
+    {
+      "rectIdx": 3,
+      "rect": {
+        "x": 90,
+        "y": 398,
+        "w": 640,
+        "h": 72,
+        "fill": "#fff",
+        "stroke": "#1a1a2e"
+      },
+      "textCount": 3,
+      "firstText": "M3 · CATEGORISATION — A surplus you can trust",
+      "padLeft": 18,
+      "padRight": 137.7,
+      "padTop": 5.2,
+      "padBottom": 7.4,
+      "hPadRatio": 0.243284273147583,
+      "vPadRatio": 0.17534637451171875,
+      "textFillRatio": 0.3533641571818963,
+      "capHeightRatio": 0.18055555555555555,
+      "maxFontSize": 13
+    },
+    {
+      "rectIdx": 4,
+      "rect": {
+        "x": 90,
+        "y": 516,
+        "w": 640,
+        "h": 72,
+        "fill": "#fff",
+        "stroke": "#1a1a2e"
+      },
+      "textCount": 3,
+      "firstText": "M4 · DECISIONING — Explainable, suitable, auditable",
+      "padLeft": 18,
+      "padRight": 126.4,
+      "padTop": 5.2,
+      "padBottom": 7.4,
+      "hPadRatio": 0.22557880878448486,
+      "vPadRatio": 0.1753472222222222,
+      "textFillRatio": 0.3694949325368384,
+      "capHeightRatio": 0.18055555555555555,
+      "maxFontSize": 13
+    },
+    {
+      "rectIdx": 5,
+      "rect": {
+        "x": 90,
+        "y": 638,
+        "w": 640,
+        "h": 110,
+        "fill": "#fff3f5",
+        "stroke": "#e94560"
+      },
+      "textCount": 11,
+      "firstText": "BELIEVED",
+      "padLeft": 30,
+      "padRight": 146.2,
+      "padTop": 14.2,
+      "padBottom": 6.9,
+      "hPadRatio": 0.275257933139801,
+      "vPadRatio": 0.19215836958451704,
+      "textFillRatio": 0.135786778820208,
+      "capHeightRatio": 0.12727272727272726,
+      "maxFontSize": 14
+    }
+  ]
+}

@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>§7 Preview v8 — Finwy thinks · Finwiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #002d56; --navy-deep: #001f3d;
+      --mint: #35d6c6; --teal: #00b6ad;
+      --white: #ffffff; --off-white: #f7f9fb;
+      --text-on-light: #002d56; --text-on-light-muted: #5a6b7d;
+      --text-on-dark: rgba(255,255,255,0.94); --text-on-dark-muted: rgba(255,255,255,0.74);
+      --border-on-light: rgba(0,45,86,0.10);
+      --border-on-light-strong: rgba(0,45,86,0.20);
+      --shadow-soft: 0 4px 18px rgba(0,45,86,0.08);
+      --shadow-card: 0 8px 28px rgba(0,45,86,0.06);
+      --gold: #f5c26b; --rose: #e87b6f;
+      --mint-04: rgba(53,214,198,0.04);
+      --mint-08: rgba(53,214,198,0.08); --mint-12: rgba(53,214,198,0.12);
+      --mint-16: rgba(53,214,198,0.16); --mint-24: rgba(53,214,198,0.24);
+      --mint-32: rgba(53,214,198,0.32); --mint-48: rgba(53,214,198,0.48);
+      --mint-56: rgba(53,214,198,0.56);
+      --teal-04: rgba(0,182,173,0.04);
+      --teal-08: rgba(0,182,173,0.08); --teal-12: rgba(0,182,173,0.12);
+      --teal-16: rgba(0,182,173,0.16); --teal-24: rgba(0,182,173,0.24);
+      --teal-32: rgba(0,182,173,0.32); --teal-48: rgba(0,182,173,0.48);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: 'Lora', Georgia, serif;
+      --fs-nano: 11px; --fs-micro: 13px; --fs-body: 15px; --fs-lead: 17px;
+      --fs-h3: clamp(20px, 2.5vw, 26px); --fs-h2: clamp(28px, 4vw, 44px);
+      --ease-out-cubic: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-spring:    cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-in-out:    cubic-bezier(0.45, 0, 0.55, 1);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans); font-weight: 400; line-height: 1.6;
+      color: var(--text-on-light); background: var(--off-white);
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ============================================================ */
+    /* Preview chrome                                                */
+    /* ============================================================ */
+    .preview-bar {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 10px 20px; background: var(--navy-deep);
+      border-bottom: 1px solid rgba(53,214,198,0.18);
+      font: 500 12.5px/1 var(--font-sans); color: var(--text-on-dark-muted);
+    }
+    .preview-bar a { color: var(--mint); text-decoration: none; }
+    .preview-bar a:hover { text-decoration: underline; }
+    .preview-bar__title { color: var(--text-on-dark); font-weight: 600; }
+    .preview-bar__phase {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      background: var(--gold); color: var(--navy-deep);
+      font-size: 11px; font-weight: 700; margin-left: 6px;
+    }
+    .preview-bar__actions { display: flex; gap: 8px; }
+    .preview-bar button {
+      font: 500 12px/1 var(--font-sans); color: var(--navy-deep);
+      background: var(--mint); border: 0; border-radius: 6px;
+      padding: 8px 14px; cursor: pointer;
+      transition: background 200ms ease;
+    }
+    .preview-bar button:hover { background: var(--teal); color: var(--white); }
+    .preview-bar button.is-secondary {
+      background: transparent; color: var(--text-on-dark-muted);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .preview-bar button.is-secondary:hover { color: var(--mint); border-color: var(--mint); }
+
+    /* ============================================================ */
+    /* Section                                                       */
+    /* ============================================================ */
+    .engine { background: var(--off-white); padding: clamp(40px, 6vw, 72px) 0; }
+    .engine__inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .engine__intro { text-align: center; margin-bottom: 36px; }
+    .engine__intro-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      margin-bottom: 14px;
+    }
+    .engine__intro-title {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3.4vw, 40px);
+      font-weight: 500; line-height: 1.1; letter-spacing: -0.015em;
+      color: var(--navy);
+    }
+    .engine__intro-title em { font-style: italic; color: var(--teal); }
+
+    /* ============================================================ */
+    /* Pair card — the subtle box that contains everything           */
+    /* ============================================================ */
+    .case-card {
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 18px;
+      padding: clamp(24px, 3.2vw, 40px);
+      margin-bottom: 56px;
+      box-shadow: var(--shadow-card);
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 540ms var(--ease-out-cubic),
+                  transform 540ms var(--ease-out-cubic);
+    }
+    .case-card.is-revealed { opacity: 1; transform: none; }
+    .case-card:last-of-type { margin-bottom: 32px; }
+
+    .case-card__head { text-align: center; margin-bottom: 28px; }
+    .case-card__head h3 {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: 500; line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--navy);
+    }
+    .case-card__head-sub {
+      font-family: var(--font-serif);
+      font-size: var(--fs-body);
+      font-style: italic;
+      color: var(--text-on-light-muted);
+      margin-top: 8px;
+    }
+
+    /* ============================================================ */
+    /* Engine trail — top of card, full width                        */
+    /* Holds 6 factor cells + mascot below + terminal caption        */
+    /* ============================================================ */
+    .trail {
+      position: relative;
+      background: var(--off-white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 14px;
+      padding: 32px 22px 80px;
+      margin-bottom: 18px;
+      overflow: visible;
+    }
+    .trail__row {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 0 8px;
+    }
+    .trail__row::before {
+      content: '';
+      position: absolute;
+      left: 36px; right: 36px;
+      top: 50%; height: 2px;
+      background: var(--border-on-light-strong);
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+
+    /* Factor cell — one node on the trail */
+    .factor {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width: 60px; height: 60px;
+      background: var(--white);
+      border: 1.8px solid var(--border-on-light-strong);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,45,86,0.06);
+      flex-shrink: 0;
+      transition: background 360ms var(--ease-spring),
+                  border-color 360ms var(--ease-spring),
+                  box-shadow 360ms var(--ease-spring),
+                  transform 420ms var(--ease-spring);
+    }
+    .factor svg {
+      width: 22px; height: 22px;
+      stroke: var(--text-on-light-muted);
+      fill: none; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 280ms ease;
+    }
+    .factor__label {
+      position: absolute;
+      top: calc(100% + 8px); left: 50%;
+      transform: translateX(-50%);
+      font-size: 9.5px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      white-space: nowrap;
+      transition: color 280ms ease;
+    }
+    .factor__readout {
+      position: absolute;
+      top: calc(100% + 24px); left: 50%;
+      transform: translate(-50%, -4px);
+      font-size: 12px; font-weight: 700;
+      color: var(--navy);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.1px;
+      opacity: 0;
+      transition: opacity 240ms var(--ease-out-cubic),
+                  transform 360ms var(--ease-spring);
+    }
+
+    /* Active = Finwy is here, reading this factor */
+    .factor.is-active {
+      background: var(--mint-08);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 5px var(--mint-16),
+                  0 6px 18px rgba(53,214,198,0.20);
+      transform: scale(1.18);
+    }
+    .factor.is-active svg { stroke: var(--mint); }
+    .factor.is-active .factor__label { color: var(--navy); font-weight: 800; }
+    .factor.is-active .factor__readout { opacity: 1; transform: translate(-50%, 0); }
+
+    /* Considered = Finwy has passed; data stays as evidence */
+    .factor.is-considered {
+      border-color: var(--mint-32);
+    }
+    .factor.is-considered svg { stroke: var(--mint); }
+    .factor.is-considered .factor__readout { opacity: 1; transform: translate(-50%, 0); color: var(--navy); }
+    .factor.is-considered::after {
+      content: '\2713';
+      position: absolute;
+      top: -5px; right: -5px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--mint); color: var(--white);
+      font-size: 11px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,45,86,0.18);
+      animation: tickPop 420ms var(--ease-overshoot);
+    }
+    @keyframes tickPop {
+      0%   { opacity: 0; transform: scale(0.4); }
+      60%  { transform: scale(1.18); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Decisive — held longer, brighter, star instead of tick */
+    .factor.is-decisive-hold {
+      background: var(--mint-12);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 8px var(--mint-24),
+                  0 0 0 18px var(--mint-08),
+                  0 8px 24px rgba(53,214,198,0.32);
+      transform: scale(1.28);
+      transition: background 480ms var(--ease-spring),
+                  border-color 480ms var(--ease-spring),
+                  box-shadow 480ms var(--ease-spring),
+                  transform 540ms var(--ease-spring);
+    }
+    .factor.is-decisive-hold svg { stroke: var(--mint); }
+    .factor.is-decisive-hold .factor__readout {
+      opacity: 1; transform: translate(-50%, 0);
+      font-weight: 800; color: var(--navy);
+    }
+    .factor.is-decisive {
+      background: var(--mint);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 6px var(--mint-32),
+                  0 6px 22px rgba(53,214,198,0.32);
+      transform: scale(1.16);
+    }
+    .factor.is-decisive svg { stroke: var(--white); }
+    .factor.is-decisive .factor__label { color: var(--mint); font-weight: 800; }
+    .factor.is-decisive .factor__readout { opacity: 1; transform: translate(-50%, 0); color: var(--navy); font-weight: 800; }
+    .factor.is-decisive::after {
+      content: '\2605';
+      position: absolute;
+      top: -7px; right: -7px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--gold); color: var(--navy-deep);
+      font-size: 11px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(245,194,107,0.5);
+      animation: tickPop 460ms var(--ease-overshoot);
+    }
+    /* Handoff: glow extrudes downward from decisive factor */
+    .factor.is-handing-off::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 100%;
+      width: 3px; height: 0;
+      background: linear-gradient(to bottom,
+        var(--mint) 0%,
+        var(--mint-32) 50%,
+        transparent 100%);
+      transform: translateX(-50%);
+      opacity: 0.85;
+      pointer-events: none;
+      animation: handoffStream 720ms var(--ease-spring) forwards;
+    }
+    @keyframes handoffStream {
+      0%   { height: 0;   opacity: 0; }
+      30%  { opacity: 1; }
+      100% { height: 220px; opacity: 0; }
+    }
+
+    /* Mascot — the thinker */
+    .trail__mascot {
+      position: absolute;
+      left: 0;
+      top: calc(50% + 22px);
+      width: 64px; height: 64px;
+      transition: transform 540ms var(--ease-spring),
+                  opacity 320ms var(--ease-out-cubic),
+                  width 540ms var(--ease-spring),
+                  height 540ms var(--ease-spring),
+                  top 540ms var(--ease-spring);
+      opacity: 0;
+      z-index: 4;
+      pointer-events: none;
+      will-change: transform;
+    }
+    .trail__mascot img {
+      width: 100%; height: 100%;
+      filter: drop-shadow(0 6px 14px rgba(0,45,86,0.18));
+      transform-origin: bottom center;
+      animation: mascotBreathe 3200ms ease-in-out infinite;
+    }
+    @keyframes mascotBreathe {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.018); }
+    }
+    .case-card.is-revealed .trail__mascot { opacity: 1; }
+
+    /* Per-step lean + arc */
+    .trail__mascot.is-stepping img {
+      animation: mascotStep 540ms var(--ease-spring),
+                 mascotBreathe 3200ms ease-in-out infinite 540ms;
+    }
+    @keyframes mascotStep {
+      0%   { transform: translateY(0)    rotate(0deg)  scale(1); }
+      24%  { transform: translateY(-3px) rotate(-2deg) scale(0.97); }
+      48%  { transform: translateY(-9px) rotate(0deg)  scale(1.04); }
+      72%  { transform: translateY(-3px) rotate(3deg)  scale(1.0); }
+      100% { transform: translateY(0)    rotate(0deg)  scale(1); }
+    }
+
+    /* Lean-in when arrived at a factor */
+    .trail__mascot.is-leaning img {
+      animation: mascotLean 600ms var(--ease-spring) forwards;
+    }
+    @keyframes mascotLean {
+      0%   { transform: rotate(0deg) translateY(0); }
+      40%  { transform: rotate(5deg) translateY(-2px); }
+      75%  { transform: rotate(2deg) translateY(0); }
+      100% { transform: rotate(2deg) translateY(0); }
+    }
+
+    /* Mascot dock — small, peeks just above the top-right edge of the trail.
+       This keeps it out of any factor's space (especially PRIORITIES, which can
+       carry both a decisive ★ and a long readout in pair 3). */
+    .trail__mascot.is-docked {
+      width: 32px; height: 32px;
+      top: -18px;
+      right: 14px;
+      left: auto;
+      bottom: auto;
+    }
+
+    /* Halo on mascot — accumulates as it considers more factors */
+    .trail__mascot::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--mint-12) 0%, transparent 65%);
+      opacity: 0;
+      transition: opacity 600ms var(--ease-spring), inset 600ms var(--ease-spring);
+      pointer-events: none;
+    }
+    .trail__mascot[data-loaded="1"]::after { opacity: 0.5; }
+    .trail__mascot[data-loaded="2"]::after { opacity: 0.7; }
+    .trail__mascot[data-loaded="3"]::after { opacity: 0.85; inset: -10px; }
+    .trail__mascot[data-loaded="4"]::after { opacity: 1.0; inset: -12px; }
+    .trail__mascot[data-loaded="5"]::after { opacity: 1.0; inset: -14px;
+      background: radial-gradient(circle, var(--mint-24) 0%, transparent 65%); }
+    .trail__mascot[data-loaded="6"]::after { opacity: 1.0; inset: -16px;
+      background: radial-gradient(circle, var(--mint-32) 0%, transparent 65%); }
+    .trail__mascot.is-docked::after { opacity: 0.4 !important; inset: -4px !important; }
+
+    /* Terminal caption beneath the trail */
+    .trail__caption {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 18px;
+      text-align: center;
+      font-size: var(--fs-micro);
+      font-weight: 600;
+      font-style: italic;
+      color: var(--navy);
+      max-width: 36ch;
+      margin: 0 auto;
+      line-height: 1.4;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 320ms var(--ease-out-cubic),
+                  transform 320ms var(--ease-out-cubic);
+    }
+    .trail__caption.is-shown { opacity: 1; transform: none; }
+
+    /* ============================================================ */
+    /* Lanes — one per person, color-tinted, input ↔ verdict         */
+    /* ============================================================ */
+    .lane {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      border: 1px solid;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      position: relative;
+      transition: box-shadow 360ms var(--ease-spring);
+    }
+    .lane:last-child { margin-bottom: 0; }
+    .lane--mint {
+      background: var(--mint-04);
+      border-color: var(--mint-32);
+    }
+    .lane--teal {
+      background: var(--teal-04);
+      border-color: var(--teal-32);
+    }
+    .lane.is-receiving { box-shadow: 0 0 0 4px var(--mint-24), 0 8px 26px rgba(53,214,198,0.18); }
+    .lane--teal.is-receiving { box-shadow: 0 0 0 4px var(--teal-24), 0 8px 26px rgba(0,182,173,0.18); }
+
+    /* Input side */
+    .lane__input {
+      padding: 22px 24px;
+      border-right: 1px solid;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .lane--mint .lane__input { border-right-color: var(--mint-24); }
+    .lane--teal .lane__input { border-right-color: var(--teal-24); }
+
+    .input__name { font-size: var(--fs-body); font-weight: 700; color: var(--navy); letter-spacing: -0.1px; }
+    .input__meta {
+      font-size: var(--fs-nano); color: var(--text-on-light-muted);
+      letter-spacing: 0.04em; margin-bottom: 6px;
+    }
+    .input-stats {
+      display: flex;
+      gap: 28px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .input-stats--single { display: block; }
+    .input-stat__num {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: clamp(28px, 3.2vw, 38px);
+      font-weight: 800;
+      line-height: 0.95; letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+      color: var(--mint);
+    }
+    .lane--teal .input-stat__num { color: var(--teal); }
+    .input-stat__num--loss { color: var(--rose) !important; }
+    .input-stat__num small {
+      font-size: 0.42em; font-weight: 700;
+      color: var(--navy);
+      vertical-align: 0.2em; margin-left: 0.04em;
+    }
+    .input-stat__num .strike {
+      position: relative; display: inline-block;
+      color: var(--rose);
+      font-size: 0.66em; font-weight: 700;
+      margin-right: 8px; vertical-align: 0.18em;
+    }
+    .input-stat__num .strike::after {
+      content: '';
+      position: absolute; left: -3%; right: -3%; top: 52%;
+      height: 3px; background: var(--rose); border-radius: 2px;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 750ms var(--ease-out-cubic);
+    }
+    .case-card.is-revealed .input-stat__num .strike::after {
+      transform: scaleX(1); transition-delay: 1500ms;
+    }
+    .input-stat__label {
+      font-size: var(--fs-micro); font-weight: 600;
+      color: var(--text-on-light); letter-spacing: 0;
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+    .input__rating {
+      font-size: var(--fs-micro); color: var(--text-on-light-muted);
+      font-weight: 500; margin-top: 8px;
+    }
+    .lane--mint .input__rating-key { color: var(--mint); font-weight: 700; }
+    .lane--teal .input__rating-key { color: var(--teal); font-weight: 700; }
+    .input__trigger {
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      margin-top: 10px; padding-top: 10px;
+      border-top: 1px dashed var(--border-on-light);
+      line-height: 1.4;
+    }
+
+    /* Verdict side */
+    .lane__verdict {
+      padding: 22px 24px;
+      display: flex; flex-direction: column; gap: 8px;
+      justify-content: center;
+      position: relative;
+    }
+    .lane--mint .lane__verdict { background: linear-gradient(180deg, transparent 0%, var(--mint-08) 100%); }
+    .lane--teal .lane__verdict { background: linear-gradient(180deg, transparent 0%, var(--teal-08) 100%); }
+
+    .verdict__attr {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: var(--fs-nano); font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 320ms var(--ease-out-cubic),
+                  transform 320ms var(--ease-out-cubic);
+    }
+    .lane--teal .verdict__attr { color: var(--navy); }
+    .verdict__avatar {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid var(--mint);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800;
+      color: var(--mint);
+    }
+    .lane--teal .verdict__avatar { color: var(--teal); border-color: var(--teal); }
+    .verdict__verb {
+      font-family: var(--font-sans);
+      font-size: clamp(28px, 3.6vw, 40px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--navy);
+      margin: 4px 0 6px;
+      opacity: 0; transform: scale(0.94);
+      transition: opacity 540ms var(--ease-overshoot),
+                  transform 720ms var(--ease-overshoot);
+    }
+    .lane--mint .verdict__verb { color: var(--navy-deep); }
+    .lane--teal .verdict__verb { color: var(--navy-deep); }
+    .verdict__line {
+      font-size: var(--fs-body); font-weight: 600;
+      line-height: 1.4; letter-spacing: -0.05px;
+      color: var(--text-on-light);
+      opacity: 0; transform: translateY(6px);
+      transition: opacity 420ms var(--ease-out-cubic),
+                  transform 420ms var(--ease-out-cubic);
+    }
+
+    .lane.is-revealed .verdict__attr { opacity: 1; transform: none; }
+    .lane.is-revealed .verdict__verb { opacity: 1; transform: scale(1); }
+    .lane.is-revealed .verdict__line { opacity: 1; transform: none; }
+    .lane.is-revealed .verdict__attr  { transition-delay: 80ms; }
+    .lane.is-revealed .verdict__verb  { transition-delay: 0ms; }
+    .lane.is-revealed .verdict__line  { transition-delay: 280ms; }
+
+    /* Empty verdict placeholder before reveal */
+    .lane:not(.is-revealed) .lane__verdict::before {
+      content: '';
+      position: absolute;
+      inset: 22px 24px;
+      border: 1px dashed var(--border-on-light-strong);
+      border-radius: 10px;
+      opacity: 0.4;
+    }
+
+    /* Credibility line below lanes */
+    .case-card__credibility {
+      text-align: center;
+      font-size: var(--fs-micro); font-style: italic;
+      color: var(--text-on-light-muted);
+      margin: 22px auto 0; max-width: 540px;
+      opacity: 0;
+      transition: opacity 400ms var(--ease-out-cubic);
+    }
+    .case-card.is-finished .case-card__credibility { opacity: 1; }
+    .case-card__credibility strong { color: var(--navy); font-style: normal; font-weight: 700; }
+
+    /* ============================================================ */
+    /* Prediction line                                               */
+    /* ============================================================ */
+    .prediction {
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-style: italic; color: var(--navy);
+      line-height: 1.4; max-width: 580px;
+      margin: 56px auto;
+      padding: 28px 24px;
+      border-top: 1px dashed var(--border-on-light-strong);
+      border-bottom: 1px dashed var(--border-on-light-strong);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 500ms var(--ease-out-cubic),
+                  transform 500ms var(--ease-out-cubic);
+    }
+    .prediction.is-shown { opacity: 1; transform: none; }
+    .prediction::before {
+      content: '►';
+      display: inline-block; margin-right: 8px;
+      color: var(--mint); font-style: normal; font-size: 0.7em;
+      transform: translateY(-2px);
+    }
+    .prediction strong {
+      color: var(--mint); font-weight: 600; font-style: normal;
+      text-decoration: underline; text-decoration-color: var(--mint-32);
+      text-underline-offset: 4px; text-decoration-thickness: 1.5px;
+    }
+
+    /* ============================================================ */
+    /* Closer                                                        */
+    /* ============================================================ */
+    .engine__close {
+      margin-top: 88px; text-align: center;
+      display: flex; flex-direction: column; gap: 14px; align-items: center;
+    }
+    .engine__close-mascot {
+      width: 96px; height: 96px;
+      filter: drop-shadow(0 6px 16px rgba(0,45,86,0.12));
+      transform-origin: bottom center;
+      margin-bottom: 8px;
+    }
+    .engine__close-mascot.is-waving {
+      animation: mascotWave 1500ms cubic-bezier(0.36, 0, 0.18, 1);
+    }
+    @keyframes mascotWave {
+      0%   { transform: rotate(0deg) scale(1); }
+      18%  { transform: rotate(-7deg) scale(1.06); }
+      36%  { transform: rotate(8deg) scale(1.06); }
+      54%  { transform: rotate(-5deg) scale(1.04); }
+      72%  { transform: rotate(5deg) scale(1.02); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    .engine__close-line {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.8vw, 32px);
+      font-weight: 500; color: var(--navy);
+      max-width: 760px; line-height: 1.3;
+      letter-spacing: -0.012em;
+    }
+    .engine__close-finwy {
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 600; font-style: italic;
+      color: var(--teal); line-height: 1.3;
+      margin-top: 4px;
+    }
+    .engine__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font: 700 16px/1 var(--font-sans);
+      padding: 16px 30px; border-radius: 10px;
+      background: var(--mint); color: var(--navy-deep);
+      text-decoration: none;
+      margin-top: 14px;
+      transition: background 200ms, transform 200ms, box-shadow 200ms;
+      box-shadow: 0 4px 14px rgba(53,214,198,0.28);
+    }
+    .engine__cta:hover {
+      background: var(--teal); color: var(--white);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0,182,173,0.32);
+    }
+    .engine__footnote {
+      margin: 32px auto 0; text-align: center;
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      max-width: 720px; line-height: 1.55;
+    }
+
+    /* ============================================================ */
+    /* Mobile                                                        */
+    /* ============================================================ */
+    @media (max-width: 880px) {
+      .lane { grid-template-columns: 1fr; }
+      .lane__input { border-right: 0; border-bottom: 1px solid; }
+      .lane--mint .lane__input { border-bottom-color: var(--mint-24); }
+      .lane--teal .lane__input { border-bottom-color: var(--teal-24); }
+      .factor { width: 48px; height: 48px; }
+      .factor svg { width: 17px; height: 17px; }
+      .factor__label { font-size: 8px; }
+      .factor__readout { font-size: 11px; top: calc(100% + 22px); }
+      .trail { padding: 22px 12px 84px; }
+      .trail__row { padding: 0; gap: 4px; }
+      .trail__row::before { left: 24px; right: 24px; }
+      .trail__mascot { width: 50px; height: 50px; top: calc(50% + 18px); }
+      .trail__mascot.is-docked { width: 36px; height: 36px; top: 12px; }
+      .case-card__head h3 { font-size: clamp(20px, 5vw, 24px); }
+      .input-stats { gap: 18px; }
+      .input-stat__num { font-size: clamp(24px, 7vw, 32px); }
+      .verdict__verb { font-size: clamp(24px, 7vw, 32px); }
+    }
+
+    body.is-mobile-preview main {
+      max-width: 420px; margin: 24px auto;
+      border: 1px solid var(--border-on-light);
+      border-radius: 24px; background: var(--off-white);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,45,86,0.12);
+    }
+    body.is-mobile-preview .engine__inner { padding: 0 16px; }
+    body.is-mobile-preview .lane { grid-template-columns: 1fr; }
+    body.is-mobile-preview .lane__input { border-right: 0; border-bottom: 1px solid; }
+    body.is-mobile-preview .lane--mint .lane__input { border-bottom-color: var(--mint-24); }
+    body.is-mobile-preview .lane--teal .lane__input { border-bottom-color: var(--teal-24); }
+    body.is-mobile-preview .factor { width: 44px; height: 44px; }
+    body.is-mobile-preview .factor svg { width: 16px; height: 16px; }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .case-card, .lane, .factor, .trail__mascot, .trail__caption,
+      .verdict__attr, .verdict__verb, .verdict__line,
+      .input-stat__num .strike::after, .prediction, .engine__close-mascot {
+        transition: none !important; animation: none !important;
+        transform: none !important; opacity: 1 !important;
+      }
+      .case-card.is-revealed .input-stat__num .strike::after { transform: scaleX(1) !important; }
+      .trail__mascot img { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-bar">
+    <div>&larr; <a href="cases-preview-v7.html">v7</a> &middot; <a href="cases-preview-v6.html">v6</a> &middot; <a href="cases-changelog.md">log</a></div>
+    <div class="preview-bar__title">
+      §7 v8 &middot; The Engine
+      <span class="preview-bar__phase">Finwy thinks</span>
+    </div>
+    <div class="preview-bar__actions">
+      <button id="replayBtn">&#8634; Replay</button>
+      <button id="showAllBtn" class="is-secondary">Show all</button>
+      <button id="mobileBtn" class="is-secondary">View mobile</button>
+    </div>
+  </div>
+
+  <main>
+    <section class="engine" aria-labelledby="engine-heading">
+      <div class="engine__inner">
+
+        <div class="engine__intro">
+          <p class="engine__intro-eyebrow">Watch how Finwy reasons</p>
+          <h2 id="engine-heading" class="engine__intro-title">
+            Two of you. <em>Two answers.</em>
+          </h2>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 1 — SAME SURPLUS, OPPOSITE PORTFOLIOS                        -->
+        <!-- ============================================================ -->
+        <article class="case-card" id="pair-portfolios" data-pair="portfolios" data-pace="slow"
+                 data-decisive="4" aria-labelledby="pair-portfolios-tagline">
+          <p class="visually-hidden">Both 35-year-olds with 52,000 surplus. Riya has 83 percent in equity in a 46-lakh portfolio. Aman has zero, with 6 lakh sitting in fixed deposit. Risk is the decisive factor. Riya is told to stop adding equity. Aman to start.</p>
+
+          <header class="case-card__head">
+            <h3 id="pair-portfolios-tagline">Same surplus. Opposite portfolios.</h3>
+            <p class="case-card__head-sub">Both 35. Both earn &#8377;52,000 surplus a month.</p>
+          </header>
+
+          <div class="trail" role="img" aria-label="Finwy considering six factors: age, goals, surplus, portfolio, risk, priorities">
+            <div class="trail__row" aria-hidden="true">
+              <div class="factor" data-pos="0">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span class="factor__label">Age</span>
+                <span class="factor__readout">35 yrs</span>
+              </div>
+              <div class="factor" data-pos="1">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+                <span class="factor__label">Goals</span>
+                <span class="factor__readout">retirement &middot; 25y</span>
+              </div>
+              <div class="factor" data-pos="2">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg>
+                <span class="factor__label">Surplus</span>
+                <span class="factor__readout">&#8377;52K/mo</span>
+              </div>
+              <div class="factor" data-pos="3">
+                <svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg>
+                <span class="factor__label">Portfolio</span>
+                <span class="factor__readout">&#8377;46L vs &#8377;6L</span>
+              </div>
+              <div class="factor" data-pos="4">
+                <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg>
+                <span class="factor__label">Risk</span>
+                <span class="factor__readout">83% vs 0% equity</span>
+              </div>
+              <div class="factor" data-pos="5">
+                <svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg>
+                <span class="factor__label">Priorities</span>
+                <span class="factor__readout">comparable</span>
+              </div>
+            </div>
+            <div class="trail__mascot" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+            <p class="trail__caption" aria-live="polite">Risk decided.</p>
+          </div>
+
+          <div class="lane lane--mint" data-i="0">
+            <div class="lane__input">
+              <p class="input__name">Riya M.</p>
+              <p class="input__meta">35 &middot; BENGALURU &middot; SOFTWARE ENG.</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">83<small>%</small></span>
+                  <span class="input-stat__label">in equity</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;46L</span>
+                  <span class="input-stat__label">portfolio</span>
+                </div>
+              </div>
+              <p class="input__rating">Self-rated <span class="input__rating-key">Conservative</span></p>
+              <p class="input__trigger">Opened Finwy after a colleague&rsquo;s heart attack at 38.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">R</span> Riya</p>
+              <p class="verdict__verb">STOP</p>
+              <p class="verdict__line">Stop adding equity. Buy term. Build liquidity.</p>
+            </div>
+          </div>
+
+          <div class="lane lane--teal" data-i="1">
+            <div class="lane__input">
+              <p class="input__name">Aman K.</p>
+              <p class="input__meta">35 &middot; PUNE &middot; SALES LEAD</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">0<small>%</small></span>
+                  <span class="input-stat__label">in equity</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;6L</span>
+                  <span class="input-stat__label">all in FD</span>
+                </div>
+              </div>
+              <p class="input__rating">Self-rated <span class="input__rating-key">Aggressive</span></p>
+              <p class="input__trigger">Opened Finwy after his crypto-friend&rsquo;s third disaster.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">A</span> Aman</p>
+              <p class="verdict__verb">START</p>
+              <p class="verdict__line">Start equity. Today. Skip the side bets.</p>
+            </div>
+          </div>
+
+          <p class="case-card__credibility"><strong>This is six.</strong> The app reads thirty-plus.</p>
+        </article>
+
+        <!-- ============================================================ -->
+        <!-- 2 — SAME PORTFOLIO, DIFFERENT GOALS                          -->
+        <!-- ============================================================ -->
+        <article class="case-card" id="pair-goals" data-pair="goals" data-pace="medium"
+                 data-decisive="1" aria-labelledby="pair-goals-tagline">
+          <p class="visually-hidden">Both 35, identical 25-lakh portfolio at 60 percent equity. Arjun's primary goal is buying a flat in 5 years. Suresh's is his daughter's college in 12 years. Goals is decisive. Arjun shifts to a balanced fund. Suresh holds steady at 60 percent equity.</p>
+
+          <header class="case-card__head">
+            <h3 id="pair-goals-tagline">Same portfolio. Different goals.</h3>
+            <p class="case-card__head-sub">Both 35. Both have an identical &#8377;25L portfolio: 60% equity, 30% debt, 10% cash.</p>
+          </header>
+
+          <div class="trail" role="img" aria-label="Finwy considering six factors">
+            <div class="trail__row" aria-hidden="true">
+              <div class="factor" data-pos="0">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span class="factor__label">Age</span>
+                <span class="factor__readout">35 yrs</span>
+              </div>
+              <div class="factor" data-pos="1">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+                <span class="factor__label">Goals</span>
+                <span class="factor__readout">5y vs 12y</span>
+              </div>
+              <div class="factor" data-pos="2">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg>
+                <span class="factor__label">Surplus</span>
+                <span class="factor__readout">comparable</span>
+              </div>
+              <div class="factor" data-pos="3">
+                <svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg>
+                <span class="factor__label">Portfolio</span>
+                <span class="factor__readout">&#8377;25L &middot; identical</span>
+              </div>
+              <div class="factor" data-pos="4">
+                <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg>
+                <span class="factor__label">Risk</span>
+                <span class="factor__readout">moderate</span>
+              </div>
+              <div class="factor" data-pos="5">
+                <svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg>
+                <span class="factor__label">Priorities</span>
+                <span class="factor__readout">self &middot; family</span>
+              </div>
+            </div>
+            <div class="trail__mascot" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+            <p class="trail__caption" aria-live="polite">Goals decided.</p>
+          </div>
+
+          <div class="lane lane--mint" data-i="0">
+            <div class="lane__input">
+              <p class="input__name">Arjun S.</p>
+              <p class="input__meta">35 &middot; HYDERABAD &middot; PRODUCT MGR.</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">5<small>y</small></span>
+                  <span class="input-stat__label">Own flat</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;50L</span>
+                  <span class="input-stat__label">primary goal</span>
+                </div>
+              </div>
+              <p class="input__rating">Time horizon <span class="input__rating-key">short &middot; near-term</span></p>
+              <p class="input__trigger">Opened Finwy after a builder&rsquo;s sales-pitch dinner.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">A</span> Arjun</p>
+              <p class="verdict__verb">SHIFT</p>
+              <p class="verdict__line">Move 40% to balanced fund. 5 years can&rsquo;t survive a 25% drop.</p>
+            </div>
+          </div>
+
+          <div class="lane lane--teal" data-i="1">
+            <div class="lane__input">
+              <p class="input__name">Suresh R.</p>
+              <p class="input__meta">35 &middot; MUMBAI &middot; TECH LEAD</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">12<small>y</small></span>
+                  <span class="input-stat__label">Child&rsquo;s education</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;50L</span>
+                  <span class="input-stat__label">primary goal</span>
+                </div>
+              </div>
+              <p class="input__rating">Time horizon <span class="input__rating-key">long &middot; multi-cycle</span></p>
+              <p class="input__trigger">Opened Finwy on his daughter&rsquo;s 4th birthday.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">S</span> Suresh</p>
+              <p class="verdict__verb">HOLD</p>
+              <p class="verdict__line">Stay 60% equity. 12 years rewards the volatility.</p>
+            </div>
+          </div>
+        </article>
+
+        <p class="prediction" id="prediction-beat" role="note">
+          Now meet two &#8377;1.6L payslips. <strong>Predict the divergence?</strong>
+        </p>
+
+        <!-- ============================================================ -->
+        <!-- 3 — SAME INCOME, DIFFERENT EXPENSES                          -->
+        <!-- ============================================================ -->
+        <article class="case-card" id="pair-expenses" data-pair="expenses" data-pace="fast"
+                 data-decisive="5" aria-labelledby="pair-expenses-tagline">
+          <p class="visually-hidden">Both 35-year-old senior engineers in Pune earning 1.6 lakh. Vivek has 65,000 real surplus. Karan has 30,000 because 35,000 goes to dialysis. Priorities is decisive. Vivek eases. Karan protects family first.</p>
+
+          <header class="case-card__head">
+            <h3 id="pair-expenses-tagline">Same income. Different expenses.</h3>
+            <p class="case-card__head-sub">Both 35. Both senior engineers in Pune. Both bring home &#8377;1,60,000.</p>
+          </header>
+
+          <div class="trail" role="img" aria-label="Finwy considering six factors">
+            <div class="trail__row" aria-hidden="true">
+              <div class="factor" data-pos="0">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span class="factor__label">Age</span>
+                <span class="factor__readout">35 yrs</span>
+              </div>
+              <div class="factor" data-pos="1">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+                <span class="factor__label">Goals</span>
+                <span class="factor__readout">comparable</span>
+              </div>
+              <div class="factor" data-pos="2">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg>
+                <span class="factor__label">Surplus</span>
+                <span class="factor__readout">&#8377;65K vs &#8377;30K</span>
+              </div>
+              <div class="factor" data-pos="3">
+                <svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg>
+                <span class="factor__label">Portfolio</span>
+                <span class="factor__readout">comparable</span>
+              </div>
+              <div class="factor" data-pos="4">
+                <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg>
+                <span class="factor__label">Risk</span>
+                <span class="factor__readout">moderate</span>
+              </div>
+              <div class="factor" data-pos="5">
+                <svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg>
+                <span class="factor__label">Priorities</span>
+                <span class="factor__readout">self &middot; family</span>
+              </div>
+            </div>
+            <div class="trail__mascot" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+            <p class="trail__caption" aria-live="polite">Priorities decided.</p>
+          </div>
+
+          <div class="lane lane--mint" data-i="0">
+            <div class="lane__input">
+              <p class="input__name">Vivek N.</p>
+              <p class="input__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+              <div class="input-stats input-stats--single">
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;65K</span>
+                  <span class="input-stat__label">real monthly surplus</span>
+                </div>
+              </div>
+              <p class="input__rating">Parents <span class="input__rating-key">pensioned &middot; healthy</span></p>
+              <p class="input__trigger">Opened Finwy after his daughter&rsquo;s third birthday.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">V</span> Vivek</p>
+              <p class="verdict__verb">EASE</p>
+              <p class="verdict__line">Light touch. Top up health. Fortify emergency.</p>
+            </div>
+          </div>
+
+          <div class="lane lane--teal" data-i="1">
+            <div class="lane__input">
+              <p class="input__name">Karan M.</p>
+              <p class="input__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;30K</span>
+                  <span class="input-stat__label">real surplus</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num input-stat__num--loss">&#8722;&#8377;35K</span>
+                  <span class="input-stat__label">to dialysis</span>
+                </div>
+              </div>
+              <p class="input__rating">Father on <span class="input__rating-key">dialysis 3&times;/week</span></p>
+              <p class="input__trigger">Opened Finwy after his father&rsquo;s second dialysis bill.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">K</span> Karan</p>
+              <p class="verdict__verb">PROTECT</p>
+              <p class="verdict__line">Family first. Retirement second. Order matters.</p>
+            </div>
+          </div>
+        </article>
+
+        <div class="engine__close">
+          <img class="engine__close-mascot" id="closer-mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
+          <p class="engine__close-line">Six 35-year-olds. Six recommendations &mdash; and they keep changing.</p>
+          <p class="engine__close-finwy">Finwy keeps watching.</p>
+          <a class="engine__cta" href="/demo-app">Get yours &rarr;</a>
+        </div>
+
+        <p class="engine__footnote">
+          Illustrative cases. Names changed; details composed.
+          Your data drives your verdict, not these.
+        </p>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Per-pair pacing — slow / medium / fast.
+      // step      = ms Finwy holds at a non-decisive factor
+      // decisive  = ms held at the decisive factor (time bends)
+      // gap       = ms before next step
+      // handoff   = ms for halo extrusion before verdicts reveal
+      var PACE = {
+        portfolios: { step: 360, decisive: 900, gap: 60,  handoff: 520 },
+        goals:      { step: 280, decisive: 720, gap: 50,  handoff: 460 },
+        expenses:   { step: 220, decisive: 600, gap: 40,  handoff: 420 }
+      };
+
+      var revealed = new WeakSet();
+      var timers = [];
+
+      function clearTimers() {
+        timers.forEach(function (t) { clearTimeout(t); });
+        timers = [];
+      }
+
+      function moveMascotTo(card, position) {
+        var mascot  = card.querySelector('.trail__mascot');
+        var factors = card.querySelectorAll('.factor');
+        var trail   = card.querySelector('.trail');
+        if (!mascot || !factors[position] || !trail) return;
+        var trailRect  = trail.getBoundingClientRect();
+        var factorRect = factors[position].getBoundingClientRect();
+        var mascotW    = mascot.offsetWidth || 64;
+        var x = factorRect.left + factorRect.width / 2 - trailRect.left - mascotW / 2;
+        mascot.style.transform = 'translateX(' + x + 'px)';
+      }
+
+      function dockMascot(card) {
+        var mascot = card.querySelector('.trail__mascot');
+        if (!mascot) return;
+        mascot.classList.add('is-docked');
+        // Clear transform — docked position is set by CSS (right: 14px)
+        mascot.style.transform = '';
+      }
+
+      function setMascotLoad(card, loaded) {
+        var mascot = card.querySelector('.trail__mascot');
+        if (mascot) mascot.dataset.loaded = String(Math.min(loaded, 6));
+      }
+
+      function stepMascot(card) {
+        var mascot = card.querySelector('.trail__mascot');
+        if (!mascot) return;
+        mascot.classList.remove('is-stepping');
+        void mascot.offsetWidth; /* restart anim */
+        mascot.classList.add('is-stepping');
+      }
+
+      function leanMascot(card) {
+        var mascot = card.querySelector('.trail__mascot');
+        if (!mascot) return;
+        mascot.classList.remove('is-leaning');
+        void mascot.offsetWidth;
+        mascot.classList.add('is-leaning');
+      }
+
+      function runEngine(card) {
+        var pairKey  = card.dataset.pair;
+        var pace     = PACE[pairKey];
+        var decisive = parseInt(card.dataset.decisive, 10);
+        var factors  = card.querySelectorAll('.factor');
+        var lanes    = card.querySelectorAll('.lane');
+        var caption  = card.querySelector('.trail__caption');
+
+        var t = 700; // initial pause after card reveal — Finwy "thinks first"
+
+        for (var i = 0; i < 6; i++) {
+          (function (idx) {
+            var isDecisive = (idx === decisive);
+            var hold = isDecisive ? pace.decisive : pace.step;
+
+            // arrive
+            timers.push(setTimeout(function () {
+              moveMascotTo(card, idx);
+              stepMascot(card);
+              factors[idx].classList.add(isDecisive ? 'is-decisive-hold' : 'is-active');
+              // Lean-in 200ms after arrival
+              timers.push(setTimeout(function () { leanMascot(card); }, 180));
+            }, t));
+
+            // settle to considered/decisive
+            timers.push(setTimeout(function () {
+              factors[idx].classList.remove('is-active', 'is-decisive-hold');
+              if (isDecisive) {
+                factors[idx].classList.add('is-decisive');
+              } else {
+                factors[idx].classList.add('is-considered');
+              }
+              setMascotLoad(card, idx + 1);
+            }, t + hold));
+          })(i);
+
+          t += (i === decisive ? pace.decisive : pace.step) + pace.gap;
+        }
+
+        // Halo handoff — glow extrudes from decisive factor toward lanes
+        var handoffStart = t;
+        timers.push(setTimeout(function () {
+          factors[decisive].classList.add('is-handing-off');
+        }, handoffStart));
+
+        // Mint lane receives slightly before teal — same beat, micro-stagger
+        timers.push(setTimeout(function () {
+          lanes[0].classList.add('is-receiving', 'is-revealed');
+        }, handoffStart + Math.round(pace.handoff * 0.55)));
+
+        timers.push(setTimeout(function () {
+          lanes[1].classList.add('is-receiving', 'is-revealed');
+        }, handoffStart + Math.round(pace.handoff * 0.55) + 220));
+
+        // Drop the receiving glow once verdicts have settled
+        timers.push(setTimeout(function () {
+          lanes[0].classList.remove('is-receiving');
+          lanes[1].classList.remove('is-receiving');
+        }, handoffStart + pace.handoff + 900));
+
+        // Terminal caption + dock mascot + credibility line
+        var settle = handoffStart + pace.handoff + 240;
+        timers.push(setTimeout(function () {
+          if (caption) caption.classList.add('is-shown');
+        }, settle));
+        timers.push(setTimeout(function () {
+          dockMascot(card);
+          card.classList.add('is-finished');
+        }, settle + 320));
+      }
+
+      function settleFinalState(card) {
+        // Used by Show All and reduced motion
+        var pairKey  = card.dataset.pair;
+        var decisive = parseInt(card.dataset.decisive, 10);
+        var factors  = card.querySelectorAll('.factor');
+        var lanes    = card.querySelectorAll('.lane');
+        var caption  = card.querySelector('.trail__caption');
+
+        factors.forEach(function (f, i) {
+          f.classList.remove('is-active', 'is-decisive-hold', 'is-considered', 'is-decisive', 'is-handing-off');
+          if (i === decisive) f.classList.add('is-decisive');
+          else f.classList.add('is-considered');
+        });
+        lanes.forEach(function (l) { l.classList.add('is-revealed'); });
+        if (caption) caption.classList.add('is-shown');
+        setMascotLoad(card, 6);
+        card.classList.add('is-finished');
+        requestAnimationFrame(function () { dockMascot(card); });
+      }
+
+      function reveal(card) {
+        if (revealed.has(card)) return;
+        revealed.add(card);
+        card.classList.add('is-revealed');
+
+        if (reduce) {
+          settleFinalState(card);
+          return;
+        }
+        // Park mascot at first factor before journey starts
+        requestAnimationFrame(function () {
+          moveMascotTo(card, 0);
+          timers.push(setTimeout(function () { runEngine(card); }, 100));
+        });
+      }
+
+      var cards = document.querySelectorAll('.case-card');
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) reveal(e.target); });
+        }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+        cards.forEach(function (c) { io.observe(c); });
+      } else {
+        cards.forEach(reveal);
+      }
+
+      var prediction = document.getElementById('prediction-beat');
+      if (prediction && 'IntersectionObserver' in window) {
+        var pIO = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { prediction.classList.add('is-shown'); obs.disconnect(); }
+          });
+        }, { threshold: 0.6 });
+        pIO.observe(prediction);
+      } else if (prediction) {
+        prediction.classList.add('is-shown');
+      }
+
+      var closerMascot = document.getElementById('closer-mascot');
+      if (closerMascot && !reduce && 'IntersectionObserver' in window) {
+        var mIO = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { closerMascot.classList.add('is-waving'); obs.disconnect(); }
+          });
+        }, { threshold: 0.6 });
+        mIO.observe(closerMascot);
+      }
+
+      // Reposition mascots on resize so they stay aligned with their factor
+      window.addEventListener('resize', function () {
+        cards.forEach(function (c) {
+          if (!revealed.has(c)) return;
+          var mascot = c.querySelector('.trail__mascot');
+          if (mascot && mascot.classList.contains('is-docked')) {
+            dockMascot(c);
+          }
+        });
+      });
+
+      // Buttons
+      var replay = document.getElementById('replayBtn');
+      if (replay) {
+        replay.addEventListener('click', function () {
+          clearTimers();
+          cards.forEach(function (c) {
+            c.classList.remove('is-revealed', 'is-finished');
+            c.querySelectorAll('.factor').forEach(function (f) {
+              f.classList.remove('is-active', 'is-decisive-hold', 'is-considered', 'is-decisive', 'is-handing-off');
+            });
+            c.querySelectorAll('.lane').forEach(function (l) {
+              l.classList.remove('is-revealed', 'is-receiving');
+            });
+            var m = c.querySelector('.trail__mascot');
+            if (m) {
+              m.classList.remove('is-stepping', 'is-leaning', 'is-docked');
+              m.style.transform = 'translateX(0)';
+              m.dataset.loaded = '0';
+            }
+            var cap = c.querySelector('.trail__caption');
+            if (cap) cap.classList.remove('is-shown');
+            revealed.delete(c);
+          });
+          if (prediction) prediction.classList.remove('is-shown');
+          if (closerMascot) closerMascot.classList.remove('is-waving');
+          requestAnimationFrame(function () {
+            cards.forEach(function (c) {
+              var rect = c.getBoundingClientRect();
+              if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) reveal(c);
+            });
+          });
+        });
+      }
+
+      var showAllBtn = document.getElementById('showAllBtn');
+      if (showAllBtn) {
+        showAllBtn.addEventListener('click', function () {
+          clearTimers();
+          cards.forEach(function (c) {
+            c.classList.add('is-revealed');
+            revealed.add(c);
+            settleFinalState(c);
+          });
+          if (prediction) prediction.classList.add('is-shown');
+          if (closerMascot) closerMascot.classList.add('is-waving');
+        });
+      }
+
+      var mobileBtn = document.getElementById('mobileBtn');
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', function () {
+          document.body.classList.toggle('is-mobile-preview');
+          mobileBtn.textContent = document.body.classList.contains('is-mobile-preview')
+            ? 'View desktop' : 'View mobile';
+          // Re-park mascots after layout change
+          requestAnimationFrame(function () {
+            cards.forEach(function (c) {
+              var m = c.querySelector('.trail__mascot');
+              if (!m) return;
+              if (m.classList.contains('is-docked')) dockMascot(c);
+              else if (revealed.has(c)) moveMascotTo(c, 5);
+            });
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

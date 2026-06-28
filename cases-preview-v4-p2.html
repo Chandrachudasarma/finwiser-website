@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>§7 Preview v4 — Phase 2 (choreography) · Finwiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================ */
+    /* BRAND TOKENS                                                  */
+    /* ============================================================ */
+    :root {
+      --navy: #002d56;
+      --navy-deep: #001f3d;
+      --mint: #35d6c6;
+      --teal: #00b6ad;
+      --white: #ffffff;
+      --off-white: #f7f9fb;
+      --text-on-light: #002d56;
+      --text-on-light-muted: #5a6b7d;
+      --text-on-dark: rgba(255,255,255,0.94);
+      --text-on-dark-muted: rgba(255,255,255,0.74);
+      --border-on-light: rgba(0,45,86,0.10);
+      --border-on-light-strong: rgba(0,45,86,0.20);
+      --shadow-soft: 0 4px 18px rgba(0,45,86,0.08);
+
+      --gold: #f5c26b;
+      --rose: #e87b6f;
+
+      --mint-08:  rgba(53,214,198,0.08);
+      --mint-16:  rgba(53,214,198,0.16);
+      --mint-32:  rgba(53,214,198,0.32);
+      --mint-56:  rgba(53,214,198,0.56);
+      --gold-08:  rgba(245,194,107,0.08);
+      --rose-05:  rgba(232,123,111,0.05);
+      --teal-08:  rgba(0,182,173,0.08);
+      --teal-16:  rgba(0,182,173,0.16);
+      --teal-32:  rgba(0,182,173,0.32);
+
+      --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: 'Lora', Georgia, serif;
+
+      --fs-nano:  11px;
+      --fs-micro: 13px;
+      --fs-body:  15px;
+      --fs-lead:  17px;
+      --fs-h3:    clamp(20px, 2.5vw, 26px);
+      --fs-h2:    clamp(28px, 4vw, 44px);
+
+      /* Easing tokens (Val Head's specs) */
+      --ease-out-cubic:   cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-spring:      cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-overshoot:   cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-in-out:      cubic-bezier(0.45, 0, 0.55, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      font-weight: 400; line-height: 1.6;
+      color: var(--text-on-light);
+      background: var(--off-white);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ============================================================ */
+    /* PREVIEW CHROME                                                */
+    /* ============================================================ */
+    .preview-bar {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 10px 20px;
+      background: var(--navy-deep);
+      border-bottom: 1px solid rgba(53,214,198,0.18);
+      font: 500 12.5px/1 var(--font-sans);
+      color: var(--text-on-dark-muted);
+    }
+    .preview-bar a { color: var(--mint); text-decoration: none; }
+    .preview-bar a:hover { text-decoration: underline; }
+    .preview-bar__title { color: var(--text-on-dark); font-weight: 600; }
+    .preview-bar__phase {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      background: var(--gold); color: var(--navy-deep);
+      font-size: 11px; font-weight: 700;
+      margin-left: 6px;
+    }
+    .preview-bar__actions { display: flex; gap: 8px; }
+    .preview-bar button {
+      font: 500 12px/1 var(--font-sans);
+      color: var(--navy-deep); background: var(--mint);
+      border: 0; border-radius: 6px;
+      padding: 8px 14px; cursor: pointer;
+      transition: background 200ms ease;
+    }
+    .preview-bar button:hover { background: var(--teal); color: var(--white); }
+    .preview-bar button.is-secondary {
+      background: transparent; color: var(--text-on-dark-muted);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .preview-bar button.is-secondary:hover { color: var(--mint); border-color: var(--mint); }
+
+    /* ============================================================ */
+    /* §7 — ENGINE                                                   */
+    /* ============================================================ */
+    .engine {
+      background: var(--off-white);
+      color: var(--text-on-light);
+      padding: clamp(64px, 10vw, 110px) 0;
+    }
+    .engine__inner { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+
+    .engine__heading {
+      font-family: var(--font-serif);
+      font-size: clamp(40px, 6vw, 68px);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .engine__heading em { font-style: italic; color: var(--teal); }
+    .engine__sub {
+      font-size: var(--fs-lead); color: var(--text-on-light-muted);
+      text-align: center; max-width: 56ch;
+      margin: 0 auto 64px;
+      line-height: 1.55; font-style: italic;
+      font-family: var(--font-serif);
+    }
+
+    /* ============================================================ */
+    /* PAIR                                                         */
+    /* ============================================================ */
+    .pair { margin-bottom: 88px; }
+    .pair:last-of-type { margin-bottom: 56px; }
+
+    /* Progress indicator */
+    .pair__progress {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      margin-bottom: 28px;
+    }
+    .pair__progress-dot {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      transition: color 220ms;
+    }
+    .pair__progress-dot::before {
+      content: ''; display: inline-block;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--border-on-light);
+      transition: background 220ms, box-shadow 220ms;
+    }
+    .pair__progress-dot.is-active { color: var(--navy); }
+    .pair__progress-dot.is-active::before { background: var(--mint); box-shadow: 0 0 0 4px var(--mint-16); }
+    .pair__progress-dot.is-passed::before { background: var(--mint-32); }
+    .pair__progress-sep { width: 18px; height: 1px; background: var(--border-on-light); }
+
+    /* ============================================================ */
+    /* STAGE                                                         */
+    /* ============================================================ */
+    .stage {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr 1fr;
+      gap: 32px;
+      align-items: center;
+      position: relative;
+    }
+    .stage__threads {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: visible;
+    }
+    .stage__threads path {
+      fill: none;
+      stroke: var(--mint-32);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      pathLength: 1;
+      transition: stroke-dashoffset 500ms var(--ease-out-cubic);
+    }
+    .stage__threads path.thread--out { stroke: var(--teal-32); }
+    .pair.is-revealed .stage__threads path { stroke-dashoffset: 0; }
+    .pair.is-revealed .stage__threads path[data-id="in-top"] { transition-delay: 1100ms; }
+    .pair.is-revealed .stage__threads path[data-id="in-bot"] { transition-delay: 1200ms; }
+    .pair.is-revealed .stage__threads path[data-id="out-top"] { transition-delay: 4000ms; }
+    .pair.is-revealed .stage__threads path[data-id="out-bot"] { transition-delay: 4100ms; }
+
+    /* ---------- Inputs ---------- */
+    .stage__inputs {
+      display: flex; flex-direction: column; gap: 18px;
+      position: relative; z-index: 2;
+    }
+
+    .input-card {
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow-soft);
+      display: flex; flex-direction: column; gap: 4px;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 460ms var(--ease-spring), transform 460ms var(--ease-spring);
+    }
+    .pair.is-revealed .input-card { opacity: 1; transform: none; }
+    .pair.is-revealed .input-card[data-i="0"] { transition-delay: 380ms; }
+    .pair.is-revealed .input-card[data-i="1"] { transition-delay: 780ms; }
+
+    .input-card__name { font-size: var(--fs-body); font-weight: 700; color: var(--navy); letter-spacing: -0.1px; }
+    .input-card__meta { font-size: var(--fs-nano); color: var(--text-on-light-muted); letter-spacing: 0.04em; margin-bottom: 2px; }
+    .input-card__surplus {
+      font-family: var(--font-sans);
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 800; color: var(--mint);
+      line-height: 1.05; letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      margin: 4px 0 0;
+    }
+    .input-card__surplus small {
+      font-size: 0.5em; font-weight: 700; color: var(--navy);
+      vertical-align: 0.2em; margin-left: 0.1em;
+    }
+    .input-card__divergent { font-size: var(--fs-micro); color: var(--navy); font-weight: 600; margin-top: 4px; }
+    .input-card__divergent .num-mint { color: var(--mint); font-weight: 800; }
+    .input-card__divergent .num-rose { color: var(--rose); font-weight: 800; }
+    .input-card__trigger {
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      margin-top: 8px; padding-top: 8px;
+      border-top: 1px dashed var(--border-on-light);
+      line-height: 1.4;
+    }
+
+    /* Strike-through deduction */
+    .strike { position: relative; display: inline-block; color: var(--rose); font-weight: 700; }
+    .strike::after {
+      content: '';
+      position: absolute; left: -3%; right: -3%;
+      top: 52%; height: 2.5px;
+      background: var(--rose); border-radius: 2px;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 750ms var(--ease-out-cubic);
+    }
+    .pair.is-revealed .strike::after { transform: scaleX(1); }
+    /* Pair 3 timing — strike draws after card is settled */
+    #pair-family.is-revealed .strike::after { transition-delay: 1100ms; }
+
+    /* ============================================================ */
+    /* FINWY                                                         */
+    /* ============================================================ */
+    .stage__finwy {
+      position: relative; z-index: 4;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 360px;
+    }
+    .finwy-orbit { position: relative; width: 320px; height: 280px; }
+
+    .finwy-mascot {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      width: 80px; height: 80px;
+      z-index: 3;
+      filter: grayscale(0.4);
+      opacity: 0.7;
+      transition: filter 350ms var(--ease-out-cubic),
+                  opacity 350ms var(--ease-out-cubic),
+                  transform 450ms var(--ease-overshoot);
+    }
+    .pair.is-revealed .finwy-mascot {
+      filter: grayscale(0); opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      transition-delay: 1900ms;
+    }
+
+    .finwy-halo {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.6);
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--mint-32) 0%, transparent 70%);
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 400ms var(--ease-out-cubic),
+                  transform 400ms var(--ease-overshoot);
+    }
+    .pair.is-revealed .finwy-halo {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      transition-delay: 2050ms;
+    }
+
+    /* Factor badges */
+    .factor {
+      position: absolute;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width: 64px; height: 64px;
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,45,86,0.06);
+      z-index: 2;
+      opacity: 0.4;
+      transform: scale(0.95);
+      transition: opacity 220ms var(--ease-out-cubic),
+                  transform 220ms var(--ease-out-cubic),
+                  box-shadow 220ms var(--ease-out-cubic),
+                  background 220ms var(--ease-out-cubic),
+                  border-color 220ms var(--ease-out-cubic);
+    }
+    .factor svg {
+      width: 18px; height: 18px;
+      stroke: var(--text-on-light-muted);
+      fill: none; stroke-width: 1.6;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 220ms;
+    }
+    .factor__label {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      margin-top: 2px;
+      transition: color 220ms;
+    }
+
+    /* Initial visible state (post-reveal, dim) */
+    .pair.is-revealed .factor {
+      opacity: 0.5;
+      transform: scale(1);
+      transition-delay: 2200ms;
+    }
+
+    /* Pulsing (during scan) */
+    .factor.is-pulsing {
+      opacity: 1;
+      transform: scale(1.08);
+      box-shadow: 0 0 0 4px var(--mint-16);
+      background: var(--mint-08);
+      border-color: var(--mint-32);
+      transition-delay: 0ms !important;
+    }
+    .factor.is-pulsing svg { stroke: var(--mint); }
+    .factor.is-pulsing .factor__label { color: var(--navy); }
+
+    /* Decisive (stays lit after scan) */
+    .factor.is-decisive {
+      opacity: 1 !important;
+      transform: scale(1.05);
+      border-color: var(--mint);
+      background: var(--mint-08);
+      box-shadow: 0 0 0 4px var(--mint-16);
+    }
+    .factor.is-decisive svg { stroke: var(--mint); }
+    .factor.is-decisive .factor__label { color: var(--navy); }
+    .factor.is-decisive::after {
+      content: 'DECISIVE';
+      position: absolute; left: 50%;
+      bottom: -22px; transform: translateX(-50%);
+      font-size: 8.5px; font-weight: 800;
+      letter-spacing: 0.15em;
+      color: var(--mint); white-space: nowrap;
+      opacity: 0;
+      transition: opacity 300ms var(--ease-out-cubic);
+    }
+    .pair.is-revealed .factor.is-decisive::after { opacity: 1; transition-delay: 3700ms; }
+
+    /* Hex positions */
+    .factor[data-pos="tl"] { top: 0;    left: 14%; }
+    .factor[data-pos="tr"] { top: 0;    right: 14%; }
+    .factor[data-pos="ml"] { top: 50%;  left: 0;     transform: translateY(-50%) scale(0.95); }
+    .factor[data-pos="mr"] { top: 50%;  right: 0;    transform: translateY(-50%) scale(0.95); }
+    .factor[data-pos="bl"] { bottom: 0; left: 14%; }
+    .factor[data-pos="br"] { bottom: 0; right: 14%; }
+
+    .pair.is-revealed .factor[data-pos="ml"],
+    .pair.is-revealed .factor[data-pos="mr"] {
+      transform: translateY(-50%) scale(1);
+    }
+    .factor[data-pos="ml"].is-pulsing,
+    .factor[data-pos="mr"].is-pulsing {
+      transform: translateY(-50%) scale(1.08);
+    }
+    .factor[data-pos="ml"].is-decisive,
+    .factor[data-pos="mr"].is-decisive {
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    /* Caption */
+    .finwy-caption {
+      margin-top: 16px;
+      font-size: var(--fs-micro);
+      font-style: italic;
+      color: var(--text-on-light);
+      text-align: center;
+      max-width: 26ch;
+      line-height: 1.4;
+      min-height: 36px;
+      opacity: 0;
+      transition: opacity 220ms var(--ease-out-cubic);
+    }
+    .finwy-caption.is-shown { opacity: 1; }
+    .finwy-caption.is-emphasis { color: var(--navy); font-weight: 500; }
+
+    /* ============================================================ */
+    /* OUTPUTS                                                       */
+    /* ============================================================ */
+    .stage__outputs {
+      display: flex; flex-direction: column; gap: 18px;
+      position: relative; z-index: 2;
+    }
+    .output-card {
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow-soft);
+      display: flex; flex-direction: column; gap: 6px;
+      border: 1px solid;
+      opacity: 0; transform: translateY(10px) scale(0.98);
+      transition: opacity 480ms var(--ease-spring),
+                  transform 480ms var(--ease-spring);
+    }
+    .output-card--mint { background: var(--mint); color: var(--navy-deep); border-color: var(--mint); }
+    .output-card--teal { background: var(--teal); color: var(--white); border-color: var(--teal); }
+    .pair.is-revealed .output-card { opacity: 1; transform: none; }
+
+    /* Pair 1 — surprise-first ordering (Riya before Aman) */
+    #pair-risk.is-revealed .output-card[data-i="0"] { transition-delay: 4900ms; }
+    #pair-risk.is-revealed .output-card[data-i="1"] { transition-delay: 5300ms; }
+
+    /* Pair 2 & 3 — natural order */
+    #pair-goals.is-revealed .output-card[data-i="0"] { transition-delay: 3000ms; }
+    #pair-goals.is-revealed .output-card[data-i="1"] { transition-delay: 3300ms; }
+    #pair-family.is-revealed .output-card[data-i="0"] { transition-delay: 2400ms; }
+    #pair-family.is-revealed .output-card[data-i="1"] { transition-delay: 2600ms; }
+
+    .output-card__label {
+      font-size: var(--fs-nano); font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .output-card__verdict {
+      font-size: var(--fs-body); font-weight: 700;
+      line-height: 1.35; letter-spacing: -0.1px;
+    }
+
+    /* ============================================================ */
+    /* TAGLINE + CREDIBILITY                                         */
+    /* ============================================================ */
+    .pair__tagline {
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-style: italic; font-weight: 500;
+      color: var(--navy); line-height: 1.4;
+      max-width: 760px; margin: 36px auto 0;
+      letter-spacing: -0.01em;
+      opacity: 0; transform: translateY(6px);
+      transition: opacity 400ms var(--ease-out-cubic),
+                  transform 400ms var(--ease-out-cubic);
+    }
+    .pair.is-revealed .pair__tagline { opacity: 1; transform: none; }
+    #pair-risk.is-revealed .pair__tagline   { transition-delay: 5800ms; }
+    #pair-goals.is-revealed .pair__tagline  { transition-delay: 3700ms; }
+    #pair-family.is-revealed .pair__tagline { transition-delay: 3000ms; }
+
+    .pair__credibility {
+      text-align: center;
+      font-size: var(--fs-micro); font-style: italic;
+      color: var(--text-on-light-muted);
+      margin: 14px auto 0;
+      max-width: 520px;
+      opacity: 0;
+      transition: opacity 400ms var(--ease-out-cubic);
+    }
+    .pair.is-revealed .pair__credibility { opacity: 1; transition-delay: 6500ms; }
+    .pair__credibility strong { color: var(--navy); font-style: normal; font-weight: 700; }
+
+    /* ============================================================ */
+    /* PREDICTION BEAT                                              */
+    /* ============================================================ */
+    .prediction {
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-style: italic; color: var(--navy);
+      line-height: 1.4; max-width: 540px;
+      margin: 56px auto;
+      padding: 28px 24px;
+      border-top: 1px dashed var(--border-on-light-strong);
+      border-bottom: 1px dashed var(--border-on-light-strong);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 500ms var(--ease-out-cubic),
+                  transform 500ms var(--ease-out-cubic);
+    }
+    .prediction.is-shown { opacity: 1; transform: none; }
+    .prediction::before {
+      content: '►';
+      display: inline-block; margin-right: 8px;
+      color: var(--mint); font-style: normal; font-size: 0.7em;
+      transform: translateY(-2px);
+    }
+    .prediction strong {
+      color: var(--mint); font-weight: 600; font-style: normal;
+      text-decoration: underline; text-decoration-color: var(--mint-32);
+      text-underline-offset: 4px; text-decoration-thickness: 1.5px;
+    }
+
+    /* ============================================================ */
+    /* CLOSER                                                        */
+    /* ============================================================ */
+    .engine__close {
+      margin-top: 80px;
+      text-align: center;
+      display: flex; flex-direction: column; gap: 22px; align-items: center;
+    }
+    .engine__close-mascot {
+      width: 96px; height: 96px;
+      filter: drop-shadow(0 6px 16px rgba(0,45,86,0.12));
+      transform-origin: bottom center;
+    }
+    .engine__close-mascot.is-waving {
+      animation: mascotWave 1500ms cubic-bezier(0.36, 0, 0.18, 1);
+    }
+    @keyframes mascotWave {
+      0%   { transform: rotate(0deg) scale(1); }
+      18%  { transform: rotate(-7deg) scale(1.06); }
+      36%  { transform: rotate(8deg) scale(1.06); }
+      54%  { transform: rotate(-5deg) scale(1.04); }
+      72%  { transform: rotate(5deg) scale(1.02); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    .engine__close-text {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: 500; color: var(--navy);
+      max-width: 760px; line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
+    .engine__close-text strong { font-weight: 600; color: var(--teal); font-style: italic; }
+    .engine__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font: 700 16px/1 var(--font-sans);
+      padding: 16px 30px; border-radius: 10px;
+      background: var(--mint); color: var(--navy-deep);
+      text-decoration: none;
+      transition: background 200ms, transform 200ms, box-shadow 200ms;
+      box-shadow: 0 4px 14px rgba(53,214,198,0.28);
+    }
+    .engine__cta:hover {
+      background: var(--teal); color: var(--white);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0,182,173,0.32);
+    }
+    .engine__footnote {
+      margin: 32px auto 0;
+      text-align: center;
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      max-width: 720px; line-height: 1.55;
+    }
+
+    /* ============================================================ */
+    /* MOBILE                                                        */
+    /* ============================================================ */
+    @media (max-width: 980px) {
+      .stage { grid-template-columns: 1fr; gap: 28px; }
+      .stage__threads { display: none; }
+      .stage__finwy { min-height: 340px; }
+      .finwy-orbit { width: 280px; height: 260px; }
+    }
+    @media (max-width: 540px) {
+      .pair__progress { flex-wrap: wrap; }
+      .pair__progress-sep { display: none; }
+    }
+
+    body.is-mobile-preview main {
+      max-width: 420px; margin: 24px auto;
+      border: 1px solid var(--border-on-light);
+      border-radius: 24px; background: var(--off-white);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,45,86,0.12);
+    }
+    body.is-mobile-preview .engine__inner { padding: 0 16px; }
+    body.is-mobile-preview .stage { grid-template-columns: 1fr; gap: 24px; }
+    body.is-mobile-preview .stage__threads { display: none; }
+
+    /* ============================================================ */
+    /* REDUCED MOTION                                                */
+    /* ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .input-card, .output-card, .finwy-mascot, .finwy-halo,
+      .factor, .pair__tagline, .pair__credibility,
+      .stage__threads path, .strike::after, .prediction,
+      .finwy-caption, .engine__close-mascot {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+      .pair.is-revealed .strike::after { transform: scaleX(1) !important; }
+      .pair.is-revealed .stage__threads path { stroke-dashoffset: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-bar">
+    <div>&larr; <a href="cases-preview-v4-p1.html">p1</a> &middot; <a href="v4-spec.md">spec</a> &middot; <a href="cases-preview-v3.html">v3</a></div>
+    <div class="preview-bar__title">
+      §7 v4 &middot; The Engine
+      <span class="preview-bar__phase">PHASE 2 · choreography</span>
+    </div>
+    <div class="preview-bar__actions">
+      <button id="replayBtn">&#8634; Replay</button>
+      <button id="mobileBtn" class="is-secondary">View mobile</button>
+    </div>
+  </div>
+
+  <main>
+    <section class="engine" aria-labelledby="engine-heading">
+      <div class="engine__inner">
+
+        <h2 id="engine-heading" class="engine__heading">
+          What would Finwy say <em>about you?</em>
+        </h2>
+        <p class="engine__sub">Watch how it reasons. Then plug in your data.</p>
+
+        <!-- ============================================================ -->
+        <!-- PAIR 1 — RISK APPETITE                                       -->
+        <!-- ============================================================ -->
+        <article class="pair" id="pair-risk" data-pair="risk" data-pace="slow"
+                 data-decisive="mr" aria-labelledby="pair-risk-tagline">
+          <nav class="pair__progress" aria-label="Pair progress">
+            <span class="pair__progress-dot is-active">Pair 1 of 3 — Risk</span>
+            <span class="pair__progress-sep" aria-hidden="true"></span>
+            <span class="pair__progress-dot">Pair 2 — Goal</span>
+            <span class="pair__progress-sep" aria-hidden="true"></span>
+            <span class="pair__progress-dot">Pair 3 — Family</span>
+          </nav>
+
+          <div class="stage">
+            <svg class="stage__threads" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path data-id="in-top"  d="M 18 22 C 30 22, 38 50, 50 50" pathLength="1" />
+              <path data-id="in-bot"  d="M 18 78 C 30 78, 38 50, 50 50" pathLength="1" />
+              <path data-id="out-top" class="thread--out" d="M 50 50 C 62 50, 70 22, 82 22" pathLength="1" />
+              <path data-id="out-bot" class="thread--out" d="M 50 50 C 62 50, 70 78, 82 78" pathLength="1" />
+            </svg>
+
+            <div class="stage__inputs">
+              <article class="input-card" data-i="0">
+                <p class="input-card__name">Riya M.</p>
+                <p class="input-card__meta">35 &middot; BENGALURU &middot; SOFTWARE ENG.</p>
+                <p class="input-card__surplus">&#8377; 52K<small>/mo surplus</small></p>
+                <p class="input-card__divergent"><span class="num-mint">83%</span> in equity &middot; Conservative</p>
+                <p class="input-card__trigger">Opened Finwy after a colleague&rsquo;s heart attack at 38.</p>
+              </article>
+              <article class="input-card" data-i="1">
+                <p class="input-card__name">Aman K.</p>
+                <p class="input-card__meta">35 &middot; PUNE &middot; SALES LEAD</p>
+                <p class="input-card__surplus">&#8377; 52K<small>/mo surplus</small></p>
+                <p class="input-card__divergent"><span class="num-mint">0%</span> in equity &middot; Aggressive</p>
+                <p class="input-card__trigger">Opened Finwy after his crypto-friend&rsquo;s third disaster.</p>
+              </article>
+            </div>
+
+            <div class="stage__finwy">
+              <div class="finwy-orbit" role="img" aria-label="Finwy considering six factors: age, surplus, portfolio, goals, risk, family">
+                <div class="finwy-halo" aria-hidden="true"></div>
+                <img class="finwy-mascot" src="fw-deck-2026/slides/finny-3d.png" alt="" />
+
+                <div class="factor" data-pos="tl">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                  <span class="factor__label">Age</span>
+                </div>
+                <div class="factor" data-pos="tr">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+                  <span class="factor__label">Goals</span>
+                </div>
+                <div class="factor" data-pos="ml">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg>
+                  <span class="factor__label">Surplus</span>
+                </div>
+                <div class="factor" data-pos="mr">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg>
+                  <span class="factor__label">Risk</span>
+                </div>
+                <div class="factor" data-pos="bl">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg>
+                  <span class="factor__label">Portfolio</span>
+                </div>
+                <div class="factor" data-pos="br">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5M14 19c.3-2 2-3.5 5-3.5"/></svg>
+                  <span class="factor__label">Family</span>
+                </div>
+              </div>
+              <p class="finwy-caption" aria-live="polite"></p>
+            </div>
+
+            <div class="stage__outputs">
+              <article class="output-card output-card--mint" data-i="0">
+                <p class="output-card__label">Verdict for Riya</p>
+                <p class="output-card__verdict">Stop adding equity. Buy term. Build liquidity.</p>
+              </article>
+              <article class="output-card output-card--teal" data-i="1">
+                <p class="output-card__label">Verdict for Aman</p>
+                <p class="output-card__verdict">Start equity. Today. Skip the side bets.</p>
+              </article>
+            </div>
+          </div>
+
+          <p class="pair__tagline" id="pair-risk-tagline">Same surplus. Opposite portfolios.</p>
+          <p class="pair__credibility"><strong>Six factors here.</strong> Finwy reads thirty-plus inside the app.</p>
+        </article>
+
+        <!-- ============================================================ -->
+        <!-- PAIR 2 — GOAL                                                -->
+        <!-- ============================================================ -->
+        <article class="pair" id="pair-goals" data-pair="goals" data-pace="medium"
+                 data-decisive="tr" aria-labelledby="pair-goals-tagline">
+          <nav class="pair__progress" aria-label="Pair progress">
+            <span class="pair__progress-dot is-passed">Pair 1 — Risk</span>
+            <span class="pair__progress-sep" aria-hidden="true"></span>
+            <span class="pair__progress-dot is-active">Pair 2 of 3 — Goal</span>
+            <span class="pair__progress-sep" aria-hidden="true"></span>
+            <span class="pair__progress-dot">Pair 3 — Family</span>
+          </nav>
+
+          <div class="stage">
+            <svg class="stage__threads" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path data-id="in-top"  d="M 18 22 C 30 22, 38 50, 50 50" pathLength="1" />
+              <path data-id="in-bot"  d="M 18 78 C 30 78, 38 50, 50 50" pathLength="1" />
+              <path data-id="out-top" class="thread--out" d="M 50 50 C 62 50, 70 22, 82 22" pathLength="1" />
+              <path data-id="out-bot" class="thread--out" d="M 50 50 C 62 50, 70 78, 82 78" pathLength="1" />
+            </svg>
+
+            <div class="stage__inputs">
+              <article class="input-card" data-i="0">
+                <p class="input-card__name">Arjun S.</p>
+                <p class="input-card__meta">35 &middot; HYDERABAD &middot; PRODUCT MGR.</p>
+                <p class="input-card__surplus">&#8377; 62K<small>/mo surplus</small></p>
+                <p class="input-card__divergent"><span class="num-mint">&#8377; 14L</span> saved &middot; <span class="num-mint">&#8377; 27K</span> SIPs</p>
+                <p class="input-card__trigger">Opened Finwy after a builder&rsquo;s sales-pitch dinner.</p>
+              </article>
+              <article class="input-card" data-i="1">
+                <p class="input-card__name">Suresh R.</p>
+                <p class="input-card__meta">35 &middot; MUMBAI &middot; TECH LEAD</p>
+                <p class="input-card__surplus">&#8377; 62K<small>/mo surplus</small></p>
+                <p class="input-card__divergent"><span class="num-mint">&#8377; 4L</span> saved &middot; <span class="num-mint">&#8377; 8K</span> SIPs</p>
+                <p class="input-card__trigger">Opened Finwy after the salary hike that didn&rsquo;t feel like one.</p>
+              </article>
+            </div>
+
+            <div class="stage__finwy">
+              <div class="finwy-orbit" role="img" aria-label="Finwy considering six factors">
+                <div class="finwy-halo" aria-hidden="true"></div>
+                <img class="finwy-mascot" src="fw-deck-2026/slides/finny-3d.png" alt="" />
+                <div class="factor" data-pos="tl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="factor__label">Age</span></div>
+                <div class="factor" data-pos="tr"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="factor__label">Goals</span></div>
+                <div class="factor" data-pos="ml"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg><span class="factor__label">Surplus</span></div>
+                <div class="factor" data-pos="mr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg><span class="factor__label">Risk</span></div>
+                <div class="factor" data-pos="bl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg><span class="factor__label">Portfolio</span></div>
+                <div class="factor" data-pos="br"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5M14 19c.3-2 2-3.5 5-3.5"/></svg><span class="factor__label">Family</span></div>
+              </div>
+              <p class="finwy-caption" aria-live="polite"></p>
+            </div>
+
+            <div class="stage__outputs">
+              <article class="output-card output-card--mint" data-i="0">
+                <p class="output-card__label">Verdict for Arjun</p>
+                <p class="output-card__verdict">On track. Don&rsquo;t pause SIPs. The flat fits.</p>
+              </article>
+              <article class="output-card output-card--teal" data-i="1">
+                <p class="output-card__label">Verdict for Suresh</p>
+                <p class="output-card__verdict">Push 18 months. Drop ceiling to &#8377;68L.</p>
+              </article>
+            </div>
+          </div>
+
+          <p class="pair__tagline" id="pair-goals-tagline">The math depends on what you have, not what you want.</p>
+        </article>
+
+        <!-- PREDICTION BEAT -->
+        <p class="prediction" id="prediction-beat" role="note">
+          Now meet two &#8377;1.6L payslips. <strong>Predict the divergence?</strong>
+        </p>
+
+        <!-- ============================================================ -->
+        <!-- PAIR 3 — FAMILY                                              -->
+        <!-- ============================================================ -->
+        <article class="pair" id="pair-family" data-pair="family" data-pace="fast"
+                 data-decisive="br" aria-labelledby="pair-family-tagline">
+          <nav class="pair__progress" aria-label="Pair progress">
+            <span class="pair__progress-dot is-passed">Pair 1 — Risk</span>
+            <span class="pair__progress-sep" aria-hidden="true"></span>
+            <span class="pair__progress-dot is-passed">Pair 2 — Goal</span>
+            <span class="pair__progress-sep" aria-hidden="true"></span>
+            <span class="pair__progress-dot is-active">Pair 3 of 3 — Family</span>
+          </nav>
+
+          <div class="stage">
+            <svg class="stage__threads" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path data-id="in-top"  d="M 18 22 C 30 22, 38 50, 50 50" pathLength="1" />
+              <path data-id="in-bot"  d="M 18 78 C 30 78, 38 50, 50 50" pathLength="1" />
+              <path data-id="out-top" class="thread--out" d="M 50 50 C 62 50, 70 22, 82 22" pathLength="1" />
+              <path data-id="out-bot" class="thread--out" d="M 50 50 C 62 50, 70 78, 82 78" pathLength="1" />
+            </svg>
+
+            <div class="stage__inputs">
+              <article class="input-card" data-i="0">
+                <p class="input-card__name">Vivek N.</p>
+                <p class="input-card__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+                <p class="input-card__surplus">&#8377; 65K<small>/mo real surplus</small></p>
+                <p class="input-card__divergent">Parents pensioned &middot; healthy</p>
+                <p class="input-card__trigger">Opened Finwy after his daughter&rsquo;s third birthday.</p>
+              </article>
+              <article class="input-card" data-i="1">
+                <p class="input-card__name">Karan M.</p>
+                <p class="input-card__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+                <p class="input-card__surplus"><span class="strike">&#8377; 65K</span> &nbsp;&#8377; 30K<small>/mo real</small></p>
+                <p class="input-card__divergent"><span class="num-rose">&#8377; 35K/mo dialysis</span> eats the rest</p>
+                <p class="input-card__trigger">Opened Finwy after his father&rsquo;s second dialysis bill.</p>
+              </article>
+            </div>
+
+            <div class="stage__finwy">
+              <div class="finwy-orbit" role="img" aria-label="Finwy considering six factors">
+                <div class="finwy-halo" aria-hidden="true"></div>
+                <img class="finwy-mascot" src="fw-deck-2026/slides/finny-3d.png" alt="" />
+                <div class="factor" data-pos="tl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="factor__label">Age</span></div>
+                <div class="factor" data-pos="tr"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="factor__label">Goals</span></div>
+                <div class="factor" data-pos="ml"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg><span class="factor__label">Surplus</span></div>
+                <div class="factor" data-pos="mr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg><span class="factor__label">Risk</span></div>
+                <div class="factor" data-pos="bl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg><span class="factor__label">Portfolio</span></div>
+                <div class="factor" data-pos="br"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5M14 19c.3-2 2-3.5 5-3.5"/></svg><span class="factor__label">Family</span></div>
+              </div>
+              <p class="finwy-caption" aria-live="polite"></p>
+            </div>
+
+            <div class="stage__outputs">
+              <article class="output-card output-card--mint" data-i="0">
+                <p class="output-card__label">Verdict for Vivek</p>
+                <p class="output-card__verdict">Light touch. Top up health. Fortify emergency.</p>
+              </article>
+              <article class="output-card output-card--teal" data-i="1">
+                <p class="output-card__label">Verdict for Karan</p>
+                <p class="output-card__verdict">Family first. Retirement second. Order matters.</p>
+              </article>
+            </div>
+          </div>
+
+          <p class="pair__tagline" id="pair-family-tagline">Same payslip. Different floor.</p>
+        </article>
+
+        <div class="engine__close">
+          <img class="engine__close-mascot" id="closer-mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
+          <p class="engine__close-text">
+            Three pairs. Six 35-year-olds. Six verdicts.
+            <strong>Yours will be different too &mdash; because the inputs are yours, not your category&rsquo;s.</strong>
+          </p>
+          <a class="engine__cta" href="/demo-app">See your verdict &rarr;</a>
+        </div>
+
+        <p class="engine__footnote">
+          Illustrative cases. Names changed; details composed.
+          Your data drives your verdict, not these.
+        </p>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Caption beats per pair (six-beat narrator)
+      var BEATS = {
+        risk: [
+          { t: 200,  text: 'Two 35-year-olds. Same income.',          emphasis: false },
+          { t: 2200, text: 'Reading their data.',                      emphasis: false },
+          { t: 2900, text: 'Six factors. One is decisive.',            emphasis: false },
+          { t: 3700, text: 'Risk is what data can absorb.',            emphasis: true  },
+          { t: 4400, text: 'Because of that…',                         emphasis: true  },
+          { t: 5700, text: 'Two different answers.',                   emphasis: false }
+        ],
+        goals: [
+          { t: 200,  text: 'Two 35-year-olds. Same income. Same goal.', emphasis: false },
+          { t: 1600, text: 'Reading their plans.',                       emphasis: false },
+          { t: 2100, text: 'One started earlier. One didn’t.',     emphasis: false },
+          { t: 2600, text: 'Goals is what tips the math.',               emphasis: true  },
+          { t: 3000, text: 'Because of that…',                            emphasis: true  },
+          { t: 3500, text: 'Different timelines.',                        emphasis: false }
+        ],
+        family: [
+          { t: 200,  text: 'Two senior engineers. Same payslip.',        emphasis: false },
+          { t: 1300, text: 'Reading what’s beneath the payslip.',   emphasis: false },
+          { t: 1900, text: 'Six factors. One eats the rest.',            emphasis: false },
+          { t: 2200, text: 'Family is what’s left after life.',     emphasis: true  },
+          { t: 2400, text: 'Because of that…',                            emphasis: true  },
+          { t: 2900, text: 'Different floors.',                            emphasis: false }
+        ]
+      };
+
+      // Factor scan order + decisive factor per pair
+      var FACTOR_ORDER = ['tl', 'ml', 'bl', 'tr', 'mr', 'br'];
+      var SCAN_TIMING = {
+        risk:   { start: 2300, step: 250 },
+        goals:  { start: 1700, step: 130 },
+        family: { start: 1500, step: 80  }
+      };
+
+      var pairs = document.querySelectorAll('.pair');
+      var revealed = new WeakSet();
+      var timers = [];
+
+      function clearTimers() {
+        timers.forEach(function (t) { clearTimeout(t); });
+        timers = [];
+      }
+
+      function setCaption(pair, text, emphasis) {
+        var caption = pair.querySelector('.finwy-caption');
+        if (!caption) return;
+        caption.classList.remove('is-shown');
+        timers.push(setTimeout(function () {
+          caption.textContent = text;
+          caption.classList.toggle('is-emphasis', !!emphasis);
+          caption.classList.add('is-shown');
+        }, 200));
+      }
+
+      function runFactorScan(pair) {
+        var pace = pair.dataset.pace || 'slow';
+        var timing = SCAN_TIMING[pair.dataset.pair] || SCAN_TIMING.risk;
+        var decisive = pair.dataset.decisive;
+        var factors = {};
+        pair.querySelectorAll('.factor').forEach(function (f) {
+          factors[f.dataset.pos] = f;
+        });
+
+        FACTOR_ORDER.forEach(function (pos, i) {
+          var f = factors[pos];
+          if (!f) return;
+          timers.push(setTimeout(function () {
+            f.classList.add('is-pulsing');
+          }, timing.start + i * timing.step));
+          // Stop pulsing after a hold
+          timers.push(setTimeout(function () {
+            f.classList.remove('is-pulsing');
+            if (pos === decisive) f.classList.add('is-decisive');
+          }, timing.start + i * timing.step + Math.max(timing.step + 30, 200)));
+        });
+      }
+
+      function runCaptions(pair) {
+        var beats = BEATS[pair.dataset.pair] || [];
+        beats.forEach(function (beat) {
+          timers.push(setTimeout(function () {
+            setCaption(pair, beat.text, beat.emphasis);
+          }, beat.t));
+        });
+      }
+
+      function reveal(pair) {
+        if (revealed.has(pair)) return;
+        revealed.add(pair);
+        clearTimers();
+        pair.classList.add('is-revealed');
+        if (reduce) {
+          // Set final caption only
+          var beats = BEATS[pair.dataset.pair] || [];
+          var last = beats[beats.length - 1];
+          if (last) setCaption(pair, last.text, last.emphasis);
+          // Set decisive directly
+          var decisivePos = pair.dataset.decisive;
+          var dEl = pair.querySelector('.factor[data-pos="' + decisivePos + '"]');
+          if (dEl) dEl.classList.add('is-decisive');
+          return;
+        }
+        runFactorScan(pair);
+        runCaptions(pair);
+      }
+
+      // IntersectionObserver — trigger when pair enters viewport
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) reveal(e.target);
+          });
+        }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+        pairs.forEach(function (p) { io.observe(p); });
+      } else {
+        pairs.forEach(reveal);
+      }
+
+      // Prediction beat — reveal when in viewport
+      var prediction = document.getElementById('prediction-beat');
+      if (prediction && 'IntersectionObserver' in window) {
+        var pIO = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              prediction.classList.add('is-shown');
+              obs.disconnect();
+            }
+          });
+        }, { threshold: 0.6 });
+        pIO.observe(prediction);
+      } else if (prediction) {
+        prediction.classList.add('is-shown');
+      }
+
+      // Mascot wave on closer
+      var closerMascot = document.getElementById('closer-mascot');
+      if (closerMascot && !reduce && 'IntersectionObserver' in window) {
+        var mIO = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              closerMascot.classList.add('is-waving');
+              obs.disconnect();
+            }
+          });
+        }, { threshold: 0.6 });
+        mIO.observe(closerMascot);
+      }
+
+      // Replay
+      var replay = document.getElementById('replayBtn');
+      if (replay) {
+        replay.addEventListener('click', function () {
+          clearTimers();
+          pairs.forEach(function (p) {
+            p.classList.remove('is-revealed');
+            p.querySelectorAll('.factor').forEach(function (f) {
+              f.classList.remove('is-pulsing', 'is-decisive');
+            });
+            p.querySelector('.finwy-caption').textContent = '';
+            revealed.delete(p);
+          });
+          if (prediction) prediction.classList.remove('is-shown');
+          if (closerMascot) closerMascot.classList.remove('is-waving');
+          // Trigger on visible pairs again
+          requestAnimationFrame(function () {
+            pairs.forEach(function (p) {
+              var rect = p.getBoundingClientRect();
+              if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+                reveal(p);
+              }
+            });
+          });
+        });
+      }
+
+      // Mobile toggle
+      var mobileBtn = document.getElementById('mobileBtn');
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', function () {
+          document.body.classList.toggle('is-mobile-preview');
+          mobileBtn.textContent = document.body.classList.contains('is-mobile-preview')
+            ? 'View desktop' : 'View mobile';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

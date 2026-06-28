@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preview &mdash; §5 Cluster scan (Option A: dots-popping)</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>document.documentElement.classList.add('js');</script>
+
+  <style>
+    :root {
+      --navy: #002d56;
+      --navy-deep: #001f3d;
+      --mint: #35d6c6;
+      --teal: #00b6ad;
+      --gold: #f5c26b;
+      --gold-soft: #ffe4a8;
+      --white: #ffffff;
+      --off-white: #f7f9fb;
+      --text-on-light: #002d56;
+      --text-on-light-muted: #5a6b7d;
+      --text-on-dark: rgba(255,255,255,0.94);
+      --text-on-dark-muted: rgba(255,255,255,0.74);
+      --border-on-dark: rgba(255,255,255,0.12);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-weight: 400; line-height: 1.6;
+      color: var(--text-on-light);
+      background: var(--off-white);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+
+    .visually-hidden {
+      position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    .preview-bar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 10px 18px;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,45,86,0.10);
+      font-size: 13px; color: var(--text-on-light-muted);
+    }
+    .preview-bar strong { color: var(--text-on-light); font-weight: 700; }
+    .preview-bar .preview-bar__links a {
+      margin-right: 12px; color: var(--text-on-light-muted);
+      text-decoration: none; font-weight: 500;
+    }
+    .preview-bar .preview-bar__links a:hover { color: var(--navy); text-decoration: underline; }
+    .preview-bar button {
+      font: inherit; font-weight: 600; cursor: pointer;
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid var(--navy); background: var(--navy); color: var(--white);
+    }
+    .preview-bar button:hover { background: var(--navy-deep); }
+    .preview-pad { height: 60px; }
+
+    /* ============================================================ */
+    /* §5 — WHAT FINWY SEES (Cluster scan, Option A)                 */
+    /* ============================================================ */
+    .seen {
+      position: relative;
+      background: var(--navy); color: var(--text-on-dark);
+      padding: clamp(80px, 12vw, 130px) 0 clamp(80px, 12vw, 110px);
+      overflow: hidden;
+    }
+    .seen::before {
+      content: ''; position: absolute; inset: -5% -10% auto -10%; height: 70%;
+      background: radial-gradient(ellipse at 50% 60%, rgba(53,214,198,0.12), transparent 65%);
+      pointer-events: none;
+    }
+    .seen__inner {
+      position: relative; max-width: 1180px;
+      margin: 0 auto; padding: 0 32px; text-align: center;
+    }
+    .seen__heading {
+      font-size: clamp(28px, 4.4vw, 48px); font-weight: 700;
+      letter-spacing: -0.5px; line-height: 1.15;
+      margin: 0 auto 14px; max-width: 30ch;
+      text-wrap: balance;
+    }
+    .seen__sub {
+      font-size: 17px; color: var(--text-on-dark-muted);
+      max-width: 48ch; margin: 0 auto clamp(48px, 7vw, 64px);
+    }
+
+    /* ---------- STAGE ---------- */
+    .seen__stage {
+      position: relative;
+      width: 100%; max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    /* ---------- MASCOT ---------- */
+    .seen__mascot {
+      position: absolute; top: -52px; right: 8px;
+      width: 84px; z-index: 6;
+      filter: drop-shadow(0 14px 32px rgba(0,0,0,0.5));
+      pointer-events: none;
+    }
+    .seen__mascot img { width: 100%; display: block; }
+
+    /* ---------- SCAN BAND ---------- */
+    .seen__band {
+      position: relative;
+      display: flex; align-items: stretch; justify-content: space-between;
+      gap: 4px;
+      padding: 28px 18px 24px;
+      background: linear-gradient(180deg, rgba(0,15,35,0.55), rgba(0,12,30,0.85));
+      border: 1px solid rgba(53,214,198,0.18);
+      border-radius: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 30px 60px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    .seen__band-grid {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+      background-size: 18px 18px;
+      pointer-events: none; z-index: 0;
+      mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent);
+      -webkit-mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent);
+    }
+
+    .seen__scan {
+      position: absolute; top: 0; bottom: 0;
+      width: 70px; left: -90px;
+      pointer-events: none; z-index: 2;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(53,214,198,0.06) 30%,
+        rgba(53,214,198,0.32) 50%,
+        rgba(53,214,198,0.06) 70%,
+        transparent 100%);
+    }
+    .seen__scan::after {
+      content: ''; position: absolute;
+      top: 8%; bottom: 8%; left: 50%;
+      width: 2px;
+      background: linear-gradient(180deg, transparent, var(--mint) 18%, var(--mint) 82%, transparent);
+      box-shadow: 0 0 14px var(--mint), 0 0 28px rgba(53,214,198,0.55);
+      border-radius: 2px;
+    }
+
+    /* ---------- CLUSTER CARDS ---------- */
+    .seen__cluster {
+      position: relative; flex: 1 1 0; min-width: 0;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 10px;
+      padding: 14px 8px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: transparent;
+      transition: border-color 500ms ease, background 500ms ease;
+      z-index: 1;
+    }
+
+    .seen__cluster-head {
+      display: flex; align-items: center; gap: 8px;
+      justify-content: center; min-height: 24px;
+    }
+    .seen__cluster-icon {
+      width: 20px; height: 20px;
+      fill: none; stroke: rgba(255,255,255,0.42);
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 380ms ease;
+    }
+    .seen__cluster-name {
+      font-size: 12px; font-weight: 700;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: -0.1px; white-space: nowrap;
+      transition: color 380ms ease;
+    }
+
+    /* Dots row — fills left-to-right as scan reads each sub-type */
+    .seen__cluster-dots {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      justify-content: center; align-items: center;
+      min-height: 14px; padding: 4px 2px;
+      max-width: 100%;
+    }
+    .seen__cluster-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.0);
+      border: 1px solid rgba(255,255,255,0.20);
+      transition:
+        background 220ms cubic-bezier(0.16,1,0.3,1),
+        border-color 220ms ease,
+        box-shadow 220ms ease,
+        transform 220ms cubic-bezier(0.16,1,0.3,1);
+    }
+    .seen__cluster-dot.is-on {
+      background: var(--mint);
+      border-color: var(--mint);
+      box-shadow: 0 0 6px rgba(53,214,198,0.65);
+      transform: scale(1.25);
+    }
+
+    /* Count text, fades in after dots fill */
+    .seen__cluster-count {
+      font-size: 10.5px; font-weight: 700;
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--mint);
+      letter-spacing: -0.2px;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 380ms ease, transform 380ms cubic-bezier(0.16,1,0.3,1);
+    }
+
+    /* Lit cluster — soft border + bright label */
+    .seen__cluster.is-lit { border-color: rgba(53,214,198,0.20); background: rgba(53,214,198,0.04); }
+    .seen__cluster.is-lit .seen__cluster-icon { stroke: var(--mint); }
+    .seen__cluster.is-lit .seen__cluster-name { color: var(--text-on-dark); }
+    .seen__cluster.is-done .seen__cluster-count { opacity: 1; transform: translateY(0); }
+
+    /* ---------- THREADS ---------- */
+    .seen__threads {
+      display: block; width: 100%; height: 84px;
+      pointer-events: none; margin-top: -2px; overflow: visible;
+    }
+    .seen__threads path {
+      fill: none;
+      stroke: url(#seen-thread-fade);
+      stroke-width: 1.4; stroke-linecap: round;
+    }
+
+    /* ---------- COMPOSITE ---------- */
+    .seen__composite-wrap { position: relative; max-width: 720px; margin: 0 auto; }
+    .seen__composite {
+      position: relative;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      padding: 26px 22px 20px;
+      background: var(--navy-deep);
+      border: 2px solid rgba(53,214,198,0.55);
+      border-radius: 20px;
+      box-shadow: 0 0 0 8px rgba(53,214,198,0.08), 0 30px 60px rgba(0,0,0,0.5);
+    }
+    .seen__composite::before {
+      content: ''; position: absolute; inset: -18px;
+      border-radius: 32px; pointer-events: none; z-index: -1;
+      background: radial-gradient(closest-side, rgba(53,214,198,0.22), transparent 70%);
+    }
+    .seen__composite-tag {
+      position: absolute; top: -10px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy);
+      padding: 0 10px;
+      font-size: 9.5px; font-weight: 700;
+      letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--mint);
+    }
+
+    .seen__pane {
+      position: relative; text-align: left;
+      padding: 14px 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0));
+      border: 1px solid rgba(53,214,198,0.14);
+      border-radius: 12px;
+    }
+    .seen__pane-eyebrow {
+      display: block;
+      font-size: 9.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.4px;
+      color: var(--text-on-dark-muted);
+      margin-bottom: 6px;
+    }
+    .seen__pane-num {
+      display: inline-flex; align-items: baseline;
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-weight: 800; font-size: clamp(22px, 3vw, 30px);
+      letter-spacing: -0.6px; line-height: 1.05;
+      color: var(--text-on-dark);
+    }
+    .seen__pane-currency { font-size: 0.7em; color: var(--mint); font-weight: 700; margin-right: 3px; }
+    .seen__pane-unit {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.42em; color: var(--text-on-dark-muted);
+      margin-left: 5px; font-weight: 500;
+    }
+
+    .seen__pane--surplus { border-color: rgba(245,194,107,0.32); }
+    .seen__pane--surplus .seen__pane-eyebrow { color: var(--gold); }
+    .seen__pane--surplus .seen__pane-currency { color: var(--gold); }
+    .seen__pane--surplus .seen__pane-val {
+      background: linear-gradient(135deg, var(--gold-soft) 0%, var(--gold) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    .seen__spark { margin-top: 10px; height: 26px; }
+    .seen__spark svg { width: 100%; height: 100%; overflow: visible; }
+    .seen__spark path {
+      fill: none; stroke: var(--mint);
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .seen__spark--gold path { stroke: var(--gold); }
+
+    .seen__pane-meter { display: flex; gap: 6px; margin-top: 10px; }
+    .seen__pane-meter span {
+      flex: 1; height: 6px; border-radius: 3px;
+      background: rgba(255,255,255,0.08);
+    }
+    .seen__pane-meter span.is-on { background: var(--mint); box-shadow: 0 0 6px rgba(53,214,198,0.5); }
+
+    .seen__pane-risk { display: flex; gap: 4px; margin-top: 10px; height: 6px; }
+    .seen__pane-risk span { flex: 1; border-radius: 2px; background: rgba(255,255,255,0.08); }
+    .seen__pane-risk span.is-on {
+      background: linear-gradient(90deg, rgba(53,214,198,0.5), var(--mint));
+    }
+    .seen__pane-risk-meta {
+      display: flex; justify-content: space-between;
+      margin-top: 5px; font-size: 9px; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-on-dark-muted);
+    }
+
+    .seen__composite-disclaimer {
+      font-size: 11px; color: rgba(255,255,255,0.42);
+      text-align: center; margin-top: 14px;
+      letter-spacing: 0.2px;
+    }
+
+    /* ============================================================ */
+    /* ANIMATIONS — only when JS is on AND motion is allowed         */
+    /* ============================================================ */
+    @media (prefers-reduced-motion: no-preference) {
+      html.js .seen__scan { left: -90px; }
+      html.js .seen__stage.is-in .seen__scan {
+        animation: scan-sweep 2.8s cubic-bezier(0.4, 0, 0.6, 1) 320ms forwards;
+      }
+      @keyframes scan-sweep {
+        0%   { left: -90px; }
+        100% { left: 100%;  }
+      }
+
+      html.js .seen__threads path {
+        stroke-dasharray: 100; stroke-dashoffset: 100;
+        transition: stroke-dashoffset 700ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      html.js .seen__stage.is-in .seen__threads path {
+        stroke-dashoffset: 0;
+        transition-delay: calc(3300ms + var(--i, 0) * 60ms);
+      }
+
+      html.js .seen__composite {
+        opacity: 0.35; transform: translateY(14px) scale(0.97);
+        transition: opacity 700ms cubic-bezier(0.16,1,0.3,1) 3.5s,
+                    transform 700ms cubic-bezier(0.16,1,0.3,1) 3.5s;
+      }
+      html.js .seen__composite::before {
+        opacity: 0; transition: opacity 700ms 3.7s;
+      }
+      html.js .seen__stage.is-in .seen__composite {
+        opacity: 1; transform: translateY(0) scale(1);
+      }
+      html.js .seen__stage.is-in .seen__composite::before { opacity: 1; }
+      html.js .seen__stage.is-in .seen__composite {
+        animation: composite-land 900ms cubic-bezier(0.16,1,0.3,1) 4.2s;
+      }
+      @keyframes composite-land {
+        0%, 100% { box-shadow: 0 0 0 8px rgba(53,214,198,0.08), 0 30px 60px rgba(0,0,0,0.5); }
+        50%      { box-shadow: 0 0 0 18px rgba(53,214,198,0.22), 0 30px 60px rgba(0,0,0,0.5); }
+      }
+
+      html.js .seen__mascot {
+        opacity: 0; transform: translateY(-8px);
+        transition: opacity 700ms cubic-bezier(0.16,1,0.3,1) 200ms,
+                    transform 700ms cubic-bezier(0.16,1,0.3,1) 200ms;
+      }
+      html.js .seen__stage.is-in .seen__mascot {
+        opacity: 1; transform: translateY(0);
+      }
+      html.js .seen__stage.is-in .seen__mascot img {
+        animation: mascot-nod 900ms cubic-bezier(0.16,1,0.3,1) 4.2s;
+      }
+      @keyframes mascot-nod {
+        0%, 100% { transform: scale(1) rotate(0); }
+        45%      { transform: scale(1.06) rotate(-3deg);
+                   filter: drop-shadow(0 18px 36px rgba(53,214,198,0.5)); }
+      }
+    }
+
+    /* ============================================================ */
+    /* MOBILE FALLBACK                                               */
+    /* ============================================================ */
+    @media (max-width: 900px) {
+      .seen__mascot { width: 68px; top: -36px; right: 14px; }
+      .seen__band {
+        flex-wrap: wrap; gap: 12px 10px;
+        padding: 22px 14px;
+      }
+      .seen__cluster { flex: 0 0 calc(33.333% - 8px); }
+      .seen__threads { display: none; }
+      .seen__composite-wrap { margin-top: 22px; }
+      .seen__composite { grid-template-columns: 1fr; gap: 10px; }
+      .seen__pane-num { font-size: 22px; }
+    }
+    @media (max-width: 520px) {
+      .seen__cluster { flex: 0 0 calc(50% - 8px); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="preview-bar">
+    <span><strong>Preview &mdash; §5 Cluster scan</strong> &middot; six bucket cards, dots-popping per sub-type</span>
+    <span class="preview-bar__links">
+      <a href="seen-preview.html">&larr; FI-cell version</a>
+    </span>
+    <button type="button" id="replay">Replay scan</button>
+  </div>
+
+  <div class="preview-pad"></div>
+
+  <main>
+    <section class="seen" aria-labelledby="seen-heading">
+      <div class="seen__inner">
+        <h2 id="seen-heading" class="seen__heading">Every place your money lives. One picture. In three minutes.</h2>
+        <p class="seen__sub">Watch your money come together.</p>
+
+        <div class="seen__stage" data-reveal>
+          <p class="visually-hidden">A horizontal scan reads thirty-three account types across seven buckets &mdash; banking, investments, pensions and provident, insurance, loans and cards, business, and physical assets &mdash; and produces a single composite picture: net worth, real monthly surplus, goals on track, and risk score.</p>
+
+          <div class="seen__mascot" aria-hidden="true">
+            <img src="fw-deck-2026/slides/finwy-allocating.png" alt="" loading="lazy">
+          </div>
+
+          <!-- THE SCAN BAND -->
+          <div class="seen__band">
+            <div class="seen__band-grid" aria-hidden="true"></div>
+            <div class="seen__scan" aria-hidden="true"></div>
+
+            <!-- 1 Banking -->
+            <div class="seen__cluster" style="--i:0" data-count="4">
+              <div class="seen__cluster-head">
+                <svg class="seen__cluster-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 10l9-5 9 5"/>
+                  <path d="M5 10v9M9 10v9M15 10v9M19 10v9"/>
+                  <path d="M3 21h18"/>
+                </svg>
+                <span class="seen__cluster-name">Banking</span>
+              </div>
+              <div class="seen__cluster-dots" aria-hidden="true">
+                <span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+              </div>
+              <span class="seen__cluster-count">4 types</span>
+            </div>
+
+            <!-- 2 Investments -->
+            <div class="seen__cluster" style="--i:1" data-count="12">
+              <div class="seen__cluster-head">
+                <svg class="seen__cluster-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 17l5-5 4 3 7-9"/>
+                  <path d="M14 6h6v6"/>
+                </svg>
+                <span class="seen__cluster-name">Investments</span>
+              </div>
+              <div class="seen__cluster-dots" aria-hidden="true">
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+              </div>
+              <span class="seen__cluster-count">12 types</span>
+            </div>
+
+            <!-- 3 Pensions & Provident -->
+            <div class="seen__cluster" style="--i:2" data-count="3">
+              <div class="seen__cluster-head">
+                <svg class="seen__cluster-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M12 7v5l3 2"/>
+                </svg>
+                <span class="seen__cluster-name">Pensions</span>
+              </div>
+              <div class="seen__cluster-dots" aria-hidden="true">
+                <span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+              </div>
+              <span class="seen__cluster-count">3 types</span>
+            </div>
+
+            <!-- 4 Insurance -->
+            <div class="seen__cluster" style="--i:3" data-count="3">
+              <div class="seen__cluster-head">
+                <svg class="seen__cluster-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2L20 5v6c0 5-3 9-8 11-5-2-8-6-8-11V5l8-3z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+                <span class="seen__cluster-name">Insurance</span>
+              </div>
+              <div class="seen__cluster-dots" aria-hidden="true">
+                <span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+              </div>
+              <span class="seen__cluster-count">3 types</span>
+            </div>
+
+            <!-- 5 Loans & Cards -->
+            <div class="seen__cluster" style="--i:4" data-count="6">
+              <div class="seen__cluster-head">
+                <svg class="seen__cluster-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="2.5" y="6" width="19" height="13" rx="2"/>
+                  <path d="M2.5 10h19"/><path d="M6 15h4"/>
+                </svg>
+                <span class="seen__cluster-name">Loans &amp; Cards</span>
+              </div>
+              <div class="seen__cluster-dots" aria-hidden="true">
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+              </div>
+              <span class="seen__cluster-count">6 types</span>
+            </div>
+
+            <!-- 6 Business -->
+            <div class="seen__cluster" style="--i:5" data-count="5">
+              <div class="seen__cluster-head">
+                <svg class="seen__cluster-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="7" width="18" height="13" rx="1.5"/>
+                  <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+                  <path d="M3 12h18"/>
+                </svg>
+                <span class="seen__cluster-name">Business</span>
+              </div>
+              <div class="seen__cluster-dots" aria-hidden="true">
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span><span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+              </div>
+              <span class="seen__cluster-count">5 types</span>
+            </div>
+
+            <!-- 7 Physical assets -->
+            <div class="seen__cluster" style="--i:6" data-count="3">
+              <div class="seen__cluster-head">
+                <svg class="seen__cluster-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 21h18"/>
+                  <path d="M5 21V8l7-4 7 4v13"/>
+                  <path d="M9 14h2v3H9zM13 14h2v3h-2zM9 9h2v3H9zM13 9h2v3h-2z"/>
+                </svg>
+                <span class="seen__cluster-name">Physical&nbsp;assets</span>
+              </div>
+              <div class="seen__cluster-dots" aria-hidden="true">
+                <span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+                <span class="seen__cluster-dot"></span>
+              </div>
+              <span class="seen__cluster-count">3 types</span>
+            </div>
+          </div>
+          <!-- /scan band -->
+
+          <!-- CONVERGENCE THREADS — 7 paths from cluster centers down to composite -->
+          <svg class="seen__threads" viewBox="0 0 1080 84" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="seen-thread-fade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="#35d6c6" stop-opacity="0.05"/>
+                <stop offset="100%" stop-color="#35d6c6" stop-opacity="0.85"/>
+              </linearGradient>
+            </defs>
+            <path d="M77,0    C77,38   540,42 540,84"  pathLength="100" style="--i:0"/>
+            <path d="M231,0   C231,46  540,46 540,84"  pathLength="100" style="--i:1"/>
+            <path d="M386,0   C386,55  540,58 540,84"  pathLength="100" style="--i:2"/>
+            <path d="M540,0   L540,84"                 pathLength="100" style="--i:3"/>
+            <path d="M694,0   C694,55  540,58 540,84"  pathLength="100" style="--i:4"/>
+            <path d="M849,0   C849,46  540,46 540,84"  pathLength="100" style="--i:5"/>
+            <path d="M1003,0  C1003,38 540,42 540,84"  pathLength="100" style="--i:6"/>
+          </svg>
+
+          <!-- COMPOSITE -->
+          <div class="seen__composite-wrap">
+            <div class="seen__composite">
+              <span class="seen__composite-tag">The picture</span>
+
+              <div class="seen__pane seen__pane--worth">
+                <span class="seen__pane-eyebrow">Net worth</span>
+                <span class="seen__pane-num">
+                  <span class="seen__pane-currency">&#8377;</span><span class="seen__pane-val" data-target="2840000" data-format="lakh">28.4L</span>
+                </span>
+                <div class="seen__spark" aria-hidden="true">
+                  <svg viewBox="0 0 100 26" preserveAspectRatio="none">
+                    <path d="M0,20 L10,18 L20,16 L30,17 L40,12 L50,13 L60,9 L70,10 L80,6 L90,5 L100,3"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="seen__pane seen__pane--surplus">
+                <span class="seen__pane-eyebrow">Real surplus</span>
+                <span class="seen__pane-num">
+                  <span class="seen__pane-currency">&#8377;</span><span class="seen__pane-val" data-target="37420" data-format="rupee">37,420</span><span class="seen__pane-unit">/ mo</span>
+                </span>
+                <div class="seen__spark seen__spark--gold" aria-hidden="true">
+                  <svg viewBox="0 0 100 26" preserveAspectRatio="none">
+                    <path d="M0,18 L12,16 L24,17 L36,12 L48,14 L60,8 L72,10 L84,6 L100,4"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="seen__pane seen__pane--goals">
+                <span class="seen__pane-eyebrow">Goals on track</span>
+                <span class="seen__pane-num">
+                  <span class="seen__pane-val" data-target="3" data-format="int">3</span><span class="seen__pane-unit">of 5</span>
+                </span>
+                <div class="seen__pane-meter" aria-hidden="true">
+                  <span class="is-on"></span><span class="is-on"></span><span class="is-on"></span><span></span><span></span>
+                </div>
+              </div>
+
+              <div class="seen__pane seen__pane--risk">
+                <span class="seen__pane-eyebrow">Risk score</span>
+                <span class="seen__pane-num">
+                  <span class="seen__pane-val">Medium</span>
+                </span>
+                <div class="seen__pane-risk" aria-hidden="true">
+                  <span></span><span class="is-on"></span><span></span>
+                </div>
+                <div class="seen__pane-risk-meta" aria-hidden="true">
+                  <span>Low</span><span>Med</span><span>High</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="seen__composite-disclaimer">Illustrative example &middot; Your numbers will be yours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="preview-pad"></div>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ---- Counter animator (rupee | lakh | int) ----
+      function animateCounter(el, target, duration, format) {
+        var start = performance.now();
+        function step(now) {
+          var p = Math.min((now - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          var v = target * eased;
+          var out;
+          if (format === 'lakh')      out = (v / 100000).toFixed(1) + 'L';
+          else if (format === 'int')  out = Math.floor(v).toString();
+          else                        out = Math.floor(v).toLocaleString('en-IN');
+          el.textContent = out;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      // ---- Choreography ----
+      var SCAN_START_MS    = 320;        // scan-line begins
+      var SCAN_DURATION_MS = 2800;       // scan-line total sweep time
+      var DOT_INTERVAL_MS  = 50;         // pop one sub-type dot every X ms
+      var COMPOSITE_LAND_MS= 4200;       // when composite pulses + counters fire
+
+      function snapToEnd(stage) {
+        stage.querySelectorAll('.seen__cluster').forEach(function (c) {
+          c.classList.add('is-lit', 'is-done');
+          c.querySelectorAll('.seen__cluster-dot').forEach(function (d) { d.classList.add('is-on'); });
+        });
+        stage.querySelectorAll('[data-target]').forEach(function (el) {
+          var t = parseFloat(el.getAttribute('data-target'));
+          var f = el.getAttribute('data-format') || 'rupee';
+          if (f === 'lakh')      el.textContent = (t / 100000).toFixed(1) + 'L';
+          else if (f === 'int')  el.textContent = Math.floor(t).toString();
+          else                   el.textContent = Math.floor(t).toLocaleString('en-IN');
+        });
+      }
+
+      function runStage(stage) {
+        if (stage.dataset.played === '1') return;
+        stage.dataset.played = '1';
+        stage.classList.add('is-in');
+
+        if (reduce) { snapToEnd(stage); return; }
+
+        var clusters = stage.querySelectorAll('.seen__cluster');
+        var n = clusters.length;
+        // Each cluster's centre is reached at: SCAN_START + (i + 0.5) * (SCAN_DURATION / n)
+        // Light it up slightly *before* the scan reaches centre, so dots are already popping
+        // when the scan line arrives.
+        var step = SCAN_DURATION_MS / n;
+        clusters.forEach(function (cluster, i) {
+          var reachAt = SCAN_START_MS + (i + 0.5) * step - 180;
+          if (reachAt < 0) reachAt = 0;
+
+          setTimeout(function () { cluster.classList.add('is-lit'); }, reachAt);
+
+          var dots = cluster.querySelectorAll('.seen__cluster-dot');
+          dots.forEach(function (dot, j) {
+            setTimeout(function () { dot.classList.add('is-on'); },
+                       reachAt + j * DOT_INTERVAL_MS);
+          });
+
+          // After last dot pops, fade in the "N types" caption
+          setTimeout(function () { cluster.classList.add('is-done'); },
+                     reachAt + dots.length * DOT_INTERVAL_MS + 80);
+        });
+
+        // Counters animate after composite has landed
+        var counters = stage.querySelectorAll('[data-target]');
+        counters.forEach(function (el, i) {
+          var t = parseFloat(el.getAttribute('data-target'));
+          var f = el.getAttribute('data-format') || 'rupee';
+          if (f === 'lakh')      el.textContent = '0.0L';
+          else if (f === 'int')  el.textContent = '0';
+          else                   el.textContent = '0';
+          setTimeout(function () {
+            animateCounter(el, t, 1100, f);
+          }, COMPOSITE_LAND_MS + i * 90);
+        });
+      }
+
+      function resetStage(stage) {
+        stage.classList.remove('is-in');
+        stage.dataset.played = '';
+        stage.querySelectorAll('.seen__cluster').forEach(function (c) {
+          c.classList.remove('is-lit', 'is-done');
+          c.querySelectorAll('.seen__cluster-dot').forEach(function (d) { d.classList.remove('is-on'); });
+        });
+        stage.querySelectorAll('[data-target]').forEach(function (el) {
+          var f = el.getAttribute('data-format') || 'rupee';
+          if (f === 'lakh')      el.textContent = '0.0L';
+          else if (f === 'int')  el.textContent = '0';
+          else                   el.textContent = '0';
+        });
+      }
+
+      var stage = document.querySelector('.seen__stage');
+      if (stage) {
+        if (!('IntersectionObserver' in window)) {
+          runStage(stage);
+        } else {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                runStage(e.target);
+                io.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+          io.observe(stage);
+        }
+      }
+
+      var replayBtn = document.getElementById('replay');
+      if (replayBtn && stage) {
+        replayBtn.addEventListener('click', function () {
+          resetStage(stage);
+          void stage.offsetWidth;
+          setTimeout(function () { runStage(stage); }, 80);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>§7 Preview v3 — Typographic · Two of you. Two answers. · Finwiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================ */
+    /* BRAND TOKENS                                                  */
+    /* ============================================================ */
+    :root {
+      --navy: #002d56;
+      --navy-deep: #001f3d;
+      --mint: #35d6c6;
+      --teal: #00b6ad;
+      --white: #ffffff;
+      --off-white: #f7f9fb;
+      --text-on-light: #002d56;
+      --text-on-light-muted: #5a6b7d;
+      --text-on-dark: rgba(255,255,255,0.94);
+      --text-on-dark-muted: rgba(255,255,255,0.74);
+      --border-on-light: rgba(0,45,86,0.10);
+      --border-on-light-strong: rgba(0,45,86,0.20);
+      --shadow-soft: 0 4px 18px rgba(0,45,86,0.08);
+
+      --gold: #f5c26b;
+      --rose: #e87b6f;
+
+      --mint-08:  rgba(53,214,198,0.08);
+      --mint-16:  rgba(53,214,198,0.16);
+      --mint-32:  rgba(53,214,198,0.32);
+      --rose-05:  rgba(232,123,111,0.05);
+      --teal-08:  rgba(0,182,173,0.08);
+
+      --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: 'Lora', Georgia, serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      font-weight: 400; line-height: 1.6;
+      color: var(--text-on-light);
+      background: var(--off-white);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ============================================================ */
+    /* PREVIEW CHROME                                                */
+    /* ============================================================ */
+    .preview-bar {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 10px 20px;
+      background: var(--navy-deep);
+      border-bottom: 1px solid rgba(53,214,198,0.18);
+      font: 500 12.5px/1 var(--font-sans);
+      color: var(--text-on-dark-muted);
+    }
+    .preview-bar a { color: var(--mint); text-decoration: none; }
+    .preview-bar a:hover { text-decoration: underline; }
+    .preview-bar__title { color: var(--text-on-dark); font-weight: 600; }
+    .preview-bar__actions { display: flex; gap: 8px; }
+    .preview-bar button {
+      font: 500 12px/1 var(--font-sans);
+      color: var(--navy-deep); background: var(--mint);
+      border: 0; border-radius: 6px;
+      padding: 8px 14px; cursor: pointer;
+      transition: background 200ms, transform 150ms;
+    }
+    .preview-bar button:hover { background: var(--teal); color: var(--white); }
+    .preview-bar button:active { transform: scale(0.98); }
+    .preview-bar button.is-secondary {
+      background: transparent; color: var(--text-on-dark-muted);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .preview-bar button.is-secondary:hover { color: var(--mint); border-color: var(--mint); }
+
+    /* ============================================================ */
+    /* §7 — TYPOGRAPHIC                                              */
+    /* ============================================================ */
+    .type-cases {
+      background: var(--off-white);
+      color: var(--text-on-light);
+      padding: clamp(72px, 10vw, 120px) 0;
+    }
+    .type-cases__inner {
+      max-width: 1180px; margin: 0 auto; padding: 0 32px;
+    }
+
+    /* Editorial heading */
+    .type-cases__heading {
+      font-family: var(--font-serif);
+      font-size: clamp(44px, 7vw, 80px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .type-cases__heading em {
+      font-style: italic;
+      color: var(--teal);
+    }
+    .type-cases__sub {
+      font-size: 17px;
+      color: var(--text-on-light-muted);
+      text-align: center;
+      max-width: 56ch;
+      margin: 0 auto 80px;
+      line-height: 1.55;
+      font-style: italic;
+      font-family: var(--font-serif);
+    }
+
+    /* ============================================================ */
+    /* PAIR (one axis = one pair)                                   */
+    /* ============================================================ */
+    .pair {
+      margin-bottom: 96px;
+    }
+    .pair:last-of-type { margin-bottom: 56px; }
+
+    /* Axis label: thin rules + small caps */
+    .pair__axis {
+      display: flex; align-items: center; gap: 18px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      justify-content: center;
+      margin-bottom: 36px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 500ms ease-out, transform 500ms cubic-bezier(0.16,1,0.3,1);
+    }
+    .pair__axis::before, .pair__axis::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: var(--border-on-light-strong);
+      max-width: 220px;
+    }
+    .pair.is-revealed .pair__axis {
+      opacity: 1; transform: none;
+    }
+
+    /* Two-column figure grid */
+    .pair__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: stretch;
+    }
+
+    /* ============================================================ */
+    /* FIGURE — one half of a pair                                  */
+    /* ============================================================ */
+    .figure {
+      display: flex; flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 600ms ease-out calc(var(--i, 0) * 100ms),
+                  transform 600ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i, 0) * 100ms);
+    }
+    .pair.is-revealed .figure { opacity: 1; transform: none; }
+
+    .figure__name {
+      font-family: var(--font-sans);
+      font-size: clamp(20px, 2vw, 24px);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .figure__meta {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-on-light-muted);
+      letter-spacing: 0.01em;
+      margin-bottom: clamp(28px, 3vw, 40px);
+    }
+
+    /* The MASSIVE NUMBER — type as data */
+    .figure__num {
+      font-family: var(--font-sans);
+      font-size: clamp(74px, 13vw, 168px);
+      font-weight: 800;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      color: var(--mint);
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: 'tnum' 1, 'lnum' 1;
+      display: block;
+    }
+    .figure__num small {
+      font-size: 0.4em;
+      font-weight: 700;
+      color: var(--navy);
+      vertical-align: 0.25em;
+      margin-left: 0.05em;
+      letter-spacing: -0.02em;
+    }
+    .figure__num-label {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--navy);
+      letter-spacing: 0.01em;
+      margin-top: 14px;
+      max-width: 22ch;
+    }
+
+    /* Strike-through deduction (Karan's case) */
+    .figure__deduction {
+      position: relative;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-right: 4px;
+      font-family: var(--font-sans);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 700;
+      color: var(--rose);
+      letter-spacing: -0.02em;
+    }
+    .deduction__num {
+      position: relative;
+      display: inline-block;
+    }
+    .deduction__num::after {
+      content: '';
+      position: absolute;
+      left: -4%; right: -4%;
+      top: 52%;
+      height: 4px;
+      background: var(--rose);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 750ms cubic-bezier(0.4, 0, 0.2, 1) 1500ms;
+      border-radius: 2px;
+    }
+    .pair.is-revealed .deduction__num::after {
+      transform: scaleX(1);
+    }
+    .deduction__caption {
+      font-size: 13px;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--text-on-light-muted);
+      letter-spacing: 0.01em;
+    }
+
+    /* Verdict bar */
+    .figure__verdict {
+      margin-top: clamp(28px, 3vw, 40px);
+      padding: 14px 18px;
+      background: var(--mint);
+      color: var(--navy-deep);
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.1px;
+      line-height: 1.4;
+      align-self: stretch;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 2px 14px rgba(53,214,198,0.18);
+      transform: translateY(10px);
+      opacity: 0;
+      transition: opacity 500ms ease-out 1100ms,
+                  transform 500ms cubic-bezier(0.16, 1, 0.3, 1) 1100ms;
+    }
+    .pair.is-revealed .figure__verdict {
+      opacity: 1; transform: none;
+    }
+    .figure__verdict::before {
+      content: '\25B0';
+      color: var(--navy-deep);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    /* Why-divergence line */
+    .pair__why {
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-style: italic;
+      font-weight: 500;
+      color: var(--navy);
+      line-height: 1.4;
+      max-width: 760px;
+      margin: 44px auto 0;
+      letter-spacing: -0.01em;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 500ms ease-out 1500ms,
+                  transform 500ms cubic-bezier(0.16, 1, 0.3, 1) 1500ms;
+    }
+    .pair.is-revealed .pair__why {
+      opacity: 1; transform: none;
+    }
+
+    /* ============================================================ */
+    /* SECTION CLOSER                                                */
+    /* ============================================================ */
+    .type-cases__close {
+      margin-top: 96px;
+      text-align: center;
+      display: flex; flex-direction: column; gap: 22px; align-items: center;
+    }
+    .type-cases__mascot {
+      width: 96px; height: 96px;
+      filter: drop-shadow(0 6px 16px rgba(0,45,86,0.12));
+      transform-origin: bottom center;
+    }
+    .type-cases__mascot.is-waving {
+      animation: mascotWave 1500ms cubic-bezier(0.36, 0, 0.18, 1);
+    }
+    @keyframes mascotWave {
+      0%   { transform: rotate(0deg) scale(1); }
+      18%  { transform: rotate(-7deg) scale(1.06); }
+      36%  { transform: rotate(8deg) scale(1.06); }
+      54%  { transform: rotate(-5deg) scale(1.04); }
+      72%  { transform: rotate(5deg) scale(1.02); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    .type-cases__close-text {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: 500;
+      color: var(--navy);
+      max-width: 760px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
+    .type-cases__close-text strong {
+      font-weight: 600;
+      color: var(--teal);
+      font-style: italic;
+    }
+    .type-cases__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font: 700 16px/1 var(--font-sans);
+      padding: 16px 30px; border-radius: 10px;
+      background: var(--mint); color: var(--navy-deep);
+      text-decoration: none;
+      transition: background 200ms, transform 200ms, box-shadow 200ms;
+      box-shadow: 0 4px 14px rgba(53,214,198,0.28);
+      letter-spacing: -0.1px;
+    }
+    .type-cases__cta:hover {
+      background: var(--teal); color: var(--white);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0,182,173,0.32);
+    }
+    .type-cases__cta:focus-visible {
+      outline: 2px solid var(--mint); outline-offset: 3px;
+    }
+    .type-cases__footnote {
+      margin: 32px auto 0;
+      text-align: center;
+      font-size: 11px; font-style: italic;
+      color: var(--text-on-light-muted);
+      max-width: 720px; line-height: 1.55;
+    }
+
+    /* ============================================================ */
+    /* MOBILE                                                        */
+    /* ============================================================ */
+    @media (max-width: 880px) {
+      .pair { margin-bottom: 72px; }
+      .pair__axis::before, .pair__axis::after { max-width: 60px; }
+      .pair__grid {
+        grid-template-columns: 1fr;
+        gap: 56px;
+      }
+      .pair__why { margin-top: 30px; }
+    }
+
+    /* Mobile-frame preview toggle */
+    body.is-mobile-preview main {
+      max-width: 420px;
+      margin: 24px auto;
+      border: 1px solid var(--border-on-light);
+      border-radius: 24px;
+      background: var(--off-white);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,45,86,0.12);
+    }
+    body.is-mobile-preview .type-cases { padding: 40px 0; }
+    body.is-mobile-preview .type-cases__inner { padding: 0 16px; }
+    body.is-mobile-preview .type-cases__sub { margin-bottom: 48px; }
+    body.is-mobile-preview .pair__grid { grid-template-columns: 1fr; gap: 48px; }
+    body.is-mobile-preview .pair__axis::before,
+    body.is-mobile-preview .pair__axis::after { max-width: 40px; }
+
+    /* ============================================================ */
+    /* REDUCED MOTION                                                */
+    /* ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .pair__axis,
+      .figure,
+      .figure__verdict,
+      .pair__why,
+      .type-cases__mascot,
+      .deduction__num::after {
+        transition: none !important;
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .pair.is-revealed .deduction__num::after {
+        transform: scaleX(1) !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-bar">
+    <div>&larr; <a href="cases-preview.html">v1</a> &middot; <a href="cases-preview-v2.html">v2</a> &middot; <a href="index-staging.html">staging</a></div>
+    <div class="preview-bar__title">§7 v3 &middot; Typographic &middot; type-as-data</div>
+    <div class="preview-bar__actions">
+      <button id="replayBtn">&#8634; Replay</button>
+      <button id="mobileBtn" class="is-secondary">View mobile</button>
+    </div>
+  </div>
+
+  <main>
+    <section class="type-cases" aria-labelledby="cases-heading">
+      <div class="type-cases__inner">
+
+        <h2 id="cases-heading" class="type-cases__heading">
+          Two of you. <em>Two answers.</em>
+        </h2>
+        <p class="type-cases__sub">
+          Three pairs. Same surface. Different floor.
+        </p>
+
+        <!-- ============================================================ -->
+        <!-- PAIR 1 — RISK APPETITE                                       -->
+        <!-- ============================================================ -->
+        <article class="pair" id="pair-risk">
+          <header class="pair__axis">Risk appetite</header>
+
+          <div class="pair__grid">
+            <div class="figure" style="--i: 0">
+              <h3 class="figure__name">Riya M.</h3>
+              <p class="figure__meta">35 &middot; Bengaluru &middot; Software engineer</p>
+              <span class="figure__num">
+                <span class="num" data-target="83" data-format="pct">0</span><small>%</small>
+              </span>
+              <p class="figure__num-label">equity in &#8377;46L portfolio</p>
+              <p class="figure__verdict">Stop adding equity. Buy term. Build liquidity.</p>
+            </div>
+            <div class="figure" style="--i: 1">
+              <h3 class="figure__name">Aman K.</h3>
+              <p class="figure__meta">35 &middot; Pune &middot; Sales lead</p>
+              <span class="figure__num">
+                <span class="num" data-target="0" data-format="pct">0</span><small>%</small>
+              </span>
+              <p class="figure__num-label">equity in &#8377;6L portfolio</p>
+              <p class="figure__verdict">Start equity. Today. Skip the side bets.</p>
+            </div>
+          </div>
+
+          <p class="pair__why">Same surplus. Opposite portfolios.</p>
+        </article>
+
+        <!-- ============================================================ -->
+        <!-- PAIR 2 — GOAL FEASIBILITY                                    -->
+        <!-- ============================================================ -->
+        <article class="pair" id="pair-goals">
+          <header class="pair__axis">Goal feasibility</header>
+
+          <div class="pair__grid">
+            <div class="figure" style="--i: 0">
+              <h3 class="figure__name">Arjun S.</h3>
+              <p class="figure__meta">35 &middot; Hyderabad &middot; Product manager</p>
+              <span class="figure__num">
+                <span class="num" data-target="87" data-format="pct">0</span><small>%</small>
+              </span>
+              <p class="figure__num-label">saved toward &#8377;16L down payment by 2030</p>
+              <p class="figure__verdict">On track. Don&rsquo;t pause SIPs. The flat fits.</p>
+            </div>
+            <div class="figure" style="--i: 1">
+              <h3 class="figure__name">Suresh R.</h3>
+              <p class="figure__meta">35 &middot; Mumbai &middot; Tech lead</p>
+              <span class="figure__num">
+                <span class="num" data-target="25" data-format="pct">0</span><small>%</small>
+              </span>
+              <p class="figure__num-label">saved toward &#8377;16L down payment by 2030</p>
+              <p class="figure__verdict">Push 18 months. Drop ceiling to &#8377;68L.</p>
+            </div>
+          </div>
+
+          <p class="pair__why">Same goal. Different starting line.</p>
+        </article>
+
+        <!-- ============================================================ -->
+        <!-- PAIR 3 — FAMILY LOAD                                         -->
+        <!-- ============================================================ -->
+        <article class="pair" id="pair-family">
+          <header class="pair__axis">Family load</header>
+
+          <div class="pair__grid">
+            <div class="figure" style="--i: 0">
+              <h3 class="figure__name">Vivek N.</h3>
+              <p class="figure__meta">35 &middot; Pune &middot; Senior engineer</p>
+              <span class="figure__num">
+                <small>&#8377;</small><span class="num" data-target="65000" data-format="rupee-short">0</span>
+              </span>
+              <p class="figure__num-label">real surplus per month</p>
+              <p class="figure__verdict">Light touch. Top up health. Fortify emergency.</p>
+            </div>
+            <div class="figure" style="--i: 1">
+              <h3 class="figure__name">Karan M.</h3>
+              <p class="figure__meta">35 &middot; Pune &middot; Senior engineer</p>
+              <p class="figure__deduction">
+                <span class="deduction__num">&#8377;35K</span>
+                <span class="deduction__caption">eaten by dialysis, every month</span>
+              </p>
+              <span class="figure__num">
+                <small>&#8377;</small><span class="num" data-target="30000" data-format="rupee-short">0</span>
+              </span>
+              <p class="figure__num-label">real surplus per month</p>
+              <p class="figure__verdict">Family first. Retirement second. Order matters.</p>
+            </div>
+          </div>
+
+          <p class="pair__why">Same payslip. Different floor.</p>
+        </article>
+
+        <!-- ============================================================ -->
+        <!-- SECTION CLOSER                                                -->
+        <!-- ============================================================ -->
+        <div class="type-cases__close">
+          <img class="type-cases__mascot" id="closer-mascot"
+               src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
+          <p class="type-cases__close-text">
+            Three pairs. Six 35-year-olds. Six verdicts.
+            <strong>Yours will be different too.</strong>
+          </p>
+          <a class="type-cases__cta" href="/demo-app">
+            See your verdict &rarr;
+          </a>
+        </div>
+
+        <p class="type-cases__footnote">
+          Illustrative cases. Names changed; details composed.
+          Your data drives your verdict, not these.
+        </p>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var pairs = document.querySelectorAll('.pair');
+      var revealed = new WeakSet();
+
+      // ---------- number tick-up ----------
+      function tickNumber(el, target, duration, format) {
+        var start = performance.now();
+        function step(now) {
+          var p = Math.min((now - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          var v = target * eased;
+          var out;
+          if (format === 'pct')               out = Math.round(v).toString();
+          else if (format === 'rupee-short') {
+            // 65000 -> "65K", 30000 -> "30K"
+            out = Math.round(v / 1000).toString() + 'K';
+          }
+          else                                out = Math.floor(v).toString();
+          el.textContent = out;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      function tickAllInPair(pair) {
+        var nums = pair.querySelectorAll('.num[data-target]');
+        nums.forEach(function (el, i) {
+          var target = parseFloat(el.dataset.target);
+          var format = el.dataset.format || 'pct';
+          // Reset display
+          if (format === 'pct')          el.textContent = '0';
+          else if (format === 'rupee-short') el.textContent = '0K';
+          else                            el.textContent = '0';
+          // Animate
+          setTimeout(function () {
+            tickNumber(el, target, 1200, format);
+          }, 350 + i * 80);
+        });
+      }
+
+      // ---------- reveal on scroll ----------
+      function reveal(pair) {
+        if (revealed.has(pair)) return;
+        revealed.add(pair);
+        pair.classList.add('is-revealed');
+        if (!reduce) tickAllInPair(pair);
+        else {
+          // For reduced-motion, just set final values
+          pair.querySelectorAll('.num[data-target]').forEach(function (el) {
+            var target = parseFloat(el.dataset.target);
+            var format = el.dataset.format || 'pct';
+            if (format === 'pct')                el.textContent = Math.round(target).toString();
+            else if (format === 'rupee-short')  el.textContent = Math.round(target / 1000) + 'K';
+            else                                 el.textContent = Math.floor(target).toString();
+          });
+        }
+      }
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) reveal(e.target);
+          });
+        }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+        pairs.forEach(function (p) { io.observe(p); });
+      } else {
+        pairs.forEach(reveal);
+      }
+
+      // ---------- mascot wave ----------
+      var mascot = document.getElementById('closer-mascot');
+      if (mascot && !reduce && 'IntersectionObserver' in window) {
+        var mIO = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              mascot.classList.add('is-waving');
+              obs.disconnect();
+            }
+          });
+        }, { threshold: 0.5 });
+        mIO.observe(mascot);
+      }
+
+      // ---------- replay (for preview chrome) ----------
+      var replay = document.getElementById('replayBtn');
+      if (replay) {
+        replay.addEventListener('click', function () {
+          pairs.forEach(function (p) {
+            p.classList.remove('is-revealed');
+            revealed.delete(p);
+          });
+          // Force reflow then re-trigger reveals
+          void document.body.offsetWidth;
+          requestAnimationFrame(function () {
+            pairs.forEach(reveal);
+          });
+        });
+      }
+
+      // ---------- mobile-frame toggle ----------
+      var mobileBtn = document.getElementById('mobileBtn');
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', function () {
+          document.body.classList.toggle('is-mobile-preview');
+          mobileBtn.textContent = document.body.classList.contains('is-mobile-preview')
+            ? 'View desktop' : 'View mobile';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

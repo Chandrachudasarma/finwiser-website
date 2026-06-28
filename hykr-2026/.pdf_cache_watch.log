@@ -1,0 +1,2 @@
+[13:14:10] check 1: content-length=825603 cf=EXPIRED age=0 -> LIVE (new PDF served)
+RESULT=LIVE

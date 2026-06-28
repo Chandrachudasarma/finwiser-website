@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# macOS metadata
+.DS_Store
+._*
+
+# Editor/tooling scratch
+*.orig
+
+# WIP persona-video render iterations (kept local, not on the public site)
+fw-deck-2026/video/
+
+# Old deck backup PDF
+fw-deck-2026/Finwiser-Pitch-Deck-2026.backup.pdf

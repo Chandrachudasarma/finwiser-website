@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Step 03 Preview — Cascade Allocator · Finwiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================ */
+    /* BRAND TOKENS                                                  */
+    /* ============================================================ */
+    :root {
+      --navy: #002d56;
+      --navy-deep: #001f3d;
+      --mint: #35d6c6;
+      --teal: #00b6ad;
+      --gold: #f5c26b;
+      --rose: #e87b6f;
+      --white: #ffffff;
+      --off-white: #f7f9fb;
+      --text-on-dark: rgba(255,255,255,0.94);
+      --text-on-dark-muted: rgba(255,255,255,0.74);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-weight: 400; line-height: 1.6;
+      color: var(--text-on-dark);
+      background: var(--navy);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* ============================================================ */
+    /* PREVIEW CHROME                                                */
+    /* ============================================================ */
+    .preview-bar {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 10px 20px;
+      background: var(--navy-deep);
+      border-bottom: 1px solid rgba(53,214,198,0.18);
+      font: 500 12.5px/1 'Inter', sans-serif;
+      color: var(--text-on-dark-muted);
+      letter-spacing: 0.2px;
+    }
+    .preview-bar a { color: var(--mint); text-decoration: none; }
+    .preview-bar a:hover { text-decoration: underline; }
+    .preview-bar__title { color: var(--text-on-dark); font-weight: 600; }
+    .preview-bar__actions { display: flex; gap: 8px; }
+    .preview-bar button {
+      font: 500 12px/1 'Inter', sans-serif;
+      color: var(--navy-deep);
+      background: var(--mint);
+      border: 0; border-radius: 6px;
+      padding: 8px 14px; cursor: pointer;
+      transition: background 200ms ease, transform 150ms ease;
+    }
+    .preview-bar button:hover { background: var(--teal); color: var(--white); }
+    .preview-bar button:active { transform: scale(0.98); }
+    .preview-bar button.is-secondary {
+      background: transparent; color: var(--text-on-dark-muted);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .preview-bar button.is-secondary:hover { color: var(--mint); border-color: var(--mint); background: transparent; }
+
+    /* ============================================================ */
+    /* SECTION SCAFFOLD                                              */
+    /* ============================================================ */
+    main {
+      min-height: calc(100vh - 40px);
+      padding: 64px 24px 120px;
+      background: var(--navy);
+    }
+    .step-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 16%) 1fr;
+      gap: 32px;
+      max-width: 1100px; margin: 0 auto;
+      align-items: start;
+      transition: max-width 300ms ease;
+    }
+    body.force-mobile .step-row { max-width: 420px; }
+    .step-num {
+      font-family: 'Lora', Georgia, serif; font-style: italic; font-weight: 600;
+      font-size: clamp(48px, 7vw, 72px); line-height: 1;
+      color: var(--mint);
+      text-shadow: 0 0 32px rgba(53,214,198,0.35);
+    }
+    .step-card {
+      background: var(--navy-deep);
+      border: 1px solid rgba(53,214,198,0.16);
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .step-card h3 {
+      font: 700 clamp(22px, 3vw, 28px)/1.25 'Inter', sans-serif;
+      color: var(--text-on-dark);
+      letter-spacing: -0.2px; margin-bottom: 10px;
+    }
+    .step-card > p {
+      font: 400 16px/1.65 'Inter', sans-serif;
+      color: var(--text-on-dark-muted);
+      max-width: 60ch;
+    }
+    .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .tags li {
+      font: 500 12px/1 'Inter', sans-serif;
+      padding: 5px 11px; border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.78);
+    }
+
+    /* ============================================================ */
+    /* CONCEPT BLOCK                                                 */
+    /* ============================================================ */
+    .concept--allocator {
+      margin-top: 24px;
+      padding: 20px 22px 22px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(53,214,198,0.16);
+    }
+
+    /* ============================================================ */
+    /* ACT 1 — SOURCE STRIP → Finwy → REPLACEMENT LINE              */
+    /* ============================================================ */
+    .src-stage {
+      position: relative;
+      padding: 4px 0 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 18px;
+      min-height: 60px;
+    }
+    .src-row {
+      display: flex; align-items: center;
+      flex-wrap: wrap; gap: 8px 10px;
+      justify-content: flex-start;
+      transition: opacity 380ms ease;
+    }
+    .src-stage.is-replaced .src-row {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .src-chip {
+      display: inline-flex; align-items: center;
+      padding: 6px 11px;
+      font: 500 11.5px/1 'Inter', sans-serif;
+      letter-spacing: 0.1px;
+      color: rgba(255,255,255,0.62);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 999px;
+      white-space: nowrap;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .src-stage.is-act1-in .src-chip { opacity: 1; transform: none; }
+    .src-stage.is-act1-in .src-chip:nth-child(1) { transition-delay: 100ms; }
+    .src-stage.is-act1-in .src-chip:nth-child(2) { transition-delay: 180ms; }
+    .src-stage.is-act1-in .src-chip:nth-child(3) { transition-delay: 260ms; }
+    .src-stage.is-act1-in .src-chip:nth-child(4) { transition-delay: 340ms; }
+    .src-stage.is-act1-in .src-chip:nth-child(5) { transition-delay: 420ms; }
+
+    .src-arrow {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px;
+      color: rgba(255,255,255,0.32);
+      font: 500 14px/1 'Inter', sans-serif;
+      opacity: 0; transition: opacity 360ms ease 500ms;
+    }
+    .src-stage.is-act1-in .src-arrow { opacity: 1; }
+
+    .src-finwy {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(53,214,198,0.08);
+      border: 1px solid rgba(53,214,198,0.32);
+      box-shadow: 0 0 0 0 rgba(53,214,198,0.0);
+      opacity: 0; transform: scale(0.85);
+      transition: opacity 360ms ease 600ms,
+                  transform 360ms cubic-bezier(0.16, 1, 0.3, 1) 600ms,
+                  box-shadow 240ms ease;
+    }
+    .src-stage.is-act1-in .src-finwy { opacity: 1; transform: scale(1); }
+    .src-finwy.is-pulsing { box-shadow: 0 0 0 6px rgba(53,214,198,0.18); }
+    .src-finwy svg { width: 22px; height: 22px; }
+    .src-finwy svg path { stroke: var(--mint); stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+    .src-stage.is-dissolving .src-chip {
+      animation: chip-dissolve 620ms cubic-bezier(0.4, 0, 0.6, 1) forwards;
+    }
+    .src-stage.is-dissolving .src-chip:nth-child(1) { animation-delay: 0ms; }
+    .src-stage.is-dissolving .src-chip:nth-child(2) { animation-delay: 220ms; }
+    .src-stage.is-dissolving .src-chip:nth-child(3) { animation-delay: 440ms; }
+    .src-stage.is-dissolving .src-chip:nth-child(4) { animation-delay: 660ms; }
+    .src-stage.is-dissolving .src-chip:nth-child(5) { animation-delay: 880ms; }
+    @keyframes chip-dissolve {
+      0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0; transform: translate(40px, -2px) scale(0.78); }
+    }
+
+    .src-replace {
+      position: absolute; left: 0; right: 0; top: 4px; bottom: 18px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      font: 500 13px/1.4 'Inter', sans-serif;
+      color: var(--text-on-dark-muted);
+      letter-spacing: -0.05px;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 380ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .src-replace b { color: var(--mint); font-weight: 700; }
+    .src-replace em {
+      font-style: italic; font-family: 'Lora', Georgia, serif;
+      color: var(--text-on-dark); font-weight: 500;
+    }
+    .src-stage.is-replaced .src-replace { opacity: 1; transform: none; }
+
+    /* ============================================================ */
+    /* TOP BANNER — Surplus (left, static) + Balance (right, ticks) */
+    /* ============================================================ */
+    .topbanner {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 24px;
+      padding: 4px 14px 14px;
+      margin-bottom: 6px;
+      border-bottom: 1px dashed rgba(53,214,198,0.20);
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .concept--allocator.is-act2 .topbanner { opacity: 1; transform: none; }
+
+    .topbanner__cell {
+      display: flex; flex-direction: column; gap: 4px;
+      min-width: 0;
+    }
+    .topbanner__cell--surplus { align-items: flex-start; }
+    .topbanner__cell--balance { align-items: flex-end; text-align: right; }
+
+    .topbanner__label {
+      font: 600 9.5px/1 'Inter', sans-serif;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+    }
+    .topbanner__value {
+      font: 800 26px/1 'Inter', sans-serif;
+      color: var(--mint);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.8px;
+      text-shadow: 0 0 24px rgba(53,214,198,0.32);
+      transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .topbanner__value small {
+      font: 500 12px/1 'Inter', sans-serif;
+      color: rgba(255,255,255,0.42);
+      letter-spacing: 0.2px;
+      margin-left: 3px;
+      vertical-align: baseline;
+    }
+    .topbanner__cell--balance.is-zeroed .topbanner__value {
+      animation: balance-zero-pulse 540ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes balance-zero-pulse {
+      0%   { transform: scale(1);    text-shadow: 0 0 0 rgba(53,214,198,0); }
+      45%  { transform: scale(1.22); text-shadow: 0 0 22px rgba(53,214,198,0.7); }
+      100% { transform: scale(1);    text-shadow: 0 0 24px rgba(53,214,198,0.32); }
+    }
+
+    /* ============================================================ */
+    /* CASCADE TABLE                                                 */
+    /* ============================================================ */
+    .cascade {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+
+    .cascade__colheads {
+      display: grid;
+      grid-template-columns: 48px 1fr 130px 110px 130px;
+      column-gap: 12px;
+      padding: 0 14px 6px;
+      font: 600 10px/1 'Inter', sans-serif;
+      letter-spacing: 0.8px; text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+    }
+    .cascade__colheads span { text-align: right; }
+    .cascade__colheads span:nth-child(1) { text-align: left; }
+    .cascade__colheads span:nth-child(2) { text-align: left; }
+    .cascade__colheads span:nth-child(3) { text-align: left; }
+
+    .cascade__row {
+      display: grid;
+      grid-template-columns: 48px 1fr 130px 110px 130px;
+      column-gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      opacity: 0; transform: translateY(6px);
+      transition: opacity 360ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 320ms ease,
+                  border-style 320ms ease,
+                  background 320ms ease,
+                  box-shadow 320ms ease;
+    }
+    .cascade__row.is-revealed { opacity: 1; transform: none; }
+
+    /* Pri pill */
+    .cascade__pri {
+      display: inline-flex; justify-content: flex-start;
+    }
+    .pri {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 32px; height: 22px; padding: 0 9px; border-radius: 999px;
+      font: 700 10px/1 'Inter', sans-serif; letter-spacing: 0.6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .pri--p0   { background: var(--mint);  color: var(--navy-deep); }
+    .pri--p1   { background: var(--teal);  color: var(--white); }
+    .pri--p2   { background: rgba(53,214,198,0.10); color: var(--mint); border: 1px solid rgba(53,214,198,0.42); }
+    .pri--p3   { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.16); }
+
+    /* Name cell */
+    .cascade__name {
+      display: flex; flex-direction: column; gap: 3px;
+      min-width: 0;
+    }
+    .name__title {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      font: 600 14.5px/1.2 'Inter', sans-serif;
+      color: var(--text-on-dark);
+      letter-spacing: -0.2px;
+    }
+    .name__star {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px;
+      color: var(--mint);
+      font: 700 14px/1 'Inter', sans-serif;
+      transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .concept--allocator.is-starred .cascade__row--star .name__star {
+      transform: scale(1.15);
+      text-shadow: 0 0 12px rgba(53,214,198,0.6);
+    }
+    .name__pill {
+      display: inline-flex; align-items: center;
+      padding: 3px 9px; border-radius: 999px;
+      background: rgba(53,214,198,0.10);
+      border: 1px solid rgba(53,214,198,0.32);
+      color: var(--mint);
+      font: 600 9.5px/1 'Inter', sans-serif;
+      letter-spacing: 0.4px; text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .name__sub {
+      font: 500 11.5px/1.35 'Inter', sans-serif;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.05px;
+    }
+    .name__sub.is-empty { display: none; }
+    .name__fund-mobile { display: none; }  /* shown only on mobile */
+
+    /* Fund cell */
+    .cascade__fund {
+      font: 500 12.5px/1.3 'Inter', sans-serif;
+      color: rgba(255,255,255,0.78);
+      letter-spacing: 0.05px;
+      white-space: normal;
+    }
+    .cascade__row--deferred .cascade__fund {
+      color: rgba(255,255,255,0.62);
+      font-style: italic;
+      font-family: 'Lora', Georgia, serif;
+      font-weight: 500;
+    }
+
+    /* Number cells */
+    .cascade__required, .cascade__allocated {
+      font: 700 14px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--text-on-dark);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.2px;
+      text-align: right;
+      white-space: nowrap;
+      transition: color 240ms ease;
+    }
+    .cascade__required {
+      color: rgba(255,255,255,0.62);
+      font-weight: 600;
+    }
+
+    /* Star row glow */
+    .concept--allocator.is-starred .cascade__row--star {
+      border-color: rgba(53,214,198,0.45);
+      background: rgba(53,214,198,0.06);
+      box-shadow: 0 0 0 1px rgba(53,214,198,0.20) inset, 0 6px 22px rgba(53,214,198,0.10);
+    }
+
+    /* Cutoff line between funded and deferred */
+    .cascade__cutoff {
+      height: 1px; margin: 4px 8px;
+      background: var(--mint); opacity: 0.35;
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform 480ms cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 280ms ease;
+    }
+    .cascade__cutoff.is-drawn { transform: scaleX(1); }
+
+    /* Deferred rows — fall into demoted state */
+    .cascade__row--deferred {
+      transition: opacity 480ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 480ms cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 320ms ease,
+                  border-style 320ms ease,
+                  background 320ms ease;
+    }
+    .cascade__row--deferred.is-fallen {
+      opacity: 0.55;
+      transform: translateY(4px);
+      border: 1px dashed rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.012);
+    }
+    .cascade__row--deferred.is-fallen .name__title { color: rgba(255,255,255,0.62); }
+
+    .cascade__allocated.is-status {
+      font: 500 11.5px/1.2 'Inter', sans-serif;
+      color: var(--gold);
+      letter-spacing: 0.05px;
+      font-weight: 500;
+      white-space: normal;
+    }
+
+    /* ============================================================ */
+    /* LEDGER                                                        */
+    /* ============================================================ */
+    .ledger {
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+      margin: 16px 4px 0;
+      padding: 10px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font: 500 12px/1 'Inter', sans-serif;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.2px;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 380ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .concept--allocator.is-ledger .ledger { opacity: 1; transform: none; }
+    .ledger__cell { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+    .ledger__cell b {
+      color: var(--text-on-dark); font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.2px;
+      font-size: 13.5px;
+    }
+    .ledger__cell--hidden b { color: var(--mint); }
+
+    /* Closing caption — centered sign-off */
+    .alloc__caption {
+      margin: 32px 4px 0;
+      padding: 28px 16px 8px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 480ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .concept--allocator.is-caption .alloc__caption { opacity: 1; transform: none; }
+    .alloc__caption-lede {
+      display: block;
+      font: 600 11px/1 'Inter', sans-serif;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+      margin-bottom: 14px;
+    }
+    .alloc__caption-hero {
+      display: block;
+      font: italic 500 clamp(20px, 2.6vw, 26px)/1.25 'Lora', Georgia, serif;
+      color: var(--mint);
+      letter-spacing: -0.2px;
+      text-shadow: 0 0 28px rgba(53,214,198,0.22);
+    }
+
+    /* ============================================================ */
+    /* RESPONSIVE + FORCE-MOBILE                                     */
+    /* ============================================================ */
+    @media (max-width: 900px) {
+      .step-row { grid-template-columns: 1fr; gap: 16px; }
+    }
+    @media (max-width: 720px) {
+      main { padding: 40px 16px 80px; }
+      .step-card { padding: 22px; }
+      .src-stage { min-height: 86px; }
+      .src-row { gap: 6px 8px; }
+      .src-chip { font-size: 11px; padding: 5px 9px; }
+      .src-replace { font-size: 12.5px; position: static; transform: none; opacity: 0; padding-top: 6px; }
+      .src-stage.is-replaced .src-replace { opacity: 1; }
+      .src-stage.is-replaced .src-row { display: none; }
+
+      /* Top banner — stack vertically, each cell row-flexed */
+      .topbanner {
+        flex-direction: column; align-items: stretch; gap: 8px;
+        padding: 4px 12px 12px;
+      }
+      .topbanner__cell {
+        flex-direction: row; align-items: baseline; justify-content: space-between;
+        gap: 12px;
+      }
+      .topbanner__cell--balance { text-align: left; align-items: baseline; }
+      .topbanner__value { font-size: 20px; }
+
+      /* Cascade — drop Fund column on mobile, stack as subline under name */
+      .cascade__colheads {
+        grid-template-columns: 42px 1fr 88px 110px;
+        column-gap: 8px;
+        padding: 0 12px 6px;
+      }
+      .cascade__colheads span:nth-child(3) { display: none; }
+      .cascade__row {
+        grid-template-columns: 42px 1fr 88px 110px;
+        column-gap: 8px;
+        padding: 11px 12px;
+      }
+      .cascade__fund { display: none; }
+      .name__fund-mobile {
+        display: block;
+        font: 500 11px/1.3 'Inter', sans-serif;
+        color: rgba(255,255,255,0.62);
+        letter-spacing: 0.05px;
+        margin-top: 2px;
+      }
+      .cascade__row--deferred .name__fund-mobile { color: rgba(255,255,255,0.30); }
+      .name__title { font-size: 13.5px; gap: 6px; flex-wrap: wrap; }
+      .name__pill { font-size: 9px; padding: 2px 7px; }
+      .name__sub { font-size: 11px; }
+      .cascade__required, .cascade__allocated { font-size: 12.5px; }
+      .cascade__allocated.is-status { font-size: 10.5px; }
+      .alloc__caption { padding: 22px 12px 4px; margin-top: 24px; }
+      .alloc__caption-lede { font-size: 10.5px; margin-bottom: 10px; }
+      .alloc__caption-hero { font-size: 18px; }
+    }
+    body.force-mobile main { padding: 40px 16px 80px; }
+    body.force-mobile .step-card { padding: 22px; }
+    body.force-mobile .src-chip { font-size: 11px; padding: 5px 9px; }
+    body.force-mobile .src-replace { position: static; padding-top: 6px; font-size: 12.5px; }
+    body.force-mobile .src-stage.is-replaced .src-row { display: none; }
+    body.force-mobile .topbanner { flex-direction: column; align-items: stretch; gap: 8px; padding: 4px 12px 12px; }
+    body.force-mobile .topbanner__cell { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 12px; }
+    body.force-mobile .topbanner__cell--balance { text-align: left; align-items: baseline; }
+    body.force-mobile .topbanner__value { font-size: 20px; }
+    body.force-mobile .cascade__colheads { grid-template-columns: 42px 1fr 88px 110px; column-gap: 8px; padding: 0 12px 6px; }
+    body.force-mobile .cascade__colheads span:nth-child(3) { display: none; }
+    body.force-mobile .cascade__row { grid-template-columns: 42px 1fr 88px 110px; column-gap: 8px; padding: 11px 12px; }
+    body.force-mobile .cascade__fund { display: none; }
+    body.force-mobile .name__fund-mobile {
+      display: block;
+      font: 500 11px/1.3 'Inter', sans-serif;
+      color: rgba(255,255,255,0.62);
+      letter-spacing: 0.05px;
+      margin-top: 2px;
+    }
+    body.force-mobile .cascade__row--deferred .name__fund-mobile { color: rgba(255,255,255,0.30); }
+    body.force-mobile .name__title { font-size: 13.5px; gap: 6px; flex-wrap: wrap; }
+    body.force-mobile .name__pill { font-size: 9px; padding: 2px 7px; }
+    body.force-mobile .name__sub { font-size: 11px; }
+    body.force-mobile .cascade__required, body.force-mobile .cascade__allocated { font-size: 12.5px; }
+    body.force-mobile .cascade__allocated.is-status { font-size: 10.5px; }
+
+    /* ============================================================ */
+    /* REDUCED MOTION                                                */
+    /* ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .src-chip, .src-arrow, .src-finwy, .src-replace,
+      .topbanner, .cascade__row, .cascade__cutoff,
+      .ledger, .alloc__caption {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .src-stage.is-replaced .src-row { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-bar">
+    <div>&larr; <a href="index.html">Back to homepage</a></div>
+    <div class="preview-bar__title">Step 03 &middot; Cascade with Floating Balance + Fund Column</div>
+    <div class="preview-bar__actions">
+      <button id="replayBtn">&#8634; Replay</button>
+      <button id="mobileBtn" class="is-secondary">View mobile</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="step-row">
+      <div class="step-num">03</div>
+      <article class="step-card">
+        <h3>Some of your goals don&rsquo;t fit. We tell you which.</h3>
+        <p>Six goals. &#8377;41,300 surplus. Four fit. Two don&rsquo;t &mdash; Finwiser says so up front, with the math visible.</p>
+
+        <ul class="tags" role="list">
+          <li>Next Best Rupee&trade;</li>
+          <li>Reads your portfolio</li>
+          <li>Tells you which goals fit</li>
+        </ul>
+
+        <!-- =============================================== -->
+        <!-- TWO-ACT ALLOCATOR — CASCADE WITH FLOATING BALANCE -->
+        <!-- =============================================== -->
+        <div class="concept concept--allocator" id="allocator" aria-hidden="false">
+
+          <!-- ACT 1 — sources collapse, replacement line emerges -->
+          <div class="src-stage" id="srcStage">
+            <div class="src-row">
+              <span class="src-chip">Random YouTubers</span>
+              <span class="src-chip">Random influencers</span>
+              <span class="src-chip">Cousin&rsquo;s WhatsApp</span>
+              <span class="src-chip">Office hot tips</span>
+              <span class="src-chip">Bank RM (commission-driven)</span>
+              <span class="src-arrow" aria-hidden="true">&rarr;</span>
+              <span class="src-finwy" id="srcFinwy" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M5 18 L9 8 L13 14 L17 6 L19 11"/></svg>
+              </span>
+            </div>
+            <p class="src-replace">
+              No more random tips, random influencers, or commission-driven advice.
+              <b>&rarr; One source.</b> <em>Fee-only. SEBI-registered.</em>
+            </p>
+          </div>
+
+          <!-- ACT 2 — top banner (Surplus + Balance) + cascade table + ledger + caption -->
+          <div class="topbanner" aria-hidden="true">
+            <div class="topbanner__cell topbanner__cell--surplus">
+              <span class="topbanner__label">Surplus</span>
+              <span class="topbanner__value">&#8377;41,300<small>/mo</small></span>
+            </div>
+            <div class="topbanner__cell topbanner__cell--balance" id="balanceCell">
+              <span class="topbanner__label">Balance</span>
+              <span class="topbanner__value" id="balanceCounter">&#8377;41,300</span>
+            </div>
+          </div>
+
+          <div class="cascade__colheads" aria-hidden="true">
+            <span>Pri</span><span>Goal</span><span>Fund</span><span>Required</span><span>Allocated</span>
+          </div>
+
+          <ul class="cascade" id="cascade" role="list">
+
+            <!-- P0 Retirement — Next Best Rupee -->
+            <li class="cascade__row cascade__row--funded cascade__row--star"
+                data-id="retirement"
+                data-required="15000">
+              <span class="cascade__pri"><span class="pri pri--p0">P0</span></span>
+              <span class="cascade__name">
+                <span class="name__title">
+                  <span class="name__star" aria-hidden="true">&#9733;</span>
+                  Retirement
+                  <span class="name__pill">Next Best Rupee&trade;</span>
+                </span>
+                <span class="name__sub">&#8377;30L PPF, &#8377;0 equity</span>
+                <span class="name__fund-mobile" aria-hidden="true">Equity index fund</span>
+              </span>
+              <span class="cascade__fund">Equity index fund</span>
+              <span class="cascade__required">&mdash;</span>
+              <span class="cascade__allocated">&mdash;</span>
+            </li>
+
+            <!-- P0 Emergency -->
+            <li class="cascade__row cascade__row--funded"
+                data-id="emergency"
+                data-required="2000">
+              <span class="cascade__pri"><span class="pri pri--p0">P0</span></span>
+              <span class="cascade__name">
+                <span class="name__title">Emergency fund</span>
+                <span class="name__fund-mobile" aria-hidden="true">Liquid debt fund</span>
+              </span>
+              <span class="cascade__fund">Liquid debt fund</span>
+              <span class="cascade__required">&mdash;</span>
+              <span class="cascade__allocated">&mdash;</span>
+            </li>
+
+            <!-- P1 First flat -->
+            <li class="cascade__row cascade__row--funded"
+                data-id="flat"
+                data-required="16000">
+              <span class="cascade__pri"><span class="pri pri--p1">P1</span></span>
+              <span class="cascade__name">
+                <span class="name__title">First flat (2031)</span>
+                <span class="name__fund-mobile" aria-hidden="true">Balanced advantage fund</span>
+              </span>
+              <span class="cascade__fund">Balanced advantage fund</span>
+              <span class="cascade__required">&mdash;</span>
+              <span class="cascade__allocated">&mdash;</span>
+            </li>
+
+            <!-- P2 Wedding — balance hits zero here -->
+            <li class="cascade__row cascade__row--funded cascade__row--cutoff"
+                data-id="wedding"
+                data-required="8300">
+              <span class="cascade__pri"><span class="pri pri--p2">P2</span></span>
+              <span class="cascade__name">
+                <span class="name__title">Wedding (2029)</span>
+                <span class="name__fund-mobile" aria-hidden="true">Short-duration debt</span>
+              </span>
+              <span class="cascade__fund">Short-duration debt</span>
+              <span class="cascade__required">&mdash;</span>
+              <span class="cascade__allocated">&mdash;</span>
+            </li>
+
+            <!-- Cutoff line -->
+            <li class="cascade__cutoff" id="cutoffLine" aria-hidden="true"></li>
+
+            <!-- P3 Bike — deferred -->
+            <li class="cascade__row cascade__row--deferred"
+                data-id="bike"
+                data-required="6000"
+                data-status="Not feasible">
+              <span class="cascade__pri"><span class="pri pri--p3">P3</span></span>
+              <span class="cascade__name">
+                <span class="name__title">Bike (this year)</span>
+                <span class="name__fund-mobile" aria-hidden="true">Push 18 months</span>
+              </span>
+              <span class="cascade__fund">Push 18 months</span>
+              <span class="cascade__required">&mdash;</span>
+              <span class="cascade__allocated">&mdash;</span>
+            </li>
+
+            <!-- P3 Foreign trip — deferred -->
+            <li class="cascade__row cascade__row--deferred"
+                data-id="foreign"
+                data-required="8000"
+                data-status="Not feasible">
+              <span class="cascade__pri"><span class="pri pri--p3">P3</span></span>
+              <span class="cascade__name">
+                <span class="name__title">Foreign trip (2027)</span>
+                <span class="name__fund-mobile" aria-hidden="true">Push 3 years</span>
+              </span>
+              <span class="cascade__fund">Push 3 years</span>
+              <span class="cascade__required">&mdash;</span>
+              <span class="cascade__allocated">&mdash;</span>
+            </li>
+
+          </ul>
+
+          <div class="alloc__caption">
+            <span class="alloc__caption-hero">Fits your goals. Fits your priorities.</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var allocator = document.getElementById('allocator');
+      var srcStage  = document.getElementById('srcStage');
+      var srcFinwy  = document.getElementById('srcFinwy');
+      var cutoffLine = document.getElementById('cutoffLine');
+      var balanceCell = document.getElementById('balanceCell');
+      var balanceCounter = document.getElementById('balanceCounter');
+
+      var INITIAL_SURPLUS = 41300;
+      var currentBalance = INITIAL_SURPLUS;
+
+      var timers = [];
+      var rafs = [];
+      function clearAll() {
+        timers.forEach(clearTimeout); timers = [];
+        rafs.forEach(cancelAnimationFrame); rafs = [];
+      }
+      function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+
+      function fmtINR(v) {
+        return '₹' + Math.round(v).toLocaleString('en-IN');
+      }
+
+      function animateCount(el, from, to, duration) {
+        if (reduce) { el.textContent = fmtINR(to); return; }
+        var start = performance.now();
+        function step(now) {
+          var t = Math.min(1, (now - start) / duration);
+          var eased = 1 - Math.pow(1 - t, 3);
+          var v = from + (to - from) * eased;
+          el.textContent = fmtINR(v);
+          if (t < 1) rafs.push(requestAnimationFrame(step));
+        }
+        rafs.push(requestAnimationFrame(step));
+      }
+
+      // -------- Floating balance --------------------------------
+      function deductBalance(amount, duration) {
+        var from = currentBalance;
+        var to = Math.max(0, from - amount);
+        currentBalance = to;
+        animateCount(balanceCounter, from, to, duration);
+        if (to === 0 && from > 0) {
+          // Hit zero — pulse + draw cutoff
+          later(function () {
+            balanceCell.classList.add('is-zeroed');
+            if (cutoffLine) cutoffLine.classList.add('is-drawn');
+          }, duration + 40);
+        }
+      }
+
+      function resetBalance() {
+        currentBalance = INITIAL_SURPLUS;
+        balanceCounter.textContent = fmtINR(INITIAL_SURPLUS);
+        balanceCell.classList.remove('is-zeroed');
+      }
+
+      // -------- Reset all rows ----------------------------------
+      function resetAllRows() {
+        var rows = allocator.querySelectorAll('.cascade__row');
+        rows.forEach(function (row) {
+          row.classList.remove('is-revealed', 'is-fallen');
+          var req = row.querySelector('.cascade__required');
+          var alloc = row.querySelector('.cascade__allocated');
+          if (req)  { req.textContent = '—'; }
+          if (alloc) { alloc.textContent = '—'; alloc.classList.remove('is-status'); alloc.style.color = ''; }
+        });
+        if (cutoffLine) cutoffLine.classList.remove('is-drawn');
+      }
+
+      function reset() {
+        clearAll();
+        srcStage.classList.remove('is-act1-in', 'is-dissolving', 'is-replaced');
+        srcFinwy.classList.remove('is-pulsing');
+        allocator.classList.remove('is-act2', 'is-starred', 'is-ledger', 'is-caption');
+        resetAllRows();
+        resetBalance();
+      }
+
+      function pulseFinwy() {
+        srcFinwy.classList.add('is-pulsing');
+        later(function () { srcFinwy.classList.remove('is-pulsing'); }, 240);
+      }
+
+      // -------- Per-row reveal logic ---------------------------
+      function revealFundedRow(row) {
+        row.classList.add('is-revealed');
+        var required = parseInt(row.dataset.required, 10);
+        var reqEl = row.querySelector('.cascade__required');
+        var allocEl = row.querySelector('.cascade__allocated');
+
+        // Required: fade in
+        reqEl.textContent = fmtINR(required);
+
+        // Allocated: count up 0 → required (after a small lead so Required shows first)
+        // Balance: simultaneously deduct
+        later(function () {
+          animateCount(allocEl, 0, required, 420);
+          deductBalance(required, 420);
+        }, 80);
+      }
+
+      function revealDeferredRow(row) {
+        row.classList.add('is-revealed');
+        var required = parseInt(row.dataset.required, 10);
+        var status = row.dataset.status;
+        var reqEl = row.querySelector('.cascade__required');
+        var allocEl = row.querySelector('.cascade__allocated');
+
+        // Required: fade in normally
+        reqEl.textContent = fmtINR(required);
+
+        // Allocated: stays at ₹0, then morph to status text
+        allocEl.textContent = fmtINR(0);
+        allocEl.style.color = 'rgba(255,255,255,0.32)';
+        later(function () {
+          allocEl.classList.add('is-status');
+          allocEl.style.color = '';
+          allocEl.innerHTML = status;
+        }, 280);
+
+        // The row falls into demoted state
+        later(function () { row.classList.add('is-fallen'); }, 240);
+      }
+
+      // -------- Settle final state (reduced motion / fallback) -
+      function settleFinal() {
+        srcStage.classList.add('is-act1-in', 'is-dissolving', 'is-replaced');
+        allocator.classList.add('is-act2', 'is-starred', 'is-ledger', 'is-caption');
+
+        currentBalance = 0;
+        balanceCounter.textContent = fmtINR(0);
+        balanceCell.classList.add('is-zeroed');
+
+        var rows = allocator.querySelectorAll('.cascade__row');
+        rows.forEach(function (row) {
+          row.classList.add('is-revealed');
+          if (row.classList.contains('cascade__row--funded')) {
+            var required = parseInt(row.dataset.required, 10);
+            row.querySelector('.cascade__required').textContent = fmtINR(required);
+            row.querySelector('.cascade__allocated').textContent = fmtINR(required);
+          } else if (row.classList.contains('cascade__row--deferred')) {
+            var required = parseInt(row.dataset.required, 10);
+            var status = row.dataset.status;
+            row.querySelector('.cascade__required').textContent = fmtINR(required);
+            var allocEl = row.querySelector('.cascade__allocated');
+            allocEl.classList.add('is-status');
+            allocEl.innerHTML = status;
+            row.classList.add('is-fallen');
+          }
+        });
+        if (cutoffLine) cutoffLine.classList.add('is-drawn');
+      }
+
+      // -------- Main animation runner ---------------------------
+      function run() {
+        reset();
+        if (reduce) { settleFinal(); return; }
+
+        // ACT 1 — sources fade, dissolve, replacement line
+        later(function () { srcStage.classList.add('is-act1-in'); }, 60);
+        later(function () { srcStage.classList.add('is-dissolving'); }, 1100);
+        [1100, 1320, 1540, 1760, 1980].forEach(function (t) {
+          later(pulseFinwy, t + 480);
+        });
+        later(function () { srcStage.classList.add('is-replaced'); }, 2500);
+
+        // ACT 2 — top banner + cascade table
+        later(function () { allocator.classList.add('is-act2'); }, 3000);
+
+        var rows = allocator.querySelectorAll('.cascade__row');
+        var t0 = 3300;
+        var stagger = 720;
+
+        // rows[0..3] funded (P0/P0/P1/P2), rows[4..5] deferred (P3/P3)
+        later(function () { revealFundedRow(rows[0]); }, t0);
+        later(function () { revealFundedRow(rows[1]); }, t0 + stagger * 1);
+        later(function () { revealFundedRow(rows[2]); }, t0 + stagger * 2);
+        later(function () { revealFundedRow(rows[3]); }, t0 + stagger * 3); // cutoff fires
+        later(function () { revealDeferredRow(rows[4]); }, t0 + stagger * 4);
+        later(function () { revealDeferredRow(rows[5]); }, t0 + stagger * 5);
+
+        var afterRows = t0 + stagger * 5 + 600;
+        later(function () { allocator.classList.add('is-starred'); }, afterRows);
+        later(function () { allocator.classList.add('is-ledger'); }, afterRows + 320);
+        later(function () { allocator.classList.add('is-caption'); }, afterRows + 720);
+      }
+
+      // -------- Kickoff ----------------------------------------
+      var fired = false;
+      if (!('IntersectionObserver' in window)) {
+        run();
+      } else {
+        var io = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting && !fired) {
+              fired = true;
+              run();
+              obs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.25 });
+        io.observe(allocator);
+      }
+
+      document.getElementById('replayBtn').addEventListener('click', function () { run(); });
+
+      var mobileBtn = document.getElementById('mobileBtn');
+      mobileBtn.addEventListener('click', function () {
+        document.body.classList.toggle('force-mobile');
+        if (document.body.classList.contains('force-mobile')) {
+          mobileBtn.textContent = 'View desktop';
+        } else {
+          mobileBtn.textContent = 'View mobile';
+        }
+        run();
+      });
+
+    })();
+  </script>
+</body>
+</html>

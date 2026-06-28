@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preview &mdash; §5 What Finwy Sees (Tier D scan)</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>document.documentElement.classList.add('js');</script>
+
+  <style>
+    :root {
+      --navy: #002d56;
+      --navy-deep: #001f3d;
+      --mint: #35d6c6;
+      --teal: #00b6ad;
+      --gold: #f5c26b;
+      --gold-soft: #ffe4a8;
+      --white: #ffffff;
+      --off-white: #f7f9fb;
+      --text-on-light: #002d56;
+      --text-on-light-muted: #5a6b7d;
+      --text-on-dark: rgba(255,255,255,0.94);
+      --text-on-dark-muted: rgba(255,255,255,0.74);
+      --border-on-dark: rgba(255,255,255,0.12);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-weight: 400; line-height: 1.6;
+      color: var(--text-on-light);
+      background: var(--off-white);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+
+    .visually-hidden {
+      position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* Preview chrome — only visible in this standalone preview */
+    .preview-bar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 10px 18px;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,45,86,0.10);
+      font-size: 13px; color: var(--text-on-light-muted);
+    }
+    .preview-bar strong { color: var(--text-on-light); font-weight: 700; }
+    .preview-bar button {
+      font: inherit; font-weight: 600; cursor: pointer;
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid var(--navy); background: var(--navy); color: var(--white);
+    }
+    .preview-bar button:hover { background: var(--navy-deep); }
+
+    /* Spacer above and below so the section sits as it would in-page */
+    .preview-pad { height: 60px; }
+
+    /* ============================================================ */
+    /* §5 — WHAT FINWY SEES (Tier D — eleven-place scan)             */
+    /* ============================================================ */
+    .seen {
+      position: relative;
+      background: var(--navy); color: var(--text-on-dark);
+      padding: clamp(80px, 12vw, 130px) 0 clamp(80px, 12vw, 110px);
+      overflow: hidden;
+    }
+    .seen::before {
+      content: ''; position: absolute; inset: -5% -10% auto -10%; height: 70%;
+      background: radial-gradient(ellipse at 50% 60%, rgba(53,214,198,0.12), transparent 65%);
+      pointer-events: none;
+    }
+    .seen__inner {
+      position: relative; max-width: 1180px;
+      margin: 0 auto; padding: 0 32px; text-align: center;
+    }
+    .seen__heading {
+      font-size: clamp(28px, 4.4vw, 48px); font-weight: 700;
+      letter-spacing: -0.5px; line-height: 1.15;
+      margin: 0 auto 14px; max-width: 30ch;
+      text-wrap: balance;
+    }
+    .seen__sub {
+      font-size: 17px; color: var(--text-on-dark-muted);
+      max-width: 48ch; margin: 0 auto clamp(48px, 7vw, 64px);
+    }
+
+    /* ---------- STAGE ---------- */
+    .seen__stage {
+      position: relative;
+      width: 100%; max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    /* ---------- MASCOT ---------- */
+    .seen__mascot {
+      position: absolute; top: -48px; right: 8px;
+      width: 84px; z-index: 6;
+      filter: drop-shadow(0 14px 32px rgba(0,0,0,0.5));
+      pointer-events: none;
+    }
+    .seen__mascot img { width: 100%; display: block; }
+
+    /* ---------- SCAN BAND ---------- */
+    .seen__band {
+      position: relative;
+      display: flex; align-items: stretch; justify-content: space-between;
+      gap: 4px;
+      padding: 30px 22px 26px;
+      background: linear-gradient(180deg, rgba(0,15,35,0.55), rgba(0,12,30,0.85));
+      border: 1px solid rgba(53,214,198,0.18);
+      border-radius: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 30px 60px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    .seen__band-grid {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+      background-size: 18px 18px;
+      pointer-events: none; z-index: 0;
+      mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent);
+      -webkit-mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent);
+    }
+
+    /* Scan line — broad mint glow with bright leading edge */
+    .seen__scan {
+      position: absolute; top: 0; bottom: 0;
+      width: 60px; left: -80px;
+      pointer-events: none; z-index: 2;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(53,214,198,0.06) 35%,
+        rgba(53,214,198,0.32) 50%,
+        rgba(53,214,198,0.06) 65%,
+        transparent 100%);
+    }
+    .seen__scan::after {
+      content: ''; position: absolute;
+      top: 8%; bottom: 8%; left: 50%;
+      width: 2px;
+      background: linear-gradient(180deg, transparent, var(--mint) 18%, var(--mint) 82%, transparent);
+      box-shadow: 0 0 14px var(--mint), 0 0 28px rgba(53,214,198,0.55);
+      border-radius: 2px;
+    }
+
+    /* ---------- FI CELLS ---------- */
+    .seen__fi {
+      position: relative; flex: 1 1 0; min-width: 0;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 7px; padding: 6px 2px; z-index: 1;
+    }
+
+    .seen__fi-glyph {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px;
+    }
+    .seen__fi-icon {
+      width: 22px; height: 22px;
+      fill: none; stroke: rgba(255,255,255,0.42);
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .seen__fi-underline {
+      position: absolute; left: 22%; right: 22%; bottom: -3px;
+      height: 2px; border-radius: 1px;
+      background: var(--mint);
+      box-shadow: 0 0 8px rgba(53,214,198,0.7);
+      transform: scaleX(1); transform-origin: left center; opacity: 1;
+    }
+    .seen__fi-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--text-on-dark);
+      letter-spacing: -0.1px;
+    }
+    .seen__fi-stat {
+      font-size: 10.5px; font-weight: 700;
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--mint);
+      letter-spacing: -0.2px;
+    }
+
+    /* ---------- THREADS ---------- */
+    .seen__threads {
+      display: block; width: 100%; height: 84px;
+      pointer-events: none; margin-top: -2px; overflow: visible;
+    }
+    .seen__threads path {
+      fill: none;
+      stroke: url(#seen-thread-fade);
+      stroke-width: 1.4; stroke-linecap: round;
+    }
+
+    /* ---------- COMPOSITE ---------- */
+    .seen__composite-wrap {
+      position: relative; max-width: 720px; margin: 0 auto;
+    }
+    .seen__composite {
+      position: relative;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      padding: 26px 22px 20px;
+      background: var(--navy-deep);
+      border: 2px solid rgba(53,214,198,0.55);
+      border-radius: 20px;
+      box-shadow: 0 0 0 8px rgba(53,214,198,0.08), 0 30px 60px rgba(0,0,0,0.5);
+    }
+    .seen__composite::before {
+      content: ''; position: absolute; inset: -18px;
+      border-radius: 32px; pointer-events: none; z-index: -1;
+      background: radial-gradient(closest-side, rgba(53,214,198,0.22), transparent 70%);
+    }
+    .seen__composite-tag {
+      position: absolute; top: -10px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy);
+      padding: 0 10px;
+      font-size: 9.5px; font-weight: 700;
+      letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--mint);
+    }
+
+    .seen__pane {
+      position: relative; text-align: left;
+      padding: 14px 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0));
+      border: 1px solid rgba(53,214,198,0.14);
+      border-radius: 12px;
+    }
+    .seen__pane-eyebrow {
+      display: block;
+      font-size: 9.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.4px;
+      color: var(--text-on-dark-muted);
+      margin-bottom: 6px;
+    }
+    .seen__pane-num {
+      display: inline-flex; align-items: baseline;
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-weight: 800; font-size: clamp(22px, 3vw, 30px);
+      letter-spacing: -0.6px; line-height: 1.05;
+      color: var(--text-on-dark);
+    }
+    .seen__pane-currency {
+      font-size: 0.7em; color: var(--mint);
+      font-weight: 700; margin-right: 3px;
+    }
+    .seen__pane-unit {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.42em; color: var(--text-on-dark-muted);
+      margin-left: 5px; font-weight: 500;
+    }
+
+    /* Surplus pane — warm gold accent for the "result" */
+    .seen__pane--surplus { border-color: rgba(245,194,107,0.32); }
+    .seen__pane--surplus .seen__pane-eyebrow { color: var(--gold); }
+    .seen__pane--surplus .seen__pane-currency { color: var(--gold); }
+    .seen__pane--surplus .seen__pane-val {
+      background: linear-gradient(135deg, var(--gold-soft) 0%, var(--gold) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* Sparkline */
+    .seen__spark { margin-top: 10px; height: 26px; }
+    .seen__spark svg { width: 100%; height: 100%; overflow: visible; }
+    .seen__spark path {
+      fill: none; stroke: var(--mint);
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .seen__spark--gold path { stroke: var(--gold); }
+
+    /* Goals 5-dot meter */
+    .seen__pane-meter { display: flex; gap: 6px; margin-top: 10px; }
+    .seen__pane-meter span {
+      flex: 1; height: 6px; border-radius: 3px;
+      background: rgba(255,255,255,0.08);
+    }
+    .seen__pane-meter span.is-on { background: var(--mint); box-shadow: 0 0 6px rgba(53,214,198,0.5); }
+
+    /* Risk bar */
+    .seen__pane-risk { display: flex; gap: 4px; margin-top: 10px; height: 6px; }
+    .seen__pane-risk span {
+      flex: 1; border-radius: 2px; background: rgba(255,255,255,0.08);
+    }
+    .seen__pane-risk span.is-on {
+      background: linear-gradient(90deg, rgba(53,214,198,0.5), var(--mint));
+    }
+    .seen__pane-risk-meta {
+      display: flex; justify-content: space-between;
+      margin-top: 5px;
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--text-on-dark-muted);
+    }
+
+    .seen__composite-disclaimer {
+      font-size: 11px; color: rgba(255,255,255,0.42);
+      text-align: center; margin-top: 14px;
+      letter-spacing: 0.2px;
+    }
+
+    /* ============================================================ */
+    /* ANIMATIONS — only when JS is on AND motion is allowed         */
+    /* (without these, end-state above is shown statically)          */
+    /* ============================================================ */
+    @media (prefers-reduced-motion: no-preference) {
+
+      /* === FI cells start dim, light up via .is-lit === */
+      html.js .seen__fi .seen__fi-icon {
+        stroke: rgba(255,255,255,0.42);
+        transition: stroke 380ms ease;
+      }
+      html.js .seen__fi .seen__fi-underline {
+        transform: scaleX(0); opacity: 0;
+        transition: transform 420ms cubic-bezier(0.16,1,0.3,1),
+                    opacity 420ms ease;
+      }
+      html.js .seen__fi .seen__fi-label {
+        color: rgba(255,255,255,0.45);
+        transition: color 380ms ease;
+      }
+      html.js .seen__fi .seen__fi-stat {
+        opacity: 0; transform: translateY(4px);
+        transition: opacity 380ms ease,
+                    transform 380ms cubic-bezier(0.16,1,0.3,1);
+      }
+      html.js .seen__fi.is-lit .seen__fi-icon { stroke: var(--mint); }
+      html.js .seen__fi.is-lit .seen__fi-underline { transform: scaleX(1); opacity: 1; }
+      html.js .seen__fi.is-lit .seen__fi-label { color: var(--text-on-dark); }
+      html.js .seen__fi.is-lit .seen__fi-stat { opacity: 1; transform: translateY(0); }
+
+      /* === Scan line sweep — runs once when stage enters === */
+      html.js .seen__scan { left: -80px; }
+      html.js .seen__stage.is-in .seen__scan {
+        animation: scan-sweep 2.6s cubic-bezier(0.4, 0, 0.6, 1) 320ms forwards;
+      }
+      @keyframes scan-sweep {
+        0%   { left: -80px; }
+        100% { left: 100%;  }
+      }
+
+      /* === Threads draw after scan completes === */
+      html.js .seen__threads path {
+        stroke-dasharray: 100; stroke-dashoffset: 100;
+        transition: stroke-dashoffset 700ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      html.js .seen__stage.is-in .seen__threads path {
+        stroke-dashoffset: 0;
+        transition-delay: calc(2900ms + var(--i, 0) * 60ms);
+      }
+
+      /* === Composite reveals after scan === */
+      html.js .seen__composite {
+        opacity: 0.35; transform: translateY(14px) scale(0.97);
+        transition: opacity 700ms cubic-bezier(0.16,1,0.3,1) 3.0s,
+                    transform 700ms cubic-bezier(0.16,1,0.3,1) 3.0s;
+      }
+      html.js .seen__composite::before {
+        opacity: 0;
+        transition: opacity 700ms 3.2s;
+      }
+      html.js .seen__stage.is-in .seen__composite {
+        opacity: 1; transform: translateY(0) scale(1);
+      }
+      html.js .seen__stage.is-in .seen__composite::before {
+        opacity: 1;
+      }
+
+      /* Composite "land" pulse */
+      html.js .seen__stage.is-in .seen__composite {
+        animation: composite-land 900ms cubic-bezier(0.16,1,0.3,1) 3.7s;
+      }
+      @keyframes composite-land {
+        0%, 100% { box-shadow: 0 0 0 8px rgba(53,214,198,0.08), 0 30px 60px rgba(0,0,0,0.5); }
+        50%      { box-shadow: 0 0 0 18px rgba(53,214,198,0.22), 0 30px 60px rgba(0,0,0,0.5); }
+      }
+
+      /* === Mascot fade-in + nod === */
+      html.js .seen__mascot {
+        opacity: 0; transform: translateY(-8px);
+        transition: opacity 700ms cubic-bezier(0.16,1,0.3,1) 200ms,
+                    transform 700ms cubic-bezier(0.16,1,0.3,1) 200ms;
+      }
+      html.js .seen__stage.is-in .seen__mascot {
+        opacity: 1; transform: translateY(0);
+      }
+      html.js .seen__stage.is-in .seen__mascot img {
+        animation: mascot-nod 900ms cubic-bezier(0.16,1,0.3,1) 3.7s;
+      }
+      @keyframes mascot-nod {
+        0%, 100% { transform: scale(1) rotate(0); }
+        45%      { transform: scale(1.06) rotate(-3deg);
+                   filter: drop-shadow(0 18px 36px rgba(53,214,198,0.5)); }
+      }
+    }
+
+    /* ============================================================ */
+    /* MOBILE FALLBACK — band wraps; threads hide; composite stacks  */
+    /* ============================================================ */
+    @media (max-width: 900px) {
+      .seen__mascot { width: 68px; top: -36px; right: 14px; }
+      .seen__band {
+        flex-wrap: wrap; gap: 14px 10px;
+        padding: 22px 14px;
+      }
+      .seen__fi { flex: 0 0 calc(25% - 8px); }
+      .seen__threads { display: none; }
+      .seen__composite-wrap { margin-top: 22px; }
+      .seen__composite { grid-template-columns: 1fr; gap: 10px; }
+      .seen__pane-num { font-size: 22px; }
+    }
+    @media (max-width: 520px) {
+      .seen__fi { flex: 0 0 calc(33.333% - 8px); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="preview-bar">
+    <span><strong>Preview &mdash; §5 Tier D</strong> &middot; eleven-place scan &rarr; one composite picture</span>
+    <button type="button" id="replay">Replay scan</button>
+  </div>
+
+  <div class="preview-pad"></div>
+
+  <main>
+    <section class="seen" aria-labelledby="seen-heading">
+      <div class="seen__inner">
+        <h2 id="seen-heading" class="seen__heading">Every place your money lives. One picture. In three minutes.</h2>
+        <p class="seen__sub">Watch your money come together.</p>
+
+        <div class="seen__stage" data-reveal>
+          <p class="visually-hidden">A horizontal scan reads eleven types of financial accounts &mdash; bank, cards, mutual funds, stocks, fixed deposits, EPF, PPF, NPS, insurance, gold and loans &mdash; and produces a single composite picture: net worth, real monthly surplus, goals on track, and risk score.</p>
+
+          <!-- Mascot, observing -->
+          <div class="seen__mascot" aria-hidden="true">
+            <img src="fw-deck-2026/slides/finwy-allocating.png" alt="" loading="lazy">
+          </div>
+
+          <!-- THE SCAN BAND -->
+          <div class="seen__band">
+            <div class="seen__band-grid" aria-hidden="true"></div>
+            <div class="seen__scan" aria-hidden="true"></div>
+
+            <!-- 1 Bank -->
+            <div class="seen__fi" style="--i:0">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 10l9-5 9 5"/>
+                  <path d="M5 10v9M9 10v9M15 10v9M19 10v9"/>
+                  <path d="M3 21h18"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">Bank</span>
+              <span class="seen__fi-stat">&#8377;1.4L</span>
+            </div>
+
+            <!-- 2 Cards -->
+            <div class="seen__fi" style="--i:1">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="2.5" y="6" width="19" height="13" rx="2"/>
+                  <path d="M2.5 10h19"/><path d="M6 15h4"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">Cards</span>
+              <span class="seen__fi-stat">3 cards</span>
+            </div>
+
+            <!-- 3 MFs -->
+            <div class="seen__fi" style="--i:2">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 17l5-5 4 3 7-9"/>
+                  <path d="M14 6h6v6"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">MFs</span>
+              <span class="seen__fi-stat">&#8377;12.6L</span>
+            </div>
+
+            <!-- 4 Stocks -->
+            <div class="seen__fi" style="--i:3">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 18h18"/>
+                  <rect x="5" y="9" width="3" height="6"/>
+                  <rect x="11" y="6" width="3" height="9"/>
+                  <rect x="17" y="11" width="3" height="4"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">Stocks</span>
+              <span class="seen__fi-stat">&#8377;3.2L</span>
+            </div>
+
+            <!-- 5 FDs -->
+            <div class="seen__fi" style="--i:4">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="4" y="8" width="16" height="12" rx="1.5"/>
+                  <path d="M8 8V6a4 4 0 0 1 8 0v2"/>
+                  <circle cx="12" cy="14" r="1.4"/>
+                  <path d="M12 15.4v2"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">FDs</span>
+              <span class="seen__fi-stat">&#8377;3.0L</span>
+            </div>
+
+            <!-- 6 EPF -->
+            <div class="seen__fi" style="--i:5">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12c0-3 3-5 7-5 4 0 7 2.2 7 5v3l2 1v3h-3l-1-2c-1 .5-2.5 1-5 1s-4-.5-5-1l-1 2H4v-4l1-2z"/>
+                  <circle cx="14" cy="11" r="0.6" fill="currentColor"/>
+                  <path d="M9 7c0-1 1-2 2-2"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">EPF</span>
+              <span class="seen__fi-stat">&#8377;8.4L</span>
+            </div>
+
+            <!-- 7 PPF -->
+            <div class="seen__fi" style="--i:6">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 21h18"/>
+                  <path d="M5 21V11l7-6 7 6v10"/>
+                  <path d="M10 21v-5h4v5"/>
+                  <path d="M12 5V3"/>
+                  <path d="M12 3l3 1.4-3 1.4"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">PPF</span>
+              <span class="seen__fi-stat">&#8377;4.8L</span>
+            </div>
+
+            <!-- 8 NPS -->
+            <div class="seen__fi" style="--i:7">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M12 7v5l3 2"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">NPS</span>
+              <span class="seen__fi-stat">&#8377;2.8L</span>
+            </div>
+
+            <!-- 9 Insurance -->
+            <div class="seen__fi" style="--i:8">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2L20 5v6c0 5-3 9-8 11-5-2-8-6-8-11V5l8-3z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">Insurance</span>
+              <span class="seen__fi-stat">&#8377;50L cover</span>
+            </div>
+
+            <!-- 10 Gold -->
+            <div class="seen__fi" style="--i:9">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 9l3-3h10l3 3v3l-3 3H7l-3-3z"/>
+                  <path d="M4 12h16"/>
+                  <path d="M7 9h10"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">Gold</span>
+              <span class="seen__fi-stat">&#8377;1.2L</span>
+            </div>
+
+            <!-- 11 Loans -->
+            <div class="seen__fi" style="--i:10">
+              <span class="seen__fi-glyph">
+                <svg class="seen__fi-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="2.5" y="7" width="19" height="11" rx="1.5"/>
+                  <circle cx="12" cy="12.5" r="2.4"/>
+                  <path d="M5 10h.01M19 15h.01"/>
+                </svg>
+                <span class="seen__fi-underline" aria-hidden="true"></span>
+              </span>
+              <span class="seen__fi-label">Loans</span>
+              <span class="seen__fi-stat">&#8377;14L home</span>
+            </div>
+          </div>
+          <!-- /scan band -->
+
+          <!-- CONVERGENCE THREADS -->
+          <svg class="seen__threads" viewBox="0 0 1080 84" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="seen-thread-fade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="#35d6c6" stop-opacity="0.05"/>
+                <stop offset="100%" stop-color="#35d6c6" stop-opacity="0.85"/>
+              </linearGradient>
+            </defs>
+            <path d="M49,0   C49,38   540,40 540,84" pathLength="100" style="--i:0"/>
+            <path d="M147,0  C147,40  540,40 540,84" pathLength="100" style="--i:1"/>
+            <path d="M245,0  C245,42  540,40 540,84" pathLength="100" style="--i:2"/>
+            <path d="M343,0  C343,46  540,42 540,84" pathLength="100" style="--i:3"/>
+            <path d="M442,0  C442,52  540,52 540,84" pathLength="100" style="--i:4"/>
+            <path d="M540,0  L540,84"                pathLength="100" style="--i:5"/>
+            <path d="M638,0  C638,52  540,52 540,84" pathLength="100" style="--i:6"/>
+            <path d="M736,0  C736,46  540,42 540,84" pathLength="100" style="--i:7"/>
+            <path d="M834,0  C834,42  540,40 540,84" pathLength="100" style="--i:8"/>
+            <path d="M932,0  C932,40  540,40 540,84" pathLength="100" style="--i:9"/>
+            <path d="M1031,0 C1031,38 540,40 540,84" pathLength="100" style="--i:10"/>
+          </svg>
+
+          <!-- COMPOSITE — the "one picture" -->
+          <div class="seen__composite-wrap">
+            <div class="seen__composite">
+              <span class="seen__composite-tag">The picture</span>
+
+              <!-- Net worth -->
+              <div class="seen__pane seen__pane--worth">
+                <span class="seen__pane-eyebrow">Net worth</span>
+                <span class="seen__pane-num">
+                  <span class="seen__pane-currency">&#8377;</span><span class="seen__pane-val" data-target="2840000" data-format="lakh">28.4L</span>
+                </span>
+                <div class="seen__spark" aria-hidden="true">
+                  <svg viewBox="0 0 100 26" preserveAspectRatio="none">
+                    <path d="M0,20 L10,18 L20,16 L30,17 L40,12 L50,13 L60,9 L70,10 L80,6 L90,5 L100,3"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Real surplus (warm) -->
+              <div class="seen__pane seen__pane--surplus">
+                <span class="seen__pane-eyebrow">Real surplus</span>
+                <span class="seen__pane-num">
+                  <span class="seen__pane-currency">&#8377;</span><span class="seen__pane-val" data-target="37420" data-format="rupee">37,420</span><span class="seen__pane-unit">/ mo</span>
+                </span>
+                <div class="seen__spark seen__spark--gold" aria-hidden="true">
+                  <svg viewBox="0 0 100 26" preserveAspectRatio="none">
+                    <path d="M0,18 L12,16 L24,17 L36,12 L48,14 L60,8 L72,10 L84,6 L100,4"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Goals on track -->
+              <div class="seen__pane seen__pane--goals">
+                <span class="seen__pane-eyebrow">Goals on track</span>
+                <span class="seen__pane-num">
+                  <span class="seen__pane-val" data-target="3" data-format="int">3</span><span class="seen__pane-unit">of 5</span>
+                </span>
+                <div class="seen__pane-meter" aria-hidden="true">
+                  <span class="is-on"></span><span class="is-on"></span><span class="is-on"></span><span></span><span></span>
+                </div>
+              </div>
+
+              <!-- Risk -->
+              <div class="seen__pane seen__pane--risk">
+                <span class="seen__pane-eyebrow">Risk score</span>
+                <span class="seen__pane-num">
+                  <span class="seen__pane-val">Medium</span>
+                </span>
+                <div class="seen__pane-risk" aria-hidden="true">
+                  <span></span><span class="is-on"></span><span></span>
+                </div>
+                <div class="seen__pane-risk-meta" aria-hidden="true">
+                  <span>Low</span><span>Med</span><span>High</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="seen__composite-disclaimer">Illustrative example &middot; Your numbers will be yours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="preview-pad"></div>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ---- Generic counter animator (rupee | lakh | int) ----
+      function animateCounter(el, target, duration, format) {
+        var start = performance.now();
+        function step(now) {
+          var elapsed = now - start;
+          var p = Math.min(elapsed / duration, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          var v = target * eased;
+          var out;
+          if (format === 'lakh') {
+            out = (v / 100000).toFixed(1) + 'L';
+          } else if (format === 'int') {
+            out = Math.floor(v).toString();
+          } else {
+            out = Math.floor(v).toLocaleString('en-IN');
+          }
+          el.textContent = out;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      // ---- Run the choreography for one stage ----
+      function runStage(stage) {
+        if (stage.dataset.played === '1') return;
+        stage.dataset.played = '1';
+
+        // Ensure stage has .is-in (drives all CSS animations)
+        stage.classList.add('is-in');
+
+        if (reduce) {
+          // Reduced motion: snap to end-state, no scan timing
+          stage.querySelectorAll('.seen__fi').forEach(function (fi) { fi.classList.add('is-lit'); });
+          stage.querySelectorAll('[data-target]').forEach(function (el) {
+            var t = parseFloat(el.getAttribute('data-target'));
+            var f = el.getAttribute('data-format') || 'rupee';
+            if (f === 'lakh')      el.textContent = (t / 100000).toFixed(1) + 'L';
+            else if (f === 'int')  el.textContent = Math.floor(t).toString();
+            else                   el.textContent = Math.floor(t).toLocaleString('en-IN');
+          });
+          return;
+        }
+
+        // Stagger FI light-up to track the scan line
+        var fis = stage.querySelectorAll('.seen__fi');
+        fis.forEach(function (fi, i) {
+          setTimeout(function () { fi.classList.add('is-lit'); }, 420 + i * 220);
+        });
+
+        // Counters animate after composite has landed
+        var counters = stage.querySelectorAll('[data-target]');
+        counters.forEach(function (el, i) {
+          var t = parseFloat(el.getAttribute('data-target'));
+          var f = el.getAttribute('data-format') || 'rupee';
+          // Reset to a sensible "0" before animating
+          if (f === 'lakh')     el.textContent = '0.0L';
+          else if (f === 'int') el.textContent = '0';
+          else                  el.textContent = '0';
+          setTimeout(function () {
+            animateCounter(el, t, 1100, f);
+          }, 3700 + i * 90);
+        });
+      }
+
+      function resetStage(stage) {
+        stage.classList.remove('is-in');
+        stage.dataset.played = '';
+        stage.querySelectorAll('.seen__fi').forEach(function (fi) { fi.classList.remove('is-lit'); });
+        // Reset counter text to placeholder so the replay reads as "0 → target"
+        stage.querySelectorAll('[data-target]').forEach(function (el) {
+          var f = el.getAttribute('data-format') || 'rupee';
+          if (f === 'lakh')     el.textContent = '0.0L';
+          else if (f === 'int') el.textContent = '0';
+          else                  el.textContent = '0';
+        });
+      }
+
+      // ---- Trigger on scroll-into-view ----
+      var stage = document.querySelector('.seen__stage');
+      if (stage) {
+        if (!('IntersectionObserver' in window)) {
+          runStage(stage);
+        } else {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                runStage(e.target);
+                io.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+          io.observe(stage);
+        }
+      }
+
+      // ---- Replay button (preview only) ----
+      var replayBtn = document.getElementById('replay');
+      if (replayBtn && stage) {
+        replayBtn.addEventListener('click', function () {
+          resetStage(stage);
+          // Force a reflow so transitions/animations restart cleanly
+          void stage.offsetWidth;
+          // Small delay so the user sees the reset frame
+          setTimeout(function () { runStage(stage); }, 80);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

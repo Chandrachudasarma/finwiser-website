@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>§7 Preview v9 — Finwy allocates · Finwiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #002d56; --navy-deep: #001f3d;
+      --mint: #35d6c6; --teal: #00b6ad;
+      --white: #ffffff; --off-white: #f7f9fb;
+      --text-on-light: #002d56; --text-on-light-muted: #5a6b7d;
+      --text-on-dark: rgba(255,255,255,0.94); --text-on-dark-muted: rgba(255,255,255,0.74);
+      --border-on-light: rgba(0,45,86,0.10);
+      --border-on-light-strong: rgba(0,45,86,0.20);
+      --shadow-soft: 0 4px 18px rgba(0,45,86,0.08);
+      --shadow-card: 0 8px 28px rgba(0,45,86,0.06);
+      --gold: #f5c26b; --rose: #e87b6f;
+      --slate: #5a6b7d;
+      --mint-04: rgba(53,214,198,0.04);
+      --mint-08: rgba(53,214,198,0.08); --mint-12: rgba(53,214,198,0.12);
+      --mint-16: rgba(53,214,198,0.16); --mint-24: rgba(53,214,198,0.24);
+      --mint-32: rgba(53,214,198,0.32); --mint-48: rgba(53,214,198,0.48);
+      --teal-04: rgba(0,182,173,0.04);
+      --teal-08: rgba(0,182,173,0.08); --teal-12: rgba(0,182,173,0.12);
+      --teal-16: rgba(0,182,173,0.16); --teal-24: rgba(0,182,173,0.24);
+      --teal-32: rgba(0,182,173,0.32);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: 'Lora', Georgia, serif;
+      --fs-nano: 11px; --fs-micro: 13px; --fs-body: 15px; --fs-lead: 17px;
+      --ease-out-cubic: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-spring:    cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-in-out:    cubic-bezier(0.45, 0, 0.55, 1);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans); font-weight: 400; line-height: 1.6;
+      color: var(--text-on-light); background: var(--off-white);
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ============================================================ */
+    /* Preview chrome                                                */
+    /* ============================================================ */
+    .preview-bar {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 10px 20px; background: var(--navy-deep);
+      border-bottom: 1px solid rgba(53,214,198,0.18);
+      font: 500 12.5px/1 var(--font-sans); color: var(--text-on-dark-muted);
+    }
+    .preview-bar a { color: var(--mint); text-decoration: none; }
+    .preview-bar a:hover { text-decoration: underline; }
+    .preview-bar__title { color: var(--text-on-dark); font-weight: 600; }
+    .preview-bar__phase {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      background: var(--gold); color: var(--navy-deep);
+      font-size: 11px; font-weight: 700; margin-left: 6px;
+    }
+    .preview-bar__actions { display: flex; gap: 8px; }
+    .preview-bar button {
+      font: 500 12px/1 var(--font-sans); color: var(--navy-deep);
+      background: var(--mint); border: 0; border-radius: 6px;
+      padding: 8px 14px; cursor: pointer;
+      transition: background 200ms ease;
+    }
+    .preview-bar button:hover { background: var(--teal); color: var(--white); }
+    .preview-bar button.is-secondary {
+      background: transparent; color: var(--text-on-dark-muted);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .preview-bar button.is-secondary:hover { color: var(--mint); border-color: var(--mint); }
+
+    /* ============================================================ */
+    /* Section                                                       */
+    /* ============================================================ */
+    .engine { background: var(--off-white); padding: clamp(28px, 4.5vw, 56px) 0; }
+    .engine__inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .engine__intro { text-align: center; margin-bottom: 24px; }
+    .engine__intro-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      margin-bottom: 8px;
+    }
+    .engine__intro-title {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: 500; line-height: 1.1; letter-spacing: -0.015em;
+      color: var(--navy);
+    }
+    .engine__intro-title em { font-style: italic; color: var(--teal); }
+
+    /* ============================================================ */
+    /* Pair card                                                     */
+    /* ============================================================ */
+    .case-card {
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 14px;
+      padding: clamp(14px, 1.8vw, 22px);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-card);
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 540ms var(--ease-out-cubic),
+                  transform 540ms var(--ease-out-cubic);
+    }
+    .case-card.is-revealed { opacity: 1; transform: none; }
+    .case-card:last-of-type { margin-bottom: 18px; }
+
+    .case-card__head { text-align: center; margin-bottom: 14px; }
+    .case-card__head h3 {
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 500; line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--navy);
+    }
+    .case-card__head-sub {
+      font-family: var(--font-serif);
+      font-size: var(--fs-micro);
+      font-style: italic;
+      color: var(--text-on-light-muted);
+      margin-top: 4px;
+    }
+
+    /* ============================================================ */
+    /* Engine trail                                                  */
+    /* ============================================================ */
+    .trail {
+      position: relative;
+      background: var(--off-white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 10px;
+      padding: 16px 18px 38px;
+      margin-bottom: 12px;
+      overflow: visible;
+    }
+    .trail__row {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 0 8px;
+    }
+    .trail__row::before {
+      content: '';
+      position: absolute;
+      left: 36px; right: 36px;
+      top: 50%; height: 2px;
+      background: var(--border-on-light-strong);
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+
+    .factor {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width: 46px; height: 46px;
+      background: var(--white);
+      border: 1.6px solid var(--border-on-light-strong);
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,45,86,0.06);
+      flex-shrink: 0;
+      transition: background 360ms var(--ease-spring),
+                  border-color 360ms var(--ease-spring),
+                  box-shadow 360ms var(--ease-spring),
+                  transform 420ms var(--ease-spring);
+    }
+    .factor svg {
+      width: 17px; height: 17px;
+      stroke: var(--text-on-light-muted);
+      fill: none; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 280ms ease;
+    }
+    .factor__label {
+      position: absolute;
+      top: calc(100% + 6px); left: 50%;
+      transform: translateX(-50%);
+      font-size: 8.5px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      white-space: nowrap;
+      transition: color 280ms ease;
+    }
+    .factor__readout {
+      position: absolute;
+      top: calc(100% + 18px); left: 50%;
+      transform: translate(-50%, -4px);
+      font-size: 11px; font-weight: 700;
+      color: var(--navy);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.1px;
+      opacity: 0;
+      transition: opacity 240ms var(--ease-out-cubic),
+                  transform 360ms var(--ease-spring);
+    }
+
+    .factor.is-active {
+      background: var(--mint-08);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 5px var(--mint-16),
+                  0 6px 18px rgba(53,214,198,0.20);
+      transform: scale(1.18);
+    }
+    .factor.is-active svg { stroke: var(--mint); }
+    .factor.is-active .factor__label { color: var(--navy); font-weight: 800; }
+    .factor.is-active .factor__readout { opacity: 1; transform: translate(-50%, 0); }
+
+    .factor.is-considered { border-color: var(--mint-32); }
+    .factor.is-considered svg { stroke: var(--mint); }
+    .factor.is-considered .factor__readout { opacity: 1; transform: translate(-50%, 0); }
+    .factor.is-considered::after {
+      content: '\2713';
+      position: absolute;
+      top: -5px; right: -5px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--mint); color: var(--white);
+      font-size: 10px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,45,86,0.18);
+      animation: tickPop 420ms var(--ease-overshoot);
+    }
+    @keyframes tickPop {
+      0%   { opacity: 0; transform: scale(0.4); }
+      60%  { transform: scale(1.18); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .factor.is-decisive-hold {
+      background: var(--mint-12);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 7px var(--mint-24),
+                  0 0 0 16px var(--mint-08),
+                  0 8px 22px rgba(53,214,198,0.32);
+      transform: scale(1.28);
+      transition: background 480ms var(--ease-spring),
+                  border-color 480ms var(--ease-spring),
+                  box-shadow 480ms var(--ease-spring),
+                  transform 540ms var(--ease-spring);
+    }
+    .factor.is-decisive-hold svg { stroke: var(--mint); }
+    .factor.is-decisive-hold .factor__readout {
+      opacity: 1; transform: translate(-50%, 0);
+      font-weight: 800;
+    }
+    .factor.is-decisive {
+      background: var(--mint);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 5px var(--mint-32),
+                  0 6px 20px rgba(53,214,198,0.32);
+      transform: scale(1.16);
+    }
+    .factor.is-decisive svg { stroke: var(--white); }
+    .factor.is-decisive .factor__label { color: var(--mint); font-weight: 800; }
+    .factor.is-decisive .factor__readout { opacity: 1; transform: translate(-50%, 0); font-weight: 800; }
+    .factor.is-decisive::after {
+      content: '\2605';
+      position: absolute;
+      top: -7px; right: -7px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--gold); color: var(--navy-deep);
+      font-size: 10px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(245,194,107,0.5);
+      animation: tickPop 460ms var(--ease-overshoot);
+    }
+    .factor.is-handing-off::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 100%;
+      width: 3px; height: 0;
+      background: linear-gradient(to bottom,
+        var(--mint) 0%, var(--mint-32) 50%, transparent 100%);
+      transform: translateX(-50%);
+      opacity: 0.85;
+      pointer-events: none;
+      animation: handoffStream 720ms var(--ease-spring) forwards;
+    }
+    @keyframes handoffStream {
+      0%   { height: 0;   opacity: 0; }
+      30%  { opacity: 1; }
+      100% { height: 200px; opacity: 0; }
+    }
+
+    /* Mascot */
+    .trail__mascot {
+      position: absolute;
+      left: 0;
+      top: calc(50% + 14px);
+      width: 48px; height: 48px;
+      transition: transform 540ms var(--ease-spring),
+                  opacity 320ms var(--ease-out-cubic),
+                  width 540ms var(--ease-spring),
+                  height 540ms var(--ease-spring),
+                  top 540ms var(--ease-spring);
+      opacity: 0;
+      z-index: 4;
+      pointer-events: none;
+      will-change: transform;
+    }
+    .trail__mascot img {
+      width: 100%; height: 100%;
+      filter: drop-shadow(0 5px 12px rgba(0,45,86,0.18));
+      transform-origin: bottom center;
+      animation: mascotBreathe 3200ms ease-in-out infinite;
+    }
+    @keyframes mascotBreathe {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.018); }
+    }
+    .case-card.is-revealed .trail__mascot { opacity: 1; }
+    .trail__mascot.is-stepping img {
+      animation: mascotStep 540ms var(--ease-spring),
+                 mascotBreathe 3200ms ease-in-out infinite 540ms;
+    }
+    @keyframes mascotStep {
+      0%   { transform: translateY(0)    rotate(0deg)  scale(1); }
+      24%  { transform: translateY(-3px) rotate(-2deg) scale(0.97); }
+      48%  { transform: translateY(-8px) rotate(0deg)  scale(1.04); }
+      72%  { transform: translateY(-3px) rotate(3deg)  scale(1.0); }
+      100% { transform: translateY(0)    rotate(0deg)  scale(1); }
+    }
+    .trail__mascot.is-leaning img {
+      animation: mascotLean 600ms var(--ease-spring) forwards;
+    }
+    @keyframes mascotLean {
+      0%   { transform: rotate(0deg) translateY(0); }
+      40%  { transform: rotate(5deg) translateY(-2px); }
+      75%  { transform: rotate(2deg) translateY(0); }
+      100% { transform: rotate(2deg) translateY(0); }
+    }
+    .trail__mascot.is-docked {
+      width: 26px; height: 26px;
+      top: -14px;
+      right: 12px;
+      left: auto;
+      bottom: auto;
+    }
+    .trail__mascot::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--mint-12) 0%, transparent 65%);
+      opacity: 0;
+      transition: opacity 600ms var(--ease-spring), inset 600ms var(--ease-spring);
+      pointer-events: none;
+    }
+    .trail__mascot[data-loaded="1"]::after { opacity: 0.5; }
+    .trail__mascot[data-loaded="2"]::after { opacity: 0.7; }
+    .trail__mascot[data-loaded="3"]::after { opacity: 0.85; inset: -10px; }
+    .trail__mascot[data-loaded="4"]::after { opacity: 1.0; inset: -12px; }
+    .trail__mascot[data-loaded="5"]::after { opacity: 1.0; inset: -14px;
+      background: radial-gradient(circle, var(--mint-24) 0%, transparent 65%); }
+    .trail__mascot[data-loaded="6"]::after { opacity: 1.0; inset: -16px;
+      background: radial-gradient(circle, var(--mint-32) 0%, transparent 65%); }
+    .trail__mascot.is-docked::after { opacity: 0.4 !important; inset: -4px !important; }
+
+    /* Trail caption removed — gold ★ + decisive readout convey the deciding moment */
+    .trail__caption { display: none; }
+
+    /* ============================================================ */
+    /* Lanes                                                         */
+    /* ============================================================ */
+    .lane {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      border: 1px solid;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      position: relative;
+      transition: box-shadow 360ms var(--ease-spring);
+    }
+    .lane:last-child { margin-bottom: 0; }
+    .lane--mint { background: var(--mint-04); border-color: var(--mint-32); }
+    .lane--teal { background: var(--teal-04); border-color: var(--teal-32); }
+    .lane.is-receiving { box-shadow: 0 0 0 4px var(--mint-24), 0 8px 26px rgba(53,214,198,0.18); }
+    .lane--teal.is-receiving { box-shadow: 0 0 0 4px var(--teal-24), 0 8px 26px rgba(0,182,173,0.18); }
+
+    /* Input side */
+    .lane__input {
+      padding: 11px 14px;
+      border-right: 1px solid;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .lane--mint .lane__input { border-right-color: var(--mint-24); }
+    .lane--teal .lane__input { border-right-color: var(--teal-24); }
+
+    .input__name { font-size: var(--fs-body); font-weight: 700; color: var(--navy); letter-spacing: -0.1px; }
+    .input__meta {
+      font-size: var(--fs-nano); color: var(--text-on-light-muted);
+      letter-spacing: 0.04em; margin-bottom: 4px;
+    }
+    .input-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .input-stat__num {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 800;
+      line-height: 0.95; letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+      color: var(--mint);
+    }
+    .lane--teal .input-stat__num { color: var(--teal); }
+    .input-stat__num--loss { color: var(--rose) !important; }
+    .input-stat__num small {
+      font-size: 0.42em; font-weight: 700;
+      color: var(--navy);
+      vertical-align: 0.2em; margin-left: 0.04em;
+    }
+    .input-stat__label {
+      font-size: var(--fs-micro); font-weight: 600;
+      color: var(--text-on-light); letter-spacing: 0;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+    .input__rating {
+      font-size: var(--fs-micro); color: var(--text-on-light-muted);
+      font-weight: 500; margin-top: 6px;
+    }
+    .lane--mint .input__rating-key { color: var(--mint); font-weight: 700; }
+    .lane--teal .input__rating-key { color: var(--teal); font-weight: 700; }
+    .input__trigger {
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* Verdict side */
+    .lane__verdict {
+      padding: 11px 14px;
+      display: flex; flex-direction: column; gap: 4px;
+      position: relative;
+    }
+    .lane--mint .lane__verdict { background: linear-gradient(180deg, transparent 0%, var(--mint-08) 100%); }
+    .lane--teal .lane__verdict { background: linear-gradient(180deg, transparent 0%, var(--teal-08) 100%); }
+
+    .verdict__attr {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: var(--fs-nano); font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 320ms var(--ease-out-cubic),
+                  transform 320ms var(--ease-out-cubic);
+    }
+    .verdict__avatar {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid var(--mint);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800;
+      color: var(--mint);
+    }
+    .lane--teal .verdict__avatar { color: var(--teal); border-color: var(--teal); }
+    .verdict__verb {
+      font-family: var(--font-sans);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--navy-deep);
+      margin: 2px 0 2px;
+      opacity: 0; transform: scale(0.94);
+      transition: opacity 540ms var(--ease-overshoot),
+                  transform 720ms var(--ease-overshoot);
+    }
+    .verdict__line {
+      font-size: var(--fs-micro); font-weight: 600;
+      line-height: 1.4; letter-spacing: -0.05px;
+      color: var(--text-on-light);
+      opacity: 0; transform: translateY(6px);
+      transition: opacity 420ms var(--ease-out-cubic),
+                  transform 420ms var(--ease-out-cubic);
+    }
+
+    .lane.is-revealed .verdict__attr { opacity: 1; transform: none; }
+    .lane.is-revealed .verdict__verb { opacity: 1; transform: scale(1); }
+    .lane.is-revealed .verdict__line { opacity: 1; transform: none; }
+    .lane.is-revealed .verdict__attr  { transition-delay: 80ms; }
+    .lane.is-revealed .verdict__verb  { transition-delay: 0ms; }
+    .lane.is-revealed .verdict__line  { transition-delay: 220ms; }
+
+    /* Empty verdict placeholder before reveal */
+    .lane:not(.is-revealed) .lane__verdict::before {
+      content: '';
+      position: absolute;
+      inset: 11px 14px;
+      border: 1px dashed var(--border-on-light-strong);
+      border-radius: 8px;
+      opacity: 0.4;
+    }
+
+    /* ============================================================ */
+    /* ALLOCATION viz                                                */
+    /* The Finwy work — visible, comparable, this is the product.   */
+    /* ============================================================ */
+    .allocation {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border-on-light);
+    }
+    .allocation__head {
+      font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      margin-bottom: 6px;
+      opacity: 0;
+      transition: opacity 320ms var(--ease-out-cubic);
+    }
+    .lane.is-revealed .allocation__head { opacity: 1; transition-delay: 460ms; }
+    .allocation__head strong { color: var(--navy); font-weight: 800; }
+
+    .allocation__bar {
+      display: flex;
+      height: 7px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--border-on-light);
+      margin-bottom: 6px;
+    }
+    .allocation__seg {
+      height: 100%;
+      width: 0;
+      transition: width 720ms var(--ease-spring);
+    }
+    .lane.is-revealed .allocation__seg { width: var(--seg-w, 0); }
+    .lane.is-revealed .allocation__seg:nth-child(1) { transition-delay: 600ms; }
+    .lane.is-revealed .allocation__seg:nth-child(2) { transition-delay: 700ms; }
+    .lane.is-revealed .allocation__seg:nth-child(3) { transition-delay: 800ms; }
+    .lane.is-revealed .allocation__seg:nth-child(4) { transition-delay: 900ms; }
+
+    .allocation__legend {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px 14px;
+    }
+    .allocation__row {
+      display: flex; align-items: baseline; gap: 6px;
+      font-size: 10.5px;
+      opacity: 0; transform: translateY(3px);
+      transition: opacity 320ms var(--ease-out-cubic),
+                  transform 320ms var(--ease-out-cubic);
+    }
+    .lane.is-revealed .allocation__row { opacity: 1; transform: none; }
+    .lane.is-revealed .allocation__row:nth-child(1) { transition-delay: 1100ms; }
+    .lane.is-revealed .allocation__row:nth-child(2) { transition-delay: 1180ms; }
+    .lane.is-revealed .allocation__row:nth-child(3) { transition-delay: 1260ms; }
+    .lane.is-revealed .allocation__row:nth-child(4) { transition-delay: 1340ms; }
+    .allocation__dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .allocation__name {
+      flex: 1;
+      color: var(--text-on-light);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .allocation__amount {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--navy);
+      flex-shrink: 0;
+    }
+
+    /* Color tokens for allocation segments */
+    .a-mint  { background: var(--mint); }
+    .a-teal  { background: var(--teal); }
+    .a-gold  { background: var(--gold); }
+    .a-rose  { background: var(--rose); }
+    .a-slate { background: var(--slate); }
+
+    /* ============================================================ */
+    /* Closer                                                        */
+    /* ============================================================ */
+    .engine__close {
+      margin-top: 44px; text-align: center;
+      display: flex; flex-direction: column; gap: 10px; align-items: center;
+    }
+    .engine__close-mascot {
+      width: 72px; height: 72px;
+      filter: drop-shadow(0 6px 16px rgba(0,45,86,0.12));
+      transform-origin: bottom center;
+      margin-bottom: 4px;
+    }
+    .engine__close-mascot.is-waving {
+      animation: mascotWave 1500ms cubic-bezier(0.36, 0, 0.18, 1);
+    }
+    @keyframes mascotWave {
+      0%   { transform: rotate(0deg) scale(1); }
+      18%  { transform: rotate(-7deg) scale(1.06); }
+      36%  { transform: rotate(8deg) scale(1.06); }
+      54%  { transform: rotate(-5deg) scale(1.04); }
+      72%  { transform: rotate(5deg) scale(1.02); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    .engine__close-line {
+      font-family: var(--font-serif);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 500; color: var(--navy);
+      max-width: 720px; line-height: 1.3;
+      letter-spacing: -0.012em;
+    }
+    .engine__close-line em { font-style: italic; color: var(--teal); }
+    .engine__close-finwy {
+      font-family: var(--font-serif);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-weight: 600; font-style: italic;
+      color: var(--teal); line-height: 1.3;
+      margin-top: 2px;
+    }
+    .engine__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font: 700 15px/1 var(--font-sans);
+      padding: 14px 26px; border-radius: 10px;
+      background: var(--mint); color: var(--navy-deep);
+      text-decoration: none;
+      margin-top: 10px;
+      transition: background 200ms, transform 200ms, box-shadow 200ms;
+      box-shadow: 0 4px 14px rgba(53,214,198,0.28);
+    }
+    .engine__cta:hover {
+      background: var(--teal); color: var(--white);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0,182,173,0.32);
+    }
+    .engine__footnote {
+      margin: 28px auto 0; text-align: center;
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      max-width: 720px; line-height: 1.55;
+    }
+
+    /* ============================================================ */
+    /* Mobile                                                        */
+    /* ============================================================ */
+    @media (max-width: 880px) {
+      .lane { grid-template-columns: 1fr; }
+      .lane__input { border-right: 0; border-bottom: 1px solid; }
+      .lane--mint .lane__input { border-bottom-color: var(--mint-24); }
+      .lane--teal .lane__input { border-bottom-color: var(--teal-24); }
+      .factor { width: 44px; height: 44px; }
+      .factor svg { width: 16px; height: 16px; }
+      .factor__label { font-size: 8px; }
+      .factor__readout { font-size: 10.5px; top: calc(100% + 18px); }
+      .trail { padding: 18px 10px 64px; }
+      .trail__row { padding: 0; gap: 4px; }
+      .trail__row::before { left: 22px; right: 22px; }
+      .trail__mascot { width: 44px; height: 44px; top: calc(50% + 14px); }
+      .trail__mascot.is-docked { width: 28px; height: 28px; top: -14px; }
+      .case-card__head h3 { font-size: clamp(20px, 5vw, 24px); }
+      .input-stats { gap: 16px; }
+      .input-stat__num { font-size: clamp(22px, 6.5vw, 28px); }
+      .verdict__verb { font-size: clamp(22px, 6.5vw, 28px); }
+      .allocation__legend { grid-template-columns: 1fr; }
+    }
+
+    body.is-mobile-preview main {
+      max-width: 420px; margin: 24px auto;
+      border: 1px solid var(--border-on-light);
+      border-radius: 24px; background: var(--off-white);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,45,86,0.12);
+    }
+    body.is-mobile-preview .engine__inner { padding: 0 16px; }
+    body.is-mobile-preview .lane { grid-template-columns: 1fr; }
+    body.is-mobile-preview .lane__input { border-right: 0; border-bottom: 1px solid; }
+    body.is-mobile-preview .lane--mint .lane__input { border-bottom-color: var(--mint-24); }
+    body.is-mobile-preview .lane--teal .lane__input { border-bottom-color: var(--teal-24); }
+    body.is-mobile-preview .factor { width: 40px; height: 40px; }
+    body.is-mobile-preview .factor svg { width: 14px; height: 14px; }
+    body.is-mobile-preview .allocation__legend { grid-template-columns: 1fr; }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .case-card, .lane, .factor, .trail__mascot, .trail__caption,
+      .verdict__attr, .verdict__verb, .verdict__line,
+      .allocation__head, .allocation__seg, .allocation__row,
+      .prediction, .engine__close-mascot {
+        transition: none !important; animation: none !important;
+        transform: none !important; opacity: 1 !important;
+      }
+      .trail__mascot img { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-bar">
+    <div>&larr; <a href="cases-preview-v8.html">v8</a> &middot; <a href="cases-preview-v7.html">v7</a> &middot; <a href="cases-changelog.md">log</a></div>
+    <div class="preview-bar__title">
+      §7 v9 &middot; The Engine
+      <span class="preview-bar__phase">Finwy allocates</span>
+    </div>
+    <div class="preview-bar__actions">
+      <button id="replayBtn">&#8634; Replay</button>
+      <button id="showAllBtn" class="is-secondary">Show all</button>
+      <button id="mobileBtn" class="is-secondary">View mobile</button>
+    </div>
+  </div>
+
+  <main>
+    <section class="engine" aria-labelledby="engine-heading">
+      <div class="engine__inner">
+
+        <div class="engine__intro">
+          <p class="engine__intro-eyebrow">Watch how Finwy reasons</p>
+          <h2 id="engine-heading" class="engine__intro-title">
+            Two of you. <em>Two answers.</em>
+          </h2>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 1 — SAME SURPLUS, OPPOSITE PORTFOLIOS                        -->
+        <!-- ============================================================ -->
+        <article class="case-card" id="pair-portfolios" data-pair="portfolios" data-pace="slow"
+                 data-decisive="4" aria-labelledby="pair-portfolios-tagline">
+          <p class="visually-hidden">Both 35-year-olds with 52,000 surplus. Riya has 83 percent in equity in a 46-lakh portfolio. Aman has zero, with 6 lakh sitting in fixed deposit. Risk is the decisive factor. Riya is told to stop adding equity and rebalance. Aman to start equity.</p>
+
+          <header class="case-card__head">
+            <h3 id="pair-portfolios-tagline">Same surplus. Opposite portfolios.</h3>
+            <p class="case-card__head-sub">Both 35. Both earn &#8377;52,000 surplus a month.</p>
+          </header>
+
+          <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Risk">
+            <div class="trail__row" aria-hidden="true">
+              <div class="factor" data-pos="0">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span class="factor__label">Age</span>
+                <span class="factor__readout">35 yrs</span>
+              </div>
+              <div class="factor" data-pos="1">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+                <span class="factor__label">Goals</span>
+                <span class="factor__readout">retirement &middot; 25y</span>
+              </div>
+              <div class="factor" data-pos="2">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg>
+                <span class="factor__label">Surplus</span>
+                <span class="factor__readout">&#8377;52K/mo</span>
+              </div>
+              <div class="factor" data-pos="3">
+                <svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg>
+                <span class="factor__label">Portfolio</span>
+                <span class="factor__readout">&#8377;46L vs &#8377;6L</span>
+              </div>
+              <div class="factor" data-pos="4">
+                <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg>
+                <span class="factor__label">Risk</span>
+                <span class="factor__readout">83% vs 0% equity</span>
+              </div>
+              <div class="factor" data-pos="5">
+                <svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg>
+                <span class="factor__label">Priorities</span>
+                <span class="factor__readout">comparable</span>
+              </div>
+            </div>
+            <div class="trail__mascot" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+            <p class="trail__caption" aria-live="polite">Risk decided.</p>
+          </div>
+
+          <!-- Riya -->
+          <div class="lane lane--mint" data-i="0">
+            <div class="lane__input">
+              <p class="input__name">Riya M.</p>
+              <p class="input__meta">35 &middot; BENGALURU &middot; SOFTWARE ENG.</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">83<small>%</small></span>
+                  <span class="input-stat__label">in equity</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;46L</span>
+                  <span class="input-stat__label">portfolio</span>
+                </div>
+              </div>
+              <p class="input__rating">Self-rated <span class="input__rating-key">Conservative</span></p>
+              <p class="input__trigger">Opened Finwy after a colleague&rsquo;s heart attack at 38.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">R</span> Riya</p>
+              <p class="verdict__verb">STOP</p>
+              <p class="verdict__line">Stop adding equity. Buy term. Build liquidity.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;52K/mo</strong> &middot; allocated</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-rose"  style="--seg-w: 6%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 29%;"></span>
+                  <span class="allocation__seg a-slate" style="--seg-w: 38%;"></span>
+                  <span class="allocation__seg a-mint"  style="--seg-w: 27%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-rose"></span><span class="allocation__name">Term insurance</span><span class="allocation__amount">&#8377;3K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;15K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt funds</span><span class="allocation__amount">&#8377;20K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity (reduced)</span><span class="allocation__amount">&#8377;14K</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aman -->
+          <div class="lane lane--teal" data-i="1">
+            <div class="lane__input">
+              <p class="input__name">Aman K.</p>
+              <p class="input__meta">35 &middot; PUNE &middot; SALES LEAD</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">0<small>%</small></span>
+                  <span class="input-stat__label">in equity</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;6L</span>
+                  <span class="input-stat__label">all in FD</span>
+                </div>
+              </div>
+              <p class="input__rating">Self-rated <span class="input__rating-key">Aggressive</span></p>
+              <p class="input__trigger">Opened Finwy after his crypto-friend&rsquo;s third disaster.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">A</span> Aman</p>
+              <p class="verdict__verb">START</p>
+              <p class="verdict__line">Start equity. Today. Skip the side bets.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;52K/mo</strong> &middot; allocated</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-rose"  style="--seg-w: 6%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 19%;"></span>
+                  <span class="allocation__seg a-slate" style="--seg-w: 8%;"></span>
+                  <span class="allocation__seg a-mint"  style="--seg-w: 67%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-rose"></span><span class="allocation__name">Term insurance</span><span class="allocation__amount">&#8377;3K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;10K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt funds</span><span class="allocation__amount">&#8377;4K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity SIP</span><span class="allocation__amount">&#8377;35K</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ============================================================ -->
+        <!-- 2 — SAME PORTFOLIO, DIFFERENT GOALS                          -->
+        <!-- ============================================================ -->
+        <article class="case-card" id="pair-goals" data-pair="goals" data-pace="medium"
+                 data-decisive="1" aria-labelledby="pair-goals-tagline">
+          <p class="visually-hidden">Both 35, identical 25-lakh portfolio at 60 percent equity. Arjun's primary goal is buying a 50-lakh flat in 5 years. Suresh's primary goal is his daughter's college, also 50 lakh, in 12 years. Goals is decisive. Arjun shifts to a balanced fund. Suresh holds steady at 60 percent equity.</p>
+
+          <header class="case-card__head">
+            <h3 id="pair-goals-tagline">Same portfolio. Different goals.</h3>
+            <p class="case-card__head-sub">Both 35. Both have an identical &#8377;25L portfolio: 60% equity, 30% debt, 10% cash.</p>
+          </header>
+
+          <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Goals">
+            <div class="trail__row" aria-hidden="true">
+              <div class="factor" data-pos="0">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span class="factor__label">Age</span>
+                <span class="factor__readout">35 yrs</span>
+              </div>
+              <div class="factor" data-pos="1">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+                <span class="factor__label">Goals</span>
+                <span class="factor__readout">5y vs 12y</span>
+              </div>
+              <div class="factor" data-pos="2">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg>
+                <span class="factor__label">Surplus</span>
+                <span class="factor__readout">comparable</span>
+              </div>
+              <div class="factor" data-pos="3">
+                <svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg>
+                <span class="factor__label">Portfolio</span>
+                <span class="factor__readout">&#8377;25L &middot; identical</span>
+              </div>
+              <div class="factor" data-pos="4">
+                <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg>
+                <span class="factor__label">Risk</span>
+                <span class="factor__readout">moderate</span>
+              </div>
+              <div class="factor" data-pos="5">
+                <svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg>
+                <span class="factor__label">Priorities</span>
+                <span class="factor__readout">self &middot; family</span>
+              </div>
+            </div>
+            <div class="trail__mascot" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+            <p class="trail__caption" aria-live="polite">Goals decided.</p>
+          </div>
+
+          <!-- Arjun -->
+          <div class="lane lane--mint" data-i="0">
+            <div class="lane__input">
+              <p class="input__name">Arjun S.</p>
+              <p class="input__meta">35 &middot; HYDERABAD &middot; PRODUCT MGR.</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">5<small>y</small></span>
+                  <span class="input-stat__label">Own flat</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;50L</span>
+                  <span class="input-stat__label">primary goal</span>
+                </div>
+              </div>
+              <p class="input__rating">Time horizon <span class="input__rating-key">short &middot; near-term</span></p>
+              <p class="input__trigger">Opened Finwy after a builder&rsquo;s sales-pitch dinner.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">A</span> Arjun</p>
+              <p class="verdict__verb">SHIFT</p>
+              <p class="verdict__line">Move 40% to balanced. 5 years can&rsquo;t survive a 25% drop.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;25L</strong> &middot; rebalanced</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-teal"  style="--seg-w: 40%;"></span>
+                  <span class="allocation__seg a-mint"  style="--seg-w: 20%;"></span>
+                  <span class="allocation__seg a-slate" style="--seg-w: 30%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 10%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-teal"></span><span class="allocation__name">Balanced fund</span><span class="allocation__amount">&#8377;10L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity (reduced)</span><span class="allocation__amount">&#8377;5L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt</span><span class="allocation__amount">&#8377;7.5L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Cash</span><span class="allocation__amount">&#8377;2.5L</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Suresh -->
+          <div class="lane lane--teal" data-i="1">
+            <div class="lane__input">
+              <p class="input__name">Suresh R.</p>
+              <p class="input__meta">35 &middot; MUMBAI &middot; TECH LEAD</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">12<small>y</small></span>
+                  <span class="input-stat__label">Child&rsquo;s education</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">&#8377;50L</span>
+                  <span class="input-stat__label">primary goal</span>
+                </div>
+              </div>
+              <p class="input__rating">Time horizon <span class="input__rating-key">long &middot; multi-cycle</span></p>
+              <p class="input__trigger">Opened Finwy on his daughter&rsquo;s 4th birthday.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">S</span> Suresh</p>
+              <p class="verdict__verb">HOLD</p>
+              <p class="verdict__line">Stay 60% equity. 12 years rewards the volatility.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;25L</strong> &middot; held</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-mint"  style="--seg-w: 60%;"></span>
+                  <span class="allocation__seg a-slate" style="--seg-w: 30%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 10%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity</span><span class="allocation__amount">&#8377;15L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt</span><span class="allocation__amount">&#8377;7.5L</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Cash</span><span class="allocation__amount">&#8377;2.5L</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ============================================================ -->
+        <!-- 3 — SAME INCOME, DIFFERENT LIVES                             -->
+        <!-- (reframed: 1 vs 4 active goals, FOCUS / SEQUENCE)            -->
+        <!-- ============================================================ -->
+        <article class="case-card" id="pair-expenses" data-pair="expenses" data-pace="fast"
+                 data-decisive="5" aria-labelledby="pair-expenses-tagline">
+          <p class="visually-hidden">Both 35-year-old senior engineers in Pune earning 1.6 lakh, both with about 50,000 surplus. Vivek has one active goal — retirement. Karan has four — kids' education, parents' health buffer, retirement, emergency. Priorities is decisive. Vivek concentrates. Karan sequences.</p>
+
+          <header class="case-card__head">
+            <h3 id="pair-expenses-tagline">Same income. Different lives.</h3>
+            <p class="case-card__head-sub">Both 35. Both senior engineers in Pune. Both bring home &#8377;1,60,000.</p>
+          </header>
+
+          <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Priorities">
+            <div class="trail__row" aria-hidden="true">
+              <div class="factor" data-pos="0">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <span class="factor__label">Age</span>
+                <span class="factor__readout">35 yrs</span>
+              </div>
+              <div class="factor" data-pos="1">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+                <span class="factor__label">Goals</span>
+                <span class="factor__readout">1 vs 4 active</span>
+              </div>
+              <div class="factor" data-pos="2">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg>
+                <span class="factor__label">Surplus</span>
+                <span class="factor__readout">~&#8377;50K</span>
+              </div>
+              <div class="factor" data-pos="3">
+                <svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg>
+                <span class="factor__label">Portfolio</span>
+                <span class="factor__readout">comparable</span>
+              </div>
+              <div class="factor" data-pos="4">
+                <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg>
+                <span class="factor__label">Risk</span>
+                <span class="factor__readout">moderate</span>
+              </div>
+              <div class="factor" data-pos="5">
+                <svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg>
+                <span class="factor__label">Priorities</span>
+                <span class="factor__readout">focus vs sequence</span>
+              </div>
+            </div>
+            <div class="trail__mascot" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+            <p class="trail__caption" aria-live="polite">Priorities decided.</p>
+          </div>
+
+          <!-- Vivek -->
+          <div class="lane lane--mint" data-i="0">
+            <div class="lane__input">
+              <p class="input__name">Vivek N.</p>
+              <p class="input__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">1</span>
+                  <span class="input-stat__label">primary goal</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">25<small>y</small></span>
+                  <span class="input-stat__label">retirement horizon</span>
+                </div>
+              </div>
+              <p class="input__rating">Life stage <span class="input__rating-key">single &middot; independent parents</span></p>
+              <p class="input__trigger">Opened Finwy after a friend lost &#8377;15L on tips.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">V</span> Vivek</p>
+              <p class="verdict__verb">FOCUS</p>
+              <p class="verdict__line">One goal, deeply funded. Time does the rest.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;50K/mo</strong> &middot; allocated</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-mint"  style="--seg-w: 70%;"></span>
+                  <span class="allocation__seg a-teal"  style="--seg-w: 20%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 10%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Retirement</span><span class="allocation__amount">&#8377;35K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-teal"></span><span class="allocation__name">Mid-term (flat)</span><span class="allocation__amount">&#8377;10K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;5K</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Karan -->
+          <div class="lane lane--teal" data-i="1">
+            <div class="lane__input">
+              <p class="input__name">Karan M.</p>
+              <p class="input__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+              <div class="input-stats">
+                <div class="input-stat">
+                  <span class="input-stat__num">4</span>
+                  <span class="input-stat__label">active goals</span>
+                </div>
+                <div class="input-stat">
+                  <span class="input-stat__num">3<small>+</small></span>
+                  <span class="input-stat__label">dependents</span>
+                </div>
+              </div>
+              <p class="input__rating">Life stage <span class="input__rating-key">2 kids &middot; father on dialysis</span></p>
+              <p class="input__trigger">Opened Finwy when his daughter started kindergarten.</p>
+            </div>
+            <div class="lane__verdict">
+              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">K</span> Karan</p>
+              <p class="verdict__verb">SEQUENCE</p>
+              <p class="verdict__line">Education first. Parents next. Retirement third. Order matters.</p>
+              <div class="allocation">
+                <p class="allocation__head"><strong>&#8377;50K/mo</strong> &middot; allocated</p>
+                <div class="allocation__bar">
+                  <span class="allocation__seg a-teal"  style="--seg-w: 30%;"></span>
+                  <span class="allocation__seg a-rose"  style="--seg-w: 25%;"></span>
+                  <span class="allocation__seg a-mint"  style="--seg-w: 25%;"></span>
+                  <span class="allocation__seg a-gold"  style="--seg-w: 20%;"></span>
+                </div>
+                <div class="allocation__legend">
+                  <div class="allocation__row"><span class="allocation__dot a-teal"></span><span class="allocation__name">Kids&rsquo; education</span><span class="allocation__amount">&#8377;15K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-rose"></span><span class="allocation__name">Parents&rsquo; health</span><span class="allocation__amount">&#8377;12.5K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Retirement</span><span class="allocation__amount">&#8377;12.5K</span></div>
+                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;10K</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <div class="engine__close">
+          <img class="engine__close-mascot" id="closer-mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
+          <p class="engine__close-line">Six 35-year-olds. Six allocations &mdash; and they keep changing.</p>
+          <p class="engine__close-finwy">Finwy keeps watching.</p>
+          <a class="engine__cta" href="/demo-app">Get yours &rarr;</a>
+        </div>
+
+        <p class="engine__footnote">
+          Illustrative cases. Names changed; details composed.
+          Your data drives your allocation, not these.
+        </p>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var PACE = {
+        portfolios: { step: 360, decisive: 900, gap: 60,  handoff: 520 },
+        goals:      { step: 280, decisive: 720, gap: 50,  handoff: 460 },
+        expenses:   { step: 220, decisive: 600, gap: 40,  handoff: 420 }
+      };
+
+      var revealed = new WeakSet();
+      var timers = [];
+
+      function clearTimers() {
+        timers.forEach(function (t) { clearTimeout(t); });
+        timers = [];
+      }
+
+      function moveMascotTo(card, position) {
+        var mascot  = card.querySelector('.trail__mascot');
+        var factors = card.querySelectorAll('.factor');
+        var trail   = card.querySelector('.trail');
+        if (!mascot || !factors[position] || !trail) return;
+        var trailRect  = trail.getBoundingClientRect();
+        var factorRect = factors[position].getBoundingClientRect();
+        var mascotW    = mascot.offsetWidth || 56;
+        var x = factorRect.left + factorRect.width / 2 - trailRect.left - mascotW / 2;
+        mascot.style.transform = 'translateX(' + x + 'px)';
+      }
+
+      function dockMascot(card) {
+        var mascot = card.querySelector('.trail__mascot');
+        if (!mascot) return;
+        mascot.classList.add('is-docked');
+        mascot.style.transform = '';
+      }
+
+      function setMascotLoad(card, loaded) {
+        var mascot = card.querySelector('.trail__mascot');
+        if (mascot) mascot.dataset.loaded = String(Math.min(loaded, 6));
+      }
+
+      function stepMascot(card) {
+        var mascot = card.querySelector('.trail__mascot');
+        if (!mascot) return;
+        mascot.classList.remove('is-stepping');
+        void mascot.offsetWidth;
+        mascot.classList.add('is-stepping');
+      }
+
+      function leanMascot(card) {
+        var mascot = card.querySelector('.trail__mascot');
+        if (!mascot) return;
+        mascot.classList.remove('is-leaning');
+        void mascot.offsetWidth;
+        mascot.classList.add('is-leaning');
+      }
+
+      function runEngine(card) {
+        var pairKey  = card.dataset.pair;
+        var pace     = PACE[pairKey];
+        var decisive = parseInt(card.dataset.decisive, 10);
+        var factors  = card.querySelectorAll('.factor');
+        var lanes    = card.querySelectorAll('.lane');
+        var caption  = card.querySelector('.trail__caption');
+
+        var t = 700;
+
+        for (var i = 0; i < 6; i++) {
+          (function (idx) {
+            var isDecisive = (idx === decisive);
+            var hold = isDecisive ? pace.decisive : pace.step;
+
+            timers.push(setTimeout(function () {
+              moveMascotTo(card, idx);
+              stepMascot(card);
+              factors[idx].classList.add(isDecisive ? 'is-decisive-hold' : 'is-active');
+              timers.push(setTimeout(function () { leanMascot(card); }, 180));
+            }, t));
+
+            timers.push(setTimeout(function () {
+              factors[idx].classList.remove('is-active', 'is-decisive-hold');
+              if (isDecisive) {
+                factors[idx].classList.add('is-decisive');
+              } else {
+                factors[idx].classList.add('is-considered');
+              }
+              setMascotLoad(card, idx + 1);
+            }, t + hold));
+          })(i);
+
+          t += (i === decisive ? pace.decisive : pace.step) + pace.gap;
+        }
+
+        var handoffStart = t;
+        timers.push(setTimeout(function () {
+          factors[decisive].classList.add('is-handing-off');
+        }, handoffStart));
+
+        timers.push(setTimeout(function () {
+          lanes[0].classList.add('is-receiving', 'is-revealed');
+        }, handoffStart + Math.round(pace.handoff * 0.55)));
+
+        timers.push(setTimeout(function () {
+          lanes[1].classList.add('is-receiving', 'is-revealed');
+        }, handoffStart + Math.round(pace.handoff * 0.55) + 220));
+
+        timers.push(setTimeout(function () {
+          lanes[0].classList.remove('is-receiving');
+          lanes[1].classList.remove('is-receiving');
+        }, handoffStart + pace.handoff + 900));
+
+        var settle = handoffStart + pace.handoff + 240;
+        timers.push(setTimeout(function () {
+          if (caption) caption.classList.add('is-shown');
+        }, settle));
+        timers.push(setTimeout(function () {
+          dockMascot(card);
+        }, settle + 320));
+      }
+
+      function settleFinalState(card) {
+        var pairKey  = card.dataset.pair;
+        var decisive = parseInt(card.dataset.decisive, 10);
+        var factors  = card.querySelectorAll('.factor');
+        var lanes    = card.querySelectorAll('.lane');
+        var caption  = card.querySelector('.trail__caption');
+
+        factors.forEach(function (f, i) {
+          f.classList.remove('is-active', 'is-decisive-hold', 'is-considered', 'is-decisive', 'is-handing-off');
+          if (i === decisive) f.classList.add('is-decisive');
+          else f.classList.add('is-considered');
+        });
+        lanes.forEach(function (l) { l.classList.add('is-revealed'); });
+        if (caption) caption.classList.add('is-shown');
+        setMascotLoad(card, 6);
+        requestAnimationFrame(function () { dockMascot(card); });
+      }
+
+      function reveal(card) {
+        if (revealed.has(card)) return;
+        revealed.add(card);
+        card.classList.add('is-revealed');
+
+        if (reduce) {
+          settleFinalState(card);
+          return;
+        }
+        requestAnimationFrame(function () {
+          moveMascotTo(card, 0);
+          timers.push(setTimeout(function () { runEngine(card); }, 100));
+        });
+      }
+
+      var cards = document.querySelectorAll('.case-card');
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) reveal(e.target); });
+        }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+        cards.forEach(function (c) { io.observe(c); });
+      } else {
+        cards.forEach(reveal);
+      }
+
+      var prediction = document.getElementById('prediction-beat');
+      if (prediction && 'IntersectionObserver' in window) {
+        var pIO = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { prediction.classList.add('is-shown'); obs.disconnect(); }
+          });
+        }, { threshold: 0.6 });
+        pIO.observe(prediction);
+      } else if (prediction) {
+        prediction.classList.add('is-shown');
+      }
+
+      var closerMascot = document.getElementById('closer-mascot');
+      if (closerMascot && !reduce && 'IntersectionObserver' in window) {
+        var mIO = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { closerMascot.classList.add('is-waving'); obs.disconnect(); }
+          });
+        }, { threshold: 0.6 });
+        mIO.observe(closerMascot);
+      }
+
+      window.addEventListener('resize', function () {
+        cards.forEach(function (c) {
+          if (!revealed.has(c)) return;
+          var mascot = c.querySelector('.trail__mascot');
+          if (mascot && mascot.classList.contains('is-docked')) {
+            dockMascot(c);
+          }
+        });
+      });
+
+      var replay = document.getElementById('replayBtn');
+      if (replay) {
+        replay.addEventListener('click', function () {
+          clearTimers();
+          cards.forEach(function (c) {
+            c.classList.remove('is-revealed');
+            c.querySelectorAll('.factor').forEach(function (f) {
+              f.classList.remove('is-active', 'is-decisive-hold', 'is-considered', 'is-decisive', 'is-handing-off');
+            });
+            c.querySelectorAll('.lane').forEach(function (l) {
+              l.classList.remove('is-revealed', 'is-receiving');
+            });
+            var m = c.querySelector('.trail__mascot');
+            if (m) {
+              m.classList.remove('is-stepping', 'is-leaning', 'is-docked');
+              m.style.transform = 'translateX(0)';
+              m.dataset.loaded = '0';
+            }
+            var cap = c.querySelector('.trail__caption');
+            if (cap) cap.classList.remove('is-shown');
+            revealed.delete(c);
+          });
+          if (prediction) prediction.classList.remove('is-shown');
+          if (closerMascot) closerMascot.classList.remove('is-waving');
+          requestAnimationFrame(function () {
+            cards.forEach(function (c) {
+              var rect = c.getBoundingClientRect();
+              if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) reveal(c);
+            });
+          });
+        });
+      }
+
+      var showAllBtn = document.getElementById('showAllBtn');
+      if (showAllBtn) {
+        showAllBtn.addEventListener('click', function () {
+          clearTimers();
+          cards.forEach(function (c) {
+            c.classList.add('is-revealed');
+            revealed.add(c);
+            settleFinalState(c);
+          });
+          if (prediction) prediction.classList.add('is-shown');
+          if (closerMascot) closerMascot.classList.add('is-waving');
+        });
+      }
+
+      var mobileBtn = document.getElementById('mobileBtn');
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', function () {
+          document.body.classList.toggle('is-mobile-preview');
+          mobileBtn.textContent = document.body.classList.contains('is-mobile-preview')
+            ? 'View desktop' : 'View mobile';
+          requestAnimationFrame(function () {
+            cards.forEach(function (c) {
+              var m = c.querySelector('.trail__mascot');
+              if (!m) return;
+              if (m.classList.contains('is-docked')) dockMascot(c);
+              else if (revealed.has(c)) moveMascotTo(c, 5);
+            });
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

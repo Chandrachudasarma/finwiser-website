@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>§7 Preview v7 — Finwy's glide · Finwiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #002d56; --navy-deep: #001f3d;
+      --mint: #35d6c6; --teal: #00b6ad;
+      --white: #ffffff; --off-white: #f7f9fb;
+      --text-on-light: #002d56; --text-on-light-muted: #5a6b7d;
+      --text-on-dark: rgba(255,255,255,0.94); --text-on-dark-muted: rgba(255,255,255,0.74);
+      --border-on-light: rgba(0,45,86,0.10);
+      --border-on-light-strong: rgba(0,45,86,0.20);
+      --shadow-soft: 0 4px 18px rgba(0,45,86,0.08);
+      --gold: #f5c26b; --rose: #e87b6f;
+      --mint-04: rgba(53,214,198,0.04);
+      --mint-08: rgba(53,214,198,0.08); --mint-16: rgba(53,214,198,0.16);
+      --mint-32: rgba(53,214,198,0.32); --mint-56: rgba(53,214,198,0.56);
+      --gold-08: rgba(245,194,107,0.08);
+      --rose-05: rgba(232,123,111,0.05);
+      --teal-04: rgba(0,182,173,0.04);
+      --teal-08: rgba(0,182,173,0.08); --teal-16: rgba(0,182,173,0.16); --teal-32: rgba(0,182,173,0.32);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: 'Lora', Georgia, serif;
+      --fs-nano: 11px; --fs-micro: 13px; --fs-body: 15px; --fs-lead: 17px;
+      --fs-h3: clamp(20px, 2.5vw, 26px); --fs-h2: clamp(28px, 4vw, 44px);
+      --ease-out-cubic: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-spring:    cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-in-out:    cubic-bezier(0.45, 0, 0.55, 1);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans); font-weight: 400; line-height: 1.6;
+      color: var(--text-on-light); background: var(--off-white);
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* Preview chrome */
+    .preview-bar {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 10px 20px; background: var(--navy-deep);
+      border-bottom: 1px solid rgba(53,214,198,0.18);
+      font: 500 12.5px/1 var(--font-sans); color: var(--text-on-dark-muted);
+    }
+    .preview-bar a { color: var(--mint); text-decoration: none; }
+    .preview-bar a:hover { text-decoration: underline; }
+    .preview-bar__title { color: var(--text-on-dark); font-weight: 600; }
+    .preview-bar__phase {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      background: var(--gold); color: var(--navy-deep);
+      font-size: 11px; font-weight: 700; margin-left: 6px;
+    }
+    .preview-bar__actions { display: flex; gap: 8px; }
+    .preview-bar button {
+      font: 500 12px/1 var(--font-sans); color: var(--navy-deep);
+      background: var(--mint); border: 0; border-radius: 6px;
+      padding: 8px 14px; cursor: pointer;
+      transition: background 200ms ease;
+    }
+    .preview-bar button:hover { background: var(--teal); color: var(--white); }
+    .preview-bar button.is-secondary {
+      background: transparent; color: var(--text-on-dark-muted);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .preview-bar button.is-secondary:hover { color: var(--mint); border-color: var(--mint); }
+
+    /* Section */
+    .engine { background: var(--off-white); padding: clamp(56px, 8vw, 96px) 0; }
+    .engine__inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    .engine__intro { text-align: center; margin-bottom: 64px; }
+    .engine__intro-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      margin-bottom: 14px;
+    }
+    .engine__intro-title {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 4.6vw, 52px);
+      font-weight: 500; line-height: 1.1; letter-spacing: -0.015em;
+      color: var(--navy);
+    }
+    .engine__intro-title em { font-style: italic; color: var(--teal); }
+
+    /* Pair */
+    .pair { margin-bottom: 96px; }
+    .pair:last-of-type { margin-bottom: 64px; }
+
+    .pair__head { text-align: center; margin-bottom: 32px; }
+    .pair__head-tagline {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 500; line-height: 1.15;
+      letter-spacing: -0.015em;
+      color: var(--navy);
+      max-width: 920px; margin: 0 auto;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 540ms var(--ease-out-cubic), transform 540ms var(--ease-out-cubic);
+    }
+    .pair.is-revealed .pair__head-tagline { opacity: 1; transform: none; transition-delay: 100ms; }
+
+    .pair__shared {
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: var(--fs-lead);
+      font-style: italic;
+      color: var(--text-on-light-muted);
+      max-width: 60ch; margin: 14px auto 0;
+      line-height: 1.5;
+      opacity: 0;
+      transition: opacity 400ms var(--ease-out-cubic);
+    }
+    .pair.is-revealed .pair__shared { opacity: 1; transition-delay: 350ms; }
+
+    /* ============================================================ */
+    /* INPUT ROW — two cards side-by-side at top                     */
+    /* ============================================================ */
+    .stage-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 36px;
+    }
+
+    .input-card {
+      border: 1px solid var(--border-on-light);
+      border-left: 4px solid;
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: var(--shadow-soft);
+      display: flex; flex-direction: column; gap: 6px;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 460ms var(--ease-spring), transform 460ms var(--ease-spring);
+    }
+    .input-card--mint {
+      background: var(--mint-04);
+      border-color: var(--mint-32);
+      border-left-color: var(--mint);
+    }
+    .input-card--teal {
+      background: var(--teal-04);
+      border-color: var(--teal-32);
+      border-left-color: var(--teal);
+    }
+
+    .pair.is-revealed .input-card { opacity: 1; transform: none; }
+    .pair.is-revealed .input-card[data-i="0"] { transition-delay: 480ms; }
+    .pair.is-revealed .input-card[data-i="1"] { transition-delay: 700ms; }
+
+    .input-card__name { font-size: var(--fs-body); font-weight: 700; color: var(--navy); letter-spacing: -0.1px; }
+    .input-card__meta {
+      font-size: var(--fs-nano); color: var(--text-on-light-muted);
+      letter-spacing: 0.04em; margin-bottom: 6px;
+    }
+    .input-card__hero {
+      font-family: var(--font-sans);
+      font-size: clamp(48px, 6vw, 72px);
+      font-weight: 800;
+      color: var(--mint);
+      line-height: 0.92; letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+      margin-top: 4px;
+    }
+    .input-card--teal .input-card__hero { color: var(--teal); }
+    .input-card__hero small {
+      font-size: 0.42em; font-weight: 700;
+      color: var(--navy);
+      vertical-align: 0.2em; margin-left: 0.04em;
+    }
+    .input-card__hero .strike {
+      position: relative; display: inline-block;
+      color: var(--rose);
+      font-size: 0.66em; font-weight: 700;
+      margin-right: 8px; vertical-align: 0.18em;
+    }
+    .input-card__hero .strike::after {
+      content: '';
+      position: absolute; left: -3%; right: -3%; top: 52%;
+      height: 3px; background: var(--rose); border-radius: 2px;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 750ms var(--ease-out-cubic);
+    }
+    .pair.is-revealed .input-card__hero .strike::after { transform: scaleX(1); transition-delay: 1500ms; }
+
+    .input-card__hero-label {
+      font-size: var(--fs-micro); font-weight: 600;
+      color: var(--text-on-light); letter-spacing: 0.01em;
+      margin-top: 8px;
+    }
+    .input-card__rating {
+      font-size: var(--fs-micro); color: var(--text-on-light-muted);
+      font-weight: 500; margin-top: 4px;
+    }
+    .input-card--mint .input-card__rating-key { color: var(--mint); font-weight: 700; }
+    .input-card--teal .input-card__rating-key { color: var(--teal); font-weight: 700; }
+    .input-card__trigger {
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      margin-top: 10px; padding-top: 10px;
+      border-top: 1px dashed var(--border-on-light);
+      line-height: 1.4;
+    }
+
+    /* ============================================================ */
+    /* FACTOR TRACK — Finwy glides through 6 factors                 */
+    /* ============================================================ */
+    .stage-track {
+      position: relative;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 36px 24px 96px;
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
+      overflow: visible;
+    }
+
+    .stage-track__rail {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 8px;
+    }
+    .stage-track__rail::before {
+      content: '';
+      position: absolute;
+      left: 40px; right: 40px;
+      top: 50%; height: 2px;
+      background: var(--border-on-light-strong);
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+
+    .factor {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width: 64px; height: 64px;
+      background: var(--white);
+      border: 1.8px solid var(--border-on-light-strong);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,45,86,0.08);
+      transition: background 280ms var(--ease-out-cubic),
+                  border-color 280ms var(--ease-out-cubic),
+                  box-shadow 280ms var(--ease-out-cubic),
+                  transform 380ms var(--ease-overshoot);
+    }
+    .factor svg {
+      width: 22px; height: 22px;
+      stroke: var(--text-on-light);
+      fill: none; stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 280ms ease;
+    }
+    .factor__label {
+      position: absolute;
+      top: calc(100% + 10px); left: 50%;
+      transform: translateX(-50%);
+      font-size: 9.5px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-on-light-muted);
+      white-space: nowrap;
+      transition: color 280ms ease;
+    }
+
+    /* Active = Finwy is currently passing */
+    .factor.is-active {
+      background: var(--mint-08);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 5px var(--mint-16),
+                  0 4px 14px rgba(53,214,198,0.18);
+      transform: scale(1.12);
+    }
+    .factor.is-active svg { stroke: var(--mint); }
+    .factor.is-active .factor__label { color: var(--navy); font-weight: 800; }
+
+    /* Considered = Finwy has passed (tick lands) */
+    .factor.is-considered {
+      border-color: var(--mint-32);
+    }
+    .factor.is-considered svg { stroke: var(--mint); }
+    .factor.is-considered::after {
+      content: '\2713';
+      position: absolute;
+      top: -5px; right: -5px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--mint); color: var(--white);
+      font-size: 12px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,45,86,0.18);
+      animation: tickPop 420ms var(--ease-overshoot);
+    }
+    @keyframes tickPop {
+      0%   { opacity: 0; transform: scale(0.4); }
+      60%  { transform: scale(1.18); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Decisive — stays bright after Finwy passes */
+    .factor.is-decisive {
+      background: var(--mint);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 6px var(--mint-32),
+                  0 6px 20px rgba(53,214,198,0.32);
+      transform: scale(1.18);
+    }
+    .factor.is-decisive svg { stroke: var(--white); }
+    .factor.is-decisive .factor__label { color: var(--mint); font-weight: 800; }
+    .factor.is-decisive::before {
+      content: 'DECISIVE';
+      position: absolute;
+      top: -32px; left: 50%; transform: translateX(-50%);
+      font-size: 8.5px; font-weight: 800;
+      letter-spacing: 0.18em;
+      color: var(--mint); white-space: nowrap;
+    }
+    /* Suppress tick on decisive (Nielsen — decisive ≠ "considered and moved on") */
+    .factor.is-decisive::after { display: none !important; }
+
+    /* Finwy glider — slides L→R, position set by JS for precision */
+    .stage-track__glider {
+      position: absolute;
+      left: 0;
+      top: calc(50% + 36px);
+      width: 56px; height: 56px;
+      transition: transform 720ms var(--ease-in-out),
+                  opacity 300ms var(--ease-out-cubic);
+      opacity: 0;
+      z-index: 2;
+      pointer-events: none;
+      will-change: transform;
+    }
+    .stage-track__glider img {
+      width: 100%; height: 100%;
+      filter: drop-shadow(0 6px 14px rgba(0,45,86,0.18));
+    }
+    /* Step animation — Disney arc + bounce on each move */
+    .stage-track__glider.is-stepping img {
+      animation: gliderStep 720ms ease-in-out;
+    }
+    @keyframes gliderStep {
+      0%   { transform: translateY(0)    scale(1); }
+      40%  { transform: translateY(-8px) scale(1.04); }
+      75%  { transform: translateY(-2px) scale(1.0); }
+      100% { transform: translateY(0)    scale(1); }
+    }
+    .pair.is-revealed .stage-track__glider { opacity: 1; }
+
+    /* Caption beneath the glider */
+    .stage-track__caption {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 18px;
+      text-align: center;
+      font-size: var(--fs-micro);
+      font-style: italic;
+      color: var(--text-on-light);
+      max-width: 36ch;
+      margin: 0 auto;
+      line-height: 1.4;
+      min-height: 20px;
+      opacity: 0;
+      transition: opacity 220ms var(--ease-out-cubic);
+    }
+    .stage-track__caption.is-shown { opacity: 1; }
+    .stage-track__caption.is-emphasis { color: var(--navy); font-weight: 600; }
+
+    /* ============================================================ */
+    /* OUTPUT ROW — two cards beneath, paired with inputs            */
+    /* ============================================================ */
+    .stage-outputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 36px;
+    }
+    .output-card {
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: var(--shadow-soft);
+      display: flex; flex-direction: column; gap: 10px;
+      border: 1px solid;
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 540ms var(--ease-overshoot),
+                  transform 720ms var(--ease-overshoot),
+                  box-shadow 360ms var(--ease-out-cubic);
+    }
+    .output-card--mint { background: var(--mint); color: var(--navy-deep); border-color: var(--mint); }
+    .output-card--teal { background: var(--teal); color: var(--white); border-color: var(--teal); }
+    .pair.is-revealed .output-card {
+      opacity: 1; transform: translateY(0) scale(1);
+      box-shadow: 0 8px 24px rgba(0, 45, 86, 0.12);
+    }
+
+    /* Output timing — tied to glide completion */
+    /* Slow pace (Pair 1): glide ends at ~5500ms */
+    #pair-portfolios.is-revealed .output-card[data-i="0"] { transition-delay: 5800ms; }
+    #pair-portfolios.is-revealed .output-card[data-i="1"] { transition-delay: 6100ms; }
+    /* Medium pace (Pair 2): glide ends at ~3500ms */
+    #pair-goals.is-revealed .output-card[data-i="0"] { transition-delay: 3800ms; }
+    #pair-goals.is-revealed .output-card[data-i="1"] { transition-delay: 4000ms; }
+    /* Fast pace (Pair 3): glide ends at ~2500ms */
+    #pair-expenses.is-revealed .output-card[data-i="0"] { transition-delay: 2800ms; }
+    #pair-expenses.is-revealed .output-card[data-i="1"] { transition-delay: 3000ms; }
+
+    .output-card__attr {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: var(--fs-nano); font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      opacity: 0.92;
+    }
+    .output-card__avatar {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid currentColor;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800;
+      color: var(--mint);
+    }
+    .output-card--teal .output-card__avatar { color: var(--teal); }
+    .output-card__verb {
+      font-family: var(--font-sans);
+      font-size: clamp(32px, 4.4vw, 48px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin: 4px 0 6px;
+    }
+    .output-card__verdict {
+      font-size: var(--fs-body); font-weight: 600;
+      line-height: 1.4; letter-spacing: -0.05px;
+      opacity: 0.95;
+    }
+
+    /* Credibility */
+    .pair__credibility {
+      text-align: center;
+      font-size: var(--fs-micro); font-style: italic;
+      color: var(--text-on-light-muted);
+      margin: 36px auto 0; max-width: 540px;
+      opacity: 0;
+      transition: opacity 400ms var(--ease-out-cubic);
+    }
+    .pair.is-revealed .pair__credibility { opacity: 1; transition-delay: 7000ms; }
+    .pair__credibility strong { color: var(--navy); font-style: normal; font-weight: 700; }
+
+    /* Prediction */
+    .prediction {
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: clamp(18px, 2.2vw, 24px);
+      font-style: italic; color: var(--navy);
+      line-height: 1.4; max-width: 540px;
+      margin: 56px auto;
+      padding: 28px 24px;
+      border-top: 1px dashed var(--border-on-light-strong);
+      border-bottom: 1px dashed var(--border-on-light-strong);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 500ms var(--ease-out-cubic), transform 500ms var(--ease-out-cubic);
+    }
+    .prediction.is-shown { opacity: 1; transform: none; }
+    .prediction::before {
+      content: '►';
+      display: inline-block; margin-right: 8px;
+      color: var(--mint); font-style: normal; font-size: 0.7em;
+      transform: translateY(-2px);
+    }
+    .prediction strong {
+      color: var(--mint); font-weight: 600; font-style: normal;
+      text-decoration: underline; text-decoration-color: var(--mint-32);
+      text-underline-offset: 4px; text-decoration-thickness: 1.5px;
+    }
+
+    /* Closer */
+    .engine__close {
+      margin-top: 96px; text-align: center;
+      display: flex; flex-direction: column; gap: 18px; align-items: center;
+    }
+    .engine__close-mascot {
+      width: 96px; height: 96px;
+      filter: drop-shadow(0 6px 16px rgba(0,45,86,0.12));
+      transform-origin: bottom center;
+      margin-bottom: 8px;
+    }
+    .engine__close-mascot.is-waving {
+      animation: mascotWave 1500ms cubic-bezier(0.36, 0, 0.18, 1);
+    }
+    @keyframes mascotWave {
+      0%   { transform: rotate(0deg) scale(1); }
+      18%  { transform: rotate(-7deg) scale(1.06); }
+      36%  { transform: rotate(8deg) scale(1.06); }
+      54%  { transform: rotate(-5deg) scale(1.04); }
+      72%  { transform: rotate(5deg) scale(1.02); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    .engine__close-line {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.8vw, 32px);
+      font-weight: 500; color: var(--navy);
+      max-width: 760px; line-height: 1.3;
+      letter-spacing: -0.012em;
+    }
+    .engine__close-finwy {
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 600; font-style: italic;
+      color: var(--teal); line-height: 1.3;
+      margin-top: 4px;
+    }
+    .engine__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font: 700 16px/1 var(--font-sans);
+      padding: 16px 30px; border-radius: 10px;
+      background: var(--mint); color: var(--navy-deep);
+      text-decoration: none;
+      margin-top: 14px;
+      transition: background 200ms, transform 200ms, box-shadow 200ms;
+      box-shadow: 0 4px 14px rgba(53,214,198,0.28);
+    }
+    .engine__cta:hover {
+      background: var(--teal); color: var(--white);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0,182,173,0.32);
+    }
+    .engine__footnote {
+      margin: 32px auto 0; text-align: center;
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      max-width: 720px; line-height: 1.55;
+    }
+
+    /* Mobile */
+    @media (max-width: 880px) {
+      .stage-inputs, .stage-outputs { grid-template-columns: 1fr; gap: 18px; }
+      .stage-track { padding: 28px 16px 96px; }
+      .stage-track__rail { padding: 0; }
+      .stage-track__rail::before { left: 24px; right: 24px; }
+      .factor { width: 52px; height: 52px; }
+      .factor svg { width: 18px; height: 18px; }
+      .factor__label { font-size: 8px; }
+      .stage-track__glider { width: 44px; height: 44px; top: calc(50% + 50px); }
+      .pair__head-tagline { font-size: clamp(24px, 6vw, 32px); }
+      .input-card__hero { font-size: clamp(40px, 11vw, 60px); }
+      .output-card__verb { font-size: clamp(28px, 8vw, 40px); }
+    }
+
+    body.is-mobile-preview main {
+      max-width: 420px; margin: 24px auto;
+      border: 1px solid var(--border-on-light);
+      border-radius: 24px; background: var(--off-white);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,45,86,0.12);
+    }
+    body.is-mobile-preview .engine__inner { padding: 0 16px; }
+    body.is-mobile-preview .stage-inputs,
+    body.is-mobile-preview .stage-outputs { grid-template-columns: 1fr; gap: 18px; }
+    body.is-mobile-preview .factor { width: 48px; height: 48px; }
+    body.is-mobile-preview .factor svg { width: 16px; height: 16px; }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .input-card, .output-card, .factor, .stage-track__glider,
+      .stage-track__caption, .pair__head-tagline, .pair__shared,
+      .pair__credibility, .input-card__hero .strike::after,
+      .prediction, .engine__close-mascot {
+        transition: none !important; animation: none !important;
+        transform: none !important; opacity: 1 !important;
+      }
+      .pair.is-revealed .input-card__hero .strike::after { transform: scaleX(1) !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-bar">
+    <div>&larr; <a href="cases-preview-v6.html">v6</a> &middot; <a href="cases-preview-v5.html">v5</a> &middot; <a href="v4-spec.md">spec</a></div>
+    <div class="preview-bar__title">
+      §7 v7 &middot; The Engine
+      <span class="preview-bar__phase">Finwy's glide track</span>
+    </div>
+    <div class="preview-bar__actions">
+      <button id="replayBtn">&#8634; Replay</button>
+      <button id="showAllBtn" class="is-secondary">Show all</button>
+      <button id="mobileBtn" class="is-secondary">View mobile</button>
+    </div>
+  </div>
+
+  <main>
+    <section class="engine" aria-labelledby="engine-heading">
+      <div class="engine__inner">
+
+        <div class="engine__intro">
+          <p class="engine__intro-eyebrow">Watch how Finwy reasons</p>
+          <h2 id="engine-heading" class="engine__intro-title">
+            Two of you. <em>Two answers.</em>
+          </h2>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 1 — SAME SURPLUS, OPPOSITE PORTFOLIOS                        -->
+        <!-- ============================================================ -->
+        <article class="pair" id="pair-portfolios" data-pair="portfolios" data-pace="slow"
+                 data-decisive="risk" aria-labelledby="pair-portfolios-tagline">
+          <p class="visually-hidden">Both 35-year-olds with 52,000 surplus. Riya has 83 percent in equity. Aman has zero. Risk is the decisive factor. Riya is told to stop adding equity. Aman to start.</p>
+
+          <header class="pair__head">
+            <h3 class="pair__head-tagline" id="pair-portfolios-tagline">Same surplus. Opposite portfolios.</h3>
+            <p class="pair__shared">Both 35. Both earn &#8377; 52,000 surplus a month.</p>
+          </header>
+
+          <div class="stage-inputs">
+            <article class="input-card input-card--mint" data-i="0">
+              <p class="input-card__name">Riya M.</p>
+              <p class="input-card__meta">35 &middot; BENGALURU &middot; SOFTWARE ENG.</p>
+              <p class="input-card__hero">83<small>%</small></p>
+              <p class="input-card__hero-label">already in equity, in a &#8377;46L portfolio</p>
+              <p class="input-card__rating">Self-rated <span class="input-card__rating-key">Conservative</span></p>
+              <p class="input-card__trigger">Opened Finwy after a colleague&rsquo;s heart attack at 38.</p>
+            </article>
+            <article class="input-card input-card--teal" data-i="1">
+              <p class="input-card__name">Aman K.</p>
+              <p class="input-card__meta">35 &middot; PUNE &middot; SALES LEAD</p>
+              <p class="input-card__hero">0<small>%</small></p>
+              <p class="input-card__hero-label">in equity. &#8377;6L sits in FD.</p>
+              <p class="input-card__rating">Self-rated <span class="input-card__rating-key">Aggressive</span></p>
+              <p class="input-card__trigger">Opened Finwy after his crypto-friend&rsquo;s third disaster.</p>
+            </article>
+          </div>
+
+          <div class="stage-track" role="img" aria-label="Finwy considering six factors: age, goals, surplus, portfolio, risk, priorities">
+            <div class="stage-track__rail" aria-hidden="true">
+              <div class="factor" data-pos="0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="factor__label">Age</span></div>
+              <div class="factor" data-pos="1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="factor__label">Goals</span></div>
+              <div class="factor" data-pos="2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg><span class="factor__label">Surplus</span></div>
+              <div class="factor" data-pos="3"><svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg><span class="factor__label">Portfolio</span></div>
+              <div class="factor" data-pos="4"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg><span class="factor__label">Risk</span></div>
+              <div class="factor" data-pos="5"><svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg><span class="factor__label">Priorities</span></div>
+            </div>
+            <div class="stage-track__glider is-at-0" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+            <p class="stage-track__caption" aria-live="polite"></p>
+          </div>
+
+          <div class="stage-outputs">
+            <article class="output-card output-card--mint" data-i="0">
+              <p class="output-card__attr">
+                <span class="output-card__avatar" aria-hidden="true">R</span> Riya
+              </p>
+              <p class="output-card__verb">STOP</p>
+              <p class="output-card__verdict">Stop adding equity. Buy term. Build liquidity.</p>
+            </article>
+            <article class="output-card output-card--teal" data-i="1">
+              <p class="output-card__attr">
+                <span class="output-card__avatar" aria-hidden="true">A</span> Aman
+              </p>
+              <p class="output-card__verb">START</p>
+              <p class="output-card__verdict">Start equity. Today. Skip the side bets.</p>
+            </article>
+          </div>
+
+          <p class="pair__credibility"><strong>This is six.</strong> The app reads thirty-plus.</p>
+        </article>
+
+        <!-- ============================================================ -->
+        <!-- 2 — SAME PORTFOLIO, DIFFERENT GOALS                          -->
+        <!-- ============================================================ -->
+        <article class="pair" id="pair-goals" data-pair="goals" data-pace="medium"
+                 data-decisive="goals" aria-labelledby="pair-goals-tagline">
+          <p class="visually-hidden">Both 35, identical 25-lakh portfolio at 60 percent equity. Arjun's primary goal is buying a flat in 5 years. Suresh's primary goal is his daughter's college in 12 years. Goals is decisive. Arjun shifts to a balanced fund. Suresh holds steady at 60 percent equity.</p>
+
+          <header class="pair__head">
+            <h3 class="pair__head-tagline" id="pair-goals-tagline">Same portfolio. Different goals.</h3>
+            <p class="pair__shared">Both 35. Both have an identical &#8377; 25L portfolio: 60% equity, 30% debt, 10% cash.</p>
+          </header>
+
+          <div class="stage-inputs">
+            <article class="input-card input-card--mint" data-i="0">
+              <p class="input-card__name">Arjun S.</p>
+              <p class="input-card__meta">35 &middot; HYDERABAD &middot; PRODUCT MGR.</p>
+              <p class="input-card__hero">5<small>y</small></p>
+              <p class="input-card__hero-label">to primary goal &mdash; &#8377; 50L flat by 2030</p>
+              <p class="input-card__rating">Time horizon <span class="input-card__rating-key">short &middot; near-term</span></p>
+              <p class="input-card__trigger">Opened Finwy after a builder&rsquo;s sales-pitch dinner.</p>
+            </article>
+            <article class="input-card input-card--teal" data-i="1">
+              <p class="input-card__name">Suresh R.</p>
+              <p class="input-card__meta">35 &middot; MUMBAI &middot; TECH LEAD</p>
+              <p class="input-card__hero">12<small>y</small></p>
+              <p class="input-card__hero-label">to primary goal &mdash; daughter&rsquo;s college in 2037</p>
+              <p class="input-card__rating">Time horizon <span class="input-card__rating-key">long &middot; multi-cycle</span></p>
+              <p class="input-card__trigger">Opened Finwy on his daughter&rsquo;s 4th birthday.</p>
+            </article>
+          </div>
+
+          <div class="stage-track" role="img" aria-label="Finwy considering six factors">
+            <div class="stage-track__rail" aria-hidden="true">
+              <div class="factor" data-pos="0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="factor__label">Age</span></div>
+              <div class="factor" data-pos="1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="factor__label">Goals</span></div>
+              <div class="factor" data-pos="2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg><span class="factor__label">Surplus</span></div>
+              <div class="factor" data-pos="3"><svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg><span class="factor__label">Portfolio</span></div>
+              <div class="factor" data-pos="4"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg><span class="factor__label">Risk</span></div>
+              <div class="factor" data-pos="5"><svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg><span class="factor__label">Priorities</span></div>
+            </div>
+            <div class="stage-track__glider is-at-0" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+            <p class="stage-track__caption" aria-live="polite"></p>
+          </div>
+
+          <div class="stage-outputs">
+            <article class="output-card output-card--mint" data-i="0">
+              <p class="output-card__attr"><span class="output-card__avatar" aria-hidden="true">A</span> Arjun</p>
+              <p class="output-card__verb">SHIFT</p>
+              <p class="output-card__verdict">Move 40% to balanced fund. 5 years can&rsquo;t survive a 25% drop.</p>
+            </article>
+            <article class="output-card output-card--teal" data-i="1">
+              <p class="output-card__attr"><span class="output-card__avatar" aria-hidden="true">S</span> Suresh</p>
+              <p class="output-card__verb">HOLD</p>
+              <p class="output-card__verdict">Stay 60% equity. 12 years rewards the volatility.</p>
+            </article>
+          </div>
+        </article>
+
+        <p class="prediction" id="prediction-beat" role="note">
+          Now meet two &#8377;1.6L payslips. <strong>Predict the divergence?</strong>
+        </p>
+
+        <!-- ============================================================ -->
+        <!-- 3 — SAME INCOME, DIFFERENT EXPENSES                          -->
+        <!-- ============================================================ -->
+        <article class="pair" id="pair-expenses" data-pair="expenses" data-pace="fast"
+                 data-decisive="priorities" aria-labelledby="pair-expenses-tagline">
+          <p class="visually-hidden">Both 35-year-old senior engineers in Pune earning 1.6 lakh. Vivek has 65,000 real surplus. Karan has 30,000 because 35,000 goes to dialysis. Priorities is decisive. Vivek eases. Karan protects family first.</p>
+
+          <header class="pair__head">
+            <h3 class="pair__head-tagline" id="pair-expenses-tagline">Same income. Different expenses.</h3>
+            <p class="pair__shared">Both 35. Both senior engineers in Pune. Both bring home &#8377; 1,60,000.</p>
+          </header>
+
+          <div class="stage-inputs">
+            <article class="input-card input-card--mint" data-i="0">
+              <p class="input-card__name">Vivek N.</p>
+              <p class="input-card__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+              <p class="input-card__hero">&#8377; 65K</p>
+              <p class="input-card__hero-label">real monthly surplus</p>
+              <p class="input-card__rating">Parents <span class="input-card__rating-key">pensioned &middot; healthy</span></p>
+              <p class="input-card__trigger">Opened Finwy after his daughter&rsquo;s third birthday.</p>
+            </article>
+            <article class="input-card input-card--teal" data-i="1">
+              <p class="input-card__name">Karan M.</p>
+              <p class="input-card__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
+              <p class="input-card__hero"><span class="strike">&#8377; 65K</span> &#8377; 30K</p>
+              <p class="input-card__hero-label">real monthly surplus &mdash; &#8377; 35K eaten by dialysis</p>
+              <p class="input-card__rating">Father on <span class="input-card__rating-key">dialysis 3&times;/week</span></p>
+              <p class="input-card__trigger">Opened Finwy after his father&rsquo;s second dialysis bill.</p>
+            </article>
+          </div>
+
+          <div class="stage-track" role="img" aria-label="Finwy considering six factors">
+            <div class="stage-track__rail" aria-hidden="true">
+              <div class="factor" data-pos="0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="factor__label">Age</span></div>
+              <div class="factor" data-pos="1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="factor__label">Goals</span></div>
+              <div class="factor" data-pos="2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg><span class="factor__label">Surplus</span></div>
+              <div class="factor" data-pos="3"><svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg><span class="factor__label">Portfolio</span></div>
+              <div class="factor" data-pos="4"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg><span class="factor__label">Risk</span></div>
+              <div class="factor" data-pos="5"><svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg><span class="factor__label">Priorities</span></div>
+            </div>
+            <div class="stage-track__glider is-at-0" aria-hidden="true">
+              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+            </div>
+            <p class="stage-track__caption" aria-live="polite"></p>
+          </div>
+
+          <div class="stage-outputs">
+            <article class="output-card output-card--mint" data-i="0">
+              <p class="output-card__attr"><span class="output-card__avatar" aria-hidden="true">V</span> Vivek</p>
+              <p class="output-card__verb">EASE</p>
+              <p class="output-card__verdict">Light touch. Top up health. Fortify emergency.</p>
+            </article>
+            <article class="output-card output-card--teal" data-i="1">
+              <p class="output-card__attr"><span class="output-card__avatar" aria-hidden="true">K</span> Karan</p>
+              <p class="output-card__verb">PROTECT</p>
+              <p class="output-card__verdict">Family first. Retirement second. Order matters.</p>
+            </article>
+          </div>
+        </article>
+
+        <div class="engine__close">
+          <img class="engine__close-mascot" id="closer-mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
+          <p class="engine__close-line">Six 35-year-olds. Six recommendations &mdash; and they keep changing.</p>
+          <p class="engine__close-finwy">Finwy keeps watching.</p>
+          <a class="engine__cta" href="/demo-app">Get yours &rarr;</a>
+        </div>
+
+        <p class="engine__footnote">
+          Illustrative cases. Names changed; details composed.
+          Your data drives your verdict, not these.
+        </p>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Pace = ms between Finwy moving from one factor to the next
+      var PACE = {
+        portfolios: 700,  // slow — teaching beat
+        goals:      450,  // medium
+        expenses:   300   // fast
+      };
+
+      // Decisive factor index (0..5) per pair
+      var DECISIVE_INDEX = {
+        portfolios: 4,  // Risk
+        goals:      1,  // Goals
+        expenses:   5   // Priorities
+      };
+
+      // Caption per factor, per pair (fired as Finwy passes each factor)
+      var CAPTIONS = {
+        portfolios: [
+          { factor: 'Reading age…',                emphasis: false },
+          { factor: 'Reading goals…',              emphasis: false },
+          { factor: 'Reading surplus…',            emphasis: false },
+          { factor: 'Reading portfolio…',          emphasis: false },
+          { factor: 'Risk — what data can absorb', emphasis: true  },
+          { factor: 'Reading priorities…',         emphasis: false }
+        ],
+        goals: [
+          { factor: 'Reading age…',                emphasis: false },
+          { factor: 'Goals — what tips the math',  emphasis: true  },
+          { factor: 'Reading surplus…',            emphasis: false },
+          { factor: 'Reading portfolio…',          emphasis: false },
+          { factor: 'Reading risk…',               emphasis: false },
+          { factor: 'Reading priorities…',         emphasis: false }
+        ],
+        expenses: [
+          { factor: 'Reading age…',                emphasis: false },
+          { factor: 'Reading goals…',              emphasis: false },
+          { factor: 'Reading surplus…',            emphasis: false },
+          { factor: 'Reading portfolio…',          emphasis: false },
+          { factor: 'Reading risk…',               emphasis: false },
+          { factor: 'Priorities — what life takes first', emphasis: true }
+        ]
+      };
+
+      var FINAL_CAPTION = {
+        portfolios: { text: 'Two different answers — risk decided.',         emphasis: true },
+        goals:      { text: 'Two different answers — goals decided.',        emphasis: true },
+        expenses:   { text: 'Two different answers — priorities decided.',   emphasis: true }
+      };
+
+      var pairs = document.querySelectorAll('.pair');
+      var revealed = new WeakSet();
+      var timers = [];
+
+      function clearTimers() {
+        timers.forEach(function (t) { clearTimeout(t); });
+        timers = [];
+      }
+
+      function setCaption(pair, text, emphasis) {
+        var caption = pair.querySelector('.stage-track__caption');
+        if (!caption) return;
+        caption.classList.remove('is-shown');
+        timers.push(setTimeout(function () {
+          caption.textContent = text;
+          caption.classList.toggle('is-emphasis', !!emphasis);
+          caption.classList.add('is-shown');
+        }, 180));
+      }
+
+      // Measurement-based positioning — aligns glider to factor centre precisely
+      function moveGliderTo(pair, position) {
+        var glider = pair.querySelector('.stage-track__glider');
+        var factors = pair.querySelectorAll('.factor');
+        var track   = pair.querySelector('.stage-track');
+        if (!glider || !factors[position] || !track) return;
+        var trackRect  = track.getBoundingClientRect();
+        var factorRect = factors[position].getBoundingClientRect();
+        // Centre glider under factor centre (glider is 56px, half = 28)
+        var x = factorRect.left + factorRect.width / 2 - trackRect.left - 28;
+        glider.style.transform = 'translateX(' + x + 'px)';
+        // Trigger Disney arc step
+        glider.classList.remove('is-stepping');
+        void glider.offsetWidth;
+        glider.classList.add('is-stepping');
+      }
+
+      function runGlide(pair) {
+        var pairKey = pair.dataset.pair;
+        var pace = PACE[pairKey] || 700;
+        var decisive = DECISIVE_INDEX[pairKey];
+        var captions = CAPTIONS[pairKey] || [];
+        var factors = pair.querySelectorAll('.factor');
+        var startDelay = 1100;
+
+        // Make sure glider starts visible at pos 0 (CSS already shows on .is-revealed)
+
+        for (var i = 0; i < 6; i++) {
+          (function (idx) {
+            var arriveAt = startDelay + idx * pace;
+
+            // Move glider to this factor
+            timers.push(setTimeout(function () {
+              moveGliderTo(pair, idx);
+              factors[idx].classList.add('is-active');
+            }, arriveAt));
+
+            // Update caption
+            timers.push(setTimeout(function () {
+              if (captions[idx]) setCaption(pair, captions[idx].factor, captions[idx].emphasis);
+            }, arriveAt + 100));
+
+            // Mark considered/decisive after a hold
+            timers.push(setTimeout(function () {
+              factors[idx].classList.remove('is-active');
+              if (idx === decisive) {
+                factors[idx].classList.add('is-decisive');
+              } else {
+                factors[idx].classList.add('is-considered');
+              }
+            }, arriveAt + Math.max(pace - 80, 240)));
+          })(i);
+        }
+
+        // Final caption after the glide
+        var endTime = startDelay + 6 * pace;
+        timers.push(setTimeout(function () {
+          var fin = FINAL_CAPTION[pairKey];
+          if (fin) setCaption(pair, fin.text, fin.emphasis);
+        }, endTime + 200));
+      }
+
+      function reveal(pair) {
+        if (revealed.has(pair)) return;
+        revealed.add(pair);
+        pair.classList.add('is-revealed');
+
+        if (reduce) {
+          // Reduced motion — set final state directly
+          var pairKey = pair.dataset.pair;
+          var decisive = DECISIVE_INDEX[pairKey];
+          pair.querySelectorAll('.factor').forEach(function (f, i) {
+            if (i === decisive) f.classList.add('is-decisive');
+            else f.classList.add('is-considered');
+          });
+          // Park glider at last position (rightmost)
+          requestAnimationFrame(function () { moveGliderTo(pair, 5); });
+          var fin = FINAL_CAPTION[pairKey];
+          if (fin) setCaption(pair, fin.text, fin.emphasis);
+          return;
+        }
+
+        runGlide(pair);
+      }
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) reveal(e.target); });
+        }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+        pairs.forEach(function (p) { io.observe(p); });
+      } else {
+        pairs.forEach(reveal);
+      }
+
+      var prediction = document.getElementById('prediction-beat');
+      if (prediction && 'IntersectionObserver' in window) {
+        var pIO = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { prediction.classList.add('is-shown'); obs.disconnect(); }
+          });
+        }, { threshold: 0.6 });
+        pIO.observe(prediction);
+      } else if (prediction) {
+        prediction.classList.add('is-shown');
+      }
+
+      var closerMascot = document.getElementById('closer-mascot');
+      if (closerMascot && !reduce && 'IntersectionObserver' in window) {
+        var mIO = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { closerMascot.classList.add('is-waving'); obs.disconnect(); }
+          });
+        }, { threshold: 0.6 });
+        mIO.observe(closerMascot);
+      }
+
+      var replay = document.getElementById('replayBtn');
+      if (replay) {
+        replay.addEventListener('click', function () {
+          clearTimers();
+          pairs.forEach(function (p) {
+            p.classList.remove('is-revealed');
+            p.querySelectorAll('.factor').forEach(function (f) {
+              f.classList.remove('is-active', 'is-decisive', 'is-considered');
+            });
+            var g = p.querySelector('.stage-track__glider');
+            if (g) {
+              g.style.transform = 'translateX(0)';
+              g.classList.remove('is-stepping');
+            }
+            var c = p.querySelector('.stage-track__caption');
+            if (c) c.textContent = '';
+            revealed.delete(p);
+          });
+          if (prediction) prediction.classList.remove('is-shown');
+          if (closerMascot) closerMascot.classList.remove('is-waving');
+          requestAnimationFrame(function () {
+            pairs.forEach(function (p) {
+              var rect = p.getBoundingClientRect();
+              if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) reveal(p);
+            });
+          });
+        });
+      }
+
+      var showAllBtn = document.getElementById('showAllBtn');
+      if (showAllBtn) {
+        showAllBtn.addEventListener('click', function () {
+          clearTimers();
+          pairs.forEach(function (p) {
+            p.classList.add('is-revealed');
+            revealed.add(p);
+            var pairKey = p.dataset.pair;
+            var decisive = DECISIVE_INDEX[pairKey];
+            p.querySelectorAll('.factor').forEach(function (f, i) {
+              f.classList.remove('is-active', 'is-considered', 'is-decisive');
+              if (i === decisive) f.classList.add('is-decisive');
+              else f.classList.add('is-considered');
+            });
+            var fin = FINAL_CAPTION[pairKey];
+            if (fin) setCaption(p, fin.text, fin.emphasis);
+            // Park glider at the rightmost factor after layout settles
+            requestAnimationFrame(function () { moveGliderTo(p, 5); });
+          });
+          if (prediction) prediction.classList.add('is-shown');
+          if (closerMascot) closerMascot.classList.add('is-waving');
+        });
+      }
+
+      var mobileBtn = document.getElementById('mobileBtn');
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', function () {
+          document.body.classList.toggle('is-mobile-preview');
+          mobileBtn.textContent = document.body.classList.contains('is-mobile-preview')
+            ? 'View desktop' : 'View mobile';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Finwiser — Technical Fit Note</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a1a2e;
+  --accent: #e94560;          /* Finwiser brand red */
+  --ink: #0f172a;
+  --muted: #475569;
+  --rule: #e2e8f0;
+  --bg-soft: #f8fafc;
+}
+@page { size: A4; margin: 16mm 14mm; }
+* { box-sizing: border-box; }
+html, body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10pt;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.doc { max-width: 100%; }
+
+h1 {
+  font-size: 22pt;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 10px 0;
+  line-height: 1.15;
+  letter-spacing: -0.4px;
+}
+h1::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  background: var(--accent);
+  margin-top: 10px;
+  border-radius: 2px;
+}
+h2 {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 18px 0 8px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
+  page-break-after: avoid;
+}
+h3 {
+  font-size: 11pt;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 12px 0 6px 0;
+  page-break-after: avoid;
+}
+
+h1 + p strong { color: var(--primary); font-weight: 600; }
+h1 + p {
+  font-size: 9.5pt;
+  color: var(--muted);
+  margin: 6px 0 14px 0;
+}
+
+blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--bg-soft);
+  padding: 8px 14px;
+  margin: 10px 0 14px 0;
+  font-style: italic;
+  color: var(--primary);
+  border-radius: 0 4px 4px 0;
+  page-break-inside: avoid;
+}
+blockquote p { margin: 0; }
+
+p { margin: 0 0 7px 0; }
+strong { color: var(--primary); font-weight: 600; }
+em { font-style: italic; color: var(--muted); }
+
+ul, ol { margin: 4px 0 9px 22px; padding: 0; }
+li { margin: 3px 0; }
+li > strong:first-child { color: var(--primary); }
+
+code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  background: var(--bg-soft);
+  color: var(--primary);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 8.5pt;
+  word-break: break-all;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 16px 0;
+}
+
+h2 + p, h2 + ul, h3 + p, h3 + ul { page-break-before: avoid; }
+</style>
+</head>
+<body>
+<div class="doc">
+<h1>Finwiser — Technical Fit Note</h1>
+<p><strong>Entity:</strong> Finwiser Technologies LLP (LLPIN ACT-7598) · <strong>Date:</strong> 28 May 2026
+<strong>Companion to:</strong> the pitch deck and the full module-level Technical Fit Report.</p>
+<h2>Positioning</h2>
+<p>Finwiser is an AI-led, compliance-first personal finance decisioning platform for India, built around the Account Aggregator framework. The platform ingests consented multi-source financial data, normalises it into a unified financial ledger, applies transformer-based transaction categorisation, and produces explainable, goal-based decisions that drive a SEBI-registered Investment Adviser practice operating under the Finwiser brand.</p>
+<blockquote>
+<p>Finwiser is a regulated, Account-Aggregator-native AI decisioning system: transformer-based transaction categorisation, GPU-amenable analytics over ~14,000 fund time-series, and explainable financial reasoning — moving to privacy-preserving in-country inference for India&#39;s salaried middle class.</p>
+</blockquote>
+<p>Five concrete workloads in the production codebase are GPU- and cloud-relevant. This note describes each, its current implementation, the kind of managed component it maps to, and the existing benchmark/harness that makes a comparison defensible.</p>
+<hr>
+<h2>1. Private / open-weight LLM inference for financial reasoning</h2>
+<p><strong>Where it lives:</strong> Streaming advisor Q&amp;A, AI diagnostic question generation (JSON-structured), categorisation enrichment (free-text → category), and an agentic orchestrator that composes multi-step financial reasoning.</p>
+<p><strong>Current state:</strong> All LLM calls route through a single OpenAI client pointed at the US endpoint — <code>gpt-4o-mini</code> for most paths and <code>gpt-4o</code> for the agentic orchestrator. A privacy gateway scrubs PII, drops blocked fields, and buckets amounts/dates before egress; every consumer is wrapped by a circuit breaker with template fallback.</p>
+<p><strong>Why GPU / cloud fit:</strong> Financial PII must remain on Indian infrastructure. The privacy gateway, breakers, streaming machinery, and structured-output handling are already in production — the only swap point is the LLM endpoint itself, a <code>baseURL</code> change in one file (<code>utils/openai-client.js:39</code>). A hosted in-region LLM endpoint (e.g. Gemini on Vertex AI in <code>asia-south1</code>, or a self-hosted Llama-3.1-8B-Instruct on managed GPU) is a drop-in replacement for <code>gpt-4o-mini</code>-class calls.</p>
+<p><strong>Why this is real, not aspiration:</strong> An offline eval harness (<code>scripts/eval-prompts.js</code>) with a 5-axis rubric, LLM-as-judge scoring, and golden-prompt fixtures already exists — we can replay every prompt through any new endpoint and measure parity directly.</p>
+<p><strong>The sovereign-inference angle:</strong> Today the privacy gateway <em>must</em> strip identifiers and withhold amounts because data crosses to the US. With in-region inference, that stripping becomes defence-in-depth rather than a precondition — the advisor can be given richer context and answers improve.</p>
+<hr>
+<h2>2. Transformer / NLI-based transaction categorisation</h2>
+<p><strong>Where it lives:</strong> The P2B tier of our 7-layer categorisation cascade (hard-match guard → P0 known-contact → P1 EWMA consensus → P2 lexicon → <strong>P2B zero-shot NLI</strong> → P4 history → P5 cadence → P6 fallback). P2B is the only ML tier; everything else is deterministic by design for audit replay.</p>
+<p><strong>Current state:</strong> Local zero-shot NLI cascade via <code>@xenova/transformers</code> (ONNX/WASM, CPU-bound): MobileBERT-MNLI (fast) escalates to BART-large-MNLI (accurate). <strong>The accurate model is currently throttled</strong> — a <code>MEMORY_GUARD_RSS_MB = 2200</code> rule (<code>zero-shot-model.service.js:35</code>) silently skips Layer 2 entirely under host memory pressure. CPU inference on the accurate model runs ~8 seconds per call.</p>
+<p><strong>Why GPU / cloud fit:</strong> P2B is the accuracy ceiling on novel merchants but is currently bottlenecked by host RAM, not methodology. <strong>GPU-served NLI on a managed inference platform</strong> (e.g. Vertex AI Prediction with a TensorRT- or ONNX-Runtime-optimised model) brings BART-large-MNLI from ~8 s to tens of ms, eliminates the silent fallback to the less-accurate model, and removes the memory guard. Dynamic batching fits our batch-oriented evaluation path.</p>
+<p><strong>Why this is real:</strong> The cascade has built-in instrumentation — <code>getCascadeStats()</code> exposes the Layer 2 skip rate (<code>layer2Skipped</code>) — and 21 golden profile fixtures plus an AA replay harness let us measure the accuracy lift cleanly, not hypothetically.</p>
+<hr>
+<h2>3. GPU-accelerated analytics across ~14,000 Indian mutual fund schemes</h2>
+<p><strong>Where it lives:</strong> Nightly/weekly peer-ranking cron over the AMFI universe (~14K schemes). Compute spans trailing returns, CAGR, daily log returns, annualised volatility (√248 trading-day convention), Beta, Jensen&#39;s Alpha, geometric-mean Sharpe, Information Ratio (raw + deflated), quarterly-stepped rolling beat rate, 4-factor Returns-Based Style Analysis (RBSA), and Direct-vs-Regular implicit expense ratios.</p>
+<p><strong>Current state:</strong> Pure-JavaScript implementation. The style-analysis OLS is built from scratch — XᵀX, Gaussian elimination, 5×5 inversion, all in triple-nested loops — and runs <strong>twice per equity fund × ~10,000 equity funds</strong>. Cron wall-clock is <strong>10–30 minutes</strong>; recompute happens weekly because daily isn&#39;t viable inside that envelope.</p>
+<p><strong>Why GPU / cloud fit:</strong> This is the strongest GPU candidate in the entire product. Same math over ~14K independent NAV series — embarrassingly parallel, columnar, batchable.</p>
+<ul>
+<li><strong>Columnar analytics on a managed platform</strong> (e.g. BigQuery + Dataproc, with RAPIDS for GPU vectorisation): log returns, vol, beta, rolling windows, and <code>groupby().quantile([.25, .5, .75])</code> for distribution stats become single vectorised calls.</li>
+<li><strong>Batched GPU linear algebra</strong> (cuPy/cuML on a managed GPU cluster): stack all funds into a 3-D tensor and solve every fund&#39;s system in one batched linear solve. ~20,000 tiny inversions is exactly where batched GPU linear algebra wins.</li>
+</ul>
+<p><strong>Win:</strong> 10–30 min → low-single-digit minutes, enabling <strong>daily</strong> recompute instead of weekly, with headroom for richer analytics within the same window.</p>
+<p><strong>Caveat (stated honestly):</strong> Part of the cron is I/O-bound (sequential Mongo NAV fetches per scheme). The correct architecture is bulk-load NAV columns once → GPU batch → bulk-write — which also fixes the sequential-fetch antipattern. We don&#39;t claim &quot;we can&#39;t run today&quot; — we claim <strong>headroom for daily cadence and richer analytics.</strong></p>
+<hr>
+<h2>4. Monte Carlo simulations for goal and SIP confidence modelling</h2>
+<p><strong>Where it lives:</strong> Retirement-fund planner and goal-feasibility services — probability-of-success modelling for whether a chosen SIP will meet a goal corpus given assumptions about return distributions and volatility.</p>
+<p><strong>Current state:</strong> Single-threaded Box-Muller draws in JavaScript, capped at <strong>1,000 iterations</strong> because more blocks the Node event loop (<code>retirement-fund-planner.service.js:704-775</code>). Confidence is currently surfaced through a clamped linear <code>confidenceDelta</code> heuristic, not a real probability of success.</p>
+<p><strong>Why GPU / cloud fit:</strong> I.i.d. paths, embarrassingly parallel. GPU parallelism (on a managed GPU instance or batch-compute service) runs 10⁵–10⁶ paths per goal in milliseconds, replacing the linear heuristic with a real CDF over outcome distributions. Per-user latency budget allows it comfortably.</p>
+<p><strong>Win:</strong> A statistically defensible probability-of-success figure replaces a heuristic that was capped by single-thread compute, not by methodology — a direct improvement to the user-facing &quot;will I make it?&quot; answer.</p>
+<hr>
+<h2>5. Natural-language rationale generation over deterministic advice codes</h2>
+<p><strong>Where it lives:</strong> The &quot;Next Best Rupee&quot; allocator emits <strong>8 structured rationale codes</strong> (<code>must_have_bias</code>, <code>emergency_underfunded</code>, <code>high_urgency</code>, <code>within_policy_bands</code>, <code>stable_surplus</code>, <code>high_priority</code>, <code>progress_momentum</code>, <code>default_recommendation</code>). Goal-feasibility emits its own <code>REASON_CODES</code> set. The decision logic itself is deterministic — a multiplicative utility over hand-tuned constants, fully replayable for SEBI audit.</p>
+<p><strong>Current state:</strong> Codes are surfaced via templated prose. Functional, but not personalised, English-only, and doesn&#39;t adapt to the user&#39;s financial vocabulary.</p>
+<p><strong>Why GPU / cloud fit:</strong> A small instruction-tuned LLM (7–8B class — e.g. Gemini Flash, Llama-3.1-8B, served on a managed in-region endpoint) expands a code plus its numeric context into one personalised Hindi/English sentence. <strong>Crucially, the codes remain the source of truth and audit trail — the LLM only renders, never decides.</strong> This preserves SEBI explainability (a learned model on the <em>decision</em> would be a compliance defect) while materially improving UX.</p>
+<p><strong>Why this is real:</strong> The 8 codes are already enumerated in production code; the calculation audit log captures <code>{params, results, reconciliation}</code> per decision with a 90-day TTL. A small-LLM renderer plugs in at the presentation layer without touching the decision engine or the audit chain.</p>
+<hr>
+<h2>What Finwiser is deliberately NOT doing with GPU</h2>
+<p>Stating this explicitly is the cleanest credibility signal — the workloads above aren&#39;t pitch fiction; they&#39;re the parts of the system where GPU genuinely fits, called out against a much larger surface area where it doesn&#39;t.</p>
+<ul>
+<li><strong>Tax classification &amp; LTCG math</strong> — statutory rules. A predictive tax model would be a compliance bug, not a feature.</li>
+<li><strong>42 × 7 mutual-fund suitability matrix</strong> — curated, not learned. A model that overrides it defeats its purpose.</li>
+<li><strong>Counterparty resolution</strong> — exact-match (VPA → phone → name-prefix → HMAC fingerprint). Embeddings here would reduce auditability.</li>
+<li><strong>Risk profiling, dual-language calc parity, XIRR, per-lot tax engine</strong> — must remain bit-deterministic for SEBI replay; small-data per-user paths where PCIe transfer dwarfs the compute.</li>
+</ul>
+<hr>
+<h2>Proposed benchmark sprint (60-day GPU benchmark experiment)</h2>
+<p>A single bundled benchmark, defensible because every component has an existing CPU baseline and golden-fixture harness already in the codebase:</p>
+<ol>
+<li><strong>Self-hosted in-region LLM vs <code>gpt-4o-mini</code></strong> — Llama-3.1-8B (or Gemini) behind the same <code>baseURL</code>, replay golden-prompt fixtures through the 5-axis eval harness. Apples-to-apples.</li>
+<li><strong>GPU-served NLI on a managed inference platform</strong> — replay 21 golden profile fixtures + AA replay harness; measure removal of the <code>layer2Skipped</code> degradation.</li>
+<li><strong>Columnar batch analytics</strong> — replay one full peer-ranking job over the ~14K-scheme NAV table; target 10–30 min → low-single-digit minutes; golden-file parity test (±0.5% vs Value Research / Morningstar reference values).</li>
+<li><strong>GPU Monte Carlo</strong> — 1K-iter CPU vs 10⁶-path GPU on the same goal inputs, with an explicit kill/keep calibration criterion.</li>
+</ol>
+<p>Each component maps to a harness, fixture set, or CPU baseline that <strong>already exists in the production codebase</strong> — results are defensible, not hypothetical.</p>
+<hr>
+<h2>Supporting verification facts</h2>
+<ul>
+<li><strong>Entity:</strong> Finwiser Technologies LLP · LLPIN ACT-7598 · PAN AALFF0177G</li>
+<li><strong>Incorporation:</strong> 24 December 2025, MCA Central Registration Centre, Manesar (Form 16, LLP Act 2008 §12(1))</li>
+<li><strong>DPIIT Startup Recognition:</strong> DIPP240313 (issued 22 January 2026; Industry: Finance Technology, Sector: Personal Finance; valid through 23 December 2035)</li>
+<li><strong>Sister concern:</strong> SEBI Investment Adviser INA000021331 (granted 04 November 2025) + FIU/Account Aggregator implementation certificate FIU/V2.0/0335 (10 December 2025, Suma Soft — Sahamati-empanelled, ReBIT NBFC-AA API Spec v2.0.0) — held by the founder&#39;s proprietorship under the Finwiser brand</li>
+<li><strong>Trademark:</strong> FINWISER (TM App. 7409395, Classes 36 + 42); usage NOC granted to the LLP</li>
+<li><strong>Production codebase:</strong> ~50k LOC Node backend (<code>Finwiser_backend/</code>) + Flutter cross-platform frontend; MVP in closed testing</li>
+<li><strong>Eval &amp; replay harnesses in repo:</strong> <code>scripts/eval-prompts.js</code>, <code>services/ingestion/AA/aa-replay-harness.js</code>, 21 golden profile fixtures in <code>test/fixtures/profiles/</code></li>
+</ul>
+
+</div>
+</body>
+</html>

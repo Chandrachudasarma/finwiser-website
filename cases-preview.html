@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>§7 Preview — Two 35-year-olds. Two answers. · Finwiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================ */
+    /* BRAND TOKENS (mirrors index-staging :root)                    */
+    /* ============================================================ */
+    :root {
+      --navy: #002d56;
+      --navy-deep: #001f3d;
+      --mint: #35d6c6;
+      --teal: #00b6ad;
+      --white: #ffffff;
+      --off-white: #f7f9fb;
+      --text-on-light: #002d56;
+      --text-on-light-muted: #5a6b7d;
+      --text-on-dark: rgba(255,255,255,0.94);
+      --text-on-dark-muted: rgba(255,255,255,0.74);
+      --border-on-dark: rgba(255,255,255,0.12);
+      --border-on-light: rgba(0,45,86,0.10);
+      --shadow-soft: 0 4px 18px rgba(0,45,86,0.08);
+
+      --gold: #f5c26b;
+      --rose: #e87b6f;
+
+      --mint-04:  rgba(53,214,198,0.04);
+      --mint-08:  rgba(53,214,198,0.08);
+      --mint-16:  rgba(53,214,198,0.16);
+      --mint-32:  rgba(53,214,198,0.32);
+      --mint-56:  rgba(53,214,198,0.56);
+
+      --gold-08:  rgba(245,194,107,0.08);
+      --gold-20:  rgba(245,194,107,0.20);
+
+      --rose-05:  rgba(232,123,111,0.05);
+      --rose-12:  rgba(232,123,111,0.12);
+
+      --teal-08:  rgba(0,182,173,0.08);
+      --teal-16:  rgba(0,182,173,0.16);
+
+      --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-serif: 'Lora', Georgia, serif;
+      --font-mono:  ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+      --fs-nano:  11px;
+      --fs-micro: 13px;
+      --fs-body:  15px;
+      --fs-lead:  17px;
+      --fs-h3:    clamp(20px, 2.5vw, 26px);
+      --fs-h2:    clamp(28px, 4vw, 44px);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      font-weight: 400; line-height: 1.6;
+      color: var(--text-on-light);
+      background: var(--off-white);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ============================================================ */
+    /* PREVIEW CHROME                                                */
+    /* ============================================================ */
+    .preview-bar {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 10px 20px;
+      background: var(--navy-deep);
+      border-bottom: 1px solid rgba(53,214,198,0.18);
+      font: 500 12.5px/1 var(--font-sans);
+      color: var(--text-on-dark-muted);
+      letter-spacing: 0.2px;
+    }
+    .preview-bar a { color: var(--mint); text-decoration: none; }
+    .preview-bar a:hover { text-decoration: underline; }
+    .preview-bar__title { color: var(--text-on-dark); font-weight: 600; }
+    .preview-bar__actions { display: flex; gap: 8px; }
+    .preview-bar button {
+      font: 500 12px/1 var(--font-sans);
+      color: var(--navy-deep);
+      background: var(--mint);
+      border: 0; border-radius: 6px;
+      padding: 8px 14px; cursor: pointer;
+      transition: background 200ms ease, transform 150ms ease;
+    }
+    .preview-bar button:hover { background: var(--teal); color: var(--white); }
+    .preview-bar button:active { transform: scale(0.98); }
+    .preview-bar button.is-secondary {
+      background: transparent; color: var(--text-on-dark-muted);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .preview-bar button.is-secondary:hover { color: var(--mint); border-color: var(--mint); background: transparent; }
+
+    /* ============================================================ */
+    /* §7 — CASES                                                    */
+    /* ============================================================ */
+    .cases {
+      background: var(--off-white); color: var(--text-on-light);
+      padding: clamp(56px, 9vw, 96px) 0;
+    }
+    .cases__inner {
+      max-width: 1180px; margin: 0 auto; padding: 0 32px;
+    }
+
+    .cases__heading {
+      font-size: var(--fs-h2); font-weight: 700;
+      letter-spacing: -0.4px; line-height: 1.16;
+      text-align: center; color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .cases__sub {
+      font-size: var(--fs-lead); color: var(--text-on-light-muted);
+      text-align: center; max-width: 64ch;
+      margin: 0 auto 32px; line-height: 1.55;
+    }
+
+    /* ---------- Switcher chips ---------- */
+    .cases__switcher {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+      margin-bottom: 36px;
+    }
+    .case-chip {
+      font: 600 var(--fs-micro)/1 var(--font-sans);
+      padding: 10px 18px; border-radius: 999px;
+      background: var(--white); color: var(--text-on-light);
+      border: 1px solid var(--border-on-light);
+      cursor: pointer; font-family: inherit;
+      transition: background 220ms ease, border-color 220ms ease,
+                  color 220ms ease, transform 200ms ease, box-shadow 220ms ease;
+    }
+    .case-chip:hover { border-color: var(--teal); }
+    .case-chip[aria-selected="true"] {
+      background: var(--mint); color: var(--navy-deep);
+      border-color: var(--mint);
+      box-shadow: 0 0 0 4px var(--mint-16);
+    }
+    .case-chip:focus-visible {
+      outline: 2px solid var(--mint); outline-offset: 3px;
+    }
+
+    /* ---------- Pair panel ---------- */
+    .pair-panel {
+      display: grid; gap: 24px;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pair-panel[hidden] { display: none; }
+    .pair-panel.is-shown { opacity: 1; transform: none; }
+
+    .pair__setup {
+      font-size: var(--fs-lead); font-style: italic;
+      color: var(--text-on-light); text-align: center;
+      max-width: 760px; margin: 0 auto; line-height: 1.55;
+    }
+
+    .pair__cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+    }
+
+    .pair__why {
+      font-size: var(--fs-h3); font-weight: 700;
+      color: var(--navy); text-align: center;
+      max-width: 760px; margin: 4px auto 0;
+      line-height: 1.35; letter-spacing: -0.2px;
+    }
+    .pair__why em {
+      font-style: normal; color: var(--teal);
+    }
+
+    /* ---------- Case dossier ---------- */
+    .case {
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 14px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 360ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i,0) * 80ms + 80ms),
+                  transform 360ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i,0) * 80ms + 80ms);
+    }
+    .pair-panel.is-shown .case { opacity: 1; transform: none; }
+
+    /* Header strip — manilla folder feel via gold-08 */
+    .case__header {
+      padding: 16px 22px;
+      background: var(--gold-08);
+      border-bottom: 1px solid var(--border-on-light);
+    }
+    .case__name {
+      font-size: var(--fs-lead); font-weight: 700;
+      color: var(--navy); letter-spacing: -0.1px;
+    }
+    .case__meta {
+      font-weight: 400; color: var(--text-on-light-muted);
+      font-size: var(--fs-body);
+    }
+    .case__role {
+      font-size: var(--fs-micro); color: var(--text-on-light-muted);
+      margin-top: 2px;
+    }
+    .case__trigger {
+      font-size: var(--fs-micro); color: var(--text-on-light-muted);
+      font-style: italic; margin-top: 10px;
+      padding-top: 10px; border-top: 1px dashed var(--border-on-light);
+      line-height: 1.45;
+    }
+
+    /* Inputs grid — definition-list style */
+    .case__inputs {
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--border-on-light);
+      display: grid; grid-template-columns: 1fr; gap: 0;
+    }
+    .case__row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 16px; padding: 6px 0;
+      border-bottom: 1px dashed var(--border-on-light);
+    }
+    .case__row:last-child { border-bottom: none; }
+    .case__row dt {
+      font-size: var(--fs-micro); color: var(--text-on-light-muted);
+      font-weight: 500; letter-spacing: 0.1px;
+    }
+    .case__row dd {
+      font-size: var(--fs-micro); color: var(--navy);
+      font-weight: 700;
+      font-feature-settings: 'tnum' 1, 'lnum' 1;
+      text-align: right; font-variant-numeric: tabular-nums;
+    }
+
+    /* Dialogue */
+    .case__dialog {
+      list-style: none;
+      padding: 16px 22px;
+      display: flex; flex-direction: column; gap: 10px;
+      background: var(--off-white);
+      border-bottom: 1px solid var(--border-on-light);
+    }
+    .case__bubble {
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .case__bubble--user { justify-content: flex-end; }
+    .case__bubble--user p {
+      background: var(--mint-08);
+      border: 1px solid var(--mint-32);
+      border-radius: 14px 14px 4px 14px;
+      padding: 10px 14px;
+      font-size: var(--fs-micro); line-height: 1.55;
+      max-width: 90%;
+      color: var(--navy);
+      font-style: italic;
+    }
+    .case__bubble--finny p {
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      border-radius: 14px 14px 14px 4px;
+      padding: 10px 14px;
+      font-size: var(--fs-micro); line-height: 1.55;
+      max-width: 90%;
+      color: var(--text-on-light);
+    }
+    .case__avatar {
+      width: 26px; height: 26px;
+      border-radius: 50%; flex-shrink: 0;
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      padding: 2px;
+      object-fit: contain;
+    }
+    .case__misbelief {
+      font-size: var(--fs-micro); font-style: italic;
+      color: var(--text-on-light-muted);
+      text-align: center;
+      padding: 4px 8px;
+      letter-spacing: 0.1px;
+    }
+    .case__misbelief::before, .case__misbelief::after {
+      content: '— ';
+    }
+    .case__misbelief::after { content: ' —'; }
+
+    /* Verdict bar — designed to be readable in isolation (Heath) */
+    .case__verdict {
+      background: var(--mint); color: var(--navy-deep);
+      font-size: var(--fs-body); font-weight: 700;
+      padding: 14px 22px;
+      display: flex; align-items: center; gap: 10px;
+      letter-spacing: -0.1px;
+      line-height: 1.4;
+    }
+    .case__verdict-mark {
+      color: var(--navy-deep);
+      font-size: 12px; flex-shrink: 0;
+    }
+
+    /* Stakes — Miller's failure beat */
+    .case__stakes {
+      font-size: var(--fs-micro); font-style: italic;
+      padding: 12px 22px; line-height: 1.55;
+      border-left: 3px solid var(--rose);
+      background: var(--rose-05);
+      color: var(--text-on-light);
+    }
+
+    /* 5-years — Duarte's "what could be" */
+    .case__future {
+      font-size: var(--fs-micro); font-style: italic;
+      padding: 12px 22px; line-height: 1.55;
+      border-left: 3px solid var(--teal);
+      background: var(--teal-08);
+      color: var(--text-on-light);
+    }
+    .case__future strong, .case__stakes strong {
+      font-weight: 700; font-style: normal; color: var(--navy);
+    }
+
+    /* ---------- Section closer ---------- */
+    .cases__close {
+      margin-top: 56px;
+      text-align: center;
+      display: flex; flex-direction: column; gap: 18px; align-items: center;
+    }
+    .cases__close-mascot {
+      width: 88px; height: 88px; margin-bottom: 4px;
+      filter: drop-shadow(0 6px 16px rgba(0,45,86,0.12));
+    }
+    .cases__close-text {
+      font-size: var(--fs-h3); font-weight: 700;
+      color: var(--navy); max-width: 760px;
+      line-height: 1.4; letter-spacing: -0.2px;
+    }
+    .cases__cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font: 700 var(--fs-body)/1 var(--font-sans);
+      padding: 14px 26px; border-radius: 10px;
+      background: var(--mint); color: var(--navy-deep);
+      text-decoration: none;
+      transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+      box-shadow: 0 4px 14px rgba(53,214,198,0.28);
+    }
+    .cases__cta:hover {
+      background: var(--teal); color: var(--white);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,182,173,0.32);
+    }
+    .cases__cta:focus-visible {
+      outline: 2px solid var(--mint); outline-offset: 3px;
+    }
+
+    .cases__footnote {
+      margin: 28px auto 0;
+      text-align: center;
+      font-size: var(--fs-nano); font-style: italic;
+      color: var(--text-on-light-muted);
+      max-width: 720px; line-height: 1.5;
+    }
+
+    /* ============================================================ */
+    /* MOBILE — natural breakpoint                                   */
+    /* ============================================================ */
+    @media (max-width: 880px) {
+      .pair__cards { grid-template-columns: 1fr; gap: 18px; }
+      .pair__setup { font-size: var(--fs-body); }
+      .pair__why { font-size: var(--fs-lead); }
+      .cases__switcher {
+        flex-wrap: nowrap; overflow-x: auto;
+        justify-content: flex-start;
+        padding: 4px 16px; margin-left: -16px; margin-right: -16px;
+        margin-bottom: 24px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      .case-chip { flex-shrink: 0; scroll-snap-align: start; }
+      .cases__close-text { font-size: var(--fs-lead); }
+    }
+
+    /* ============================================================ */
+    /* MOBILE-FRAME PREVIEW (toggled via header button)              */
+    /* ============================================================ */
+    body.is-mobile-preview main {
+      max-width: 420px;
+      margin: 24px auto;
+      border: 1px solid var(--border-on-light);
+      border-radius: 24px;
+      background: var(--off-white);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,45,86,0.12);
+    }
+    body.is-mobile-preview .cases { padding: 32px 0; }
+    body.is-mobile-preview .cases__inner { padding: 0 16px; }
+    body.is-mobile-preview .pair__cards { grid-template-columns: 1fr; gap: 18px; }
+    body.is-mobile-preview .pair__setup { font-size: var(--fs-body); }
+    body.is-mobile-preview .pair__why { font-size: var(--fs-lead); }
+    body.is-mobile-preview .cases__switcher {
+      flex-wrap: nowrap; overflow-x: auto;
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+    }
+    body.is-mobile-preview .case-chip { flex-shrink: 0; }
+    body.is-mobile-preview .cases__close-text { font-size: var(--fs-lead); }
+
+    /* ============================================================ */
+    /* REDUCED MOTION                                                */
+    /* ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .pair-panel, .case {
+        transition: none !important; transform: none !important; opacity: 1 !important;
+      }
+      .case-chip { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-bar">
+    <div>&larr; <a href="index-staging.html">Back to staging</a></div>
+    <div class="preview-bar__title">§7 &middot; Two 35-year-olds. Two answers.</div>
+    <div class="preview-bar__actions">
+      <button id="replayBtn">&#8634; Replay</button>
+      <button id="mobileBtn" class="is-secondary">View mobile</button>
+    </div>
+  </div>
+
+  <main>
+    <section class="cases" aria-labelledby="cases-heading">
+      <div class="cases__inner">
+
+        <h2 id="cases-heading" class="cases__heading">Two 35-year-olds. Two answers.</h2>
+        <p class="cases__sub">
+          Three pairs. Same age. Same payslip. Sometimes the same goal.
+          Six different verdicts &mdash; because Finwy reads what the data says,
+          not what the category suggests.
+        </p>
+
+        <div class="cases__switcher" role="tablist" aria-label="Comparison axis">
+          <button class="case-chip" type="button" role="tab"
+                  aria-selected="true" aria-controls="pair-risk"
+                  id="chip-risk" data-pair="risk">Risk appetite</button>
+          <button class="case-chip" type="button" role="tab"
+                  aria-selected="false" aria-controls="pair-goals"
+                  id="chip-goals" data-pair="goals">Goal feasibility</button>
+          <button class="case-chip" type="button" role="tab"
+                  aria-selected="false" aria-controls="pair-family"
+                  id="chip-family" data-pair="family">Family load</button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAIR 1 — RISK APPETITE                                       -->
+        <!-- ============================================================ -->
+        <div class="pair-panel is-shown" id="pair-risk" role="tabpanel"
+             aria-labelledby="chip-risk">
+          <p class="pair__setup">
+            Riya and Aman both turned 35 last quarter. Both earn &#8377;98,000
+            take-home. Both call themselves disciplined investors. Then Finwy
+            reads what they actually have.
+          </p>
+
+          <div class="pair__cards">
+            <!-- CASE 01 — Riya -->
+            <article class="case" style="--i:0" aria-labelledby="case-riya-name">
+              <header class="case__header">
+                <p class="case__name" id="case-riya-name">
+                  Riya M. <span class="case__meta">&middot; 35 &middot; Bengaluru</span>
+                </p>
+                <p class="case__role">Software engineer</p>
+                <p class="case__trigger">Opened Finwy after a colleague&rsquo;s heart attack at 38.</p>
+              </header>
+
+              <dl class="case__inputs">
+                <div class="case__row"><dt>Take-home</dt><dd>&#8377; 98,000 / mo</dd></div>
+                <div class="case__row"><dt>Surplus</dt><dd>&#8377; 52,000 / mo</dd></div>
+                <div class="case__row"><dt>Portfolio</dt><dd>&#8377; 40L MFs &middot; &#8377; 6L FD</dd></div>
+                <div class="case__row"><dt>Equity</dt><dd>83% of total</dd></div>
+                <div class="case__row"><dt>Term cover</dt><dd>&#8377; 50L</dd></div>
+                <div class="case__row"><dt>Self-rated</dt><dd>Conservative</dd></div>
+              </dl>
+
+              <ol class="case__dialog" role="list">
+                <li class="case__bubble case__bubble--user">
+                  <p>&ldquo;My friends just added another equity SIP. Am I being too cautious or are they being reckless?&rdquo;</p>
+                </li>
+                <li class="case__misbelief">Riya thinks more equity is always better.</li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>Your friends are not your portfolio. You&rsquo;re already 83% in equity at 35.</p>
+                </li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>Real gap: term at &#8377;50L is half what you need. Liquid buffer is 3 months &mdash; should be 9. Add &#8377;15K to liquid, not equity.</p>
+                </li>
+              </ol>
+
+              <p class="case__verdict">
+                <span class="case__verdict-mark" aria-hidden="true">&#9648;</span>
+                Verdict &mdash; Stop adding equity. Buy term. Build liquidity.
+              </p>
+
+              <p class="case__stakes">
+                <strong>If she doesn&rsquo;t act:</strong> &#8377;1.5cr term gap.
+                Every uncovered month is a coin flip on her family.
+              </p>
+              <p class="case__future">
+                <strong>In 5 years on this path:</strong> &#8377;2cr term in place.
+                9-month buffer. Retirement on track.
+              </p>
+            </article>
+
+            <!-- CASE 02 — Aman -->
+            <article class="case" style="--i:1" aria-labelledby="case-aman-name">
+              <header class="case__header">
+                <p class="case__name" id="case-aman-name">
+                  Aman K. <span class="case__meta">&middot; 35 &middot; Pune</span>
+                </p>
+                <p class="case__role">Sales lead</p>
+                <p class="case__trigger">Opened Finwy after his crypto-friend&rsquo;s third disaster.</p>
+              </header>
+
+              <dl class="case__inputs">
+                <div class="case__row"><dt>Take-home</dt><dd>&#8377; 98,000 / mo</dd></div>
+                <div class="case__row"><dt>Surplus</dt><dd>&#8377; 52,000 / mo</dd></div>
+                <div class="case__row"><dt>Portfolio</dt><dd>&#8377; 6L FD only</dd></div>
+                <div class="case__row"><dt>Equity</dt><dd>0%</dd></div>
+                <div class="case__row"><dt>Term cover</dt><dd>&#8377; 0</dd></div>
+                <div class="case__row"><dt>Self-rated</dt><dd>Aggressive</dd></div>
+              </dl>
+
+              <ol class="case__dialog" role="list">
+                <li class="case__bubble case__bubble--user">
+                  <p>&ldquo;Crypto. Gold. Smallcase. Everyone has an opinion. I have &#8377;6L in FD and a sinking feeling I&rsquo;m behind.&rdquo;</p>
+                </li>
+                <li class="case__misbelief">Aman thinks he needs an exotic bet to catch up.</li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>Neither, yet. You have zero equity at 35 &mdash; that&rsquo;s the bigger problem, not which flavour first.</p>
+                </li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>&#8377;25K/month index SIP, today. Crypto can wait two years. Gold can wait forever.</p>
+                </li>
+              </ol>
+
+              <p class="case__verdict">
+                <span class="case__verdict-mark" aria-hidden="true">&#9648;</span>
+                Verdict &mdash; Start equity. Today. Skip the side bets.
+              </p>
+
+              <p class="case__stakes">
+                <strong>If he waits one more year:</strong> ~&#8377;8L of compounding gone, permanently.
+              </p>
+              <p class="case__future">
+                <strong>In 5 years on this path:</strong> &#8377;18L equity built.
+                Compounding finally working for him.
+              </p>
+            </article>
+          </div>
+
+          <p class="pair__why">
+            Risk appetite is not what you say. It&rsquo;s what your data can absorb.
+            Riya can&rsquo;t take more equity risk. Aman is taking too little.
+          </p>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAIR 2 — GOAL FEASIBILITY                                    -->
+        <!-- ============================================================ -->
+        <div class="pair-panel" id="pair-goals" role="tabpanel"
+             aria-labelledby="chip-goals" hidden>
+          <p class="pair__setup">
+            Arjun and Suresh both turned 35. Both earn &#8377;1,40,000.
+            Both want to buy an &#8377;80L flat by 2030. Same goal,
+            same target year &mdash; different verdicts.
+          </p>
+
+          <div class="pair__cards">
+            <!-- CASE 03 — Arjun -->
+            <article class="case" style="--i:0" aria-labelledby="case-arjun-name">
+              <header class="case__header">
+                <p class="case__name" id="case-arjun-name">
+                  Arjun S. <span class="case__meta">&middot; 35 &middot; Hyderabad</span>
+                </p>
+                <p class="case__role">Product manager</p>
+                <p class="case__trigger">Opened Finwy after a builder&rsquo;s sales-pitch dinner.</p>
+              </header>
+
+              <dl class="case__inputs">
+                <div class="case__row"><dt>Take-home</dt><dd>&#8377; 1,40,000 / mo</dd></div>
+                <div class="case__row"><dt>Surplus</dt><dd>&#8377; 62,000 / mo</dd></div>
+                <div class="case__row"><dt>Saved for flat</dt><dd>&#8377; 14L</dd></div>
+                <div class="case__row"><dt>Existing rent</dt><dd>&#8377; 22K / mo</dd></div>
+                <div class="case__row"><dt>Goal</dt><dd>&#8377; 80L flat &middot; 2030</dd></div>
+                <div class="case__row"><dt>SIPs running</dt><dd>&#8377; 27K / mo</dd></div>
+              </dl>
+
+              <ol class="case__dialog" role="list">
+                <li class="case__bubble case__bubble--user">
+                  <p>&ldquo;Should I pause my SIPs and put everything into the down payment?&rdquo;</p>
+                </li>
+                <li class="case__misbelief">Arjun thinks one big goal needs all his attention.</li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>By 2030: &#8377;35K/mo into liquid lands &#8377;26L. Down payment needs &#8377;16L. You&rsquo;re already ahead.</p>
+                </li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>Don&rsquo;t pause SIPs. Post-EMI surplus stays at &#8377;38K. The flat fits your math.</p>
+                </li>
+              </ol>
+
+              <p class="case__verdict">
+                <span class="case__verdict-mark" aria-hidden="true">&#9648;</span>
+                Verdict &mdash; On track. Don&rsquo;t pause SIPs. The flat fits.
+              </p>
+
+              <p class="case__stakes">
+                <strong>If he pauses SIPs:</strong> ~&#8377;3.4L of retirement compounding lost.
+                Goal achieved at the cost of a different goal.
+              </p>
+              <p class="case__future">
+                <strong>In 5 years on this path:</strong> Flat owned. SIPs unbroken.
+                Retirement clock still ticking.
+              </p>
+            </article>
+
+            <!-- CASE 04 — Suresh -->
+            <article class="case" style="--i:1" aria-labelledby="case-suresh-name">
+              <header class="case__header">
+                <p class="case__name" id="case-suresh-name">
+                  Suresh R. <span class="case__meta">&middot; 35 &middot; Mumbai</span>
+                </p>
+                <p class="case__role">Tech lead</p>
+                <p class="case__trigger">Opened Finwy after the salary hike that didn&rsquo;t feel like one.</p>
+              </header>
+
+              <dl class="case__inputs">
+                <div class="case__row"><dt>Take-home</dt><dd>&#8377; 1,40,000 / mo</dd></div>
+                <div class="case__row"><dt>Surplus</dt><dd>&#8377; 62,000 / mo</dd></div>
+                <div class="case__row"><dt>Saved for flat</dt><dd>&#8377; 4L</dd></div>
+                <div class="case__row"><dt>Existing rent</dt><dd>&#8377; 35K / mo</dd></div>
+                <div class="case__row"><dt>Goal</dt><dd>&#8377; 80L flat &middot; 2030</dd></div>
+                <div class="case__row"><dt>SIPs running</dt><dd>&#8377; 8K / mo</dd></div>
+              </dl>
+
+              <ol class="case__dialog" role="list">
+                <li class="case__bubble case__bubble--user">
+                  <p>&ldquo;Should I push the timeline by a year?&rdquo;</p>
+                </li>
+                <li class="case__misbelief">Suresh thinks willpower will close the math gap.</li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>By 2030: &#8377;40K/mo into liquid lands &#8377;26L. Down + registration + interiors = &#8377;23L. Tight.</p>
+                </li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>But your post-EMI surplus drops to &#8377;7K. That&rsquo;s not surplus &mdash; it&rsquo;s a coin flip. Push 18 months. Drop ceiling to &#8377;68L. Post-EMI becomes &#8377;13K.</p>
+                </li>
+              </ol>
+
+              <p class="case__verdict">
+                <span class="case__verdict-mark" aria-hidden="true">&#9648;</span>
+                Verdict &mdash; Push 18 months. Drop ceiling to &#8377;68L.
+              </p>
+
+              <p class="case__stakes">
+                <strong>If he buys at &#8377;80L on schedule:</strong> 2 years of EMI stress,
+                no emergency fund, one bad month away from default.
+              </p>
+              <p class="case__future">
+                <strong>In 5 years on this path:</strong> &#8377;68L flat owned at end of 2031.
+                Real surplus. Real sleep.
+              </p>
+            </article>
+          </div>
+
+          <p class="pair__why">
+            The math depends on what you already have, not what you want.
+            Arjun started 18 months earlier. Suresh&rsquo;s rent is &#8377;13K higher.
+            Same destination, different starting line.
+          </p>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAIR 3 — FAMILY LOAD                                         -->
+        <!-- ============================================================ -->
+        <div class="pair-panel" id="pair-family" role="tabpanel"
+             aria-labelledby="chip-family" hidden>
+          <p class="pair__setup">
+            Vivek and Karan both turned 35. Both senior engineers in Pune.
+            Both bring home &#8377;1,60,000. The payslips are identical.
+            The lives are not.
+          </p>
+
+          <div class="pair__cards">
+            <!-- CASE 05 — Vivek -->
+            <article class="case" style="--i:0" aria-labelledby="case-vivek-name">
+              <header class="case__header">
+                <p class="case__name" id="case-vivek-name">
+                  Vivek N. <span class="case__meta">&middot; 35 &middot; Pune</span>
+                </p>
+                <p class="case__role">Senior engineer</p>
+                <p class="case__trigger">Opened Finwy after his daughter&rsquo;s third birthday.</p>
+              </header>
+
+              <dl class="case__inputs">
+                <div class="case__row"><dt>Take-home</dt><dd>&#8377; 1,60,000 / mo</dd></div>
+                <div class="case__row"><dt>Surplus</dt><dd>&#8377; 65,000 / mo</dd></div>
+                <div class="case__row"><dt>Family</dt><dd>Spouse + 1 kid (3)</dd></div>
+                <div class="case__row"><dt>Parents</dt><dd>Pensioned &middot; healthy</dd></div>
+                <div class="case__row"><dt>Term cover</dt><dd>&#8377; 1.5 cr</dd></div>
+                <div class="case__row"><dt>Health cover</dt><dd>&#8377; 10L floater</dd></div>
+              </dl>
+
+              <ol class="case__dialog" role="list">
+                <li class="case__bubble case__bubble--user">
+                  <p>&ldquo;Should I increase my parents&rsquo; health cover?&rdquo;</p>
+                </li>
+                <li class="case__misbelief">Vivek thinks he should be doing more, more places.</li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>Your parents have pensions and routine health. Top up the family floater to &#8377;25L for &#8377;4,800/year. Done.</p>
+                </li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>Your real gap is elsewhere: emergency fund is 4 months, needs 6. Add &#8377;15K/mo to liquid for 8 months. Retirement is on track.</p>
+                </li>
+              </ol>
+
+              <p class="case__verdict">
+                <span class="case__verdict-mark" aria-hidden="true">&#9648;</span>
+                Verdict &mdash; Light touch. Top up health. Fortify emergency.
+              </p>
+
+              <p class="case__stakes">
+                <strong>If he over-corrects:</strong> &#8377;30K/year on health he doesn&rsquo;t
+                need, retirement compounding diluted.
+              </p>
+              <p class="case__future">
+                <strong>In 5 years on this path:</strong> 6-month buffer in place,
+                &#8377;25L health floater locked, retirement still on its arc.
+              </p>
+            </article>
+
+            <!-- CASE 06 — Karan -->
+            <article class="case" style="--i:1" aria-labelledby="case-karan-name">
+              <header class="case__header">
+                <p class="case__name" id="case-karan-name">
+                  Karan M. <span class="case__meta">&middot; 35 &middot; Pune</span>
+                </p>
+                <p class="case__role">Senior engineer</p>
+                <p class="case__trigger">Opened Finwy after his father&rsquo;s second dialysis bill.</p>
+              </header>
+
+              <dl class="case__inputs">
+                <div class="case__row"><dt>Take-home</dt><dd>&#8377; 1,60,000 / mo</dd></div>
+                <div class="case__row"><dt>Surplus (paper)</dt><dd>&#8377; 65,000 / mo</dd></div>
+                <div class="case__row"><dt>Family</dt><dd>Spouse + 1 kid (4)</dd></div>
+                <div class="case__row"><dt>Parents</dt><dd>Father on dialysis 3&times;/wk</dd></div>
+                <div class="case__row"><dt>Term cover</dt><dd>&#8377; 1 cr</dd></div>
+                <div class="case__row"><dt>Health cover</dt><dd>&#8377; 5L floater</dd></div>
+              </dl>
+
+              <ol class="case__dialog" role="list">
+                <li class="case__bubble case__bubble--user">
+                  <p>&ldquo;Can I still retire by 60? Mid-career feels late.&rdquo;</p>
+                </li>
+                <li class="case__misbelief">Karan thinks the payslip is the whole story.</li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>Your real surplus is &#8377;30K, not &#8377;65K. Dialysis is &#8377;35K every month, every month.</p>
+                </li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>Emergency fund of &#8377;3L is 1.5 months of <em>real</em> outflow. Build &#8377;6L buffer first. Then term cover up to &#8377;2.5cr (only &#8377;6,500/year more).</p>
+                </li>
+                <li class="case__bubble case__bubble--finny">
+                  <img class="case__avatar" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy" />
+                  <p>Retirement at 60: achievable &mdash; but only after the family is protected. Order matters more than destination.</p>
+                </li>
+              </ol>
+
+              <p class="case__verdict">
+                <span class="case__verdict-mark" aria-hidden="true">&#9648;</span>
+                Verdict &mdash; Family first. Retirement second. Order matters.
+              </p>
+
+              <p class="case__stakes">
+                <strong>If he chases retirement first:</strong> one medical event
+                liquidates the whole portfolio. Years of compounding wiped in days.
+              </p>
+              <p class="case__future">
+                <strong>In 5 years on this path:</strong> &#8377;6L buffer, &#8377;2.5cr term,
+                retirement back on the table at 60.
+              </p>
+            </article>
+          </div>
+
+          <p class="pair__why">
+            Real surplus is what&rsquo;s left after the obligations a payslip can&rsquo;t see.
+            Vivek&rsquo;s payslip is his real surplus. Karan&rsquo;s payslip is fiction.
+          </p>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SECTION CLOSER                                               -->
+        <!-- ============================================================ -->
+        <div class="cases__close">
+          <img class="cases__close-mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
+          <p class="cases__close-text">
+            Three pairs. Six 35-year-olds. Six verdicts.
+            Yours will be different too &mdash; because the inputs are yours,
+            not your category&rsquo;s.
+          </p>
+          <a class="cases__cta" href="/demo-app">
+            Plug your numbers in. See what Finwy says &rarr;
+          </a>
+        </div>
+
+        <p class="cases__footnote">
+          Illustrative cases drawn from early-user patterns. Names changed; details composed.
+          Your data drives your verdict, not these.
+        </p>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var chips  = document.querySelectorAll('.case-chip');
+      var panels = document.querySelectorAll('.pair-panel');
+
+      function activate(pairId) {
+        chips.forEach(function (c) {
+          var on = c.dataset.pair === pairId;
+          c.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+
+        panels.forEach(function (p) {
+          var on = p.id === 'pair-' + pairId;
+          if (on) {
+            p.removeAttribute('hidden');
+            // Reset reveal state, then trigger
+            p.classList.remove('is-shown');
+            // Force reflow so the transition fires when re-adding
+            // eslint-disable-next-line no-unused-expressions
+            p.offsetWidth;
+            requestAnimationFrame(function () { p.classList.add('is-shown'); });
+          } else {
+            p.classList.remove('is-shown');
+            p.setAttribute('hidden', '');
+          }
+        });
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          activate(chip.dataset.pair);
+        });
+        // Keyboard: left/right move between tabs
+        chip.addEventListener('keydown', function (e) {
+          var idx = Array.prototype.indexOf.call(chips, chip);
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            chips[(idx + 1) % chips.length].focus();
+            chips[(idx + 1) % chips.length].click();
+          } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            chips[(idx - 1 + chips.length) % chips.length].focus();
+            chips[(idx - 1 + chips.length) % chips.length].click();
+          }
+        });
+      });
+
+      // Initial reveal trigger for the default-active pair
+      var initial = document.querySelector('.pair-panel.is-shown') || panels[0];
+      if (initial) {
+        initial.classList.remove('is-shown');
+        requestAnimationFrame(function () { initial.classList.add('is-shown'); });
+      }
+
+      // Replay button — re-runs reveal on the currently visible pair
+      var replay = document.getElementById('replayBtn');
+      if (replay) {
+        replay.addEventListener('click', function () {
+          var active = document.querySelector('.pair-panel:not([hidden])');
+          if (!active) return;
+          active.classList.remove('is-shown');
+          // eslint-disable-next-line no-unused-expressions
+          active.offsetWidth;
+          requestAnimationFrame(function () { active.classList.add('is-shown'); });
+        });
+      }
+
+      // Mobile-frame preview toggle
+      var mobileBtn = document.getElementById('mobileBtn');
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', function () {
+          document.body.classList.toggle('is-mobile-preview');
+          mobileBtn.textContent = document.body.classList.contains('is-mobile-preview')
+            ? 'View desktop' : 'View mobile';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

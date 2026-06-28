@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview — §6.01 Connect concept</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@1,600&display=swap" rel="stylesheet">
+
+  <script>document.documentElement.classList.add('js');</script>
+
+  <style>
+    /* ============================================================ */
+    /* BRAND TOKENS                                                  */
+    /* ============================================================ */
+    :root {
+      --navy: #002d56;
+      --navy-deep: #001f3d;
+      --mint: #35d6c6;
+      --teal: #00b6ad;
+      --white: #ffffff;
+      --off-white: #f7f9fb;
+      --text-on-dark: rgba(255,255,255,0.94);
+      --text-on-dark-muted: rgba(255,255,255,0.74);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-weight: 400; line-height: 1.6;
+      color: var(--text-on-dark);
+      background: var(--navy);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* Spacer so animation triggers on scroll */
+    .preview-intro {
+      min-height: 60vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 32px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .preview-intro h1 {
+      font: 700 20px/1.4 'Inter', sans-serif;
+      letter-spacing: -0.2px;
+      color: var(--text-on-dark-muted);
+      margin-bottom: 6px;
+    }
+    .preview-intro p {
+      font: 400 14px/1.5 'Inter', sans-serif;
+      color: rgba(255,255,255,0.5);
+      max-width: 50ch; margin: 0 auto;
+    }
+
+    /* ============================================================ */
+    /* §6 — STEPS                                                    */
+    /* ============================================================ */
+    .steps {
+      background: var(--navy); color: var(--text-on-dark);
+      padding: clamp(70px, 11vw, 110px) 0 0;
+    }
+    .steps__intro { max-width: 1100px; margin: 0 auto 60px; padding: 0 32px; text-align: center; }
+    .steps__heading {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 700;
+      letter-spacing: -0.4px; line-height: 1.18; margin-bottom: 12px;
+    }
+    .steps__sub { font-size: 17px; color: var(--text-on-dark-muted); max-width: 56ch; margin: 0 auto; }
+    .steps__rail { position: relative; max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+    .steps__row {
+      display: grid; grid-template-columns: minmax(120px, 16%) 1fr;
+      gap: 32px; min-height: 60vh; align-items: start; padding-bottom: 80px;
+    }
+    .steps__num-col { position: sticky; top: 30vh; height: max-content; padding-top: 12px; }
+    .steps__num {
+      font-family: 'Lora', Georgia, serif; font-style: italic; font-weight: 600;
+      font-size: clamp(48px, 7vw, 72px); line-height: 1;
+      color: var(--text-on-dark-muted);
+      transition: color 300ms cubic-bezier(0.4, 0, 0.2, 1), text-shadow 300ms;
+    }
+    .is-active .steps__num {
+      color: var(--mint);
+      text-shadow: 0 0 32px rgba(53,214,198,0.35);
+    }
+    .steps__line {
+      position: absolute; left: 12%; top: 12px; bottom: 80px;
+      width: 2px; background: rgba(255,255,255,0.08);
+    }
+    .steps__line-fill {
+      position: absolute; inset: 0; background: var(--mint);
+      transform: scaleY(0); transform-origin: top;
+    }
+    .steps__card {
+      background: var(--navy-deep); border: 1px solid rgba(53,214,198,0.16);
+      border-radius: 16px; padding: 32px;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .is-active .steps__card { opacity: 1; transform: translateY(0); }
+    .steps__card h3 {
+      font-size: clamp(22px, 3vw, 28px); font-weight: 700;
+      color: var(--text-on-dark); margin-bottom: 10px; letter-spacing: -0.2px;
+    }
+    .steps__card p { font-size: 16px; color: var(--text-on-dark-muted); line-height: 1.65; max-width: 60ch; }
+    .steps__tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .steps__tags li {
+      font-size: 12px; padding: 5px 11px; border-radius: 999px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.78); font-weight: 500;
+    }
+    .steps__concept {
+      margin-top: 24px; padding: 18px; border-radius: 12px;
+      background: rgba(53,214,198,0.04); border: 1px dashed rgba(53,214,198,0.22);
+    }
+
+    /* ============================================================ */
+    /* CONNECT FEED                                                  */
+    /* ============================================================ */
+    .connect-feed__head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 4px 14px;
+    }
+    .connect-feed__caption {
+      font: 600 12px/1 'Inter', sans-serif;
+      color: var(--text-on-dark-muted);
+      letter-spacing: -0.1px;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .connect-feed__caption::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 0 4px rgba(53,214,198,0.18);
+      animation: connect-feed-pulse 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    .is-done .connect-feed__caption::before {
+      animation: none; box-shadow: 0 0 0 4px rgba(53,214,198,0.10);
+    }
+    @keyframes connect-feed-pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.5; }
+    }
+    .connect-feed__count {
+      font: 700 11px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--mint); letter-spacing: 0.2px;
+      padding: 5px 9px; border-radius: 999px;
+      background: rgba(53,214,198,0.08);
+      border: 1px solid rgba(53,214,198,0.32);
+    }
+
+    /* ============================================================ */
+    /* CONNECT STAGE — stack | active | sidebar                      */
+    /* ============================================================ */
+    .connect-stage {
+      position: relative;
+      display: grid;
+      grid-template-columns: 220px 1fr 220px;
+      gap: 16px;
+      min-height: 300px;
+      align-items: start;
+    }
+    .connect-zone-stack,
+    .connect-zone-active {
+      position: relative;
+      height: 280px;
+    }
+    .connect-zone-active::before {
+      /* Subtle dashed outline showing "where the next card lands" */
+      content: '';
+      position: absolute;
+      left: 50%; top: 14px;
+      transform: translateX(-50%);
+      width: 252px; height: 116px;
+      border-radius: 12px;
+      border: 1px dashed rgba(255,255,255,0.06);
+      pointer-events: none;
+      transition: opacity 360ms ease;
+    }
+    .is-done .connect-zone-active::before { opacity: 0; }
+
+    /* End-state badge inside active zone — appears when all cards are approved */
+    .connect-active__done {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%) scale(0.92);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 22px 32px 18px;
+      min-width: 200px;
+      background: linear-gradient(135deg,
+                    rgba(53,214,198,0.18) 0%,
+                    rgba(53,214,198,0.06) 100%);
+      border: 1.5px solid rgba(53,214,198,0.55);
+      border-radius: 14px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.40),
+                  0 0 0 4px rgba(53,214,198,0.10),
+                  inset 0 1px 0 rgba(255,255,255,0.06);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 520ms ease 320ms,
+                  transform 640ms cubic-bezier(0.16, 1, 0.3, 1) 320ms;
+      z-index: 5;
+      text-align: center;
+    }
+    .is-done .connect-active__done {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .connect-active__done-mark {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--mint); color: var(--navy-deep);
+      font-size: 19px; font-weight: 800; line-height: 1;
+      display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 16px rgba(53,214,198,0.40),
+                  0 0 0 6px rgba(53,214,198,0.12);
+    }
+    .connect-active__done-text {
+      font: 700 16px/1.1 'Inter', sans-serif;
+      color: var(--text-on-dark);
+      letter-spacing: -0.2px;
+      margin-top: 4px;
+    }
+    .connect-active__done-sub {
+      font: 500 11px/1.4 'Inter', sans-serif;
+      color: var(--text-on-dark-muted);
+      letter-spacing: 0.2px;
+    }
+
+
+    /* ============================================================ */
+    /* CONNECT CARD — the unit that approves                         */
+    /* ============================================================ */
+    .connect-card {
+      position: absolute;
+      top: 14px; left: 50%;
+      width: 252px; min-height: 116px;
+      padding: 14px 16px;
+      background: var(--navy-deep);
+      border: 1px solid rgba(53,214,198,0.30);
+      border-radius: 12px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+      display: flex; flex-direction: column; gap: 8px;
+      /* Default = pending: off to the right, invisible */
+      transform: translateX(50vw) scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+      transition: left 600ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 280ms ease,
+                  box-shadow 320ms ease,
+                  border-color 320ms ease;
+      z-index: 1;
+    }
+    .connect-card.is-active {
+      left: 50%;
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 100;
+      border-color: rgba(53,214,198,0.55);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.50),
+                  0 0 0 1px rgba(53,214,198,0.18);
+    }
+    /* Settled cards anchor inside the stack zone.
+       Layered approach:
+         --vi-pos (0..4) drives the vertical waterfall (22px step) so the first 5 cards'
+         headers peek above each other.
+         --vi-deep (0..5) drives a tight extension behind the front card (3px step)
+         so cards 6-10 visibly stack as deck depth rather than being abstracted. */
+    .connect-card.is-settled {
+      --vi-pos: min(var(--si, 0), 4);
+      --vi-deep: max(0, var(--si, 0) - 4);
+      left: calc(108px + var(--vi-pos) * 5px + var(--vi-deep) * 1.4px);
+      transform:
+        translateX(-50%)
+        translateY(calc(var(--vi-pos) * 30px + var(--vi-deep) * 4px))
+        rotate(calc(-13deg + var(--vi-pos) * 3.4deg + var(--vi-deep) * 0.3deg))
+        scale(0.78);
+      opacity: 1;
+      pointer-events: none;
+      z-index: calc(10 + var(--si, 0));
+      border-color: rgba(53,214,198,0.22);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.45);
+    }
+
+    /* Card head: mark + identity (name + masked num) */
+    .connect-card__head {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .connect-card__mark {
+      width: 22px; height: 22px;
+      background: var(--white);
+      border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .connect-card__mark img { width: 18px; height: 18px; object-fit: contain; }
+    .connect-card__mark--mono {
+      font: 800 8px/1 'Inter', sans-serif;
+      letter-spacing: 0.3px;
+      color: var(--navy-deep);
+      background: var(--mint);
+      text-transform: uppercase;
+    }
+    .connect-card__id {
+      display: flex; flex-direction: column; gap: 2px; min-width: 0;
+    }
+    .connect-card__name {
+      font: 700 13px/1.2 'Inter', sans-serif;
+      color: var(--text-on-dark);
+      letter-spacing: -0.1px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .connect-card__num {
+      font: 500 10.5px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--text-on-dark-muted);
+      letter-spacing: 0.2px;
+    }
+
+    /* Amount block */
+    .connect-card__amount {
+      font: 700 18px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--text-on-dark);
+      letter-spacing: -0.3px;
+      margin-top: auto;
+      opacity: 0; transform: translateX(6px);
+      transition: opacity 320ms ease 80ms,
+                  transform 360ms cubic-bezier(0.16, 1, 0.3, 1) 80ms,
+                  color 320ms ease 80ms;
+    }
+    .connect-card.is-active.is-approved .connect-card__amount,
+    .connect-card.is-settled .connect-card__amount {
+      opacity: 1; transform: translateX(0);
+      color: var(--mint);
+    }
+    .connect-card__amount-label {
+      font: 600 9px/1 'Inter', sans-serif;
+      letter-spacing: 0.6px; text-transform: uppercase;
+      color: var(--text-on-dark-muted);
+      margin-right: 6px;
+    }
+
+    /* Action: Approve button (active) → Approved tick (settled) */
+    .connect-card__action {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 8px; min-height: 22px;
+    }
+    .connect-card__approve {
+      font: 700 10px/1 'Inter', sans-serif;
+      text-transform: uppercase; letter-spacing: 0.7px;
+      padding: 7px 12px; border-radius: 999px;
+      background: var(--mint); color: var(--navy-deep);
+      box-shadow: 0 0 0 0 rgba(53,214,198,0);
+      transform: scale(1); opacity: 1;
+      transition: opacity 220ms ease, transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      display: none;
+    }
+    .connect-card.is-active .connect-card__approve {
+      display: inline-flex;
+      animation: approve-glow 1.2s ease-in-out infinite;
+    }
+    @keyframes approve-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(53,214,198,0); transform: scale(1); }
+      50%      { box-shadow: 0 0 0 6px rgba(53,214,198,0.22); transform: scale(1.04); }
+    }
+    .connect-card.is-tapping .connect-card__approve {
+      animation: approve-press 140ms cubic-bezier(0.4, 0, 0.6, 1);
+    }
+    @keyframes approve-press {
+      0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(53,214,198,0); }
+      40%  { transform: scale(0.92); box-shadow: 0 0 0 8px rgba(53,214,198,0.32); }
+      100% { transform: scale(1); box-shadow: 0 0 0 14px rgba(53,214,198,0); }
+    }
+    .connect-card.is-approved .connect-card__approve { display: none; }
+
+    .connect-card__check {
+      display: none;
+      font: 700 10px/1 'Inter', sans-serif;
+      text-transform: uppercase; letter-spacing: 0.7px;
+      color: var(--mint);
+      align-items: center; gap: 5px;
+    }
+    .connect-card__check::before {
+      content: '✓';
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--mint); color: var(--navy-deep);
+      font-size: 9px; font-weight: 800;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .connect-card.is-approved .connect-card__check {
+      display: inline-flex;
+    }
+
+    /* ============================================================ */
+    /* SIDEBAR (right) — Assets / Liabilities / Protection / Score   */
+    /* ============================================================ */
+    .connect-zone-side {
+      display: flex; flex-direction: column; gap: 10px;
+      align-self: start;
+    }
+    .connect-stat {
+      display: flex; flex-direction: column; gap: 6px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 10px;
+      transition: border-color 320ms ease, background 320ms ease,
+                  box-shadow 320ms ease;
+    }
+    .connect-stat__label {
+      font: 700 10px/1 'Inter', sans-serif;
+      letter-spacing: 0.7px; text-transform: uppercase;
+      color: var(--text-on-dark-muted);
+    }
+    .connect-stat__value {
+      font: 700 17px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--text-on-dark);
+      letter-spacing: -0.3px;
+      transition: color 320ms ease;
+    }
+    .connect-stat.is-flash {
+      border-color: rgba(53,214,198,0.50);
+      background: rgba(53,214,198,0.08);
+      box-shadow: 0 0 0 3px rgba(53,214,198,0.10);
+    }
+    .connect-stat.is-flash .connect-stat__value {
+      color: var(--mint);
+    }
+    .connect-stat--protection.is-flash {
+      border-color: rgba(245,194,107,0.55);
+      background: rgba(245,194,107,0.08);
+      box-shadow: 0 0 0 3px rgba(245,194,107,0.10);
+    }
+    .connect-stat--protection.is-flash .connect-stat__value {
+      color: #f5c26b;
+    }
+
+    /* Replay button (preview-only) */
+    .replay {
+      position: fixed; right: 24px; bottom: 24px; z-index: 50;
+      background: var(--navy-deep); color: var(--text-on-dark);
+      border: 1px solid rgba(53,214,198,0.32);
+      border-radius: 999px; padding: 10px 16px;
+      font: 600 12px/1 'Inter', sans-serif;
+      cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .replay:hover { border-color: var(--mint); }
+
+    /* ============================================================ */
+    /* REDUCED MOTION & MOBILE                                       */
+    /* ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .steps__card, .connect-card, .connect-card__amount,
+      .connect-stat, .connect-active__done, .connect-stack-more {
+        transition: none !important; animation: none !important;
+        opacity: 1 !important; transform: none !important;
+      }
+    }
+    @media (max-width: 900px) {
+      .steps__row { grid-template-columns: 1fr; min-height: auto; padding-bottom: 48px; }
+      .steps__num-col { position: static; }
+      .steps__line { display: none; }
+    }
+    @media (max-width: 700px) {
+      .connect-stage {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .connect-zone-stack { display: none; }
+      .connect-zone-active { height: 130px; }
+      .connect-zone-side {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      }
+      .connect-card.is-settled {
+        transform: translate(calc(-50% - 100vw), 0) scale(0.6);
+        opacity: 0;
+      }
+      .preview-intro { min-height: 30vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="preview-intro">
+    <div>
+      <h1>Preview — §6.01 Connect concept (v7)</h1>
+      <p>One of each category in the first five cards. Each card approves; sidebar tallies update; cards stack to the left.</p>
+    </div>
+  </section>
+
+  <section class="steps">
+    <div class="steps__intro">
+      <h2 class="steps__heading">Three minutes. Three steps. Here&rsquo;s what happens.</h2>
+      <p class="steps__sub">Connect once. Finwiser handles the rest &mdash; and recalibrates as life changes.</p>
+    </div>
+    <div class="steps__rail">
+      <div class="steps__line" aria-hidden="true"><div class="steps__line-fill"></div></div>
+
+      <div class="steps__row" data-step="1" id="step-row">
+        <div class="steps__num-col"><div class="steps__num">01</div></div>
+        <div class="steps__card">
+          <h3>A few taps. Every account you have.</h3>
+          <p>You approve each connection on your bank&rsquo;s own RBI-regulated rail. Finwy does the rest &mdash; and you can disconnect anytime.</p>
+          <ul class="steps__tags" role="list">
+            <li>Account Aggregator</li>
+            <li>Email statements</li>
+            <li>Credit bureau</li>
+          </ul>
+
+          <div class="steps__concept steps__concept--connect" aria-hidden="true">
+            <div class="connect-feed__head">
+              <span class="connect-feed__caption">Approving your accounts</span>
+              <span class="connect-feed__count"><span id="cf-current">0</span> of 30+</span>
+            </div>
+
+            <div class="connect-stage">
+              <!-- LEFT: Stack zone (cards land here when settled) -->
+              <div class="connect-zone-stack"></div>
+
+              <!-- CENTER: Active zone (cards arrive here, get approved) -->
+              <div class="connect-zone-active">
+                <div class="connect-active__done" id="active-done">
+                  <span class="connect-active__done-mark">✓</span>
+                  <span class="connect-active__done-text">All connected</span>
+                  <span class="connect-active__done-sub">10 of 30+ types &middot; picture ready</span>
+                </div>
+              </div>
+
+              <!-- RIGHT: Sidebar (4 equal stat tiles) -->
+              <div class="connect-zone-side">
+                <div class="connect-stat connect-stat--assets" id="stat-assets-row">
+                  <span class="connect-stat__label">Assets</span>
+                  <span class="connect-stat__value" id="stat-assets">₹ 0</span>
+                </div>
+                <div class="connect-stat connect-stat--liabilities" id="stat-liabilities-row">
+                  <span class="connect-stat__label">Liabilities</span>
+                  <span class="connect-stat__value" id="stat-liabilities">₹ 0</span>
+                </div>
+                <div class="connect-stat connect-stat--protection" id="stat-protection-row">
+                  <span class="connect-stat__label">Protection</span>
+                  <span class="connect-stat__value" id="stat-protection">₹ 0</span>
+                </div>
+                <div class="connect-stat connect-stat--score" id="stat-score-row">
+                  <span class="connect-stat__label">Credit Score</span>
+                  <span class="connect-stat__value" id="stat-score">—</span>
+                </div>
+              </div>
+
+              <!-- Cards (positioned absolutely; JS drives their states).
+                   Order: 1 of each category in the first 5, then more details. -->
+
+              <!-- 1. ICICI (Asset, bank) -->
+              <article class="connect-card" data-i="0" data-cat="assets" data-value="480000">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark"><img src="https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg" alt=""></span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">ICICI Bank</span>
+                    <span class="connect-card__num">xxxx 1234 · Savings</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount">₹ 4,80,000</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+
+              <!-- 2. Mutual Funds (Asset) -->
+              <article class="connect-card" data-i="1" data-cat="assets" data-value="2840000">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark connect-card__mark--mono">MF</span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">Mutual Funds</span>
+                    <span class="connect-card__num">8 folios</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount">₹ 28,40,000</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+
+              <!-- 3. Home Loan (Liability) -->
+              <article class="connect-card" data-i="2" data-cat="liabilities" data-value="3500000">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark connect-card__mark--mono">HL</span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">Home Loan</span>
+                    <span class="connect-card__num">··3344 · ICICI</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount">₹ 35,00,000</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+
+              <!-- 4. LIC (Protection) -->
+              <article class="connect-card" data-i="3" data-cat="protection" data-value="1200000">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark connect-card__mark--mono">LIC</span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">LIC</span>
+                    <span class="connect-card__num">Policy ··5555</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount"><span class="connect-card__amount-label">protection</span>₹ 12,00,000</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+
+              <!-- 5. Credit Score (meta) -->
+              <article class="connect-card" data-i="4" data-cat="meta" data-value="782">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark connect-card__mark--mono">CR</span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">Credit Score</span>
+                    <span class="connect-card__num">Credit report</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount"><span class="connect-card__amount-label">score</span>782</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+
+              <!-- 6. HDFC (Asset, more banks) -->
+              <article class="connect-card" data-i="5" data-cat="assets" data-value="140000">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark"><img src="https://upload.wikimedia.org/wikipedia/commons/2/28/HDFC_Bank_Logo.svg" alt=""></span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">HDFC Bank</span>
+                    <span class="connect-card__num">xxxx 5678 · Savings</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount">₹ 1,40,000</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+
+              <!-- 7. SBI (Asset) -->
+              <article class="connect-card" data-i="6" data-cat="assets" data-value="220000">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-logo.svg" alt=""></span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">SBI</span>
+                    <span class="connect-card__num">xxxx 9012 · Savings</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount">₹ 2,20,000</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+
+              <!-- 8. NPS (Asset) -->
+              <article class="connect-card" data-i="7" data-cat="assets" data-value="1180000">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark connect-card__mark--mono">NPS</span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">NPS</span>
+                    <span class="connect-card__num">PRAN ··7890</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount">₹ 11,80,000</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+
+              <!-- 9. Credit Card (Liability) -->
+              <article class="connect-card" data-i="8" data-cat="liabilities" data-value="38400">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark connect-card__mark--mono">CC</span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">Credit Card</span>
+                    <span class="connect-card__num">xxxx 0911 · CC bill</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount"><span class="connect-card__amount-label">due</span>₹ 38,400</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+
+              <!-- 10. Car Loan (Liability) -->
+              <article class="connect-card" data-i="9" data-cat="liabilities" data-value="800000">
+                <div class="connect-card__head">
+                  <span class="connect-card__mark connect-card__mark--mono">CL</span>
+                  <span class="connect-card__id">
+                    <span class="connect-card__name">Car Loan</span>
+                    <span class="connect-card__num">··2211 · HDFC</span>
+                  </span>
+                </div>
+                <span class="connect-card__amount">₹ 8,00,000</span>
+                <div class="connect-card__action">
+                  <span class="connect-card__approve">Approve</span>
+                  <span class="connect-card__check">Approved</span>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <button class="replay" type="button" id="replay-btn" aria-label="Replay animation">↻ Replay</button>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var row = document.getElementById('step-row');
+      var feed = row.querySelector('.steps__concept--connect');
+      var cards = Array.prototype.slice.call(row.querySelectorAll('.connect-card'));
+      var counterEl = document.getElementById('cf-current');
+
+      var statEls = {
+        assets:      { row: document.getElementById('stat-assets-row'),      val: document.getElementById('stat-assets'),      total: 0,         kind: 'money' },
+        liabilities: { row: document.getElementById('stat-liabilities-row'), val: document.getElementById('stat-liabilities'), total: 0,         kind: 'money' },
+        protection:  { row: document.getElementById('stat-protection-row'),  val: document.getElementById('stat-protection'),  total: 0,         kind: 'money' },
+        meta:        { row: document.getElementById('stat-score-row'),       val: document.getElementById('stat-score'),       total: 0,         kind: 'score' }
+      };
+
+      // Pacing model: first 5 cards (one per category) get deliberate dwell;
+      // last 5 (additional details) blur by faster.
+      var GAP   = [1300, 1200, 1100, 1050, 1000, 720, 660, 620, 600, 580];
+      var DWELL = [820,  760,  700,  660,  620,  430, 400, 380, 360, 340];
+      var TAP_MS = 140;
+      var SETTLE_PAUSE_MS = 380;
+
+      var timers = [];
+      function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+      function delay(fn, ms) { timers.push(setTimeout(fn, ms)); }
+
+      function formatINR(v) {
+        if (v < 100000) return '₹ ' + Math.round(v).toLocaleString('en-IN');
+        return '₹ ' + (v / 100000).toFixed(2) + ' L';
+      }
+      function formatScore(v) { return Math.round(v).toString(); }
+
+      function animateNumber(el, from, to, duration, fmt) {
+        if (reduce) { el.textContent = fmt(to); return; }
+        var start = performance.now();
+        function step(now) {
+          var p = Math.min((now - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          var v = from + (to - from) * eased;
+          el.textContent = fmt(v);
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      function updateStat(cat, addValue) {
+        var stat = statEls[cat]; if (!stat) return;
+        if (stat.kind === 'score') {
+          // Credit score — set to addValue (no accumulation), animate from 0
+          stat.total = addValue;
+          animateNumber(stat.val, 0, addValue, 750, formatScore);
+        } else {
+          var prev = stat.total;
+          stat.total += addValue;
+          animateNumber(stat.val, prev, stat.total, 750, formatINR);
+        }
+        stat.row.classList.add('is-flash');
+        delay(function () { stat.row.classList.remove('is-flash'); }, 1000);
+      }
+
+      function reset() {
+        clearTimers();
+        feed.classList.remove('is-done');
+        if (counterEl) counterEl.textContent = '0';
+        cards.forEach(function (c) {
+          c.classList.remove('is-active', 'is-tapping', 'is-approved', 'is-settled');
+          c.style.removeProperty('--si');
+        });
+        Object.keys(statEls).forEach(function (k) {
+          var s = statEls[k];
+          s.total = 0;
+          s.val.textContent = (s.kind === 'score') ? '—' : '₹ 0';
+          s.row.classList.remove('is-flash');
+        });
+      }
+
+      function settleAll() {
+        cards.forEach(function (c, i) {
+          c.classList.add('is-active', 'is-approved');
+        });
+        cards.forEach(function (c, i) {
+          c.classList.remove('is-active');
+          c.classList.add('is-settled');
+          c.style.setProperty('--si', i);
+        });
+        cards.forEach(function (c) {
+          var cat = c.getAttribute('data-cat');
+          var val = parseInt(c.getAttribute('data-value'), 10) || 0;
+          var stat = statEls[cat];
+          if (!stat) return;
+          if (stat.kind === 'score') {
+            stat.total = val; stat.val.textContent = formatScore(val);
+          } else {
+            stat.total += val; stat.val.textContent = formatINR(stat.total);
+          }
+        });
+        if (counterEl) counterEl.textContent = cards.length;
+        feed.classList.add('is-done');
+      }
+
+      function runFeed() {
+        reset();
+        if (reduce) { row.classList.add('is-active'); settleAll(); return; }
+
+        row.classList.add('is-active');
+
+        var t = 320; // initial breathing room after card fades in
+        var settledCount = 0;
+
+        cards.forEach(function (card, i) {
+          var dwell = DWELL[i] || 200;
+          var gap   = GAP[i]   || 200;
+          var startAt = t;
+
+          // 1) Card slides in to active position
+          delay(function () { card.classList.add('is-active'); }, startAt);
+
+          // 2) Tap-press moment fires shortly before approval flips
+          var tapAt = startAt + Math.max(dwell - TAP_MS, 80);
+          delay(function () { card.classList.add('is-tapping'); }, tapAt);
+
+          // 3) Approval — amount reveals, status flips, sidebar updates
+          var approveAt = startAt + dwell;
+          delay(function () {
+            card.classList.remove('is-tapping');
+            card.classList.add('is-approved');
+            var cat = card.getAttribute('data-cat');
+            var val = parseInt(card.getAttribute('data-value'), 10) || 0;
+            updateStat(cat, val);
+            if (counterEl) counterEl.textContent = i + 1;
+          }, approveAt);
+
+          // 4) Slide left into stack (pause after approval so user reads "✓ Approved")
+          var settleAt = approveAt + SETTLE_PAUSE_MS;
+          delay(function () {
+            card.style.setProperty('--si', settledCount);
+            settledCount++;
+            card.classList.remove('is-active');
+            card.classList.add('is-settled');
+          }, settleAt);
+
+          t += gap;
+        });
+
+        // Mark feed done after last card settles (triggers "All connected" badge)
+        delay(function () { feed.classList.add('is-done'); }, t + 500);
+      }
+
+      var hasFired = false;
+      if (reduce || !('IntersectionObserver' in window)) {
+        row.classList.add('is-active');
+        settleAll();
+        hasFired = true;
+      } else {
+        var io = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting && !hasFired) {
+              hasFired = true;
+              runFeed();
+              obs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.25, rootMargin: '-5% 0px -5% 0px' });
+        io.observe(row);
+      }
+
+      var btn = document.getElementById('replay-btn');
+      btn.addEventListener('click', function () {
+        reset();
+        void row.offsetWidth;
+        requestAnimationFrame(runFeed);
+      });
+    })();
+  </script>
+</body>
+</html>
