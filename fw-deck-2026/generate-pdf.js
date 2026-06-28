@@ -150,12 +150,27 @@ function revealAll(killCss) {
       s.style.breakInside = 'avoid';
       s.style.pageBreakInside = 'avoid';
 
-      // Append the scaled-content wrapper, then the unscaled logo. The logo's
-      // absolute top:20/right:30 now resolves against the 1280x720 page box,
-      // so it is identical (80px, same corner) on every page regardless of the
-      // wrapper's per-slide scale.
+      // Append the scaled-content wrapper.
       s.appendChild(wrap);
-      if (logo) s.appendChild(logo);
+
+      // UNIFORM STAMPED LOGO: do not rely on each slide's own logo markup
+      // (its position drifts page-to-page depending on whether it ends up
+      // nested in the scaled wrapper or rendered by the slide differently).
+      // 1) Remove the slide's existing corner logo entirely.
+      const old = s.querySelector(':scope > .logo-bar') || s.querySelector('.logo-bar');
+      if (old) old.remove();
+      // 2) Stamp a fresh logo as the LAST DIRECT child of the page box on every
+      //    slide EXCEPT the title slide #s1 (which has its own centered logo).
+      //    It is OUTSIDE the scaled __pdfwrap, so its absolute top:20/right:30
+      //    resolves against the 1280x720 page box and is identical (80px, same
+      //    corner) on every page regardless of the wrapper's per-slide scale.
+      if (s.id !== 's1') {
+        const lg = document.createElement('img');
+        lg.src = 'slides/finny-3d.png';
+        lg.style.cssText =
+          'position:absolute; top:20px; right:30px; height:80px; width:auto; z-index:99999; pointer-events:none;';
+        s.appendChild(lg);
+      }
 
       // Scale the wrapper down if its content exceeds the page height.
       const contentH = wrap.scrollHeight;
@@ -205,6 +220,16 @@ function revealAll(killCss) {
       if (gapFrame) {
         await gapFrame.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
         await gapFrame.evaluate(revealAll, KILL_MOTION_CSS).catch(() => {});
+        // Hide any corner logo INSIDE the iframe so it doesn't double up with
+        // the deck-level stamped logo on #sGap (the gap slide IS stamped too).
+        await gapFrame.evaluate(() => {
+          document.querySelectorAll('img').forEach((im) => {
+            if (im.src && im.src.toLowerCase().includes('finny')) im.style.display = 'none';
+          });
+          document.querySelectorAll('.logo, .logo-bar').forEach((el) => {
+            el.style.display = 'none';
+          });
+        }).catch(() => {});
         console.log('  Slide-3 iframe revealed + motion stopped');
       }
     } catch (e) {
