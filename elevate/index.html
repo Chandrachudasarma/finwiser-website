@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finwiser — ELEVATE 2026 · Verify the Live Product · Finwiser Technologies LLP</title>
+  <meta name="description" content="Finwiser is an AI-powered, SEBI-regulated Financial Operating System for India's middle class — built in Karnataka, live on Google Play. Product, technology, impact and registration on one page for the ELEVATE 2026 jury.">
+  <link rel="canonical" href="https://finwiser.org/elevate/">
+  <meta property="og:title" content="Finwiser — ELEVATE 2026 Verification Page">
+  <meta property="og:description" content="AI-powered, SEBI-regulated financial advice for India's middle class — a Karnataka product, live on Google Play.">
+  <meta property="og:url" content="https://finwiser.org/elevate/">
+  <meta property="og:type" content="website">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --navy: #0f2557;
+      --navy-deep: #0a1a3f;
+      --ink: #1a1a2e;
+      --slate: #475569;
+      --muted: #64748b;
+      --line: #e4e8f0;
+      --bg: #f4f6fb;
+      --blue: #2563eb;
+      --amber: #f59e0b;
+      --green: #0f9d6b;
+      --green-bg: #e9f7f1;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+      color: var(--ink); background: var(--bg);
+      -webkit-font-smoothing: antialiased; line-height: 1.6;
+    }
+    .accent { height: 4px; background: linear-gradient(90deg, var(--blue), var(--amber)); }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+
+    .topbar { background: #fff; padding: 14px 0; display: flex; }
+    .topbar a { display: inline-block; line-height: 0; }
+    .topbar .logo { height: 38px; width: auto; display: block; }
+
+    header.hero { background: var(--navy); color: #fff; padding: 44px 0 40px; }
+    .hero .kicker { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
+    .hero h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; margin: 12px 0 10px; letter-spacing: -0.02em; }
+    .hero p { font-size: 1.08rem; color: #d4ddf0; max-width: 660px; }
+    .hero a.site { display: inline-block; margin-top: 16px; color: #fff; font-weight: 700; border-bottom: 2px solid var(--amber); text-decoration: none; }
+
+    /* Live badge row */
+    .live { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .live a {
+      display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 0.95rem;
+      padding: 11px 18px; border-radius: 999px;
+    }
+    .live a.primary { background: var(--green); color: #fff; }
+    .live a.primary:hover { background: #0c855a; }
+    .live a.ghost { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+    .live a.ghost:hover { background: rgba(255,255,255,0.16); }
+
+    main { padding: 38px 0 60px; }
+    section { margin-bottom: 38px; }
+    h2 { font-size: 1.32rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; letter-spacing: -0.01em; }
+    h2::before { content: ""; display: inline-block; width: 22px; height: 3px; background: linear-gradient(90deg, var(--blue), var(--amber)); border-radius: 3px; vertical-align: middle; margin-right: 10px; }
+    p { margin-bottom: 12px; color: var(--slate); }
+    ul { margin: 6px 0 12px 20px; color: var(--slate); }
+    li { margin-bottom: 6px; }
+    strong { color: var(--ink); }
+
+    /* Next Best Rupee flow */
+    .flow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 8px 0 6px; }
+    .flow .step { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .flow .step h3 { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--blue); font-weight: 800; margin-bottom: 6px; }
+    .flow .step p { font-size: 0.92rem; margin: 0; }
+    @media (max-width: 640px) { .flow { grid-template-columns: 1fr; } }
+
+    /* Stats grid */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .stats div { background: #fff; padding: 16px; text-align: center; }
+    .stats .num { font-size: 1.5rem; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; }
+    .stats .lbl { font-size: 0.78rem; color: var(--muted); font-weight: 600; margin-top: 3px; line-height: 1.35; }
+    @media (max-width: 560px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+    /* Impact cards */
+    .impact { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .impact .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+    .impact .card h3 { font-size: 1.02rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+    .impact .card p { font-size: 0.92rem; margin: 0; }
+    @media (max-width: 720px) { .impact { grid-template-columns: 1fr; } }
+
+    .callout { background: var(--green-bg); border-left: 4px solid var(--green); border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .callout p { margin: 0; color: var(--ink); font-weight: 600; }
+
+    /* Team card */
+    .team { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+    .team__name { font-size: 1.18rem; font-weight: 800; color: var(--navy); }
+    .team__role { color: var(--muted); font-weight: 600; margin: 2px 0 10px; }
+    .team__links a { display: inline-block; margin-right: 14px; color: var(--blue); font-weight: 700; text-decoration: none; border-bottom: 1px solid transparent; }
+    .team__links a:hover { border-bottom-color: var(--blue); }
+
+    /* Fact grid */
+    .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .facts div { background: #fff; padding: 13px 16px; }
+    .facts dt { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 700; }
+    .facts dd { font-size: 0.98rem; color: var(--ink); font-weight: 600; margin-top: 2px; }
+    @media (max-width: 560px) { .facts { grid-template-columns: 1fr; } }
+
+    .links a { display: inline-block; background: var(--navy); color: #fff; text-decoration: none; font-weight: 700; padding: 11px 18px; border-radius: 999px; margin: 6px 8px 6px 0; font-size: 0.95rem; }
+    .links a:hover { background: var(--navy-deep); }
+    .note { font-size: 0.86rem; color: var(--muted); margin-top: 10px; }
+
+    footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted); font-size: 0.88rem; }
+    footer a { color: var(--blue); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap"><a href="https://finwiser.org" aria-label="Finwiser home"><img class="logo" src="finwiserlogo.svg?v=1" alt="Finwiser"></a></div>
+  </header>
+  <div class="accent"></div>
+  <header class="hero">
+    <div class="wrap">
+      <div class="kicker">ELEVATE 2026 · Government of Karnataka</div>
+      <h1>An AI-powered, SEBI-regulated Financial Operating System for India's middle class</h1>
+      <p>Finwiser gives every salaried family personalised, regulated financial advice — the kind only the wealthy could afford — for <strong>₹199/month</strong>. Built in Bengaluru, live on Google Play, and serving Karnataka's families first.</p>
+      <div class="live">
+        <a class="primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app" rel="noopener" target="_blank">▶ Install the live app — Google Play (open beta)</a>
+        <a class="ghost" href="https://finwiser.org/elevate/demo.mp4" target="_blank">Watch the 2-min demo</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>The innovation</h2>
+      <p>Real financial advice was never one app — it was a <strong>team</strong>: a goal planner, a portfolio analyst, a cashflow analyst, and an adviser to tie it together. The wealthy hire that team. Everyone else gets dashboards that show data and sell products.</p>
+      <p><strong>Finwiser is that entire team, delivered as one AI</strong> — the first SEBI-registered advisory experience in India to unify goals, cashflow, portfolio and suitability into a single decision. We call the engine <strong>Next Best Rupee™</strong>.</p>
+      <div class="flow">
+        <div class="step"><h3>Connect</h3><p>Link bank, mutual funds, FDs, NPS, loans and credit — once, through the RBI Account Aggregator. No passwords, no manual entry.</p></div>
+        <div class="step"><h3>Detect</h3><p>Normalise everything into one ledger, run 13 financial-health ratios, and find the family's <strong>real</strong> investable surplus.</p></div>
+        <div class="step"><h3>Direct</h3><p>Allocate that surplus across the family's prioritised goals and recommend the exact suitable next action — explained in plain words.</p></div>
+      </div>
+      <div class="callout"><p>No other app in India can say this — because nobody else holds the family's full picture <em>and</em> a fiduciary licence to act on it.</p></div>
+    </section>
+
+    <section>
+      <h2>This is a product, not a pitch</h2>
+      <p>The platform is built and running on real bank data today — an Android app in open beta on Google Play, at Technology Readiness Level 7 (demonstrated in an operational environment).</p>
+      <div class="stats">
+        <div><div class="num">480K+</div><div class="lbl">Lines of code, built solo + AI</div></div>
+        <div><div class="num">13</div><div class="lbl">Financial ratios computed</div></div>
+        <div><div class="num">6-tier</div><div class="lbl">ML categorisation · 90%+ on real data</div></div>
+        <div><div class="num">4</div><div class="lbl">Data sources — AA, email, PDF, Experian</div></div>
+        <div><div class="num">172</div><div class="lbl">Automated test files</div></div>
+        <div><div class="num">72</div><div class="lbl">Sahamati certification scenarios</div></div>
+      </div>
+      <p class="note">Built by one founder with AI agents — no developers hired, no outsourcing. Backend on Node.js, mobile app on Flutter.</p>
+    </section>
+
+    <section>
+      <h2>Socio-economic impact — a Karnataka product</h2>
+      <div class="impact">
+        <div class="card"><h3>Financial inclusion</h3><p>Regulated advice that was only for the rich — now for every family at ₹199/month. Protects them from mis-selling and scams.</p></div>
+        <div class="card"><h3>Goals made achievable</h3><p>Turns each family's income, surplus and priorities into clear monthly actions — emergency fund, insurance, retirement and investing.</p></div>
+        <div class="card"><h3>Skilled jobs in Karnataka</h3><p>Engineering, AI, advisory and compliance roles based in Bengaluru — growing to ~40 in Karnataka by Year 3 (projection).</p></div>
+      </div>
+      <div class="callout"><p>Bengaluru has India's largest salaried workforce — the very people Finwiser serves. A Karnataka product, serving Karnataka's families first. Aligned with UN SDGs 1 (No Poverty), 8 (Decent Work) and 10 (Reduced Inequalities).</p></div>
+    </section>
+
+    <section>
+      <h2>See it live</h2>
+      <div class="links">
+        <a href="https://play.google.com/store/apps/details?id=org.finwiser.app" rel="noopener" target="_blank">Android app (Google Play)</a>
+        <a href="https://finwiser.org/elevate/demo.mp4" target="_blank">Demo video</a>
+        <a href="https://finwiser.org/fw-deck-2026/" target="_blank">Full pitch deck</a>
+        <a href="https://finwiser.org">Main website</a>
+      </div>
+      <p class="note">The app is in <strong>open beta</strong> on Google Play — anyone with the link can install and try it. No revenue yet; the product is in active market validation.</p>
+    </section>
+
+    <section>
+      <h2>The founder</h2>
+      <div class="team">
+        <div class="team__name">Chandrachuda Sarma Yemmanuru</div>
+        <div class="team__role">Founder &amp; Designated Partner, Finwiser Technologies LLP · SEBI Registered Investment Adviser</div>
+        <p>A business operator with 10+ years across growth, sales and product — scaled a team from 80 to 400+ and ran a ₹150-crore P&amp;L at Unacademy, CAT 99th percentile, PGDM from MDI Gurgaon. Became a SEBI-registered adviser himself, then built the entire Finwiser platform solo to prove that honest, regulated financial advice can reach every Indian family.</p>
+        <div class="team__links">
+          <a href="https://www.linkedin.com/in/chandrachudasarma/" rel="noopener" target="_blank">LinkedIn → linkedin.com/in/chandrachudasarma</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Company, registration &amp; recognition</h2>
+      <dl class="facts">
+        <div><dt>Legal name</dt><dd>Finwiser Technologies LLP</dd></div>
+        <div><dt>Entity type</dt><dd>Limited Liability Partnership (India)</dd></div>
+        <div><dt>LLPIN</dt><dd>ACT-7598</dd></div>
+        <div><dt>PAN</dt><dd>AALFF0177G</dd></div>
+        <div><dt>DPIIT Startup Recognition</dt><dd>DIPP240313</dd></div>
+        <div><dt>D-U-N-S Number</dt><dd>771962077</dd></div>
+        <div><dt>Incorporated</dt><dd>24 December 2025</dd></div>
+        <div><dt>Registered office</dt><dd>Bengaluru, Karnataka, India</dd></div>
+        <div><dt>SEBI RIA (founder's practice)</dt><dd>INA000021331</dd></div>
+        <div><dt>Account Aggregator</dt><dd>Certified FIU · Sahamati (RBI framework)</dd></div>
+        <div><dt>NVIDIA Inception</dt><dd>Member</dd></div>
+        <div><dt>Backing</dt><dd>Google for Startups · Cloud credits</dd></div>
+      </dl>
+      <p class="note"><strong>Finwiser Technologies LLP</strong> is the technology entity behind the Finwiser product. The regulated investment-advisory activity is held under the founder's SEBI Registered Investment Adviser registration (INA000021331), not the LLP.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © 2026 Finwiser Technologies LLP · Bengaluru, Karnataka · <a href="https://finwiser.org">finwiser.org</a> · <a href="https://www.linkedin.com/in/chandrachudasarma/" rel="noopener" target="_blank">Founder on LinkedIn</a> · Prepared for ELEVATE 2026, Government of Karnataka
+    </div>
+  </footer>
+</body>
+</html>

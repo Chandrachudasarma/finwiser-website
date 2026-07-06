@@ -239,5 +239,19 @@ From HyKr submission email (2026-05-12) and reminder (2026-05-18):
   - Finwiser's application has **advanced to the next stage of evaluation** — jury "saw strong potential."
   - **Top 20 NOT yet selected** — final results to be shared by **23 June 2026**.
   - Jury may reach out for additional information / clarifications / supporting materials during this stage.
-- **Safe external phrasing** (used in the Antler application): *"shortlisted in the HyKr Build Challenge 2026, advancing past 400+ teams into the final evaluation round."* Do **not** claim "Top 20" or "won" until the 23 Jun result confirms it.
-- **Follow-up:** if Finwiser makes the **Top 20** on 23 Jun, that's a materially stronger update worth sending to EWOR (still in review) and mentioning to Antler.
+- **Safe external phrasing** (used in the Antler application): *"shortlisted in the HyKr Build Challenge 2026, advancing past 400+ teams into the final evaluation round."* Do **not** claim "Top 20" or "won" until the result confirms it.
+- **Follow-up:** if Finwiser advances further, that's a materially stronger update worth sending to EWOR (still in review) and mentioning to Antler.
+
+### Update 1b — Timeline slip to 1 Jul (email 2026-06-24, from `info@hykr.studio`, "Update on HyKr Build Challenge 2026 Selection Timeline")
+
+- Pure timeline-slip notice: "due to the volume and quality of applications," HyKr needs more time to finalise the **Top 20**.
+- The **23 Jun** date (from Update 1) **slipped to 1 July 2026**. No status change for Finwiser — still mid-evaluation, no shortlist decision yet.
+- (This date, in turn, slipped again in Update 2 below.)
+
+### Update 2 — Additional evaluation stage (email 2026-07-01, from `info@hykr.studio`, "Update on Your HyKr Build Challenge Application")
+
+- The **23 Jun** result date **slipped**. HyKr has **introduced an additional evaluation stage** before moving startups to the next phase.
+- Finwiser has been **selected to move forward into this additional evaluation stage** ("extra step to help the jury validate the strongest opportunities before announcing the startups advancing to the next phase").
+- **New outcome date: by 10 July 2026.**
+- HyKr may **reach out directly** for additional information / clarification during this stage — watch for a `@hykr.studio` email and be ready to respond fast (the 1:1 panel prep in `claudedocs/prep_hykr_1on1_*_20260603.md` is the material to lean on).
+- **Net status as of 2026-07-02:** still in the running, one round deeper, no rejection — advanced through every gate so far (400+ → still standing). Not yet "Top N" or "selected for next phase"; keep external phrasing conservative until 10 Jul.
