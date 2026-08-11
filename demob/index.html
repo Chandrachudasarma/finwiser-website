@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Finwiser — Product Demo</title>
+<style>
+  :root{--navy:#0d2340;--navy-deep:#00101f;--teal:#1d7a6c;--mint:#4fd6c0;
+        --ink:#14171c;--muted:#5b6470;--rule:#c9d2dd;--page:#f6f8fa}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--navy-deep);color:#e8eff6;
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+       line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:44px 24px 72px}
+  header{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+         padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.16)}
+  .mark{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.01em}
+  .kick{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.14em;
+        text-transform:uppercase;color:var(--mint)}
+  h1{font-size:30px;line-height:1.2;margin:30px 0 10px;color:#fff;
+     font-weight:700;letter-spacing:-.015em;max-width:22ch}
+  h1 em{font-style:italic;color:var(--mint)}
+  .lede{font-size:16px;color:#b9c8d8;max-width:62ch;margin:0 0 30px}
+  .lede b{color:#fff;font-weight:600}
+  .player{background:#000;border:1px solid rgba(255,255,255,.14);border-radius:4px;
+          overflow:hidden;max-width:420px;margin:0 auto}
+  video{width:100%;display:block}
+  .meta{max-width:420px;margin:14px auto 0;font-family:ui-monospace,Menlo,monospace;
+        font-size:11px;letter-spacing:.06em;color:#7d8fa3;text-align:center}
+  .facts{margin-top:44px;padding-top:22px;border-top:1px solid rgba(255,255,255,.16);
+         display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:26px}
+  .facts h3{font-size:14px;color:#fff;margin:0 0 5px}
+  .facts p{font-size:13.5px;color:#93a5b8;margin:0}
+  .facts .id{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--mint)}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid rgba(255,255,255,.16);
+         font-size:12.5px;color:#6d7e91}
+  footer a{color:#9fb3c7}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="mark">Finwiser</span>
+      <span class="kick">Product demo</span>
+    </header>
+
+    <h1>You can only advise on <em>what you can see.</em></h1>
+    <p class="lede">A private bank sees the assets it custodies &mdash; not the client's other banks,
+    liabilities, income flow, insurance or pensions. <b>It cannot even size its own blind spot.</b>
+    This is the decisioning engine that closes it, running on real consented data in India today.</p>
+
+    <div class="player">
+      <video controls preload="metadata" playsinline>
+        <source src="demo.mp4" type="video/mp4">
+        Your browser does not support embedded video.
+        <a href="demo.mp4">Download the demo</a>.
+      </video>
+    </div>
+    <p class="meta">2:45 &middot; consent &rarr; assembled position &rarr; surplus &rarr; ranked action</p>
+
+    <div class="facts">
+      <div>
+        <h3>Regulated</h3>
+        <p>SEBI Registered Investment Adviser licence, held by the founder's proprietorship
+        <span class="id">INA000021331</span></p>
+      </div>
+      <div>
+        <h3>Certified</h3>
+        <p>Certified against the central bank's published technical standard to operate as a
+        Financial Information User on India's RBI-regulated Account Aggregator network</p>
+      </div>
+      <div>
+        <h3>Live</h3>
+        <p>Published on Google Play, open testing, ingesting real consented data</p>
+      </div>
+    </div>
+
+    <footer>
+      Finwiser Technologies LLP &middot; Bengaluru, India &middot;
+      <a href="https://finwiser.org">finwiser.org</a><br>
+      Figures shown in the demo are illustrative. Investments are subject to market risks.
+    </footer>
+  </div>
+</body>
+</html>
