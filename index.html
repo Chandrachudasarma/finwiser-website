@@ -5932,15 +5932,31 @@
                         : p > SP_CHIPS_END ? 'roll' : p > SP_IN ? 'read' : 'idle');
 
             if (routed !== spLastRouted) {
+              /* Two phases, reads before writes. The iPhone flight-recorder log
+                 showed 54-56ms frames during momentum settle in this scene:
+                 surplusRouteOffsetFor reads getBoundingClientRect between class
+                 writes, so each newly-landed chip forced a fresh layout — and a
+                 flick lands several chips in one frame. Measuring every landing
+                 chip first means the frame pays for at most one layout. */
+              var toRoute = [], offs = {};
+              for (var i = 0; i < n; i++) {
+                if (i < routed && surplusTxns[i].dataset.spR !== '1') toRoute.push(i);
+              }
+              for (var r0 = 0; r0 < toRoute.length; r0++) {
+                var idx = toRoute[r0];
+                offs[idx] = surplusRouteOffsetFor(surplusTxns[idx], surplusTxns[idx].getAttribute('data-cat'));
+              }
               for (var i = 0; i < n; i++) {
                 var chip = surplusTxns[i], done = i < routed;
                 chip.classList.toggle('is-streaming',  done || i === routed);
                 chip.classList.toggle('is-classified', done);
                 chip.classList.toggle('is-routed',     done);
                 if (done && chip.dataset.spR !== '1') {
-                  var off = surplusRouteOffsetFor(chip, chip.getAttribute('data-cat'));
-                  chip.style.setProperty('--route-x', off.x + 'px');
-                  chip.style.setProperty('--route-y', off.y + 'px');
+                  var off = offs[i];
+                  if (off) {
+                    chip.style.setProperty('--route-x', off.x + 'px');
+                    chip.style.setProperty('--route-y', off.y + 'px');
+                  }
                   chip.dataset.spR = '1';
                 } else if (!done && chip.dataset.spR === '1') {
                   chip.dataset.spR = '0';
