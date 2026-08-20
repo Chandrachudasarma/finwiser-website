@@ -4891,6 +4891,29 @@
           return !!t && t !== 'none';
         }
 
+        /* Stable viewport height, the Apple discipline: measure once, then on
+           resize ask "did the WIDTH change?" Width changed = a real event
+           (rotation, split view) — re-measure. Height alone changed = the
+           browser bars sliding in or out mid-scroll — ignore it. Everything
+           scroll-driven reads this instead of live innerHeight, so the bars
+           cannot remap scene progress or shift the activation midline under
+           a moving finger. */
+        var stableVH = window.innerHeight;
+        var stableVW = window.innerWidth;
+        addEventListener('resize', function () {
+          if (window.innerWidth !== stableVW) {
+            stableVW = window.innerWidth;
+            stableVH = window.innerHeight;
+          }
+        }, { passive: true });
+        addEventListener('orientationchange', function () {
+          setTimeout(function () {
+            stableVW = window.innerWidth;
+            stableVH = window.innerHeight;
+          }, 120);
+        }, { passive: true });
+        window.__fwStableVH = function () { return stableVH; };
+
         // Without snap the reader is moving, so "nearest the middle" changes
         // every few frames. Re-picking on each change tore the running scene
         // down (stop + reset) and restarted it, so a multi-second animation
@@ -4899,14 +4922,14 @@
         function stillHoldingStage(entry) {
           if (!entry) return false;
           var r = entry.el.getBoundingClientRect();
-          var vh = window.innerHeight;
+          var vh = stableVH;
           var visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
           return visible > 0 && visible >= Math.min(r.height, vh) * 0.25;
         }
 
         function findActive() {
           var snapped = snapIsActive();
-          var vh = window.innerHeight;
+          var vh = stableVH;
           var mid = vh / 2;
           var best = null, bestDist = Infinity;
           if (!snapped && !reduce && stillHoldingStage(current)) return current;
@@ -5234,13 +5257,19 @@
          frame during the sleep hold instead, so swaps are paint-only. */
       if (heroFrames.length && window.Image && 'decode' in Image.prototype) {
         (function () {
-          var heroDecodeAll = function () {
-            for (var i = 0; i < heroFrames.length; i++) {
-              try { heroFrames[i].decode().catch(function () {}); } catch (e) {}
-            }
-          };
-          if ('requestIdleCallback' in window) requestIdleCallback(heroDecodeAll, { timeout: 900 });
-          else setTimeout(heroDecodeAll, 300);
+          /* v2 after the third device log: the idle-batch version fired all 12
+             decodes at once ~1s in, and the janks moved to exactly that window
+             (60ms, 65ms at 1.1-1.3s) instead of disappearing. Decode ONE frame
+             at a time in a chain, starting immediately — each link is small,
+             and the whole set is done inside the 1.4s sleep hold, before both
+             the flipbook and the user's first possible touch. */
+          var i = 0;
+          (function nextFrame() {
+            if (i >= heroFrames.length) return;
+            var img = heroFrames[i++];
+            try { img.decode().catch(function () {}).then(nextFrame, nextFrame); }
+            catch (e) { nextFrame(); }
+          })();
         })();
       }
 
@@ -5522,7 +5551,7 @@
             rafFill = true;
             requestAnimationFrame(function () {
               var rect = rail.getBoundingClientRect();
-              var vh = window.innerHeight;
+              var vh = (window.__fwStableVH ? window.__fwStableVH() : window.innerHeight);
               var raw = (vh - rect.top) / (rect.height + vh);
               var p = Math.max(0, Math.min(1, raw));
               fill.style.transform = 'scaleY(' + p + ')';
@@ -6035,9 +6064,10 @@
           function surplusDrive() {
             spTicking = false;
             var h = surplusRow.offsetHeight;
-            var travel = h - window.innerHeight * 0.35;   /* scene plays across its pass */
+            var vhS = (window.__fwStableVH ? window.__fwStableVH() : window.innerHeight);
+            var travel = h - vhS * 0.35;   /* scene plays across its pass */
             if (travel <= 0) return;
-            var into = window.innerHeight * 0.65 - surplusRow.getBoundingClientRect().top;
+            var into = vhS * 0.65 - surplusRow.getBoundingClientRect().top;
             surplusRenderAt(spClamp01(into / travel));
           }
           function spOnScroll() {
