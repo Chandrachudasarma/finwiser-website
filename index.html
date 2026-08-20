@@ -3007,16 +3007,32 @@
       .txn { width: 184px; }
     }
     @media (max-width: 760px) {
-      .flow__stage { grid-template-columns: 1fr; gap: 14px; min-height: auto; }
-      .flow__lane--stream { height: 240px; }
+      .flow__stage { grid-template-columns: 1fr; gap: 12px; min-height: auto; }
+      /* .txn is display:none at this width (see below), so the stream lane is
+         not staging any chip choreography here — it only carries the counter.
+         240px of reserved height for an animation that never runs is what made
+         this read as a large empty panel on a phone. Height now follows the
+         counter it actually contains. */
+      .flow__lane--stream { height: auto; min-height: 132px; }
+      .flow__counter { padding: 10px 12px 10px; }
       .flow__lane--finwy { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 4px 0; }
-      .flow__finwy-img { width: 96px; }
+      .flow__finwy-img { width: 64px; }
+      /* the ledger is the payoff — the surplus row stays the biggest thing in
+         it, but the three feeder rows and its padding give back the last of
+         the height needed to fit one screen */
+      .ledger-row { padding: 7px 0; }
+      .ledger-row--surplus { padding: 13px 14px 14px; }
       .flow__aura { width: 200px; height: 200px; left: 50px; }
       .flow__finwy-tag { margin-top: 0; }
       .flow__finwy-tag::before { display: none; }
       .flow__counter-num { font-size: 36px; }
-      .flow__insights { grid-template-columns: 1fr 1fr; }
-      .insight__num { font-size: 40px; }
+      /* four tiles at a 40px numeral and 22px padding cost ~257px on a phone —
+         a third of the screen for the footnote to the scene. Tightened so the
+         surplus itself stays the largest thing here. */
+      .flow__insights { grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 10px; padding-top: 10px; }
+      .insight { padding: 10px 10px 9px; gap: 4px; }
+      .insight__num { font-size: 28px; }
+      .insight__label { font-size: 10px; letter-spacing: 0.5px; }
       .txn { display: none; }
     }
 
