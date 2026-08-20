@@ -1006,6 +1006,15 @@
     .steps {
       background: var(--navy); color: var(--text-on-dark);
       padding: clamp(70px, 11vw, 110px) 0 0;
+      /* The connect-card stage parks cards off-stage; without a clip they grow the
+         document and the whole page drags sideways (345px at 1440, 256px at 360).
+         Clip on the section — it is full-bleed, so cards still travel in from the
+         true window edge. `clip` not `hidden`: hidden makes a scroll container and
+         would break position:sticky inside this section. */
+      overflow-x: hidden;
+    }
+    @supports (overflow: clip) {
+      .steps { overflow-x: clip; }
     }
     .steps__intro {
       max-width: 1100px; margin: 0 auto 60px; padding: 0 32px; text-align: center;
@@ -4433,166 +4442,8 @@
         </article>
 
         <!-- 2 — Same portfolio. Different goals. -->
-        <article class="case-card" id="pair-goals" data-pair="goals" data-decisive="1" data-snap-anim="engine-goals" data-tagline="Same portfolio. Different goals." data-sub="Both 35. Both have an identical &#8377;25L portfolio: 60% equity, 30% debt, 10% cash." aria-labelledby="engine-case-tagline">
-          <p class="visually-hidden">Both 35, identical 25-lakh portfolio at 60 percent equity. Arjun's primary goal is buying a 50-lakh flat in 5 years. Suresh's primary goal is his daughter's college, also 50 lakh, in 12 years. Goals is decisive. Arjun shifts to a balanced fund. Suresh holds steady at 60 percent equity.</p>
-
-          <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Goals">
-            <div class="trail__row" aria-hidden="true">
-              <div class="factor" data-pos="0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="factor__label">Age</span><span class="factor__readout">35 yrs</span></div>
-              <div class="factor" data-pos="1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="factor__label">Goals</span><span class="factor__readout">5y vs 12y</span></div>
-              <div class="factor" data-pos="2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg><span class="factor__label">Surplus</span><span class="factor__readout">comparable</span></div>
-              <div class="factor" data-pos="3"><svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg><span class="factor__label">Portfolio</span><span class="factor__readout">&#8377;25L &middot; identical</span></div>
-              <div class="factor" data-pos="4"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg><span class="factor__label">Risk</span><span class="factor__readout">moderate</span></div>
-              <div class="factor" data-pos="5"><svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg><span class="factor__label">Priorities</span><span class="factor__readout">self &middot; family</span></div>
-            </div>
-            <div class="trail__mascot" aria-hidden="true"><img src="fw-deck-2026/slides/finny-3d.png" alt="" /></div>
-          </div>
-
-          <div class="lane lane--mint" data-i="0">
-            <div class="lane__input">
-              <p class="input__name">Arjun S.</p>
-              <p class="input__meta">35 &middot; HYDERABAD &middot; PRODUCT MGR.</p>
-              <div class="input-stats">
-                <div class="input-stat"><span class="input-stat__num">5<small>y</small></span><span class="input-stat__label">Own flat</span></div>
-                <div class="input-stat"><span class="input-stat__num">&#8377;50L</span><span class="input-stat__label">primary goal</span></div>
-              </div>
-              <p class="input__rating">Time horizon <span class="input__rating-key">short &middot; near-term</span></p>
-              <p class="input__trigger">Opened Finwy after a builder&rsquo;s sales-pitch dinner.</p>
-            </div>
-            <div class="lane__verdict">
-              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">A</span> Arjun</p>
-              <p class="verdict__verb">SHIFT</p>
-              <p class="verdict__line">Move 40% to balanced. 5 years can&rsquo;t survive a 25% drop.</p>
-              <div class="allocation">
-                <p class="allocation__head"><strong>&#8377;25L</strong> &middot; rebalanced</p>
-                <div class="allocation__bar">
-                  <span class="allocation__seg a-teal"  style="--seg-w: 40%;"></span>
-                  <span class="allocation__seg a-mint"  style="--seg-w: 20%;"></span>
-                  <span class="allocation__seg a-slate" style="--seg-w: 30%;"></span>
-                  <span class="allocation__seg a-gold"  style="--seg-w: 10%;"></span>
-                </div>
-                <div class="allocation__legend">
-                  <div class="allocation__row"><span class="allocation__dot a-teal"></span><span class="allocation__name">Balanced fund</span><span class="allocation__amount">&#8377;10L</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity (reduced)</span><span class="allocation__amount">&#8377;5L</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt</span><span class="allocation__amount">&#8377;7.5L</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Cash</span><span class="allocation__amount">&#8377;2.5L</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lane lane--teal" data-i="1">
-            <div class="lane__input">
-              <p class="input__name">Suresh R.</p>
-              <p class="input__meta">35 &middot; MUMBAI &middot; TECH LEAD</p>
-              <div class="input-stats">
-                <div class="input-stat"><span class="input-stat__num">12<small>y</small></span><span class="input-stat__label">Child&rsquo;s education</span></div>
-                <div class="input-stat"><span class="input-stat__num">&#8377;50L</span><span class="input-stat__label">primary goal</span></div>
-              </div>
-              <p class="input__rating">Time horizon <span class="input__rating-key">long &middot; multi-cycle</span></p>
-              <p class="input__trigger">Opened Finwy on his daughter&rsquo;s 4th birthday.</p>
-            </div>
-            <div class="lane__verdict">
-              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">S</span> Suresh</p>
-              <p class="verdict__verb">HOLD</p>
-              <p class="verdict__line">Stay 60% equity. 12 years rewards the volatility.</p>
-              <div class="allocation">
-                <p class="allocation__head"><strong>&#8377;25L</strong> &middot; held</p>
-                <div class="allocation__bar">
-                  <span class="allocation__seg a-mint"  style="--seg-w: 60%;"></span>
-                  <span class="allocation__seg a-slate" style="--seg-w: 30%;"></span>
-                  <span class="allocation__seg a-gold"  style="--seg-w: 10%;"></span>
-                </div>
-                <div class="allocation__legend">
-                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity</span><span class="allocation__amount">&#8377;15L</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt</span><span class="allocation__amount">&#8377;7.5L</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Cash</span><span class="allocation__amount">&#8377;2.5L</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
 
         <!-- 3 — Same income. Different lives. -->
-        <article class="case-card" id="pair-expenses" data-pair="expenses" data-decisive="5" data-snap-anim="engine-expenses" data-tagline="Same income. Different lives." data-sub="Both 35. Both senior engineers in Pune. Both bring home &#8377;1,60,000." aria-labelledby="engine-case-tagline">
-          <p class="visually-hidden">Both 35-year-old senior engineers in Pune earning 1.6 lakh, both with about 50,000 surplus. Vivek has one active goal — retirement. Karan has four — kids' education, parents' health buffer, retirement, emergency. Priorities is decisive. Vivek concentrates. Karan sequences.</p>
-
-          <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Priorities">
-            <div class="trail__row" aria-hidden="true">
-              <div class="factor" data-pos="0"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="factor__label">Age</span><span class="factor__readout">35 yrs</span></div>
-              <div class="factor" data-pos="1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><span class="factor__label">Goals</span><span class="factor__readout">1 vs 4 active</span></div>
-              <div class="factor" data-pos="2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg><span class="factor__label">Surplus</span><span class="factor__readout">~&#8377;50K</span></div>
-              <div class="factor" data-pos="3"><svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg><span class="factor__label">Portfolio</span><span class="factor__readout">comparable</span></div>
-              <div class="factor" data-pos="4"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg><span class="factor__label">Risk</span><span class="factor__readout">moderate</span></div>
-              <div class="factor" data-pos="5"><svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg><span class="factor__label">Priorities</span><span class="factor__readout">focus vs sequence</span></div>
-            </div>
-            <div class="trail__mascot" aria-hidden="true"><img src="fw-deck-2026/slides/finny-3d.png" alt="" /></div>
-          </div>
-
-          <div class="lane lane--mint" data-i="0">
-            <div class="lane__input">
-              <p class="input__name">Vivek N.</p>
-              <p class="input__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
-              <div class="input-stats">
-                <div class="input-stat"><span class="input-stat__num">1</span><span class="input-stat__label">primary goal</span></div>
-                <div class="input-stat"><span class="input-stat__num">25<small>y</small></span><span class="input-stat__label">retirement horizon</span></div>
-              </div>
-              <p class="input__rating">Life stage <span class="input__rating-key">single &middot; independent parents</span></p>
-              <p class="input__trigger">Opened Finwy after a friend lost &#8377;15L on tips.</p>
-            </div>
-            <div class="lane__verdict">
-              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">V</span> Vivek</p>
-              <p class="verdict__verb">FOCUS</p>
-              <p class="verdict__line">One goal, deeply funded. Time does the rest.</p>
-              <div class="allocation">
-                <p class="allocation__head"><strong>&#8377;50K/mo</strong> &middot; allocated</p>
-                <div class="allocation__bar">
-                  <span class="allocation__seg a-mint"  style="--seg-w: 70%;"></span>
-                  <span class="allocation__seg a-teal"  style="--seg-w: 20%;"></span>
-                  <span class="allocation__seg a-gold"  style="--seg-w: 10%;"></span>
-                </div>
-                <div class="allocation__legend">
-                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Retirement</span><span class="allocation__amount">&#8377;35K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-teal"></span><span class="allocation__name">Mid-term (flat)</span><span class="allocation__amount">&#8377;10K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;5K</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lane lane--teal" data-i="1">
-            <div class="lane__input">
-              <p class="input__name">Karan M.</p>
-              <p class="input__meta">35 &middot; PUNE &middot; SR. ENGINEER</p>
-              <div class="input-stats">
-                <div class="input-stat"><span class="input-stat__num">4</span><span class="input-stat__label">active goals</span></div>
-                <div class="input-stat"><span class="input-stat__num">3<small>+</small></span><span class="input-stat__label">dependents</span></div>
-              </div>
-              <p class="input__rating">Life stage <span class="input__rating-key">2 kids &middot; father on dialysis</span></p>
-              <p class="input__trigger">Opened Finwy when his daughter started kindergarten.</p>
-            </div>
-            <div class="lane__verdict">
-              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">K</span> Karan</p>
-              <p class="verdict__verb">SEQUENCE</p>
-              <p class="verdict__line">Education first. Parents next. Retirement third. Order matters.</p>
-              <div class="allocation">
-                <p class="allocation__head"><strong>&#8377;50K/mo</strong> &middot; allocated</p>
-                <div class="allocation__bar">
-                  <span class="allocation__seg a-teal"  style="--seg-w: 30%;"></span>
-                  <span class="allocation__seg a-rose"  style="--seg-w: 25%;"></span>
-                  <span class="allocation__seg a-mint"  style="--seg-w: 25%;"></span>
-                  <span class="allocation__seg a-gold"  style="--seg-w: 20%;"></span>
-                </div>
-                <div class="allocation__legend">
-                  <div class="allocation__row"><span class="allocation__dot a-teal"></span><span class="allocation__name">Kids&rsquo; education</span><span class="allocation__amount">&#8377;15K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-rose"></span><span class="allocation__name">Parents&rsquo; health</span><span class="allocation__amount">&#8377;12.5K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Retirement</span><span class="allocation__amount">&#8377;12.5K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;10K</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
 
       </div>
     </section>
@@ -4600,11 +4451,11 @@
     <!-- ============================================================ -->
     <!-- §7b — ENGINE FINALE (closing thought)                         -->
     <!-- ============================================================ -->
-    <section class="engine-finale" aria-label="Six 35-year-olds. Six allocations.">
+    <section class="engine-finale" aria-label="Two 35-year-olds. Two allocations.">
       <div class="engine-finale__inner">
         <div class="engine__close">
           <img class="engine__close-mascot" id="engine-closer-mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
-          <p class="engine__close-line">Same surplus. Different goals. Different priorities. Different recommendations &mdash; and they keep changing.</p>
+          <p class="engine__close-line">Same surplus. Different risk. Different next move &mdash; and it keeps changing.</p>
           <p class="engine__close-finwy">Finwy keeps your goals on track.</p>
           <a class="engine__cta" href="/demo-app">Get yours &rarr;</a>
         </div>
@@ -4612,48 +4463,6 @@
           Illustrative cases. Names changed; details composed.
           Your data drives your allocation, not these.
         </p>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- §8 — CAPABILITIES                                             -->
-    <!-- ============================================================ -->
-    <section class="caps" id="capabilities" aria-labelledby="caps-heading" data-reveal>
-      <div class="caps__inner">
-        <h2 id="caps-heading" class="caps__heading">What Finwiser does for you, right now.</h2>
-        <p class="caps__sub">Not what we&rsquo;ll build. What runs today.</p>
-        <ul class="caps__grid" role="list">
-          <li class="cap" style="--i:0">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="6" y="8" width="20" height="6" rx="2"/><rect x="6" y="16" width="20" height="6" rx="2"/><rect x="6" y="24" width="20" height="4" rx="2"/></svg>
-            <h3 class="cap__heading">See every account in one place.</h3>
-            <p class="cap__body">Banking, investments, pensions, insurance, loans &amp; cards, business, physical assets &mdash; thirty-plus account types across seven buckets. One picture.</p>
-          </li>
-          <li class="cap" style="--i:1">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 14l7-9h11a3 3 0 013 3v11l-9 7a3 3 0 01-4 0L5 18a3 3 0 010-4z"/><circle cx="20" cy="11" r="1.5"/></svg>
-            <h3 class="cap__heading">Auto-categorise every transaction.</h3>
-            <p class="cap__body">UPI, salary, rent, EMIs, OTT, that one Swiggy habit. Sorted automatically.</p>
-          </li>
-          <li class="cap" style="--i:2">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 22l8-8 5 5 11-12"/><path d="M19 7h9v9"/></svg>
-            <h3 class="cap__heading">Tell you your real monthly surplus.</h3>
-            <p class="cap__body">Not what your bank shows. What&rsquo;s actually left after the obligations you forgot. Updated daily.</p>
-          </li>
-          <li class="cap" style="--i:3">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 22a12 12 0 0124 0"/><path d="M16 22l6-6"/><circle cx="16" cy="22" r="1.5"/></svg>
-            <h3 class="cap__heading">Watch the ratios that matter.</h3>
-            <p class="cap__body">Savings rate. Debt-to-income. Retirement readiness. Emergency-fund cover. In plain language, not a finance textbook.</p>
-          </li>
-          <li class="cap" style="--i:4">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="7"/><circle cx="16" cy="16" r="2.5"/></svg>
-            <h3 class="cap__heading">Rank goals. Allocate every rupee.</h3>
-            <p class="cap__body">Emergency first, retirement next, lifestyle last. Surplus goes where it matters most &mdash; automatically.</p>
-          </li>
-          <li class="cap" style="--i:5">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M28 16a12 12 0 11-3.5-8.5"/><path d="M28 4v8h-8"/></svg>
-            <h3 class="cap__heading">Recalibrate as life changes.</h3>
-            <p class="cap__body">Bonus, layoff, market drop, new EMI &mdash; the plan updates without you opening the app.</p>
-          </li>
-        </ul>
       </div>
     </section>
 
@@ -4798,6 +4607,78 @@
     -->
 
     <!-- ============================================================ -->
+    <!-- §14 — FINAL CTA                                               -->
+    <!-- ============================================================ -->
+    <section class="final-cta" aria-labelledby="cta-heading" data-reveal>
+      <div class="final-cta__inner">
+        <img class="final-cta__mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy">
+        <h2 id="cta-heading" class="final-cta__heading">Three minutes. Your full picture. Try it.</h2>
+        <p class="final-cta__sub">Sample data, real flow. See exactly what Finwiser would tell you about your money.</p>
+        <div class="final-cta__row">
+          <a class="btn btn--primary" href="/demo-app">Try the demo &rarr;</a>
+          <a class="btn btn--ghost" href="/fw-deck-2026/">Read the deck</a>
+        </div>
+        <a class="final-cta__playstore" href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="var(--mint)"><path d="M3 2.5v19l8-9.5z" opacity="0.7"/><path d="M3 2.5l8 9.5 4.5-4-12.5-7v1.5z" opacity="0.5"/></svg>
+          <span>Get it on Google Play</span>
+        </a>
+        <p class="final-cta__creds">
+          <span aria-hidden="true">Demo sign-in: <code>9876543210</code> &middot; OTP <code>123456</code></span>
+          <span class="visually-hidden">Synthetic demo credentials. Phone nine eight seven six five four three two one zero. OTP one two three four five six.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- REFERENCE — everything below sits AFTER the closing CTA.      -->
+    <!-- The film ends at the button; detail follows for whoever wants -->
+    <!-- it. Nothing SEBI-required lives here: registration, GRO and   -->
+    <!-- the risk disclosure are in the footer, which still comes last.-->
+    <!-- ============================================================ -->
+
+    <!-- ============================================================ -->
+    <!-- §8 — CAPABILITIES                                             -->
+    <!-- ============================================================ -->
+    <section class="caps" id="capabilities" aria-labelledby="caps-heading" data-reveal>
+      <div class="caps__inner">
+        <h2 id="caps-heading" class="caps__heading">What Finwiser does for you, right now.</h2>
+        <p class="caps__sub">Not what we&rsquo;ll build. What runs today.</p>
+        <ul class="caps__grid" role="list">
+          <li class="cap" style="--i:0">
+            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="6" y="8" width="20" height="6" rx="2"/><rect x="6" y="16" width="20" height="6" rx="2"/><rect x="6" y="24" width="20" height="4" rx="2"/></svg>
+            <h3 class="cap__heading">See every account in one place.</h3>
+            <p class="cap__body">Banking, investments, pensions, insurance, loans &amp; cards, business, physical assets &mdash; thirty-plus account types across seven buckets. One picture.</p>
+          </li>
+          <li class="cap" style="--i:1">
+            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 14l7-9h11a3 3 0 013 3v11l-9 7a3 3 0 01-4 0L5 18a3 3 0 010-4z"/><circle cx="20" cy="11" r="1.5"/></svg>
+            <h3 class="cap__heading">Auto-categorise every transaction.</h3>
+            <p class="cap__body">UPI, salary, rent, EMIs, OTT, that one Swiggy habit. Sorted automatically.</p>
+          </li>
+          <li class="cap" style="--i:2">
+            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 22l8-8 5 5 11-12"/><path d="M19 7h9v9"/></svg>
+            <h3 class="cap__heading">Tell you your real monthly surplus.</h3>
+            <p class="cap__body">Not what your bank shows. What&rsquo;s actually left after the obligations you forgot. Updated daily.</p>
+          </li>
+          <li class="cap" style="--i:3">
+            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 22a12 12 0 0124 0"/><path d="M16 22l6-6"/><circle cx="16" cy="22" r="1.5"/></svg>
+            <h3 class="cap__heading">Watch the ratios that matter.</h3>
+            <p class="cap__body">Savings rate. Debt-to-income. Retirement readiness. Emergency-fund cover. In plain language, not a finance textbook.</p>
+          </li>
+          <li class="cap" style="--i:4">
+            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="7"/><circle cx="16" cy="16" r="2.5"/></svg>
+            <h3 class="cap__heading">Rank goals. Allocate every rupee.</h3>
+            <p class="cap__body">Emergency first, retirement next, lifestyle last. Surplus goes where it matters most &mdash; automatically.</p>
+          </li>
+          <li class="cap" style="--i:5">
+            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M28 16a12 12 0 11-3.5-8.5"/><path d="M28 4v8h-8"/></svg>
+            <h3 class="cap__heading">Recalibrate as life changes.</h3>
+            <p class="cap__body">Bonus, layoff, market drop, new EMI &mdash; the plan updates without you opening the app.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
     <!-- §12 — SECURITY & DATA                                         -->
     <!-- ============================================================ -->
     <section class="secure" aria-labelledby="secure-heading" data-reveal>
@@ -4872,29 +4753,6 @@
         <details class="faq__item"><summary>What&rsquo;s the SEBI registration number?</summary><div class="faq__answer">INA000021331. Registered as Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser). Verify on SEBI&rsquo;s intermediary search at <a href="https://www.sebi.gov.in/intermediaries.html" target="_blank" rel="noopener noreferrer">sebi.gov.in</a>.</div></details>
         <details class="faq__item"><summary>If I have a complaint, who do I escalate to?</summary><div class="faq__answer">Email <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a> or call <strong>+91 88012 94657</strong> &mdash; we acknowledge in 1 working day, target resolution in 7 working days, outer limit 21. If unresolved, escalate via SEBI SCORES (<a href="https://scores.sebi.gov.in" target="_blank" rel="noopener noreferrer">scores.sebi.gov.in</a>) or SmartODR (<a href="https://smartodr.in" target="_blank" rel="noopener noreferrer">smartodr.in</a>). The Grievance Redressal Officer named in the footer is the same person you&rsquo;re emailing &mdash; Chandrachuda Sarma Yemmanuru.</div></details>
         <details class="faq__item"><summary>Where&rsquo;s Finwiser based?</summary><div class="faq__answer">Bengaluru. Registered office address is in the footer &mdash; this is a single-proprietor SEBI RIA, run by a real human who picks up the phone.</div></details>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- §14 — FINAL CTA                                               -->
-    <!-- ============================================================ -->
-    <section class="final-cta" aria-labelledby="cta-heading" data-reveal>
-      <div class="final-cta__inner">
-        <img class="final-cta__mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy">
-        <h2 id="cta-heading" class="final-cta__heading">Three minutes. Your full picture. Try it.</h2>
-        <p class="final-cta__sub">Sample data, real flow. See exactly what Finwiser would tell you about your money.</p>
-        <div class="final-cta__row">
-          <a class="btn btn--primary" href="/demo-app">Try the demo &rarr;</a>
-          <a class="btn btn--ghost" href="/fw-deck-2026/">Read the deck</a>
-        </div>
-        <a class="final-cta__playstore" href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">
-          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="var(--mint)"><path d="M3 2.5v19l8-9.5z" opacity="0.7"/><path d="M3 2.5l8 9.5 4.5-4-12.5-7v1.5z" opacity="0.5"/></svg>
-          <span>Get it on Google Play</span>
-        </a>
-        <p class="final-cta__creds">
-          <span aria-hidden="true">Demo sign-in: <code>9876543210</code> &middot; OTP <code>123456</code></span>
-          <span class="visually-hidden">Synthetic demo credentials. Phone nine eight seven six five four three two one zero. OTP one two three four five six.</span>
-        </p>
       </div>
     </section>
 
@@ -6339,7 +6197,7 @@
           var taglineEl = document.getElementById('engine-case-tagline');
           var subEl     = document.getElementById('engine-case-sub');
           var ENGINE_NAMES = {
-            'engine-portfolios': 1, 'engine-goals': 1, 'engine-expenses': 1
+            'engine-portfolios': 1
           };
           engineCards.forEach(function (card) {
             SnapAnim.register('engine-' + card.dataset.pair, {
