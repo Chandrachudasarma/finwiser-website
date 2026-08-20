@@ -3814,7 +3814,7 @@
           <div class="steps__num-col"><div class="steps__num">01</div></div>
           <div class="steps__card">
             <h3>Connect every account in a few taps.</h3>
-            <p>You approve each connection on your bank&rsquo;s own RBI-regulated rail. Finwy never sees your password &mdash; ever. You can disconnect any time, with one tap.</p>
+            <p>You approve each connection on your bank&rsquo;s own RBI-regulated rail. Finwy never sees your password. Disconnect any time, one tap.</p>
             <ul class="steps__tags" role="list">
               <li>Account Aggregator</li><li>Email statements</li><li>Credit bureau</li>
             </ul>
@@ -4009,7 +4009,7 @@
           <div class="steps__num-col"><div class="steps__num">02</div></div>
           <div class="steps__card">
             <h3>See what&rsquo;s actually left.</h3>
-            <p>Finwy reads every transaction &mdash; sorts each rupee into income, fixed expense, variable expense. Then it tells you the one number you&rsquo;re tired of guessing: your real monthly surplus.</p>
+            <p>Every transaction, sorted automatically. Then the one number you&rsquo;re tired of guessing.</p>
             <p class="steps__callout">Most months, it&rsquo;s bigger than you think.</p>
             <ul class="steps__tags" role="list">
               <li>Account Aggregator</li>
@@ -4198,7 +4198,7 @@
           <div class="steps__num-col"><div class="steps__num">03</div></div>
           <div class="steps__card">
             <h3>Tell Finwy your goals. Let math decide.</h3>
-            <p>You list what matters &mdash; emergency, retirement, the flat in 2031, the bike this year. Finwy ranks them by your priority, allocates every rupee of surplus, and tells you up front which goals fit and which don&rsquo;t. No random tips. No influencer noise. No commission-driven &ldquo;advice.&rdquo; Just math, made visible.</p>
+            <p>You list what matters &mdash; emergency, retirement, the flat in 2031. Finwy ranks them, allocates every rupee, and says up front which ones fit.</p>
             <ul class="steps__tags" role="list">
               <li>Next Best Rupee&trade;</li><li>Reads your portfolio</li><li>Tells you which goals fit</li>
             </ul>
@@ -4850,20 +4850,60 @@
             .map(function (el) { return { el: el, name: el.getAttribute('data-snap-anim') }; });
         }
 
+        // Snap is desktop-only (min-width: 769px + no-preference), so on phones
+        // nothing ever parks a section at the snap point. Alignment-matching
+        // then almost never fires: measured on a 390px viewport, step-2 ran at
+        // only 3 of 9 realistic landing positions — outside a 48px window the
+        // reader just saw a still frame. Where there is no snap to align to, we
+        // pick whatever the reader is actually looking at instead.
+        function snapIsActive() {
+          var t = getComputedStyle(document.documentElement).scrollSnapType;
+          return !!t && t !== 'none';
+        }
+
+        // Without snap the reader is moving, so "nearest the middle" changes
+        // every few frames. Re-picking on each change tore the running scene
+        // down (stop + reset) and restarted it, so a multi-second animation
+        // never finished — the section arrived but nothing played. Once a scene
+        // starts, it keeps the stage until it has genuinely left the screen.
+        function stillHoldingStage(entry) {
+          if (!entry) return false;
+          var r = entry.el.getBoundingClientRect();
+          var vh = window.innerHeight;
+          var visible = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+          return visible > 0 && visible >= Math.min(r.height, vh) * 0.25;
+        }
+
         function findActive() {
+          var snapped = snapIsActive();
+          var vh = window.innerHeight;
+          var mid = vh / 2;
           var best = null, bestDist = Infinity;
+          if (!snapped && !reduce && stillHoldingStage(current)) return current;
           for (var i = 0; i < entries.length; i++) {
             var e = entries[i];
             var r = e.el.getBoundingClientRect();
-            if (r.bottom < 0 || r.top > window.innerHeight) continue;
-            // Account for per-element scroll-margin-top so cards with sticky
-            // headers above them are still recognised when snapped.
-            var sm = parseFloat(getComputedStyle(e.el).scrollMarginTop) || 0;
-            var expectedTop = navOffset + sm;
-            var dist = Math.abs(r.top - expectedTop);
+            if (r.bottom < 0 || r.top > vh) continue;
+            var dist;
+            if (snapped || reduce) {
+              // Account for per-element scroll-margin-top so cards with sticky
+              // headers above them are still recognised when snapped.
+              var sm = parseFloat(getComputedStyle(e.el).scrollMarginTop) || 0;
+              var expectedTop = navOffset + sm;
+              dist = Math.abs(r.top - expectedTop);
+            } else {
+              // Distance from the middle of the screen to the element's box —
+              // zero for anything straddling it, which is what makes this work
+              // for sections several screens tall.
+              dist = r.top > mid ? r.top - mid : (r.bottom < mid ? mid - r.bottom : 0);
+            }
             if (dist < bestDist) { bestDist = dist; best = e; }
           }
-          return (best && bestDist < ALIGN_TOLERANCE) ? best : null;
+          if (!best) return null;
+          // With snap (or reduced motion) keep the strict alignment gate; without
+          // it, whatever is nearest the middle of the screen is the active scene.
+          if (snapped || reduce) return bestDist < ALIGN_TOLERANCE ? best : null;
+          return best;
         }
 
         function activate(entry) {
@@ -4883,7 +4923,11 @@
             } catch (err) { return; }
             Promise.resolve(p).then(function () {
               if (!h._running) return;
-              if (h.loop && !reduce) {
+              // Looping suits a snapped desktop view, where the reader is parked
+              // and the scene is the only thing on screen. Without snap the
+              // reader is moving through, so replaying restarts a scene mid-read.
+              // Play it once and let them scroll on.
+              if (h.loop && !reduce && snapIsActive()) {
                 h._loopTimer = setTimeout(function () { tick(true); }, LOOP_HOLD_MS);
               }
             });
