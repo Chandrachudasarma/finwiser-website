@@ -5227,6 +5227,23 @@
       var HERO_SLEEP_HOLD  = 1400;  // ms — hold frame 1 (sleeping) before flipbook starts
       var heroTimers       = [];
 
+      /* Both iPhone flight-recorder logs show the page's only >50ms frames
+         while parked idle on the hero (5 janks, 59-96ms, at 6-11s). Prime
+         suspect: only the active flipbook frame is visible, so iOS decodes
+         each PNG the first time its class flips mid-animation. Decode every
+         frame during the sleep hold instead, so swaps are paint-only. */
+      if (heroFrames.length && window.Image && 'decode' in Image.prototype) {
+        (function () {
+          var heroDecodeAll = function () {
+            for (var i = 0; i < heroFrames.length; i++) {
+              try { heroFrames[i].decode().catch(function () {}); } catch (e) {}
+            }
+          };
+          if ('requestIdleCallback' in window) requestIdleCallback(heroDecodeAll, { timeout: 900 });
+          else setTimeout(heroDecodeAll, 300);
+        })();
+      }
+
       function heroClearTimers() {
         heroTimers.forEach(clearTimeout);
         heroTimers = [];
