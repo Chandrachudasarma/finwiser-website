@@ -6671,18 +6671,49 @@
       }
       function note(type, extra) {
         var e = { t: Math.round(performance.now()), type: type, gesture: gesture,
+                  finger: fingerDir,
                   y: Math.round(scrollY), scene: sceneNow, visible: visibleNow() };
         if (extra) for (var k in extra) e[k] = extra[k];
         log.push(e); if (log.length > LOG_MAX) log.shift();
       }
 
-      ['touchstart','touchend','touchcancel'].forEach(function (ev) {
+      /* Finger direction. Finger moving UP the glass advances the page
+         (scrollY grows); finger moving DOWN backs up. Logged per swipe with
+         distance and duration, so a janky frame can be tied not just to
+         "drag" but to WHICH WAY the reader was moving — advancing into new
+         content activates scenes, backing up revisits settled ones, and the
+         two run different code. */
+      var fingerDir = '·', touchY0 = null, touchYLast = null, touchT0 = 0, touchScroll0 = 0;
+
+      addEventListener('touchstart', function (e) {
+        gesture = 'touch'; fingerDir = '·';
+        if (e.touches && e.touches[0]) { touchY0 = touchYLast = e.touches[0].clientY; }
+        touchT0 = performance.now(); touchScroll0 = scrollY;
+        note('touchstart');
+      }, { passive: true });
+
+      addEventListener('touchmove', function (e) {
+        gesture = 'drag';
+        if (e.touches && e.touches[0] && touchYLast !== null) {
+          var yNow = e.touches[0].clientY;
+          if (yNow < touchYLast - 2)      fingerDir = 'up';
+          else if (yNow > touchYLast + 2) fingerDir = 'down';
+          touchYLast = yNow;
+        }
+      }, { passive: true });
+
+      ['touchend','touchcancel'].forEach(function (ev) {
         addEventListener(ev, function () {
-          gesture = ev === 'touchstart' ? 'touch' : 'settle';
-          note(ev);
+          gesture = 'settle';
+          note(ev, {
+            finger:   fingerDir,
+            dragPx:   (touchY0 !== null && touchYLast !== null) ? Math.round(touchY0 - touchYLast) : 0,
+            scrollPx: Math.round(scrollY - touchScroll0),
+            durMs:    Math.round(performance.now() - touchT0)
+          });
+          touchY0 = touchYLast = null;
         }, { passive: true });
       });
-      addEventListener('touchmove', function () { gesture = 'drag'; }, { passive: true });
       if ('onscrollend' in window) {
         addEventListener('scrollend', function () { gesture = 'idle'; note('scrollend'); }, { passive: true });
       }
@@ -6700,7 +6731,7 @@
           hud.textContent =
             'frame worst ' + Math.round(worstRecent) + 'ms  (all-time ' + Math.round(worst) + ')\n' +
             'jank >32ms ' + jank32 + '   >50ms ' + jank50 + '   frames ' + frames + '\n' +
-            'gesture ' + gesture + '   y ' + Math.round(scrollY) + '\n' +
+            'gesture ' + gesture + (gesture === 'drag' || gesture === 'settle' ? ' finger-' + fingerDir : '') + '   y ' + Math.round(scrollY) + '\n' +
             'scene ' + sceneNow + '\n' +
             visibleNow().join('  ') + '\n' +
             'tap HUD to copy log (' + log.length + ')';
