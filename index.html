@@ -6589,5 +6589,101 @@
     }
   })();
   </script>
+    <!-- ============================================================ -->
+    <!-- FW-HUD — frame flight recorder. Loads ONLY with ?fw-hud=1 in  -->
+    <!-- the URL; ordinary visitors never execute past the first line. -->
+    <!-- Answers: on each user action, which frames rendered, how long -->
+    <!-- each took, and what was visible while it happened.            -->
+    <!-- Tap the HUD once to copy the full JSON log to the clipboard.  -->
+    <!-- ============================================================ -->
+    <script>
+    (function () {
+      if (!/[?&]fw-hud=1/.test(location.search)) return;
+
+      var hud = document.createElement('div');
+      hud.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99999;' +
+        'background:rgba(0,10,20,0.88);color:#5ee0c8;border:1px solid #2a4;border-radius:8px;' +
+        'font:11px/1.5 ui-monospace,Menlo,monospace;padding:8px 10px;pointer-events:auto;' +
+        'max-width:82vw;white-space:pre;font-variant-numeric:tabular-nums';
+      hud.textContent = 'fw-hud armed';
+      document.body.appendChild(hud);
+
+      var scenes = Array.prototype.slice.call(document.querySelectorAll('[data-snap-anim]'));
+      var sections = Array.prototype.slice.call(document.querySelectorAll('main > section, body > section'));
+      var log = [];            // ring buffer of moments worth keeping
+      var LOG_MAX = 300;
+      var gesture = 'idle';    // idle | touch | drag | settle
+      var frames = 0, jank32 = 0, jank50 = 0, worst = 0, worstRecent = 0;
+      var last = performance.now();
+      var sceneNow = '-';
+
+      function visibleNow() {
+        var vh = innerHeight, out = [];
+        for (var i = 0; i < sections.length; i++) {
+          var r = sections[i].getBoundingClientRect();
+          var vis = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+          if (vis > vh * 0.12) out.push(((sections[i].className||'').split(' ')[0]||sections[i].id) + ':' + Math.round(vis/vh*100) + '%');
+        }
+        return out;
+      }
+      function activeScene() {
+        var vh = innerHeight, mid = vh/2, best = '-', bd = 1e9;
+        for (var i = 0; i < scenes.length; i++) {
+          var r = scenes[i].getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) continue;
+          var d = r.top > mid ? r.top - mid : (r.bottom < mid ? mid - r.bottom : 0);
+          if (d < bd) { bd = d; best = scenes[i].dataset.snapAnim; }
+        }
+        return best;
+      }
+      function note(type, extra) {
+        var e = { t: Math.round(performance.now()), type: type, gesture: gesture,
+                  y: Math.round(scrollY), scene: sceneNow, visible: visibleNow() };
+        if (extra) for (var k in extra) e[k] = extra[k];
+        log.push(e); if (log.length > LOG_MAX) log.shift();
+      }
+
+      ['touchstart','touchend','touchcancel'].forEach(function (ev) {
+        addEventListener(ev, function () {
+          gesture = ev === 'touchstart' ? 'touch' : 'settle';
+          note(ev);
+        }, { passive: true });
+      });
+      addEventListener('touchmove', function () { gesture = 'drag'; }, { passive: true });
+      if ('onscrollend' in window) {
+        addEventListener('scrollend', function () { gesture = 'idle'; note('scrollend'); }, { passive: true });
+      }
+
+      var tick = 0;
+      (function frame(now) {
+        var dt = now - last; last = now;
+        frames++;
+        if (dt > 32) { jank32++; if (dt > 50) { jank50++; note('JANK', { frameMs: Math.round(dt) }); } }
+        if (dt > worst) worst = dt;
+        if (dt > worstRecent) worstRecent = dt;
+        if ((tick++ & 15) === 0) {           /* HUD text + scene at ~4Hz, not per frame */
+          var s = activeScene();
+          if (s !== sceneNow) { sceneNow = s; note('scene', {}); }
+          hud.textContent =
+            'frame worst ' + Math.round(worstRecent) + 'ms  (all-time ' + Math.round(worst) + ')\n' +
+            'jank >32ms ' + jank32 + '   >50ms ' + jank50 + '   frames ' + frames + '\n' +
+            'gesture ' + gesture + '   y ' + Math.round(scrollY) + '\n' +
+            'scene ' + sceneNow + '\n' +
+            visibleNow().join('  ') + '\n' +
+            'tap HUD to copy log (' + log.length + ')';
+          worstRecent = 0;
+        }
+        requestAnimationFrame(frame);
+      })(last);
+
+      hud.addEventListener('click', function () {
+        var payload = JSON.stringify({ ua: navigator.userAgent, vw: innerWidth, vh: innerHeight,
+          frames: frames, jank32: jank32, jank50: jank50, worstMs: Math.round(worst), log: log });
+        (navigator.clipboard ? navigator.clipboard.writeText(payload) : Promise.reject())
+          .then(function(){ hud.style.borderColor = '#5ee0c8'; hud.textContent = 'log copied — paste it to Claude'; })
+          .catch(function(){ console.log('FW-HUD LOG', payload); hud.textContent = 'clipboard blocked — log printed to console'; });
+      });
+    })();
+    </script>
 </body>
 </html>
