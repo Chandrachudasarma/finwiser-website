@@ -5899,7 +5899,8 @@
           function spTrack(p, a, b) { return spClamp01((p - a) / (b - a)); }
 
           /* change detection — the handler must not touch layout every frame */
-          var spLastRouted = -1, spLastPhase = '';
+          var spLastRouted = -1, spLastPhase = '', spLastCount = -1, spLastTotal = null;
+          var spLastBd = { i: -1, f: -1, v: -1 };
 
           function surplusRenderAt(p) {
             var n = SP_CHIPS.length;
@@ -5938,20 +5939,27 @@
               spLastRouted = routed;
             }
 
-            /* cheap text-only updates every frame */
+            /* Writes are gated on the rendered VALUE changing, not on the frame.
+               textContent and flexBasis assignments invalidate layout even when
+               the value is identical, and doing that every frame while a thumb
+               is moving makes the scene visibly shake on a phone. */
             var rollP = spTrack(p, SP_CHIPS_END, SP_ROLL_END);
+            var nCount = rollP > 0 ? Math.round(routed + (COUNTER_FINAL - routed) * rollP) : routed;
+            if (nCount !== spLastCount) { surplusSetCounter(nCount); spLastCount = nCount; }
+
             if (rollP > 0) {
-              surplusSetCounter(routed + (COUNTER_FINAL - routed) * rollP);
-              surplusSetBreakdown(
-                BREAKDOWN_FINAL.income   * rollP,
-                BREAKDOWN_FINAL.fixed    * rollP,
-                BREAKDOWN_FINAL.variable * rollP
-              );
-            } else {
-              surplusSetCounter(routed);
+              var bi = Math.round(BREAKDOWN_FINAL.income   * rollP);
+              var bf = Math.round(BREAKDOWN_FINAL.fixed    * rollP);
+              var bv = Math.round(BREAKDOWN_FINAL.variable * rollP);
+              if (bi !== spLastBd.i || bf !== spLastBd.f || bv !== spLastBd.v) {
+                surplusSetBreakdown(bi, bf, bv);
+                spLastBd.i = bi; spLastBd.f = bf; spLastBd.v = bv;
+              }
             }
+
             var revealP = spTrack(p, SP_ROLL_END, SP_REVEAL_END);
-            surplusTotalEl.textContent = revealP > 0 ? surplusFormatINR(SURPLUS_FINAL * revealP) : '';
+            var totalTxt = revealP > 0 ? surplusFormatINR(SURPLUS_FINAL * revealP) : '';
+            if (totalTxt !== spLastTotal) { surplusTotalEl.textContent = totalTxt; spLastTotal = totalTxt; }
 
             if (phase !== spLastPhase) {
               surplusRow.classList.toggle('is-active', phase !== 'idle');
