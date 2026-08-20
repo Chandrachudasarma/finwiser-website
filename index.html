@@ -4942,6 +4942,12 @@
           lastActivatedName = entry.name;
           var h = handlers[entry.name];
           if (!h) return;
+          /* Without snap, a scene plays exactly once per page load. Replaying
+             on every re-entry meant reset-to-blank + a fresh multi-second
+             timer chain each time the reader scrolled back — measured 90
+             pending timers over one pass, mutating sections behind the
+             scroll. Once done, the finished state simply stays. */
+          if (!snapIsActive() && !reduce && h._done) return;
           h._running = true;
           var tick = function (isLoopTick) {
             if (!h._running) return;
@@ -4971,6 +4977,21 @@
           if (!h) return;
           h._running = false;
           clearTimeout(h._loopTimer);
+          /* Without snap the reader leaves mid-chain constantly. Resetting on
+             the way out is what produced the blank panels on phones: content
+             would vanish the moment the section stopped being "current", and
+             a return visit found an empty stage waiting on a 6s chain.
+             Mobile rule: leaving a scene COMPLETES it. finish() jumps to the
+             final state; a scene with no finish keeps its timers running to
+             the same end. Nothing ever resets to blank. */
+          if (!snapIsActive() && !reduce) {
+            if (!h._done && h.finish) {
+              if (h.stop) { try { h.stop(); } catch (e) {} }
+              try { h.finish(); } catch (e) {}
+            }
+            h._done = true;
+            return;
+          }
           if (h.stop)  { try { h.stop();  } catch (e) {} }
           if (h.reset) { try { h.reset(); } catch (e) {} }
         }
@@ -5645,10 +5666,11 @@
           connectSettleAll();
         } else {
           SnapAnim.register('step-1-connect', {
-            play:  connectRunFeed,
-            reset: connectReset,
-            stop:  connectClearTimers,
-            loop:  true
+            play:   connectRunFeed,
+            reset:  connectReset,
+            stop:   connectClearTimers,
+            finish: connectSettleAll,
+            loop:   true
           });
         }
       }
@@ -6178,10 +6200,11 @@
           allocSettleFinal();
         } else {
           SnapAnim.register('step-3-allocation', {
-            play:  allocRun,
-            reset: allocReset,
-            stop:  allocClearAll,
-            loop:  true
+            play:   allocRun,
+            reset:  allocReset,
+            stop:   allocClearAll,
+            finish: allocSettleFinal,
+            loop:   true
           });
         }
       }
@@ -6398,9 +6421,14 @@
                 flapMorph(subEl,     card.dataset.sub     || '');
                 return engineRunCard(card);
               },
-              reset: function () { engineResetCard(card); },
-              stop:  clearEngineTimers,
-              loop:  true
+              reset:  function () { engineResetCard(card); },
+              stop:   clearEngineTimers,
+              finish: function () {
+                settleFinalState(card);
+                flapMorph(taglineEl, card.dataset.tagline || '');
+                flapMorph(subEl,     card.dataset.sub     || '');
+              },
+              loop:   true
             });
           });
         }
