@@ -1134,7 +1134,8 @@
         max-height: calc(100svh - var(--nav-h) - 14px);
         overflow: hidden;
       }
-      .seen { min-height: 190vh; min-height: 190svh; }
+      /* chapters, not scrub: one flick per stop — no scrub distance needed */
+      .seen { min-height: 135vh; min-height: 135svh; }
       .seen__inner {
         position: sticky;
         top: calc(var(--nav-h) + 16px);
@@ -5673,51 +5674,49 @@
              renderer draws every in-between frame, so scan glides into a
              gap, half threads finish or retract, airborne comets land.
              The page never moves; only the picture composes itself. */
-          var seenPoses = null;
-          function seenPoseList() {
-            var poses = [SEEN_SCAN_IN];
-            for (var g = 0; g < seenFracs.length - 1; g++) {
-              var mid = (seenFracs[g] + seenFracs[g + 1]) / 2;
-              poses.push(SEEN_SCAN_IN + mid * (SEEN_SCAN_OUT - SEEN_SCAN_IN));
-            }
-            poses.push(SEEN_TIN_AT, SEEN_TIN_END, SEEN_CIN_END, SEEN_TOUT_END, SEEN_STATS_IN);
-            for (var st = 1; st <= seenCounters.length; st++) {
-              poses.push(Math.min(1, SEEN_STATS_IN + (st - 1) * SEEN_STAT_STAGGER + SEEN_STAT_WIN));
-            }
-            poses.push(1);
-            return poses;
+          /* THREE-CHAPTER PLAYER (founder's model). Scroll no longer scrubs:
+             it TURNS THE PAGE, and each chapter plays itself on the time
+             clock, then halts at its stop. A tiny flick buys a whole chapter;
+             a big flick plays chapters through in fast sequence (~2x); scroll
+             back and chapters REVERSE-play. The scene can only ever rest at:
+               STOP 1  scan swept, all seven rows lit
+               STOP 2  threads merged into mascot, out-threads up,
+                       composite present with default (zero) values
+               STOP 3  numbers populated
+             q is the played position in choreography space; scroll p only
+             selects the target stop. */
+          var SEEN_CH_POSES = [0.44, 0.658, 0.855, 1.0];
+          var SEEN_CH_T     = [0.52, 0.72, 0.88];       /* scroll thresholds */
+          var seenQ = null, seenQTarget = 0, seenQRaf = null, seenQLast = 0, seenRender = null;
+
+          function seenChapterFor(p) {
+            var t = 0;
+            for (var i = 0; i < SEEN_CH_T.length; i++) if (p >= SEEN_CH_T[i]) t = i + 1;
+            return t;
           }
-          var seenIdleT = null, seenTween = null, seenRender = null;
-          function seenNearestPose(p) {
-            if (!seenPoses) seenPoses = seenPoseList();
-            if (p <= seenPoses[0] || p >= 1) return null;      /* already composed */
-            var lo = seenPoses[0], hi = 1;
-            for (var i = 0; i < seenPoses.length; i++) {
-              if (seenPoses[i] <= p) lo = seenPoses[i];
-              else { hi = seenPoses[i]; break; }
-            }
-            if (p - lo < 0.004 || hi - p < 0.004) return null; /* on a stop already */
-            return (p - lo) / (hi - lo) >= 0.4 ? hi : lo;
-          }
-          function seenSettle(fromP) {
-            var target = seenNearestPose(fromP);
-            if (target === null) return;
-            var t0 = performance.now(), from = fromP, DUR = 250;
-            cancelAnimationFrame(seenTween);
-            (function step(now) {
-              var k = Math.min(1, (now - t0) / DUR);
-              var e = 1 - Math.pow(1 - k, 3);
-              seenRender(from + (target - from) * e);
-              if (k < 1) seenTween = requestAnimationFrame(step);
-            })(t0);
+          function seenQRun(ts) {
+            var dt = Math.min(0.05, (ts - seenQLast) / 1000); seenQLast = ts;
+            var goal = SEEN_CH_POSES[seenQTarget];
+            var dist = Math.abs(goal - seenQ);
+            var multi = dist > 0.24 ? 1.9 : 1;             /* big flick: play through fast */
+            var speed = 0.16 * multi;
+            var step = Math.min(dist, speed * dt * (0.3 + 0.7 * Math.min(1, dist / 0.1)));
+            seenQ += (goal > seenQ ? 1 : -1) * step;
+            seenRender(seenQ);
+            if (Math.abs(goal - seenQ) > 0.0006) { seenQRaf = requestAnimationFrame(seenQRun); }
+            else { seenQ = goal; seenRender(seenQ); seenQRaf = null; }
           }
 
           fwScrub(seenSection, function (p) {
-            /* live scroll interrupts any settle tween and re-grabs */
-            cancelAnimationFrame(seenTween);
-            clearTimeout(seenIdleT);
-            seenIdleT = setTimeout(function () { seenSettle(p); }, 160);
-            if (seenRender) seenRender(p);   /* assigned just below; fwScrub's setup drive fires first */
+            if (!seenRender) return;                      /* setup drive fires early */
+            var t = seenChapterFor(p);
+            if (seenQ === null) {                         /* deep link: snap, don't play */
+              seenQ = SEEN_CH_POSES[t]; seenQTarget = t; seenRender(seenQ); return;
+            }
+            if (t !== seenQTarget) {
+              seenQTarget = t;
+              if (!seenQRaf) { seenQLast = performance.now(); seenQRaf = requestAnimationFrame(seenQRun); }
+            }
           });
 
           seenRender = function (p) {
