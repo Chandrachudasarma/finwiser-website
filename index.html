@@ -3430,16 +3430,41 @@
       }
       .steps__concept--allocate .topbanner__cell--balance { text-align: left; align-items: baseline; }
       .steps__concept--allocate .topbanner__value { font-size: var(--fs-h3); }
+      /* LEDGER LINES (founder's pick over cards). The old grid rendered
+         REQUIRED and ALLOCATED side by side — the same number twice, since
+         both are set from the same variable — leaving ~100px for the goal
+         name, which wrapped to four lines. One amount column; fund name on
+         its own line; hairline rows instead of boxes; labelled cutoff. */
       .steps__concept--allocate .cascade__colheads {
-        grid-template-columns: 42px 1fr 88px 110px;
-        column-gap: 8px; padding: 0 12px 6px;
+        grid-template-columns: 34px 1fr auto;
+        column-gap: 10px; padding: 0 4px 8px;
       }
-      .steps__concept--allocate .cascade__colheads span:nth-child(3) { display: none; }
+      .steps__concept--allocate .cascade__colheads span:nth-child(3),
+      .steps__concept--allocate .cascade__colheads span:nth-child(4) { display: none; }
       .steps__concept--allocate .cascade__row {
-        grid-template-columns: 42px 1fr 88px 110px;
-        column-gap: 8px; padding: 11px 12px;
+        grid-template-columns: 34px 1fr auto;
+        column-gap: 10px; padding: 12px 4px;
+        background: none; border: none; border-radius: 0;
+        border-bottom: 1px solid var(--white-08);
       }
+      .steps__concept--allocate .cascade__row:last-child { border-bottom: none; }
+      .steps__concept--allocate.is-starred .cascade__row--star {
+        background: none; border: none;
+        border-bottom: 1px solid var(--mint-32);
+      }
+      .steps__concept--allocate .cascade__required { display: none; }
       .steps__concept--allocate .cascade__fund { display: none; }
+      .steps__concept--allocate .cascade__cutoff {
+        position: relative; overflow: visible; margin: 14px 8px 10px;
+      }
+      .steps__concept--allocate .cascade__cutoff::after {
+        content: 'SURPLUS RUNS OUT HERE';
+        position: absolute; left: 50%; top: -7px; transform: translate(-50%, -100%);
+        font: 600 9px/1 'Inter', sans-serif; letter-spacing: 0.12em;
+        color: var(--gold-50); white-space: nowrap;
+        opacity: 0; transition: opacity 320ms ease;
+      }
+      .steps__concept--allocate .cascade__cutoff.is-drawn::after { opacity: 1; }
       .steps__concept--allocate .name__fund-mobile {
         display: block;
         font: 500 11px/1.3 'Inter', sans-serif;
