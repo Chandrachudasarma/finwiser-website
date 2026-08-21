@@ -1120,9 +1120,11 @@
        cannot fit the pinned frame and would be clipped — those screens keep
        the pass-through behaviour instead of losing the scene's payoff. */
     @media (min-width: 901px) and (min-height: 860px) and (prefers-reduced-motion: no-preference) {
-      #connect-step-row, #s2-row, #s3-row {
+      #connect-step-row, #s2-row {
         min-height: 190vh; min-height: 190svh;
       }
+      /* chaptered scene: one flick per stop */
+      #s3-row { min-height: 135vh; min-height: 135svh; }
       #connect-step-row .steps__card,
       #s2-row .steps__card,
       #s3-row .steps__card {
@@ -5175,6 +5177,38 @@
       // ============================================================
       function fwClamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
       function fwTrack(p, a, b) { return fwClamp01((p - a) / (b - a)); }
+      /* fwChapters — the founder's three-stop model, shared by scenes.
+         Scroll picks the target stop (via getP + thresholds); the chapter
+         plays itself on the time clock toward that stop's pose and halts.
+         Big jumps play through fast (~1.9x); backwards reverse-plays. */
+      function fwChapters(cfg) {
+        var q = null, target = 0, raf = null, last = 0;
+        function chapterFor(p) {
+          var t = 0;
+          for (var i = 0; i < cfg.thresholds.length; i++) if (p >= cfg.thresholds[i]) t = i + 1;
+          return t;
+        }
+        function run(ts) {
+          var dt = Math.min(0.05, (ts - last) / 1000); last = ts;
+          var goal = cfg.poses[target];
+          var dist = Math.abs(goal - q);
+          var speed = (cfg.speed || 0.16) * (dist > (cfg.fastDist || 0.24) ? 1.9 : 1);
+          var step = Math.min(dist, speed * dt * (0.3 + 0.7 * Math.min(1, dist / 0.1)));
+          q += (goal > q ? 1 : -1) * step;
+          cfg.render(q);
+          if (Math.abs(goal - q) > 0.0006) { raf = requestAnimationFrame(run); }
+          else { q = goal; cfg.render(q); raf = null; }
+        }
+        fwScrub(cfg.el, function (p) {
+          var t = chapterFor(cfg.getP ? cfg.getP(p) : p);
+          if (q === null) { q = cfg.poses[t]; target = t; cfg.render(q); return; }
+          if (t !== target) {
+            target = t;
+            if (!raf) { last = performance.now(); raf = requestAnimationFrame(run); }
+          }
+        });
+      }
+
       function fwScrub(el, renderAt) {
         var ticking = false;
         function drive() {
@@ -5710,39 +5744,11 @@
                STOP 3  numbers populated
              q is the played position in choreography space; scroll p only
              selects the target stop. */
-          var SEEN_CH_POSES = [0.44, 0.658, 0.855, 1.0];
-          var SEEN_CH_T     = [0.52, 0.72, 0.88];       /* scroll thresholds */
-          var seenQ = null, seenQTarget = 0, seenQRaf = null, seenQLast = 0, seenRender = null;
-
-          function seenChapterFor(p) {
-            var t = 0;
-            for (var i = 0; i < SEEN_CH_T.length; i++) if (p >= SEEN_CH_T[i]) t = i + 1;
-            return t;
-          }
-          function seenQRun(ts) {
-            var dt = Math.min(0.05, (ts - seenQLast) / 1000); seenQLast = ts;
-            var goal = SEEN_CH_POSES[seenQTarget];
-            var dist = Math.abs(goal - seenQ);
-            var multi = dist > 0.24 ? 1.9 : 1;             /* big flick: play through fast */
-            var speed = 0.16 * multi;
-            var step = Math.min(dist, speed * dt * (0.3 + 0.7 * Math.min(1, dist / 0.1)));
-            seenQ += (goal > seenQ ? 1 : -1) * step;
-            seenRender(seenQ);
-            if (Math.abs(goal - seenQ) > 0.0006) { seenQRaf = requestAnimationFrame(seenQRun); }
-            else { seenQ = goal; seenRender(seenQ); seenQRaf = null; }
-          }
-
-          fwScrub(seenSection, function (p) {
-            if (!seenRender) return;                      /* setup drive fires early */
-            var t = seenChapterFor(p);
-            if (seenQ === null) {                         /* deep link: snap, don't play */
-              seenQ = SEEN_CH_POSES[t]; seenQTarget = t; seenRender(seenQ); return;
-            }
-            if (t !== seenQTarget) {
-              seenQTarget = t;
-              if (!seenQRaf) { seenQLast = performance.now(); seenQRaf = requestAnimationFrame(seenQRun); }
-            }
-          });
+          var seenRender = null;
+          fwChapters({ el: seenSection,
+            poses: [0.44, 0.658, 0.855, 1.0],
+            thresholds: [0.52, 0.72, 0.88],
+            render: function (qq) { if (seenRender) seenRender(qq); } });
 
           seenRender = function (p) {
             var isIn = p > 0.02;
@@ -6665,7 +6671,30 @@
             });
           var alLastCount = -1, alLastPhase = '';
 
-          fwScrub(allocStep, function (p) {
+          /* THE WATERFALL, chaptered (founder: "the whole logic of priority
+             goals getting allocation is gone" — the drain played off-screen).
+             STOP 1: banner up, BALANCE ₹41,300, table empty.
+             STOP 2: goals land one by one, each visibly deducting
+                     41,300 -> 26,300 -> 24,300 -> 8,300 -> 0, cutoff, P3s fall.
+             STOP 3: star + verdict.
+             Triggers: row progress under the desktop pin; the concept block's
+             own pass on mobile — so the drain can only play ON SCREEN. */
+          var allocPinMQ = matchMedia('(min-width: 901px) and (min-height: 860px)');
+          var allocConcept = document.querySelector('.steps__concept--allocate') || allocBlock;
+          fwChapters({ el: allocStep,
+            poses: [0.02, 0.29, 0.76, 1.0],
+            thresholds: [0.12, 0.45, 0.8],
+            speed: 0.13, fastDist: 0.5,
+            getP: function (p) {
+              if (allocPinMQ.matches) return fwTrack(p, 0.50, 0.95);
+              var vhS = window.__fwStableVH ? window.__fwStableVH() : window.innerHeight;
+              var r = allocConcept.getBoundingClientRect();
+              var travel = Math.max(1, allocConcept.offsetHeight + vhS * 0.2);
+              return fwClamp01((vhS * 0.8 - r.top) / travel);
+            },
+            render: allocRenderQ });
+
+          function allocRenderQ(p) {
             var phase = (p > 0.84 ? 'caption' : p > 0.78 ? 'star' :
                          p > 0.26 ? 'act2' : p > 0.2 ? 'replaced' :
                          p > 0.1 ? 'dissolve' : p > 0.03 ? 'act1' : 'idle');
@@ -6706,7 +6735,7 @@
               if (allocCutoff) allocCutoff.classList.toggle('is-drawn', anyDeferred);
               alLastCount = count;
             }
-          });
+          }
           /* SnapAnim intentionally not registered — this scene owns its timing. */
         }
       }
