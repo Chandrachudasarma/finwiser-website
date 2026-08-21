@@ -688,6 +688,25 @@
     }
 
     /* Cluster cards — horizontal layout (head with icon+name+count, dots row below) */
+    /* Scrub performance styles — active ONLY when the scroll engine adds
+       .seen-scrub to the stage. Reduced-motion / no-JS readers never get the
+       class, so they keep the fully visible settled panel. Baseline: rows dim
+       and sit 8px left; igniting restores them — a row-scale event per tick,
+       not dot-dust. The composite is the payoff: it ENTERS at the convergence
+       beat instead of loitering on stage from the start. */
+    .seen-scrub .seen__cluster {
+      opacity: 0.38;
+      transform: translateX(-8px);
+      transition: opacity 340ms var(--ease-enter), transform 420ms var(--ease-enter);
+    }
+    .seen-scrub .seen__cluster.is-lit { opacity: 1; transform: none; }
+    .seen-scrub .seen__composite-wrap {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 460ms var(--ease-enter), transform 560ms var(--ease-enter);
+    }
+    .seen-scrub.is-composite .seen__composite-wrap { opacity: 1; transform: none; }
+
     .seen__cluster {
       position: relative;
       display: flex; flex-direction: column;
@@ -5115,7 +5134,14 @@
         function drive() {
           ticking = false;
           var vhS = window.__fwStableVH ? window.__fwStableVH() : window.innerHeight;
-          var travel = el.offsetHeight - vhS * 0.35;   /* plays across its pass */
+          /* (0.65/0.35) is not arbitrary: for a pinned section under page
+             snap, p=1 lands exactly at the bottom-align SNAP WALL — the last
+             position a reader can rest at before snap catapults to the next
+             section. Every scene's story must complete inside p<=1; anything
+             later is physically unreachable on desktop. Measured the hard
+             way: a "smarter" travel put a scene's last beat past the wall
+             and it read as scrolling-does-nothing, then a 942px leap. */
+          var travel = el.offsetHeight - vhS * 0.35;
           if (travel < 1) travel = 1;
           var p = fwClamp01((vhS * 0.65 - el.getBoundingClientRect().top) / travel);
           renderAt(p);
@@ -5561,40 +5587,53 @@
             });
           function seenFmt(v, f) {
             if (f === 'lakh') return (v / 100000).toFixed(1) + 'L';
-            if (f === 'int')  return Math.floor(v).toString();
-            return Math.floor(v).toLocaleString('en-IN');
+            /* round, not floor: floor(3 x 0.999) shows 2 until progress is
+               EXACTLY 1, which parked "GOALS 3 of 5" at 2 through the whole
+               resting beat */
+            if (f === 'int')  return Math.round(v).toString();
+            return Math.round(v).toLocaleString('en-IN');
           }
-          var seenLastDots = -1, seenLastIn = null;
+          var seenLastLit = -1, seenLastIn = null, seenLastComposite = null;
+          seenStage.classList.add('seen-scrub');
+
+          /* Beat sheet (founder-directed): one category IGNITES per tick,
+             top to bottom — seven nameable events at row scale. Then the
+             composite panel ENTERS (the "comes together" moment). Then the
+             four stats land one after another. Then one breath of rest, and
+             the frame releases exactly at story end. All quantised and
+             recomputed, so reverse scrub plays the film backwards. */
+          /* Beats live inside the snap-reachable range: on desktop the
+             section covers the viewport from roughly p 0.42 to the wall at
+             p 1.0, so all seven ignites, the convergence and four stat
+             landings fit 0.44..0.96, leaving the wall itself as the rest. */
+          var SEEN_CLUSTERS_IN = 0.44, SEEN_CLUSTERS_OUT = 0.72;
+          var SEEN_COMPOSITE_AT = 0.745;
+          var SEEN_STATS_IN = 0.76, SEEN_STAT_STAGGER = 0.04, SEEN_STAT_WIN = 0.08;
 
           fwScrub(seenSection, function (p) {
             var isIn = p > 0.02;
             if (isIn !== seenLastIn) { seenStage.classList.toggle('is-in', isIn); seenLastIn = isIn; }
 
-            var dotsOn = Math.round(fwTrack(p, 0.05, 0.55) * seenDotTotal);
-            if (dotsOn !== seenLastDots) {
-              var k = 0;
+            var lit = Math.min(seenClusters.length,
+              Math.floor(fwTrack(p, SEEN_CLUSTERS_IN, SEEN_CLUSTERS_OUT) * seenClusters.length + 0.0001));
+            if (lit !== seenLastLit) {
               for (var i = 0; i < seenClusters.length; i++) {
-                var c = seenClusters[i], onInCluster = 0;
-                for (var j = 0; j < c.dots.length; j++) {
-                  var on = k < dotsOn;
-                  c.dots[j].classList.toggle('is-on', on);
-                  if (on) onInCluster++;
-                  k++;
-                }
-                c.el.classList.toggle('is-lit',  onInCluster > 0);
-                c.el.classList.toggle('is-done', onInCluster === c.dots.length);
+                var c = seenClusters[i], on = i < lit;
+                c.el.classList.toggle('is-lit',  on);
+                c.el.classList.toggle('is-done', on);
+                for (var j = 0; j < c.dots.length; j++) c.dots[j].classList.toggle('is-on', on);
               }
-              seenLastDots = dotsOn;
+              seenLastLit = lit;
             }
 
-            /* counters start once the composite can be on screen and FINISH by
-               78% of the travel — the last fifth of the scroll is a resting
-               beat with the final numbers held in the locked frame, per the
-               founder's completion-guarantee note. Connect is the template. */
-            var cp = fwTrack(p, 0.45, 0.78);
-            var eased = 1 - Math.pow(1 - cp, 3);
+            var comp = p > SEEN_COMPOSITE_AT;
+            if (comp !== seenLastComposite) { seenStage.classList.toggle('is-composite', comp); seenLastComposite = comp; }
+
             for (var m = 0; m < seenCounters.length; m++) {
               var cn = seenCounters[m];
+              var st = SEEN_STATS_IN + m * SEEN_STAT_STAGGER;
+              var cp = fwTrack(p, st, st + SEEN_STAT_WIN);
+              var eased = 1 - Math.pow(1 - cp, 3);
               var txt = seenFmt(cn.target * eased, cn.format);
               if (txt !== cn.last) { cn.el.textContent = txt; cn.last = txt; }
             }
