@@ -5058,6 +5058,34 @@
       })();
 
       // ============================================================
+      // fwScrub — the step-2 timing model, shared. A scene's state is a
+      // pure function of scroll position: scrub forward it plays, scrub
+      // back it reverses, flick fast and it lands complete. No timers,
+      // nothing runs behind the reader, and deep links land "done".
+      // renderAt(p) MUST be change-gated internally (write only when the
+      // rendered value changes) and recompute totals, never accumulate.
+      // ============================================================
+      function fwClamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+      function fwTrack(p, a, b) { return fwClamp01((p - a) / (b - a)); }
+      function fwScrub(el, renderAt) {
+        var ticking = false;
+        function drive() {
+          ticking = false;
+          var vhS = window.__fwStableVH ? window.__fwStableVH() : window.innerHeight;
+          var travel = el.offsetHeight - vhS * 0.35;   /* plays across its pass */
+          if (travel < 1) travel = 1;
+          var p = fwClamp01((vhS * 0.65 - el.getBoundingClientRect().top) / travel);
+          renderAt(p);
+        }
+        function onScroll() {
+          if (!ticking) { ticking = true; requestAnimationFrame(drive); }
+        }
+        addEventListener('scroll', onScroll, { passive: true });
+        addEventListener('resize', onScroll, { passive: true });
+        drive();
+      }
+
+      // ============================================================
       // Split-flap morph — used by the engine sticky head to morph
       // case tagline + sub from one card to the next. Each character
       // is rendered as a 2-half "cell" (top half + bottom half clipped
@@ -5471,12 +5499,60 @@
           runSeenStage(seenStage);
         } else {
           seenStage.querySelectorAll('[data-target]').forEach(seenSnapToZero);
-          SnapAnim.register('seen', {
-            play:  function () { return runSeenStage(seenStage); },
-            reset: seenReset,
-            stop:  seenClearTimers,
-            loop:  true
+
+          /* Scroll-driven (step-2 model). The dot census fills across the
+             first two thirds of the pass, the composite counters run in the
+             last third. All dots flatten into one ordered list so progress
+             is a single number; totals recompute from scratch so scrubbing
+             backwards is exact. */
+          var seenSection = document.querySelector('.seen') || seenStage;
+          var seenClusters = Array.prototype.slice.call(seenStage.querySelectorAll('.seen__cluster'))
+            .map(function (c) {
+              return { el: c, dots: Array.prototype.slice.call(c.querySelectorAll('.seen__cluster-dot')) };
+            });
+          var seenDotTotal = seenClusters.reduce(function (s, c) { return s + c.dots.length; }, 0);
+          var seenCounters = Array.prototype.slice.call(seenStage.querySelectorAll('[data-target]'))
+            .map(function (el) {
+              return { el: el, target: parseFloat(el.getAttribute('data-target')),
+                       format: el.getAttribute('data-format') || 'rupee', last: null };
+            });
+          function seenFmt(v, f) {
+            if (f === 'lakh') return (v / 100000).toFixed(1) + 'L';
+            if (f === 'int')  return Math.floor(v).toString();
+            return Math.floor(v).toLocaleString('en-IN');
+          }
+          var seenLastDots = -1, seenLastIn = null;
+
+          fwScrub(seenSection, function (p) {
+            var isIn = p > 0.02;
+            if (isIn !== seenLastIn) { seenStage.classList.toggle('is-in', isIn); seenLastIn = isIn; }
+
+            var dotsOn = Math.round(fwTrack(p, 0.05, 0.62) * seenDotTotal);
+            if (dotsOn !== seenLastDots) {
+              var k = 0;
+              for (var i = 0; i < seenClusters.length; i++) {
+                var c = seenClusters[i], onInCluster = 0;
+                for (var j = 0; j < c.dots.length; j++) {
+                  var on = k < dotsOn;
+                  c.dots[j].classList.toggle('is-on', on);
+                  if (on) onInCluster++;
+                  k++;
+                }
+                c.el.classList.toggle('is-lit',  onInCluster > 0);
+                c.el.classList.toggle('is-done', onInCluster === c.dots.length);
+              }
+              seenLastDots = dotsOn;
+            }
+
+            var cp = fwTrack(p, 0.68, 0.94);
+            var eased = 1 - Math.pow(1 - cp, 3);
+            for (var m = 0; m < seenCounters.length; m++) {
+              var cn = seenCounters[m];
+              var txt = seenFmt(cn.target * eased, cn.format);
+              if (txt !== cn.last) { cn.el.textContent = txt; cn.last = txt; }
+            }
           });
+          /* SnapAnim intentionally not registered — this scene owns its timing. */
         }
       }
 
@@ -5711,13 +5787,55 @@
         if (reduce || !('IntersectionObserver' in window)) {
           connectSettleAll();
         } else {
-          SnapAnim.register('step-1-connect', {
-            play:   connectRunFeed,
-            reset:  connectReset,
-            stop:   connectClearTimers,
-            finish: connectSettleAll,
-            loop:   true
+          /* Scroll-driven (step-2 model). Card k approves when progress
+             crosses k/10; everything before it is settled into the stack,
+             the one at the boundary shows as active. Stats recompute from
+             the approved prefix each change — never accumulated — so
+             scrubbing backwards is exact. */
+          var cnData = connectCards.map(function (c) {
+            return { cat: c.getAttribute('data-cat'), val: parseInt(c.getAttribute('data-value'), 10) || 0 };
           });
+          var cnLastDone = -1, cnLastFinished = null;
+
+          fwScrub(connectRow, function (p) {
+            var n = connectCards.length;
+            var done = Math.min(n, Math.floor(fwTrack(p, 0.05, 0.78) * n));
+            /* the badge follows the last card immediately — a 0.78..0.9 dead
+               zone left the active area empty between stack and badge */
+            var finished = done === n;
+
+            if (done !== cnLastDone) {
+              for (var i = 0; i < n; i++) {
+                var card = connectCards[i];
+                var isDone = i < done;
+                card.classList.toggle('is-approved', isDone);
+                card.classList.toggle('is-settled',  isDone);
+                card.classList.toggle('is-active',   i === done && p > 0.05 && done < n);
+                card.classList.remove('is-tapping');
+                if (isDone) card.style.setProperty('--si', i);
+                else card.style.removeProperty('--si');
+              }
+              var sums = { assets: 0, liabilities: 0, protection: 0, meta: 0 };
+              for (var j = 0; j < done; j++) {
+                if (!cnData[j].cat || !(cnData[j].cat in sums)) continue;
+                if (cnData[j].cat === 'meta') sums.meta = cnData[j].val;
+                else sums[cnData[j].cat] += cnData[j].val;
+              }
+              Object.keys(connectStats).forEach(function (k) {
+                var s = connectStats[k];
+                s.total = sums[k];
+                if (s.kind === 'score') s.val.textContent = sums.meta > 0 ? connectFormatScore(sums.meta) : '—';
+                else s.val.textContent = connectFormatINR(sums[k]);
+              });
+              if (connectCounter) connectCounter.textContent = done;
+              cnLastDone = done;
+            }
+            if (finished !== cnLastFinished) {
+              connectFeed.classList.toggle('is-done', finished);
+              cnLastFinished = finished;
+            }
+          });
+          /* SnapAnim intentionally not registered — this scene owns its timing. */
         }
       }
 
@@ -6262,13 +6380,65 @@
         if (reduce || !('IntersectionObserver' in window)) {
           allocSettleFinal();
         } else {
-          SnapAnim.register('step-3-allocation', {
-            play:   allocRun,
-            reset:  allocReset,
-            stop:   allocClearAll,
-            finish: allocSettleFinal,
-            loop:   true
+          /* Scroll-driven (step-2 model). Act 1 (sources dissolve) runs in
+             the first quarter of the pass, the cascade reveals row by row
+             through the middle, star + caption close it out. The balance is
+             recomputed as 41,300 minus the funded rows revealed so far —
+             never decremented — so scrubbing backwards is exact. */
+          var alRows = Array.prototype.slice.call(allocBlock.querySelectorAll('.cascade__row'))
+            .map(function (row) {
+              return { el: row,
+                       funded:   row.classList.contains('cascade__row--funded'),
+                       required: parseInt(row.dataset.required, 10) || 0,
+                       status:   row.dataset.status || '',
+                       req: row.querySelector('.cascade__required'),
+                       alc: row.querySelector('.cascade__allocated') };
+            });
+          var alLastCount = -1, alLastPhase = '';
+
+          fwScrub(allocStep, function (p) {
+            var phase = (p > 0.92 ? 'caption' : p > 0.84 ? 'star' :
+                         p > 0.26 ? 'act2' : p > 0.2 ? 'replaced' :
+                         p > 0.1 ? 'dissolve' : p > 0.03 ? 'act1' : 'idle');
+            if (phase !== alLastPhase) {
+              allocSrcStage.classList.toggle('is-act1-in',   p > 0.03);
+              allocSrcStage.classList.toggle('is-dissolving', p > 0.1);
+              allocSrcStage.classList.toggle('is-replaced',   p > 0.2);
+              allocBlock.classList.toggle('is-act2',    p > 0.26);
+              allocBlock.classList.toggle('is-starred', p > 0.84);
+              allocBlock.classList.toggle('is-caption', p > 0.92);
+              alLastPhase = phase;
+            }
+
+            var count = Math.min(alRows.length, Math.floor(fwTrack(p, 0.3, 0.8) * alRows.length + 0.0001));
+            if (count !== alLastCount) {
+              var spent = 0, anyDeferred = false;
+              for (var i = 0; i < alRows.length; i++) {
+                var r = alRows[i], on = i < count;
+                r.el.classList.toggle('is-revealed', on);
+                if (r.funded) {
+                  if (on) spent += r.required;
+                  if (r.req) r.req.textContent = on ? allocFmtINR(r.required) : '—';
+                  if (r.alc) r.alc.textContent = on ? allocFmtINR(r.required) : '—';
+                } else {
+                  r.el.classList.toggle('is-fallen', on);
+                  if (on) anyDeferred = true;
+                  if (r.req) r.req.textContent = on ? allocFmtINR(r.required) : '—';
+                  if (r.alc) {
+                    r.alc.classList.toggle('is-status', on);
+                    if (on) r.alc.innerHTML = r.status;
+                    else { r.alc.textContent = '—'; r.alc.style.color = ''; }
+                  }
+                }
+              }
+              allocCurrent = ALLOC_INITIAL - spent;
+              allocBalanceCtr.textContent = allocFmtINR(allocCurrent);
+              allocBalanceCell.classList.toggle('is-zeroed', allocCurrent === 0);
+              if (allocCutoff) allocCutoff.classList.toggle('is-drawn', anyDeferred);
+              alLastCount = count;
+            }
           });
+          /* SnapAnim intentionally not registered — this scene owns its timing. */
         }
       }
 
