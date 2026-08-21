@@ -1083,6 +1083,42 @@
       gap: 32px; min-height: 80vh; min-height: 80svh; align-items: start;
       padding-bottom: 80px;
     }
+
+    /* ============================================================ */
+    /* Desktop pinning for the scrub scenes. On a phone the sections */
+    /* are several screens tall, so the scrub has real travel. On    */
+    /* desktop a section is barely taller than the viewport — its    */
+    /* whole pass is one wheel flick and the scene compressed into   */
+    /* under a second. The Apple move: extend the section and pin    */
+    /* the visual, so scrolling scrubs through a held frame. Scenes  */
+    /* taller than the viewport are exempt from mandatory snap while */
+    /* inside them, so the page-level snap keeps working around them.*/
+    /* fwScrub needs no change — travel follows the row height.      */
+    /* ============================================================ */
+    /* min-height 860px gate: below it the tallest cards (822/832px at 1440)
+       cannot fit the pinned frame and would be clipped — those screens keep
+       the pass-through behaviour instead of losing the scene's payoff. */
+    @media (min-width: 901px) and (min-height: 860px) and (prefers-reduced-motion: no-preference) {
+      #connect-step-row, #s2-row, #s3-row {
+        min-height: 190vh; min-height: 190svh;
+      }
+      #connect-step-row .steps__card,
+      #s2-row .steps__card,
+      #s3-row .steps__card {
+        position: sticky;
+        top: calc(var(--nav-h) + 8px);
+        align-self: start;
+        padding-top: 24px;
+        padding-bottom: 24px;
+        max-height: calc(100svh - var(--nav-h) - 14px);
+        overflow: hidden;
+      }
+      .seen { min-height: 190vh; min-height: 190svh; }
+      .seen__inner {
+        position: sticky;
+        top: calc(var(--nav-h) + 16px);
+      }
+    }
     .steps__num-col {
       position: sticky; top: 30vh; height: max-content; padding-top: 12px;
     }
