@@ -3789,17 +3789,17 @@
 
           <!-- LAYER 2 (FOREGROUND, z-index 3): pulse comets. Above cards, below Finwy. -->
           <svg class="seen__threads seen__threads--fg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <use href="#seen-thr-in-0"  class="seen__pulse seen__pulse--in"  data-w="0.720,0.05"/>
-            <use href="#seen-thr-in-1"  class="seen__pulse seen__pulse--in"  data-w="0.735,0.05"/>
-            <use href="#seen-thr-in-2"  class="seen__pulse seen__pulse--in"  data-w="0.750,0.05"/>
-            <use href="#seen-thr-in-3"  class="seen__pulse seen__pulse--in"  data-w="0.765,0.05"/>
-            <use href="#seen-thr-in-4"  class="seen__pulse seen__pulse--in"  data-w="0.780,0.05"/>
-            <use href="#seen-thr-in-5"  class="seen__pulse seen__pulse--in"  data-w="0.795,0.05"/>
-            <use href="#seen-thr-in-6"  class="seen__pulse seen__pulse--in"  data-w="0.810,0.05"/>
-            <use href="#seen-thr-out-0" class="seen__pulse seen__pulse--out" data-w="0.820,0.08"/>
-            <use href="#seen-thr-out-1" class="seen__pulse seen__pulse--out" data-w="0.855,0.08"/>
-            <use href="#seen-thr-out-2" class="seen__pulse seen__pulse--out" data-w="0.890,0.08"/>
-            <use href="#seen-thr-out-3" class="seen__pulse seen__pulse--out" data-w="0.925,0.08"/>
+            <use href="#seen-thr-in-0"  class="seen__pulse seen__pulse--in"  data-w="0.720,0.040"/>
+            <use href="#seen-thr-in-1"  class="seen__pulse seen__pulse--in"  data-w="0.726,0.040"/>
+            <use href="#seen-thr-in-2"  class="seen__pulse seen__pulse--in"  data-w="0.732,0.040"/>
+            <use href="#seen-thr-in-3"  class="seen__pulse seen__pulse--in"  data-w="0.738,0.040"/>
+            <use href="#seen-thr-in-4"  class="seen__pulse seen__pulse--in"  data-w="0.744,0.040"/>
+            <use href="#seen-thr-in-5"  class="seen__pulse seen__pulse--in"  data-w="0.750,0.040"/>
+            <use href="#seen-thr-in-6"  class="seen__pulse seen__pulse--in"  data-w="0.756,0.024"/>
+            <use href="#seen-thr-out-0" class="seen__pulse seen__pulse--out" data-w="0.860,0.035"/>
+            <use href="#seen-thr-out-1" class="seen__pulse seen__pulse--out" data-w="0.895,0.035"/>
+            <use href="#seen-thr-out-2" class="seen__pulse seen__pulse--out" data-w="0.930,0.035"/>
+            <use href="#seen-thr-out-3" class="seen__pulse seen__pulse--out" data-w="0.965,0.035"/>
           </svg>
 
           <!-- MOBILE SPINE: the same flow, vertical. Panel base -> Finwy ->
@@ -3819,12 +3819,12 @@
             <use href="#seen-thr-mv-out-0" class="seen__thread seen__thread--out"/>
             <use href="#seen-thr-mv-out-1" class="seen__thread seen__thread--out"/>
             <use href="#seen-thr-mv-out-2" class="seen__thread seen__thread--out"/>
-            <use href="#seen-thr-mv-in-0"  class="seen__pulse" data-w="0.725,0.06"/>
-            <use href="#seen-thr-mv-in-1"  class="seen__pulse" data-w="0.755,0.06"/>
-            <use href="#seen-thr-mv-in-2"  class="seen__pulse" data-w="0.785,0.06"/>
-            <use href="#seen-thr-mv-out-0" class="seen__pulse" data-w="0.825,0.08"/>
-            <use href="#seen-thr-mv-out-1" class="seen__pulse" data-w="0.865,0.08"/>
-            <use href="#seen-thr-mv-out-2" class="seen__pulse" data-w="0.905,0.08"/>
+            <use href="#seen-thr-mv-in-0"  class="seen__pulse" data-w="0.722,0.045"/>
+            <use href="#seen-thr-mv-in-1"  class="seen__pulse" data-w="0.735,0.045"/>
+            <use href="#seen-thr-mv-in-2"  class="seen__pulse" data-w="0.748,0.032"/>
+            <use href="#seen-thr-mv-out-0" class="seen__pulse" data-w="0.862,0.035"/>
+            <use href="#seen-thr-mv-out-1" class="seen__pulse" data-w="0.912,0.035"/>
+            <use href="#seen-thr-mv-out-2" class="seen__pulse" data-w="0.960,0.035"/>
           </svg>
 
           <!-- Anchor dots — origins + destinations. HTML divs so they stay round under non-uniform SVG scaling. -->
@@ -5636,10 +5636,17 @@
              MEASURED from each row's real position, not guessed) -> in-threads
              grow into the mascot -> out-threads grow from it -> composite
              arrives -> stats land, each delivered by its comet -> rest. */
-          var SEEN_SCAN_IN = 0.44, SEEN_SCAN_OUT = 0.695;
-          var SEEN_TIN_AT  = 0.70, SEEN_TOUT_AT = 0.75, SEEN_T_SPAN = 0.05, SEEN_T_STAG = 0.005;
-          var SEEN_COMPOSITE_AT = 0.80;
-          var SEEN_STATS_IN = 0.82, SEEN_STAT_STAGGER = 0.035, SEEN_STAT_WIN = 0.07;
+          /* STRICTLY SEQUENTIAL phases. The founder's rule: the scene may
+             only REST at predefined stops (poses), so every phase boundary
+             must be a complete keyframe — which forbids overlap. Poses:
+             row-gaps during the scan, then 0.66/0.72/0.78/0.83/0.86 and one
+             per stat landing. The settle engine below eases to these. */
+          var SEEN_SCAN_IN = 0.44, SEEN_SCAN_OUT = 0.655;
+          var SEEN_TIN_AT  = 0.66, SEEN_TIN_END  = 0.72;   /* in-threads grow  */
+          var SEEN_CIN_AT  = 0.72, SEEN_CIN_END  = 0.78;   /* money flies in   */
+          var SEEN_TOUT_AT = 0.78, SEEN_TOUT_END = 0.83;   /* out-threads grow */
+          var SEEN_COMPOSITE_AT = 0.83;                    /* panes deal 0.83-0.86 */
+          var SEEN_STATS_IN = 0.86, SEEN_STAT_STAGGER = 0.035, SEEN_STAT_WIN = 0.035;
 
           var seenScanEl = seenStage.querySelector('.seen__scan');
           var seenBand = seenScanEl ? seenScanEl.parentElement : null;
@@ -5654,13 +5661,66 @@
             });
           }
           var seenFracs = seenRowFracs();
-          addEventListener('resize', function () { seenFracs = seenRowFracs(); }, { passive: true });
+          addEventListener('resize', function () { seenFracs = seenRowFracs(); seenPoses = null; }, { passive: true });
 
           var seenThreadsIn  = Array.prototype.slice.call(seenStage.querySelectorAll('.seen__thread--in'));
           var seenThreadsOut = Array.prototype.slice.call(seenStage.querySelectorAll('.seen__thread--out'));
           var seenLastScan = -1, seenLastScanO = -1, seenLastThreads = null;
 
+          /* SETTLE-TO-POSE. While the hand moves, q === p. When scrolling
+             idles 160ms, q eases (~250ms) to the nearest predefined stop —
+             forward past 40% of a phase, back before it — and the SAME
+             renderer draws every in-between frame, so scan glides into a
+             gap, half threads finish or retract, airborne comets land.
+             The page never moves; only the picture composes itself. */
+          var seenPoses = null;
+          function seenPoseList() {
+            var poses = [SEEN_SCAN_IN];
+            for (var g = 0; g < seenFracs.length - 1; g++) {
+              var mid = (seenFracs[g] + seenFracs[g + 1]) / 2;
+              poses.push(SEEN_SCAN_IN + mid * (SEEN_SCAN_OUT - SEEN_SCAN_IN));
+            }
+            poses.push(SEEN_TIN_AT, SEEN_TIN_END, SEEN_CIN_END, SEEN_TOUT_END, SEEN_STATS_IN);
+            for (var st = 1; st <= seenCounters.length; st++) {
+              poses.push(Math.min(1, SEEN_STATS_IN + (st - 1) * SEEN_STAT_STAGGER + SEEN_STAT_WIN));
+            }
+            poses.push(1);
+            return poses;
+          }
+          var seenIdleT = null, seenTween = null, seenRender = null;
+          function seenNearestPose(p) {
+            if (!seenPoses) seenPoses = seenPoseList();
+            if (p <= seenPoses[0] || p >= 1) return null;      /* already composed */
+            var lo = seenPoses[0], hi = 1;
+            for (var i = 0; i < seenPoses.length; i++) {
+              if (seenPoses[i] <= p) lo = seenPoses[i];
+              else { hi = seenPoses[i]; break; }
+            }
+            if (p - lo < 0.004 || hi - p < 0.004) return null; /* on a stop already */
+            return (p - lo) / (hi - lo) >= 0.4 ? hi : lo;
+          }
+          function seenSettle(fromP) {
+            var target = seenNearestPose(fromP);
+            if (target === null) return;
+            var t0 = performance.now(), from = fromP, DUR = 250;
+            cancelAnimationFrame(seenTween);
+            (function step(now) {
+              var k = Math.min(1, (now - t0) / DUR);
+              var e = 1 - Math.pow(1 - k, 3);
+              seenRender(from + (target - from) * e);
+              if (k < 1) seenTween = requestAnimationFrame(step);
+            })(t0);
+          }
+
           fwScrub(seenSection, function (p) {
+            /* live scroll interrupts any settle tween and re-grabs */
+            cancelAnimationFrame(seenTween);
+            clearTimeout(seenIdleT);
+            seenIdleT = setTimeout(function () { seenSettle(p); }, 160);
+            if (seenRender) seenRender(p);   /* assigned just below; fwScrub's setup drive fires first */
+          });
+
+          seenRender = function (p) {
             var isIn = p > 0.02;
             if (isIn !== seenLastIn) { seenStage.classList.toggle('is-in', isIn); seenLastIn = isIn; }
 
@@ -5690,20 +5750,23 @@
 
             /* threads GROW: panel->mascot after the scan, mascot->out after */
             for (var ti = 0; ti < seenThreadsIn.length; ti++) {
-              var tp = fwTrack(p, SEEN_TIN_AT + ti * SEEN_T_STAG, SEEN_TIN_AT + ti * SEEN_T_STAG + SEEN_T_SPAN);
+              var tspan = (SEEN_TIN_END - SEEN_TIN_AT), tst = SEEN_TIN_AT + ti * tspan * 0.06;
+              var tp = fwTrack(p, tst, Math.min(SEEN_TIN_END, tst + tspan * 0.7));
               var toff = Math.round((1 - tp) * 100);
               var elI = seenThreadsIn[ti];
               if (elI.__off !== toff) { elI.style.strokeDashoffset = toff; elI.__off = toff; }
             }
             for (var to = 0; to < seenThreadsOut.length; to++) {
-              var tp2 = fwTrack(p, SEEN_TOUT_AT + to * SEEN_T_STAG, SEEN_TOUT_AT + to * SEEN_T_STAG + SEEN_T_SPAN);
+              var ospan = (SEEN_TOUT_END - SEEN_TOUT_AT), ost = SEEN_TOUT_AT + to * ospan * 0.08;
+              var tp2 = fwTrack(p, ost, Math.min(SEEN_TOUT_END, ost + ospan * 0.7));
               var toff2 = Math.round((1 - tp2) * 100);
               var elO = seenThreadsOut[to];
               if (elO.__off !== toff2) { elO.style.strokeDashoffset = toff2; elO.__off = toff2; }
             }
-            var thOn = p > SEEN_TOUT_AT;
+            var thOn = p > SEEN_TIN_END;
             if (thOn !== seenLastThreads) {
               seenStage.classList.toggle('is-threads', thOn);
+              /* mascot celebrates when the money ARRIVES, not at composite */
               seenLastThreads = thOn;
             }
 
@@ -5729,7 +5792,9 @@
               var txt = seenFmt(cn.target * eased, cn.format);
               if (txt !== cn.last) { cn.el.textContent = txt; cn.last = txt; }
             }
-          });
+          };
+          /* first paint for deep links that land mid-scene */
+          dispatchEvent(new Event('scroll'));
           /* SnapAnim intentionally not registered — this scene owns its timing. */
         }
       }
