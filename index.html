@@ -806,6 +806,7 @@
     }
     .seen__threads--bg { z-index: 1; }
     .seen__threads--fg { z-index: 3; }
+    .seen__threads--mobile { z-index: 3; display: none; }
 
     .seen__thread {
       fill: none;
@@ -950,18 +951,12 @@
         transition: opacity 500ms ease 3700ms;
       }
 
-      /* Pulse comets — start AFTER dots are visible, then loop forever */
-      html.js .seen__stage.is-in .seen__pulse {
-        opacity: 1;
-        transition: opacity 600ms ease;
-        transition-delay: calc(4300ms + var(--p, 0) * 80ms);
-        animation: seen-pulse-flow 2.4s linear infinite;
-        animation-delay: calc(4300ms + var(--p, 0) * 180ms);
-      }
-      @keyframes seen-pulse-flow {
-        0%   { stroke-dashoffset: 0;    }
-        100% { stroke-dashoffset: -100; }
-      }
+      /* Pulse comets are CARGO, not decoration: each incoming thread pairs
+         with a category, each outgoing one with a stat, and the comet's
+         position along its path is written by the scroll engine — one clock
+         for the whole scene. The old 2.4s infinite loop (plus its 4.3s
+         wall-clock entrance delays, fossils of the timer choreography) made
+         the scene move when the reader's hand had stopped. */
 
       /* Mascot fade-in */
       html.js .seen__mascot {
@@ -973,9 +968,10 @@
         opacity: 1; transform: translateY(0) scale(1);
       }
 
-      /* Mascot pulse — fires when last thread lands */
-      html.js .seen__stage.is-in .seen__mascot img {
-        animation: seen-mascot-pulse 1100ms var(--ease-enter) 3900ms;
+      /* Mascot pulse — fires once at the convergence beat (scroll-bought),
+         not at second 3.9 of a clock nobody is watching */
+      html.js .seen__stage.is-composite .seen__mascot img {
+        animation: seen-mascot-pulse 1100ms var(--ease-enter);
       }
       @keyframes seen-mascot-pulse {
         0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(53,214,198,0)); }
@@ -984,8 +980,8 @@
       }
 
       /* Halo behind mascot pulses too */
-      html.js .seen__stage.is-in .seen__mascot::before {
-        animation: seen-mascot-halo 1400ms ease-out 3900ms;
+      html.js .seen__stage.is-composite .seen__mascot::before {
+        animation: seen-mascot-halo 1400ms ease-out;
       }
       @keyframes seen-mascot-halo {
         0%   { opacity: 0; transform: scale(0.7); }
@@ -999,17 +995,20 @@
         transition: opacity 600ms var(--ease-enter),
                     transform 600ms var(--ease-enter);
       }
-      html.js .seen__stage.is-in .seen__pane {
+      /* Panes reveal AT the convergence beat — the last wall-clock fossil.
+         4000/4700ms delays were timed to the retired timer choreography and
+         left the composite arriving four seconds after its own moment. The
+         small stagger stays (it reads as dealing cards), but the trigger is
+         the scroll-bought is-composite beat. */
+      html.js .seen__stage.is-composite .seen__pane {
         opacity: 1; transform: translateX(0) scale(1);
-        transition-delay: calc(4000ms + var(--i, 0) * 90ms);
+        transition-delay: calc(var(--i, 0) * 90ms);
       }
-
-      /* Each pane lands one-by-one with a glow flash */
-      html.js .seen__stage.is-in .seen__pane {
+      html.js .seen__stage.is-composite .seen__pane {
         animation: seen-pane-land 900ms var(--ease-enter);
-        animation-delay: calc(4700ms + var(--i, 0) * 280ms);
+        animation-delay: calc(200ms + var(--i, 0) * 200ms);
       }
-      html.js .seen__stage.is-in .seen__pane--surplus {
+      html.js .seen__stage.is-composite .seen__pane--surplus {
         animation-name: seen-pane-land-gold;
       }
       @keyframes seen-pane-land {
@@ -1029,7 +1028,10 @@
         gap: 24px;
         min-height: 0;
       }
-      .seen__threads { display: none; }
+      .seen__threads--bg, .seen__threads--fg { display: none; }
+      /* the flow metaphor survives on phones as a vertical spine:
+         panel -> Finwy -> composite, same scrubbed comets */
+      .seen__threads--mobile { display: block; }
       .seen__center { order: 2; }
       .seen__band { order: 1; }
       .seen__composite-wrap { order: 3; }
@@ -3794,17 +3796,42 @@
 
           <!-- LAYER 2 (FOREGROUND, z-index 3): pulse comets. Above cards, below Finwy. -->
           <svg class="seen__threads seen__threads--fg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <use href="#seen-thr-in-0"  class="seen__pulse seen__pulse--in"  style="--p:0"/>
-            <use href="#seen-thr-in-1"  class="seen__pulse seen__pulse--in"  style="--p:1"/>
-            <use href="#seen-thr-in-2"  class="seen__pulse seen__pulse--in"  style="--p:2"/>
-            <use href="#seen-thr-in-3"  class="seen__pulse seen__pulse--in"  style="--p:3"/>
-            <use href="#seen-thr-in-4"  class="seen__pulse seen__pulse--in"  style="--p:4"/>
-            <use href="#seen-thr-in-5"  class="seen__pulse seen__pulse--in"  style="--p:5"/>
-            <use href="#seen-thr-in-6"  class="seen__pulse seen__pulse--in"  style="--p:6"/>
-            <use href="#seen-thr-out-0" class="seen__pulse seen__pulse--out" style="--p:7"/>
-            <use href="#seen-thr-out-1" class="seen__pulse seen__pulse--out" style="--p:8"/>
-            <use href="#seen-thr-out-2" class="seen__pulse seen__pulse--out" style="--p:9"/>
-            <use href="#seen-thr-out-3" class="seen__pulse seen__pulse--out" style="--p:10"/>
+            <use href="#seen-thr-in-0"  class="seen__pulse seen__pulse--in"  data-w="0.44,0.07"/>
+            <use href="#seen-thr-in-1"  class="seen__pulse seen__pulse--in"  data-w="0.48,0.07"/>
+            <use href="#seen-thr-in-2"  class="seen__pulse seen__pulse--in"  data-w="0.52,0.07"/>
+            <use href="#seen-thr-in-3"  class="seen__pulse seen__pulse--in"  data-w="0.56,0.07"/>
+            <use href="#seen-thr-in-4"  class="seen__pulse seen__pulse--in"  data-w="0.60,0.07"/>
+            <use href="#seen-thr-in-5"  class="seen__pulse seen__pulse--in"  data-w="0.64,0.07"/>
+            <use href="#seen-thr-in-6"  class="seen__pulse seen__pulse--in"  data-w="0.68,0.07"/>
+            <use href="#seen-thr-out-0" class="seen__pulse seen__pulse--out" data-w="0.74,0.09"/>
+            <use href="#seen-thr-out-1" class="seen__pulse seen__pulse--out" data-w="0.78,0.09"/>
+            <use href="#seen-thr-out-2" class="seen__pulse seen__pulse--out" data-w="0.82,0.09"/>
+            <use href="#seen-thr-out-3" class="seen__pulse seen__pulse--out" data-w="0.86,0.09"/>
+          </svg>
+
+          <!-- MOBILE SPINE: the same flow, vertical. Panel base -> Finwy ->
+               composite. Shown only under 901px (desktop fans hidden there). -->
+          <svg class="seen__threads seen__threads--mobile" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <path id="seen-thr-mv-in-0"  d="M25,50.8 C25,52.6 47,52.2 47,53.6" pathLength="100"/>
+              <path id="seen-thr-mv-in-1"  d="M50,51 C50,52 50,52.8 50,53.6" pathLength="100"/>
+              <path id="seen-thr-mv-in-2"  d="M75,50.8 C75,52.6 53,52.2 53,53.6" pathLength="100"/>
+              <path id="seen-thr-mv-out-0" d="M46,61.2 C46,63.2 32,62.8 32,64.4" pathLength="100"/>
+              <path id="seen-thr-mv-out-1" d="M50,61.2 C50,62.4 50,63.4 50,64.4" pathLength="100"/>
+              <path id="seen-thr-mv-out-2" d="M54,61.2 C54,63.2 68,62.8 68,64.4" pathLength="100"/>
+            </defs>
+            <use href="#seen-thr-mv-in-0"  class="seen__thread seen__thread--in"/>
+            <use href="#seen-thr-mv-in-1"  class="seen__thread seen__thread--in"/>
+            <use href="#seen-thr-mv-in-2"  class="seen__thread seen__thread--in"/>
+            <use href="#seen-thr-mv-out-0" class="seen__thread seen__thread--out"/>
+            <use href="#seen-thr-mv-out-1" class="seen__thread seen__thread--out"/>
+            <use href="#seen-thr-mv-out-2" class="seen__thread seen__thread--out"/>
+            <use href="#seen-thr-mv-in-0"  class="seen__pulse" data-w="0.46,0.10"/>
+            <use href="#seen-thr-mv-in-1"  class="seen__pulse" data-w="0.54,0.10"/>
+            <use href="#seen-thr-mv-in-2"  class="seen__pulse" data-w="0.62,0.10"/>
+            <use href="#seen-thr-mv-out-0" class="seen__pulse" data-w="0.76,0.09"/>
+            <use href="#seen-thr-mv-out-1" class="seen__pulse" data-w="0.80,0.09"/>
+            <use href="#seen-thr-mv-out-2" class="seen__pulse" data-w="0.84,0.09"/>
           </svg>
 
           <!-- Anchor dots — origins + destinations. HTML divs so they stay round under non-uniform SVG scaling. -->
@@ -5596,6 +5623,15 @@
           var seenLastLit = -1, seenLastIn = null, seenLastComposite = null;
           seenStage.classList.add('seen-scrub');
 
+          /* Comets: one clock. data-w = "start,span" in scene progress; the
+             comet's dash offset (its position along the path) and opacity are
+             pure functions of p. Delivered comets fade out — absorbed. */
+          var seenComets = Array.prototype.slice.call(seenStage.querySelectorAll('.seen__pulse[data-w]'))
+            .map(function (el) {
+              var w = (el.getAttribute('data-w') || '0,1').split(',');
+              return { el: el, start: parseFloat(w[0]), span: parseFloat(w[1]), lastOff: null, lastOp: null };
+            });
+
           /* Beat sheet (founder-directed): one category IGNITES per tick,
              top to bottom — seven nameable events at row scale. Then the
              composite panel ENTERS (the "comes together" moment). Then the
@@ -5628,6 +5664,17 @@
 
             var comp = p > SEEN_COMPOSITE_AT;
             if (comp !== seenLastComposite) { seenStage.classList.toggle('is-composite', comp); seenLastComposite = comp; }
+
+            for (var q = 0; q < seenComets.length; q++) {
+              var co = seenComets[q];
+              var lp = fwClamp01((p - co.start) / co.span);
+              var off = Math.round(lp * 95 * 2) / 2;              /* 0.5 steps */
+              var op = lp <= 0 || lp >= 1 ? 0
+                     : Math.min(1, Math.min(lp / 0.15, (1 - lp) / 0.12));
+              op = Math.round(op * 20) / 20;
+              if (off !== co.lastOff) { co.el.style.strokeDashoffset = -off; co.lastOff = off; }
+              if (op !== co.lastOp)   { co.el.style.opacity = op;          co.lastOp = op; }
+            }
 
             for (var m = 0; m < seenCounters.length; m++) {
               var cn = seenCounters[m];
