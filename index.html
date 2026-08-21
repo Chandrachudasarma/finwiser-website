@@ -5580,7 +5580,9 @@
               seenLastDots = dotsOn;
             }
 
-            var cp = fwTrack(p, 0.68, 0.94);
+            /* start as soon as the composite can be on screen — at 0.68 a slow
+               scrub could hold zeros in view, which reads as broken data */
+            var cp = fwTrack(p, 0.52, 0.9);
             var eased = 1 - Math.pow(1 - cp, 3);
             for (var m = 0; m < seenCounters.length; m++) {
               var cn = seenCounters[m];
