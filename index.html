@@ -594,7 +594,14 @@
       position: relative;
       background: var(--navy); color: var(--text-on-dark);
       padding: clamp(80px, 12vw, 130px) 0 clamp(80px, 12vw, 110px);
+      /* clip, not hidden: a hidden-overflow ancestor silently disables
+         position:sticky on everything inside it — this single line kept the
+         desktop pin from ever engaging on this section while the step cards
+         (no overflow) locked fine. clip clips the ::before glow identically
+         and leaves sticky alive. hidden stays first as the old-browser
+         fallback (they lose the pin, not the layout). */
       overflow: hidden;
+      overflow: clip;
     }
     .seen::before {
       content: ''; position: absolute; inset: -5% -10% auto -10%; height: 70%;
@@ -5563,7 +5570,7 @@
             var isIn = p > 0.02;
             if (isIn !== seenLastIn) { seenStage.classList.toggle('is-in', isIn); seenLastIn = isIn; }
 
-            var dotsOn = Math.round(fwTrack(p, 0.05, 0.62) * seenDotTotal);
+            var dotsOn = Math.round(fwTrack(p, 0.05, 0.55) * seenDotTotal);
             if (dotsOn !== seenLastDots) {
               var k = 0;
               for (var i = 0; i < seenClusters.length; i++) {
@@ -5580,9 +5587,11 @@
               seenLastDots = dotsOn;
             }
 
-            /* start as soon as the composite can be on screen — at 0.68 a slow
-               scrub could hold zeros in view, which reads as broken data */
-            var cp = fwTrack(p, 0.52, 0.9);
+            /* counters start once the composite can be on screen and FINISH by
+               78% of the travel — the last fifth of the scroll is a resting
+               beat with the final numbers held in the locked frame, per the
+               founder's completion-guarantee note. Connect is the template. */
+            var cp = fwTrack(p, 0.45, 0.78);
             var eased = 1 - Math.pow(1 - cp, 3);
             for (var m = 0; m < seenCounters.length; m++) {
               var cn = seenCounters[m];
@@ -6117,7 +6126,9 @@
           var SP_CHIPS = surplusTxns.map(function (c) {
             return { cat: c.getAttribute('data-cat'), val: parseInt(c.getAttribute('data-value'), 10) || 0 };
           });
-          var SP_IN = 0.10, SP_CHIPS_END = 0.66, SP_ROLL_END = 0.80, SP_REVEAL_END = 0.92;
+          /* action compressed into the first ~84% of travel; the rest is the
+             done-dwell so ₹41,300 rests on screen before the frame releases */
+          var SP_IN = 0.08, SP_CHIPS_END = 0.58, SP_ROLL_END = 0.72, SP_REVEAL_END = 0.84;
 
           function spClamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
           function spTrack(p, a, b) { return spClamp01((p - a) / (b - a)); }
@@ -6435,7 +6446,7 @@
           var alLastCount = -1, alLastPhase = '';
 
           fwScrub(allocStep, function (p) {
-            var phase = (p > 0.92 ? 'caption' : p > 0.84 ? 'star' :
+            var phase = (p > 0.84 ? 'caption' : p > 0.78 ? 'star' :
                          p > 0.26 ? 'act2' : p > 0.2 ? 'replaced' :
                          p > 0.1 ? 'dissolve' : p > 0.03 ? 'act1' : 'idle');
             if (phase !== alLastPhase) {
@@ -6443,12 +6454,12 @@
               allocSrcStage.classList.toggle('is-dissolving', p > 0.1);
               allocSrcStage.classList.toggle('is-replaced',   p > 0.2);
               allocBlock.classList.toggle('is-act2',    p > 0.26);
-              allocBlock.classList.toggle('is-starred', p > 0.84);
-              allocBlock.classList.toggle('is-caption', p > 0.92);
+              allocBlock.classList.toggle('is-starred', p > 0.78);
+              allocBlock.classList.toggle('is-caption', p > 0.84);
               alLastPhase = phase;
             }
 
-            var count = Math.min(alRows.length, Math.floor(fwTrack(p, 0.3, 0.8) * alRows.length + 0.0001));
+            var count = Math.min(alRows.length, Math.floor(fwTrack(p, 0.3, 0.74) * alRows.length + 0.0001));
             if (count !== alLastCount) {
               var spent = 0, anyDeferred = false;
               for (var i = 0; i < alRows.length; i++) {
