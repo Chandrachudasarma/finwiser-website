@@ -12,8 +12,23 @@
   <link rel="canonical" href="https://finwiser.org/">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 
+  <!-- FAVICON/OG BLOCK v3 ═══════════════════════════════════════════
+       Wave 3, 2026-08-23. The 3D Finwy set from assets/finwy-3d/favicon/,
+       copied to root. Split by size on purpose (finwy-3d/README §4): the
+       16/32/48 PNGs and favicon.svg are the FLAT mark — the 3D render is mud
+       below ~48 px — and 180/192/512 are the 3D head on a navy rounded tile.
+       favicon.ico is rebuilt from those three flat PNGs (16+32+48 in one
+       file). og-image.png is now og-image-3d.png; the previous flat card is
+       kept as og-image-flat.png and the previous favicon.svg as
+       favicon-flat.svg — nothing was overwritten without a copy.
+
+       ⚠️ THIS BLOCK IS THE SOURCE OF TRUTH FOR EVERY PAGE. The legal pages,
+       404, surplus-calculator and account-aggregator copy it verbatim; only
+       <title>, description, canonical, og:url and og:image:alt change per
+       page. Edit it here, then re-copy — do not fork it.
+       ════════════════════════════════════════════════════════════════ -->
   <!-- ── Icons & theme ────────────────────────────────────────────── -->
-  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16">
@@ -41,6 +56,7 @@
   <meta name="twitter:description" content="Finwiser is an AI-led SEBI Registered Investment Adviser, built for India's salaried middle class. Connect once via Account Aggregator. See every account in one place. Get fee-only advice in three minutes.">
   <meta name="twitter:image" content="https://finwiser.org/og-image.png">
   <meta name="twitter:image:alt" content="Finwiser — Three minutes. Your full picture. SEBI Registered Investment Adviser INA000021331.">
+  <!-- ═══════════════════════════════ END FAVICON/OG BLOCK v3 ═══════ -->
 
   <!-- ── Structured data · Organization only ──────────────────────────
        SoftwareApplication and FAQPage are now both present. The offer block
@@ -600,7 +616,7 @@
     
     }
     .hero__visual {
-      position: relative; aspect-ratio: 1 / 1; max-width: 360px; width: 100%; justify-self: center;
+      position: relative; aspect-ratio: 1 / 1; max-width: 400px; width: 100%; justify-self: center;
       opacity: 0; transform: translateY(16px);
       animation: hero-rise var(--dur-scene) var(--ease-out) 0ms forwards;
     
@@ -615,22 +631,38 @@
        that faked a keyline are gone (Assets F4 / UI U8): they outlined every
        internal edge of the bitmap, and they cost a full filter pass on the one
        element that swaps 15 frames.
-       Capped at 260 CSS px desktop / 204 mobile: the source is 409px, so 204 is
-       exactly 2x on a phone. Bigger is not sharper — it is only bigger. */
+       Wave 3: 360 CSS px desktop / 204 mobile, up from 260/204.
+       The registered canvas carries 1139 px of real opaque pixels — more than
+       the 888 px single render README §5 measured — so the honest ceilings are
+       2x-sharp to 565 CSS px and 3x-sharp to 377, and 360 is inside both with
+       the 408/520/612/780 tiers behind it. 444 (the README's older ceiling)
+       was rendered and rejected on composition, not sharpness: it pushes the
+       trust strip out of the 1440x900 fold and overpowers the headline.
+       Before/after: screenshots/tier2/home3-hero-size-ab.png.
+       --hero-aspect is the shared registration canvas; src/10-hero-action.py
+       prints it on every run and it changes only if a new keyframe extends the
+       union bbox. */
     .hero__mascot {
-      position: relative; width: 100%; max-width: 260px; margin: 0 auto;
-      aspect-ratio: 409 / 455;
+      --hero-aspect: 1242 / 1185;
+      position: relative; width: 100%; max-width: 360px; margin: 0 auto;
+      aspect-ratio: var(--hero-aspect);
       filter: drop-shadow(0 24px 48px var(--black-32));
-    
+
     }
     .hero__mascot picture { display: contents;  }
+    /* Keyframes CROSS-FADE, they do not cut (founder, Wave 3). --hero-fade is
+       set by the one clock to min(step, --dur-ui): at --dur-ui the fade would
+       outlast the step once the storyboard is eight frames long inside the
+       same ~1.3s, and a fade longer than its step turns the sequence to mush.
+       With the frames that exist today the step is 333ms and the fade is
+       exactly --dur-ui. */
     .hero__mascot img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: contain;
       opacity: 0;
-      transition: opacity var(--dur-tap) var(--ease-in-out);
-    
+      transition: opacity var(--hero-fade, var(--dur-ui)) var(--ease-in-out);
+
     }
     .hero__mascot img.is-active { opacity: 1;  }
     /* The 3D settled pose cross-fades over the last flipbook frame at the
@@ -643,7 +675,13 @@
 
     }
     .hero__mascot.is-settled .hero__mascot-settled { opacity: 1;  }
-    .hero__mascot.is-settled img[data-frame] { opacity: 0;  }
+    /* Symmetric: the last action frame leaves on the SAME clock the settled
+       pose arrives on, or the 240ms keyframe fade would empty the slot 460ms
+       before the settle filled it. */
+    .hero__mascot.is-settled img[data-frame] {
+      opacity: 0; transition: opacity var(--dur-scene) var(--ease-out);
+
+    }
     .hero__chip {
       position: absolute; display: inline-flex; align-items: center; gap: 8px;
       background: var(--navy-deep); border: 1px solid var(--border-on-dark); color: var(--text-on-dark); padding: 10px 14px; border-radius: var(--r-md);
@@ -677,8 +715,14 @@
       .hero__headline .word, .hero__sub, .hero__ctas, .hero__creds, .hero__visual,
       .hero__chip--bank, .hero__chip--mf, .hero__chip--card {
         animation: none; opacity: 1; transform: none; clip-path: none;
-    
+
     }
+      /* Settle frame only — no wake-up, and no 700ms fade into it either.
+         The JS already jumps straight to .is-settled; this makes the paint
+         match, so the first frame the reader sees is the final one. */
+      .hero__mascot img,
+      .hero__mascot .hero__mascot-settled,
+      .hero__mascot.is-settled img[data-frame] { transition: none;  }
     }
 
     /* ============================================================ */
@@ -814,6 +858,46 @@
       margin-inline: auto;
     
     }
+    /* ---- Finwy expression aside (Wave 3) ------------------------------
+       The 3D head set beside ONE line of copy at the three beats where the
+       expression carries something the words do not: worried at the problem,
+       thinking at the FAQ, happy at security. Three placements and no more —
+       a mascot on every section is decoration; a mascot on three emotional
+       beats is punctuation.
+       88 CSS px (64 on a phone), under the 96 px ceiling, with 96/192/288w
+       tiers so 2x and 3x are both real pixels and 1x is not oversized.
+       Chrome-less, like .seen__finwy-line below: no card, no border, no
+       shadow but the one ambient drop. The wrapper takes over the paragraph's
+       own block margins so the head lands on the text's optical centre. */
+    .finwy-say {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; flex-wrap: wrap;
+
+    }
+    .finwy-say > p { margin: 0;  }
+    /* Beside the copy on a desktop, above it on a phone. nowrap is explicit:
+       with wrap on, a paragraph whose own max-width already fills the row
+       pushes the head onto its own line and the pairing is lost. */
+    @media (min-width: 701px) {
+      .finwy-say { flex-wrap: nowrap;  }
+      .finwy-say > p { min-width: 0;  }
+    }
+    .finwy-say__face {
+      width: 88px; height: auto; flex: none;
+      filter: drop-shadow(0 8px 18px var(--black-32));
+
+    }
+    .finwy-say--problem { margin: 40px auto 8px; max-width: calc(22ch + 140px);  }
+    /* 56ch is the paragraph's own measure; the wrapper has to carry the head
+       and the gap on top of it or the flex wraps and the head jumps above the
+       line instead of standing beside it. */
+    .finwy-say--secure  { margin: 0 auto 48px; max-width: calc(56ch + 140px);  }
+    .finwy-say--faq     { margin: 0 auto 40px; max-width: calc(52ch + 140px);  }
+    @media (max-width: 700px) {
+      .finwy-say__face { width: 64px;  }
+      .finwy-say--secure { margin-bottom: 28px;  }
+    }
+
     /* Finwy speech block — sits at the top of §2.4 Discovery (seen) on dark navy bg.
        Chrome-less per UX panel: no card background, border, or shadow. */
     .seen__finwy-line {
@@ -1177,7 +1261,7 @@
       text-transform: uppercase;
       color: var(--text-on-dark-muted);
       flex-shrink: 0;
-    
+      letter-spacing: 0.04em;
     }
     .seen__pane-num {
       display: inline-flex; align-items: baseline;
@@ -1186,7 +1270,7 @@
     }
     .seen__pane-currency { color: var(--mint); margin-right: 3px;  }
     .seen__pane-unit { color: var(--text-on-dark-muted);
-      margin-left: 5px;
+      margin-left: 6px; white-space: nowrap;
     
     }
     .seen__pane--surplus .seen__pane-eyebrow { color: #f5c26b;  }
@@ -2747,9 +2831,63 @@
     
     }
     .compare__tally strong { color: var(--teal-ink);  }
+    /* ---- Below 700px the table becomes one card per capability -------
+       IA F10 / UX §8. The 5-column table used to be 700px wide inside an
+       overflow-x scroller on a 390px phone: the reader saw the capability and
+       the net-worth-tracker column, and had to drag sideways to reach the one
+       column the section exists to make a point about. Now each capability is
+       one card and FINWISER'S ANSWER IS FIRST — order:-1 on the highlighted
+       cell — with the other three read underneath as the comparison.
+       No copy changes: the competitor names come from the same <thead> cells
+       via data-label, and <thead> stays in the a11y tree for the table
+       semantics that the screen-reader path still uses.
+       Geometry is brand.css §9.3's card, from the same tokens. */
     @media (max-width: 700px) {
-      .compare table { min-width: 700px; }
-      .compare tbody th { position: sticky; left: 0; background: var(--white);  }
+      .compare__wrap { overflow-x: visible;  }
+      .compare table {
+        width: 100%; max-width: none; background: none; border-collapse: separate;
+        border-spacing: 0;
+
+    }
+      .compare thead {
+        position: absolute; width: 1px; height: 1px; margin: -1px;
+        overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+
+    }
+      .compare tbody { display: grid; gap: 12px;  }
+      .compare tbody tr { display: flex; flex-direction: column;  }
+      .compare th, .compare td { padding: 0; border-bottom: 0;  }
+      /* The capability is the card's title. */
+      .compare tbody th[scope="row"] {
+        order: -2; font-weight: var(--fw-semibold); margin-bottom: 12px;
+
+    }
+      /* Every answer is a label/value pair on one line. */
+      .compare tbody td {
+        display: flex; align-items: baseline; justify-content: space-between;
+        gap: 16px; padding: 9px 0;
+        border-top: var(--hairline) solid var(--border-on-light);
+
+    }
+      .compare tbody td::before {
+        content: attr(data-label);
+        color: var(--text-on-light-muted); text-align: left;
+
+    }
+      /* Finwiser first, and it is the only cell that keeps the tint — it is a
+         panel at the top of the card, not a row in the list. */
+      .compare tbody td.compare__finwiser {
+        order: -1; border-top: 0; border-radius: var(--r-md);
+        padding: 10px 12px; margin-bottom: 4px;
+        font-weight: var(--fw-semibold);
+
+    }
+      .compare tbody td.compare__finwiser::before { color: var(--teal-ink);  }
+      /* Three flex items in that cell — label, tick, answer. space-between
+         would strand the tick in the middle, so the tick carries the gap and
+         the pair travels right together. */
+      .compare tbody td.compare__finwiser { justify-content: flex-start;  }
+      .compare tbody td.compare__finwiser .compare__check { margin-left: auto;  }
     }
 
     /* ============================================================ */
@@ -4059,9 +4197,38 @@
   <!-- ============================================================ -->
   <header class="fw-nav is-over-dark" role="banner">
     <div class="fw-nav__inner">
+      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
+           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
+           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
+             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
+                     lockup = 63% of a 390px viewport, over the 40% cap, so
+                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
+                     30px where the render is mud).
+             >=1024  nav logo 48px -> head 48px, the rule is met, and the
+                     247px lockup fits a 64px bar at 75%. Served as rasters,
+                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
+                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
+           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
+           two are drop-in swaps and nothing reflows at the breakpoint. -->
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
-        <img class="fw-nav__logo-img fw-nav__logo-img--pos" src="finwiserlogo-optimised.svg" alt="Finwiser" width="274" height="54" decoding="async">
-        <img class="fw-nav__logo-img fw-nav__logo-img--rev" src="finwiserlogo-reversed.svg" alt="" width="274" height="54" decoding="async" aria-hidden="true">
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
+                          assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
+               src="assets/finwy-3d/finwiser-logo-flat.svg"
+               alt="Finwiser" width="330" height="64" decoding="async">
+        </picture>
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
+                          assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
+               src="assets/finwy-3d/finwiser-logo-flat-reversed.svg"
+               alt="" width="330" height="64" decoding="async" aria-hidden="true">
+        </picture>
       </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
@@ -4106,89 +4273,96 @@
         </div>
         <div class="hero__visual" aria-hidden="true">
           <div class="hero__halo"></div>
-          <div class="hero__mascot" id="hero-mascot" role="img" aria-label="Finwy mascot waking up to say hi">
+          <div class="hero__mascot" id="hero-mascot" role="img" aria-label="Finwy waking up to say hi">
+            <!-- HERO-FRAMES:BEGIN — generated by src/13-hero-markup.py from
+                 assets/finwy-3d/hero/manifest.json. Do not hand-edit: run
+                 10-hero-action.py then 13-hero-markup.py.
+
+                 The founder's storyboard is eight keyframes — asleep, lifting,
+                 arms-up grin, leaning wave, mid-spin, jump, landing, the winking
+                 "Hi". 8 of 8 exist right now and the build consumed exactly
+                 those; the rest fall back by simply not being in the list, and
+                 the run re-times itself around whatever count it has.
+
+                 Every frame is re-anchored on one shared 1242x1185 canvas (ground
+                 line + body axis) because each generation frames the character
+                 differently — played raw the character sank ~80px between
+                 keyframes. That shared canvas is also why the settled pose can
+                 cross-fade over the last action frame without a jump.
+
+                 FALLBACK: if zero act-NN frames exist, 10-hero-action.py says so
+                 and the 15-frame deck flipbook (fw-deck-2026/slides/frame-N-409w.*)
+                 is what belongs here instead. It is not in the DOM while these are —
+                 15 dead <img> tags is 15 dead requests. -->
             <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-1-409w.avif">
-              <img src="fw-deck-2026/slides/frame-1-409w.webp" class="is-active" data-frame="1" alt="" width="409" height="455" loading="eager" fetchpriority="high" decoding="async">
+              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-01-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-01-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-01-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-01-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
+              <img src="assets/finwy-3d/hero/finwy3d-hero-act-01-408w.webp"
+                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-01-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-01-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-01-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-01-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
+                   class="is-active" data-frame="1" data-act="act-01" data-src-render="finwy3d-act-01-v01.png" alt=""
+                   width="1242" height="1185" loading="eager" fetchpriority="high" decoding="async">
             </picture>
             <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-2-409w.avif">
-              <img src="fw-deck-2026/slides/frame-2-409w.webp" data-frame="2" alt="" width="409" height="455" loading="eager" decoding="async">
+              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-02-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-02-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-02-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-02-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
+              <img src="assets/finwy-3d/hero/finwy3d-hero-act-02-408w.webp"
+                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-02-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-02-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-02-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-02-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
+                   class="" data-frame="2" data-act="act-02" data-src-render="finwy3d-act-02-v01.png" alt=""
+                   width="1242" height="1185" loading="eager" decoding="async">
             </picture>
             <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-3-409w.avif">
-              <img src="fw-deck-2026/slides/frame-3-409w.webp" data-frame="3" alt="" width="409" height="455" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-03-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-03-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-03-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-03-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
+              <img src="assets/finwy-3d/hero/finwy3d-hero-act-03-408w.webp"
+                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-03-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-03-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-03-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-03-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
+                   class="" data-frame="3" data-act="act-03" data-src-render="finwy3d-act-03-v01.png" alt=""
+                   width="1242" height="1185" loading="lazy" decoding="async">
             </picture>
             <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-4-409w.avif">
-              <img src="fw-deck-2026/slides/frame-4-409w.webp" data-frame="4" alt="" width="409" height="455" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-04-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-04-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-04-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-04-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
+              <img src="assets/finwy-3d/hero/finwy3d-hero-act-04-408w.webp"
+                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-04-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-04-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-04-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-04-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
+                   class="" data-frame="4" data-act="act-04" data-src-render="finwy3d-act-04-v02.png" alt=""
+                   width="1242" height="1185" loading="lazy" decoding="async">
             </picture>
             <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-5-409w.avif">
-              <img src="fw-deck-2026/slides/frame-5-409w.webp" data-frame="5" alt="" width="409" height="455" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-05-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-05-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-05-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-05-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
+              <img src="assets/finwy-3d/hero/finwy3d-hero-act-05-408w.webp"
+                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-05-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-05-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-05-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-05-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
+                   class="" data-frame="5" data-act="act-05" data-src-render="finwy3d-act-05-v02.png" alt=""
+                   width="1242" height="1185" loading="lazy" decoding="async">
             </picture>
             <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-6-409w.avif">
-              <img src="fw-deck-2026/slides/frame-6-409w.webp" data-frame="6" alt="" width="409" height="455" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-06-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-06-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-06-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-06-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
+              <img src="assets/finwy-3d/hero/finwy3d-hero-act-06-408w.webp"
+                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-06-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-06-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-06-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-06-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
+                   class="" data-frame="6" data-act="act-06" data-src-render="finwy3d-act-06-v01.png" alt=""
+                   width="1242" height="1185" loading="lazy" decoding="async">
             </picture>
             <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-7-409w.avif">
-              <img src="fw-deck-2026/slides/frame-7-409w.webp" data-frame="7" alt="" width="409" height="455" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-07-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-07-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-07-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-07-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
+              <img src="assets/finwy-3d/hero/finwy3d-hero-act-07-408w.webp"
+                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-07-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-07-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-07-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-07-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
+                   class="" data-frame="7" data-act="act-07" data-src-render="finwy3d-act-07-v01.png" alt=""
+                   width="1242" height="1185" loading="lazy" decoding="async">
             </picture>
             <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-8-409w.avif">
-              <img src="fw-deck-2026/slides/frame-8-409w.webp" data-frame="8" alt="" width="409" height="455" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-08-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-08-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-08-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
+              <img src="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp"
+                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-08-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-08-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-08-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
+                   class="" data-frame="8" data-act="act-08" data-src-render="finwy3d-act-08-v01.png" alt=""
+                   width="1242" height="1185" loading="lazy" decoding="async">
             </picture>
+            <!-- The SETTLED pose — what the reader looks at for the 99% of the
+                 visit that is not the wake-up, so it is the frame that has to be
+                 the good one. Build preference: act-08 (the winking "Hi") >
+                 hero-wave-energetic > wave-v04. Currently finwy3d-act-08-v01.png. -->
             <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-9-409w.avif">
-              <img src="fw-deck-2026/slides/frame-9-409w.webp" data-frame="9" alt="" width="409" height="455" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-10-409w.avif">
-              <img src="fw-deck-2026/slides/frame-10-409w.webp" data-frame="10" alt="" width="409" height="455" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-11-409w.avif">
-              <img src="fw-deck-2026/slides/frame-11-409w.webp" data-frame="11" alt="" width="409" height="455" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-12-409w.avif">
-              <img src="fw-deck-2026/slides/frame-12-409w.webp" data-frame="12" alt="" width="409" height="455" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-13-409w.avif">
-              <img src="fw-deck-2026/slides/frame-13-409w.webp" data-frame="13" alt="" width="409" height="455" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-14-409w.avif">
-              <img src="fw-deck-2026/slides/frame-14-409w.webp" data-frame="14" alt="" width="409" height="455" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-15-409w.avif">
-              <img src="fw-deck-2026/slides/frame-15-409w.webp" data-frame="15" alt="" width="409" height="455" loading="lazy" decoding="async">
-            </picture>
-            <!-- The SETTLED pose: the 3D Finwy the founder chose on 2026-08-23.
-                 The 15-frame raster flipbook above stays until the 3D pose set
-                 exists — every frame is one file, so the swap is file-for-file
-                 with no markup change. This is what the reader is actually
-                 looking at for the 99% of the visit that is not the 640ms
-                 wake-up, so it is the frame that has to be the good one. -->
-            <picture>
-              <source type="image/avif"
-                      srcset="assets/finwy-3d/finwy3d-wave-260w.avif 260w,
-                              assets/finwy-3d/finwy3d-wave-408w.avif 408w,
-                              assets/finwy-3d/finwy3d-wave-520w.avif 520w,
-                              assets/finwy-3d/finwy3d-wave-780w.avif 780w"
-                      sizes="(max-width: 900px) 204px, 260px">
+              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-08-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-08-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-08-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
               <img class="hero__mascot-settled" id="hero-mascot-settled"
-                   src="assets/finwy-3d/finwy3d-wave-260w.webp"
-                   srcset="assets/finwy-3d/finwy3d-wave-260w.webp 260w,
-                           assets/finwy-3d/finwy3d-wave-408w.webp 408w,
-                           assets/finwy-3d/finwy3d-wave-520w.webp 520w,
-                           assets/finwy-3d/finwy3d-wave-780w.webp 780w"
-                   sizes="(max-width: 900px) 204px, 260px"
-                   width="959" height="1234" alt="" loading="eager" decoding="async">
+                   src="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp"
+                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-08-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-08-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-08-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
+                   data-src-render="finwy3d-act-08-v01.png"
+                   width="1242" height="1185" alt="" loading="eager" decoding="async">
             </picture>
+            <!-- HERO-FRAMES:END -->
           </div>
           <div class="hero__chip hero__chip--bank">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10 12 4l9 6v2H3zM5 13h2v6H5zm4 0h2v6H9zm4 0h2v6h-2zm4 0h2v6h-2zM3 20h18v2H3z"/></svg>
@@ -4256,7 +4430,15 @@
           <span class="problem__h-trio" aria-hidden="true">Earning. Saving. Investing.</span>
           <span class="problem__h-pivot" aria-hidden="true">You still can&rsquo;t answer one question.</span>
         </h2>
-        <p class="problem__thought">&ldquo;Am I actually on track?&rdquo;</p>
+        <div class="finwy-say finwy-say--problem">
+          <picture>
+            <source type="image/avif" srcset="assets/finwy-3d/finwy3d-face-worried-96w.avif 96w, assets/finwy-3d/finwy3d-face-worried-192w.avif 192w, assets/finwy-3d/finwy3d-face-worried-288w.avif 288w" sizes="(max-width: 700px) 64px, 88px">
+            <img class="finwy-say__face" src="assets/finwy-3d/finwy3d-face-worried-96w.webp"
+                 srcset="assets/finwy-3d/finwy3d-face-worried-96w.webp 96w, assets/finwy-3d/finwy3d-face-worried-192w.webp 192w, assets/finwy-3d/finwy3d-face-worried-288w.webp 288w"
+                 sizes="(max-width: 700px) 64px, 88px" width="288" height="287" alt="" loading="lazy" decoding="async">
+          </picture>
+          <p class="problem__thought">&ldquo;Am I actually on track?&rdquo;</p>
+        </div>
         <p class="problem__body">Nobody sees the full picture &mdash; not your bank, not your apps, not even you. Your money lives in thirty-plus accounts that don&rsquo;t talk to each other.</p>
       </div>
     </section>
@@ -4601,7 +4783,7 @@
                              assets/finwy-3d/finwy3d-jars-520w.webp 520w,
                              assets/finwy-3d/finwy3d-jars-780w.webp 780w"
                      sizes="(max-width: 520px) 96px, (max-width: 900px) 130px, 260px"
-                     width="1144" height="985" alt="" loading="lazy" decoding="async">
+                     width="1040" height="972" alt="" loading="lazy" decoding="async">
               </picture>
             </div>
           </div>
@@ -4929,7 +5111,7 @@
                            srcset="assets/finwy-3d/finwy3d-jars-260w.webp 260w,
                                    assets/finwy-3d/finwy3d-jars-520w.webp 520w"
                            sizes="(max-width: 760px) 64px, 124px"
-                           width="1144" height="985" alt="" loading="lazy" decoding="async">
+                           width="1040" height="972" alt="" loading="lazy" decoding="async">
                     </picture>
                     <p class="flow__finwy-tag">Reading. Sorting. Noticing.</p>
                   </div>
@@ -5078,7 +5260,15 @@
     <section class="secure" aria-labelledby="secure-heading" data-reveal data-theme="dark">
       <div class="secure__inner">
         <h2 id="secure-heading" class="secure__heading">We never see your password. We never sell your data.</h2>
-        <p class="secure__sub">Your data is yours. Here&rsquo;s the plumbing &mdash; in plain language.</p>
+        <div class="finwy-say finwy-say--secure">
+          <picture>
+            <source type="image/avif" srcset="assets/finwy-3d/finwy3d-face-happy-96w.avif 96w, assets/finwy-3d/finwy3d-face-happy-192w.avif 192w, assets/finwy-3d/finwy3d-face-happy-288w.avif 288w" sizes="(max-width: 700px) 64px, 88px">
+            <img class="finwy-say__face" src="assets/finwy-3d/finwy3d-face-happy-96w.webp"
+                 srcset="assets/finwy-3d/finwy3d-face-happy-96w.webp 96w, assets/finwy-3d/finwy3d-face-happy-192w.webp 192w, assets/finwy-3d/finwy3d-face-happy-288w.webp 288w"
+                 sizes="(max-width: 700px) 64px, 88px" width="288" height="321" alt="" loading="lazy" decoding="async">
+          </picture>
+          <p class="secure__sub">Your data is yours. Here&rsquo;s the plumbing &mdash; in plain language.</p>
+        </div>
         <div class="secure__grid" role="list">
           <article class="secure__card" role="listitem" style="--i:0">
             <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M16 4 L26 7 V14 c0 7-4 12-10 14 c-6-2-10-7-10-14 V7 Z"/><rect x="13" y="15" width="6" height="6" rx="1"/><path d="M14 15 V13 a2 2 0 0 1 4 0 V15"/></svg>
@@ -5412,14 +5602,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr style="--i:0"><th scope="row">Shows full net worth</th><td>Yes</td><td>Partial</td><td>Manual</td><td class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
-              <tr style="--i:1"><th scope="row">Categorises spending automatically</th><td>No</td><td>Partial</td><td>Manual</td><td class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
-              <tr style="--i:2"><th scope="row">Computes real monthly surplus</th><td>No</td><td>No</td><td>Manual</td><td class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
-              <tr style="--i:3"><th scope="row">360&deg; portfolio advice</th><td>No</td><td>MFs only</td><td>Yes</td><td class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
-              <tr style="--i:4"><th scope="row">Goal planning + feasibility</th><td>No</td><td>No</td><td>Yes</td><td class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
-              <tr style="--i:5"><th scope="row">Fee-only advice (no product commissions)</th><td>No</td><td>Conflicted</td><td>Yes (sometimes)</td><td class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
-              <tr style="--i:6"><th scope="row">Dynamic recalibration</th><td>No</td><td>No</td><td>No</td><td class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
-              <tr style="--i:7"><th scope="row">Available when you need it</th><td>Self-serve</td><td>Self-serve</td><td>Appointments</td><td class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>In-app</td></tr>
+              <tr style="--i:0"><th scope="row">Shows full net worth</th><td data-label="Net-worth trackers">Yes</td><td data-label="Investing apps">Partial</td><td data-label="Your CA or agent">Manual</td><td data-label="Finwiser" class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
+              <tr style="--i:1"><th scope="row">Categorises spending automatically</th><td data-label="Net-worth trackers">No</td><td data-label="Investing apps">Partial</td><td data-label="Your CA or agent">Manual</td><td data-label="Finwiser" class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
+              <tr style="--i:2"><th scope="row">Computes real monthly surplus</th><td data-label="Net-worth trackers">No</td><td data-label="Investing apps">No</td><td data-label="Your CA or agent">Manual</td><td data-label="Finwiser" class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
+              <tr style="--i:3"><th scope="row">360&deg; portfolio advice</th><td data-label="Net-worth trackers">No</td><td data-label="Investing apps">MFs only</td><td data-label="Your CA or agent">Yes</td><td data-label="Finwiser" class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
+              <tr style="--i:4"><th scope="row">Goal planning + feasibility</th><td data-label="Net-worth trackers">No</td><td data-label="Investing apps">No</td><td data-label="Your CA or agent">Yes</td><td data-label="Finwiser" class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
+              <tr style="--i:5"><th scope="row">Fee-only advice (no product commissions)</th><td data-label="Net-worth trackers">No</td><td data-label="Investing apps">Conflicted</td><td data-label="Your CA or agent">Yes (sometimes)</td><td data-label="Finwiser" class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
+              <tr style="--i:6"><th scope="row">Dynamic recalibration</th><td data-label="Net-worth trackers">No</td><td data-label="Investing apps">No</td><td data-label="Your CA or agent">No</td><td data-label="Finwiser" class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Yes</td></tr>
+              <tr style="--i:7"><th scope="row">Available when you need it</th><td data-label="Net-worth trackers">Self-serve</td><td data-label="Investing apps">Self-serve</td><td data-label="Your CA or agent">Appointments</td><td data-label="Finwiser" class="compare__finwiser"><svg class="compare__check" viewBox="0 0 16 16" fill="none" stroke-width="2"><polyline points="3,8.5 6.5,12 13,4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>In-app</td></tr>
             </tbody>
           </table>
         </div>
@@ -5615,7 +5805,15 @@
     <section class="faq" id="faq" aria-labelledby="faq-heading" data-theme="light">
       <div class="faq__inner">
         <h2 id="faq-heading" class="faq__heading">Questions you&rsquo;re probably asking.</h2>
-        <p class="faq__sub">Asked by real users. And, honestly, the founder&rsquo;s family.</p>
+        <div class="finwy-say finwy-say--faq">
+          <picture>
+            <source type="image/avif" srcset="assets/finwy-3d/finwy3d-face-thinking-96w.avif 96w, assets/finwy-3d/finwy3d-face-thinking-192w.avif 192w, assets/finwy-3d/finwy3d-face-thinking-288w.avif 288w" sizes="(max-width: 700px) 64px, 88px">
+            <img class="finwy-say__face" src="assets/finwy-3d/finwy3d-face-thinking-96w.webp"
+                 srcset="assets/finwy-3d/finwy3d-face-thinking-96w.webp 96w, assets/finwy-3d/finwy3d-face-thinking-192w.webp 192w, assets/finwy-3d/finwy3d-face-thinking-288w.webp 288w"
+                 sizes="(max-width: 700px) 64px, 88px" width="288" height="317" alt="" loading="lazy" decoding="async">
+          </picture>
+          <p class="faq__sub">Asked by real users. And, honestly, the founder&rsquo;s family.</p>
+        </div>
 
         <details class="faq__item"><summary>What does fee-only mean? (and why does it matter?)</summary><div class="faq__answer">Once paid plans begin, you pay Finwiser &#8377;199 a month &mdash; and that&rsquo;s the only money Finwiser ever earns from you. We don&rsquo;t get a commission for recommending a mutual fund, an insurance policy, or any other product. So when Finwy says &ldquo;buy this debt fund,&rdquo; it&rsquo;s because the math says so &mdash; not because someone paid us.<br><br>That&rsquo;s it. That&rsquo;s fee-only. (Most &ldquo;advisers&rdquo; you&rsquo;ve met earn a commission when you buy something &mdash; Finwiser doesn&rsquo;t.)</div></details>
         <details class="faq__item"><summary>How does Finwiser see my accounts without my password?</summary><div class="faq__answer">Through Account Aggregator &mdash; an RBI-regulated rail where you grant consent through your AA app, and Finwiser receives read-only data. Finwiser never sees, asks for, or stores your bank password.</div></details>
@@ -5649,6 +5847,8 @@
           <ul>
             <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
             <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play</a></li>
+            <li><a href="/surplus-calculator.html">Surplus calculator</a></li>
+            <li><a href="/account-aggregator.html">Account Aggregator</a></li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#how">How it works</a></li>
             <li><a href="#team">Team</a></li>
@@ -6233,17 +6433,28 @@
       }
 
       // ============================================================
-      // Hero mascot frame-flipbook: sleeping → waking → waving.
-      // The 15 frames are pre-loaded as stacked <img>s inside #hero-mascot;
-      // we toggle .is-active to swap which frame is visible.
-      // Plays once at first paint (parallel with the text reveals) and
-      // replays on return via SnapAnim. Final state: frame 15 (waving).
+      // Hero action storyboard: asleep → lifting → arms-up → wave → settle.
+      // The keyframes are pre-loaded as stacked <img>s inside #hero-mascot;
+      // we toggle .is-active to swap which one is visible, and CSS
+      // cross-fades between them (Wave 3 — they no longer hard-cut).
+      // Plays ONCE, FORWARD, and replays on return via SnapAnim.
+      //
+      // The step is DERIVED from however many keyframes exist, not fixed, so
+      // the run lands inside the founder's ~1.2-1.6s whether the storyboard
+      // is the four frames that exist today or the full eight. The fade is
+      // then clamped to the step so a keyframe is always actually seen.
       // ============================================================
       var heroMascot       = document.getElementById('hero-mascot');
       var heroFrames       = heroMascot ? heroMascot.querySelectorAll('img[data-frame]') : [];
-      var HERO_FRAME_MS    = 90;
-      var HERO_SLEEP_HOLD  = 400;   // ms — was 1,400: 1.4s of sleeping mascot before
-                                    // the hero is usable is the wrong trade (Motion §8)
+      var HERO_SLEEP_HOLD  = 300;   // ms of the asleep pose before it stirs. Was
+                                    // 1,400: 1.4s of sleeping mascot before the
+                                    // hero is usable is the wrong trade (Motion §8)
+      var HERO_PLAY_MS     = 1300;  // t0 → last action frame active
+      var HERO_FRAME_MS    = heroFrames.length > 1
+        ? Math.max(90, Math.round((HERO_PLAY_MS - HERO_SLEEP_HOLD) / (heroFrames.length - 1)))
+        : 0;
+      var HERO_FADE_MS     = Math.min(HERO_FRAME_MS || 240, 240); // 240 = --dur-ui
+      if (heroMascot) heroMascot.style.setProperty('--hero-fade', HERO_FADE_MS + 'ms');
       var heroRaf          = 0;
 
       /* Both iPhone flight-recorder logs show the page's only >50ms frames

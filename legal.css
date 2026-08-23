@@ -1,535 +1,550 @@
 /* ==========================================================================
-   legal.css — the shared shell for the eight compliance pages.
+   legal.css — the document layer for the nine chrome pages
+   (the eight compliance documents + 404.html)
 
-   One stylesheet, eight documents. It carries three things:
-     1. the site header (`.fw-nav`), reproduced from index.html so a reader
-        landing on terms.html from a regulator's index sees the same chrome
-        as a reader landing on the homepage;
-     2. the document type/layout system (light ground, 68ch measure,
-        --teal-text links at 4.55:1);
-     3. the site footer (`.site-footer`), identical markup on all eight,
-        replacing the four drifting variants.
+   Tier 2 Wave 3. brand.css is the design system and is loaded FIRST. This
+   file declares NO colour token, NO type role, NO radius, NO shadow and NO
+   button, card, nav, chip or footer type — every one of those now comes from
+   brand.css. What is left here is exactly four things:
 
-   Not loaded: any of the homepage's scene/animation CSS. Only the header,
-   the footer, the tokens they need, and the document styles.
+     §2  nav BEHAVIOUR   the logo cross-fade, the toggle, the drawer, the
+                         scrim. brand.css §9.1 draws the bar; it does not
+                         own the drawer. Lifted verbatim from index.html §1
+                         so the two stay in step.
+     §3–§6  the DOCUMENT the breadcrumb, the title block, the reading column,
+                         the TOC, the callouts, the tables, the back-to-top.
+     §7  footer LAYOUT   the four-column grid. brand.css §8 sets its type.
+     §8  print
+
+   §9 is the OVERRIDE BLOCK: the three things brand.css does not define that
+   a legal document needs. Every one is listed in the Wave 3 report. Nothing
+   else in this file declares font-size, line-height or font-weight.
    ========================================================================== */
 
-/* ==========================================================================
-   §0 — TOKENS
-   Mirrors the :root block in index.html. Two additions, both from the audit:
-     --teal-text  #00847E  — 4.55:1 on white. --teal #00b6ad is 2.53:1 and
-                             must never carry text on a light ground.
-     --measure    68ch     — the reading column cap (UI §8.1).
-   ========================================================================== */
-:root {
-  --navy:            #002d56;
-  --navy-deep:       #001f3d;
-  --mint:            #35d6c6;
-  --teal:            #00b6ad;   /* fills and dark grounds only — never text on light */
-  --teal-text:       #00847E;   /* every link on these light pages */
-  --teal-text-hover: #00625e;
-  --white:           #ffffff;
-  --off-white:       #f7f9fb;
-  --gold:            #f5c26b;
-
-  --text-on-light:        #002d56;
-  --text-on-light-muted:  #5a6b7d;
-  --text-on-dark:         rgba(255,255,255,0.94);
-  --text-on-dark-muted:   rgba(255,255,255,0.74);
-
-  --border-on-dark:  rgba(255,255,255,0.12);
-  --border-on-light: rgba(0,45,86,0.10);
-  --rule-on-light:   rgba(0,45,86,0.16);
-
-  --white-08: rgba(255,255,255,0.08);
-  --white-32: rgba(255,255,255,0.32);
-  --white-56: rgba(255,255,255,0.56);
-  --white-88: rgba(255,255,255,0.88);
-  --black-32: rgba(0,0,0,0.32);
-  --black-45: rgba(0,0,0,0.45);
-
-  --navy-04:  rgba(0,45,86,0.04);
-  --navy-06:  rgba(0,45,86,0.06);
-  --mint-08:  rgba(53,214,198,0.08);
-  --mint-32:  rgba(53,214,198,0.32);
-  --gold-08:  rgba(245,194,107,0.10);
-  --gold-50:  rgba(245,194,107,0.50);
-
-  --shadow-1: 0 2px 8px rgba(0,45,86,0.06);
-  --shadow-2: 0 12px 32px rgba(0,31,61,0.28);
-
-  --nav-h: 68px;
-
-  --r-sm:  8px;
-  --r-md:  10px;
-  --r-lg:  16px;
-  --r-pill: 999px;
-
-  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-serif: 'Lora', Georgia, serif;
-  --font-mono:  ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-
-  /* Type. Body floors at 16px (was 15). Label floors at 13px (was 11). */
-  --fs-nano:  13px;
-  --fs-micro: 14px;
-  --fs-body:  16px;
-  --fs-lead:  17px;
-  --fs-h4:    16px;
-  --fs-h3:    18px;
-  --fs-h2:    22px;
-  --fs-h1:    30px;
-
-  --measure: 68ch;
-
-  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-move:  cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (min-width: 1024px) {
-  :root {
-    --fs-body: 17px;
-    --fs-lead: 19px;
-    --fs-h4:   17px;
-    --fs-h3:   20px;
-    --fs-h2:   clamp(24px, 1.9vw, 30px);
-    --fs-h1:   clamp(38px, 3.2vw, 54px);
-  }
-}
 
 /* ==========================================================================
-   §1 — RESET & DOCUMENT
+   §1 — RESET & BASE
+   Ground: LIGHT. `data-theme="light"` sits on <body>; the footer re-declares
+   itself dark. Every colour below reads --ground / --fg / --line / --accent.
    ========================================================================== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
-  /* The header is sticky, so an anchor landing must clear it. +16 keeps the
-     first line of the target heading off the nav's bottom rule. */
-  scroll-padding-top: calc(var(--nav-h) + 16px);
+  /* An anchor landing must clear the sticky bar. --nav-h is 56 / 64. */
+  scroll-padding-top: calc(var(--nav-h) + var(--sp-4));
   -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: var(--font-sans);
-  font-size: var(--fs-body);
-  line-height: 1.7;
-  color: var(--text-on-light);
-  background: var(--off-white);
+  color: var(--fg);
+  background: var(--ground);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
-.skip-link {
-  position: absolute; top: -100px; left: 16px; z-index: 1000;
-  padding: 12px 20px; border-radius: var(--r-md);
-  background: var(--mint); color: var(--navy-deep);
-  font-weight: 600; text-decoration: none;
-  transition: top 200ms var(--ease-move);
-}
-.skip-link:focus { top: 16px; outline: 3px solid var(--navy-deep); outline-offset: 2px; }
+img { max-width: 100%; height: auto; display: block; }
 
-a:focus-visible, button:focus-visible {
-  outline: 2px solid var(--teal-text); outline-offset: 3px; border-radius: 4px;
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
+
+/* brand.css §9.2 draws the skip link (it is in the .btn list). Only its
+   position and its reveal belong to the page. */
+.skip-link {
+  position: absolute; top: -100px; left: var(--sp-4); z-index: 1000;
+  transition: top var(--dur-ui) var(--ease-out);
+}
+.skip-link:focus { top: var(--sp-4); outline: 3px solid var(--navy-deep); outline-offset: 2px; }
+
 
 /* ==========================================================================
-   §2 — HEADER  (reproduced from index.html §1 — keep the two in step)
-   Light ground: the legal pages have no dark hero for the nav to sit over,
-   so --nav-fg stays at its navy default and the drawer re-points it on dark.
+   §2 — NAV BEHAVIOUR  (lifted from index.html §1 — keep the two in step)
+   The bar itself — height, material, container, logo scale, links, CTA — is
+   brand.css §9.1 / §8.7. This block is only what the bar DOES.
    ========================================================================== */
-.fw-nav {
-  position: sticky; top: 0; left: 0; right: 0; z-index: 50;
-  height: var(--nav-h);
-  background: var(--white);
-  border-bottom: 1px solid var(--border-on-light);
+/* <picture> is a wrapper for format negotiation only — it must never
+   introduce a layout box, or the reversed lockup loses its offset parent. */
+.fw-nav__logo-pic { display: contents; }
+.fw-nav__logo-img--rev {
+  position: absolute; inset: 0; opacity: 0;
+  transition: opacity var(--dur-ui) var(--ease-in-out);
 }
-.fw-nav__inner {
-  max-width: 1200px; height: 100%; margin: 0 auto; padding: 0 24px;
-  display: flex; align-items: center; justify-content: space-between; gap: 24px;
-}
-.fw-nav__logo { display: inline-flex; align-items: center; text-decoration: none; line-height: 0; }
-.fw-nav__logo-img { height: 54px; width: auto; display: block; }
-@media (max-width: 899px) { .fw-nav__logo-img { height: 40px; } }
+.fw-nav.is-over-dark .fw-nav__logo-img--pos { opacity: 0; }
+.fw-nav.is-over-dark .fw-nav__logo-img--rev { opacity: 1; }
 
-.fw-nav__list { list-style: none; display: flex; align-items: center; gap: 28px; margin: 0; }
+.fw-nav__list { list-style: none; display: flex; align-items: center; }
 .fw-nav__list li { margin: 0; }
-.fw-nav__link {
-  font: 500 14px/1 'Inter', sans-serif;
-  color: var(--nav-fg, var(--navy-deep));
-  text-decoration: none; transition: color 200ms ease-out;
-}
-.fw-nav__link:hover { color: var(--nav-fg-hover, var(--teal-text)); }
-.fw-nav__cta {
-  display: inline-flex; align-items: center; height: 36px; padding: 0 18px;
-  border-radius: 6px; background: var(--mint); color: var(--navy-deep) !important;
-  font: 600 14px/1 'Inter', sans-serif; text-decoration: none;
-  transition: transform 200ms ease-out, background-color 200ms ease-out;
-}
-.fw-nav__cta:hover { transform: scale(1.01); background: var(--teal); }
 
+/* The links take their foreground from the surface they sit on, not from a
+   hard-coded token: the bar is white so the default is navy, and the mobile
+   drawer is navy so it re-declares the pair on itself. Hard-coding
+   --navy-deep here is what made the drawer's links 1.00:1 invisible. */
+.fw-nav__link {
+  color: var(--nav-fg, var(--navy-deep));
+  text-decoration: none;
+  position: relative; padding: 6px 0;
+  transition: color var(--dur-ui) var(--ease-out);
+}
+.fw-nav__link::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: currentColor; border-radius: var(--r-pill);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+.fw-nav__link:hover { color: var(--nav-fg-hover, var(--teal-ink)); }
+.fw-nav__link:hover::after,
+.fw-nav__link:focus-visible::after { transform: scaleX(1); }
+.fw-nav__link:active { opacity: 0.7; transition-duration: var(--dur-tap); }
+
+/* 44x44 is the tap target; the three bars stay 22px wide, so the button
+   grows in hit area only. */
 .fw-nav__toggle {
   display: none; background: transparent; border: 0;
-  width: 44px; height: 44px; cursor: pointer; padding: 0; font-family: inherit;
+  width: 44px; height: 44px; cursor: pointer; padding: 0;
 }
 .fw-nav__toggle-bar {
   display: block; width: 22px; height: 2px; margin: 5px auto;
-  background: var(--navy-deep);
-  transition: transform 240ms var(--ease-enter), opacity 200ms ease-out;
+  background: var(--nav-fg, var(--navy-deep));
+  transition: transform var(--dur-ui) var(--ease-out),
+              opacity var(--dur-ui) var(--ease-out),
+              background-color var(--dur-ui) var(--ease-in-out);
 }
 .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(2) { opacity: 0; }
 .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* Scrim. Outside the media query so the closed state is inert at every
+   width; only the mobile drawer ever opens it. */
 .fw-nav__scrim {
   position: fixed; inset: var(--nav-h) 0 0 0; z-index: 0;
   background: var(--black-45); touch-action: none;
   opacity: 0; visibility: hidden;
-  transition: opacity 240ms var(--ease-move), visibility 0s linear 240ms;
+  transition: opacity var(--dur-ui) var(--ease-in-out), visibility 0s var(--dur-ui);
 }
 .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__scrim {
   opacity: 1; visibility: visible; transition-delay: 0s;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 767px) {
   .fw-nav__toggle { display: inline-block; }
   .fw-nav__menu {
+    /* The drawer is a dark surface: it re-points the nav foreground pair. */
     --nav-fg: var(--text-on-dark);
     --nav-fg-hover: var(--mint);
     position: fixed; inset: var(--nav-h) 0 0 auto; z-index: 1;
     width: min(320px, 86vw);
     height: calc(100vh - var(--nav-h)); height: calc(100svh - var(--nav-h));
     background: var(--navy-deep);
-    box-shadow: -16px 0 40px var(--black-32);
+    box-shadow: var(--shadow-2);
+    /* Real travel, not a 16px fade. */
     transform: translateX(100%); opacity: 1; visibility: hidden;
-    transition: transform 320ms var(--ease-enter), visibility 0s linear 320ms;
-    padding: 16px 24px;
+    transition: transform var(--dur-ui) var(--ease-out), visibility 0s var(--dur-ui);
+    padding: var(--sp-4) var(--sp-5);
   }
   .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__menu {
     transform: translateX(0); visibility: visible; transition-delay: 0s;
   }
-  .fw-nav__list { flex-direction: column; align-items: stretch; gap: 4px; }
-  .fw-nav__link, .fw-nav__cta { height: 44px; display: flex; align-items: center; font-size: var(--fs-body); }
-  .fw-nav__cta { justify-content: center; margin-top: 12px; }
+  /* The drawer's travel has something to deliver: the links arrive behind it. */
+  .fw-nav__menu .fw-nav__list > li {
+    opacity: 0; transform: translateX(12px);
+    transition: opacity var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out);
+  }
+  .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__menu .fw-nav__list > li {
+    opacity: 1; transform: none;
+    transition-delay: calc(var(--dur-tap) + var(--li, 0) * var(--dur-tap));
+  }
+  .fw-nav__list { flex-direction: column; align-items: stretch; gap: var(--sp-1); }
+  .fw-nav__cta { margin-top: var(--sp-3); }
 }
 
-/* Root-only scroll lock. Adding it to <body> makes body the scroll container
-   and kills `position: sticky` on the nav. */
+/* Page scroll lock while the drawer is open. The ROOT alone — adding
+   `body { overflow: hidden }` as well makes <body> the scroll container,
+   which kills `position: sticky` on the nav. Set by the nav script. */
 html.fw-nav-locked { overflow: hidden; overscroll-behavior: none; }
 
-/* ==========================================================================
-   §3 — BREADCRUMB
-   ========================================================================== */
-.legal-crumb {
-  background: var(--white);
-  border-bottom: 1px solid var(--border-on-light);
-}
-.legal-crumb__inner {
-  max-width: 1200px; margin: 0 auto; padding: 10px 24px;
-  font-size: var(--fs-nano); line-height: 1.5;
-  color: var(--text-on-light-muted);
-}
-.legal-crumb ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; padding: 0; }
-.legal-crumb li { display: flex; align-items: center; gap: 6px; margin: 0; }
-.legal-crumb li + li::before { content: '\203A'; color: var(--text-on-light-muted); opacity: 0.7; }
-.legal-crumb a { color: var(--teal-text); text-decoration: none; }
-.legal-crumb a:hover { text-decoration: underline; }
-.legal-crumb [aria-current="page"] { color: var(--text-on-light); font-weight: 500; }
 
 /* ==========================================================================
-   §4 — PAGE TITLE
-   A light title block, not a second dark slab: the nav above it is white and
+   §3 — THE DOCUMENT RAIL
+   One rail for the breadcrumb, the title and the body, so the H1 and every
+   paragraph share a left edge. Ten of the twelve columns (--doc-content,
+   §9) — a document is designed at its measure, not stretched to the grid.
+   ========================================================================== */
+.legal-crumb__inner,
+.legal-title__inner,
+.legal .container {
+  width: 100%;
+  max-width: calc(var(--doc-content) + 2 * var(--margin));
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+
+/* ==========================================================================
+   §4 — BREADCRUMB
+   ========================================================================== */
+.legal-crumb {
+  background: var(--ground);
+  border-bottom: var(--hairline) solid var(--line);
+}
+.legal-crumb__inner { padding-block: var(--sp-3); color: var(--fg-muted); }
+.legal-crumb ol {
+  list-style: none; display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--sp-2); margin: 0; padding: 0;
+}
+.legal-crumb li { display: flex; align-items: center; gap: var(--sp-2); margin: 0; }
+.legal-crumb li + li::before { content: '\203A'; color: var(--fg-muted); opacity: 0.7; }
+.legal-crumb a { color: var(--accent); text-decoration: none; }
+.legal-crumb a:hover { text-decoration: underline; }
+.legal-crumb [aria-current="page"] { color: var(--fg); }
+
+
+/* ==========================================================================
+   §5 — PAGE TITLE
+   A light title block, not a second dark slab: the bar above it is white and
    the footer below is navy, so the page reads as one calm document.
    ========================================================================== */
 .legal-title {
-  background: var(--white);
-  border-bottom: 1px solid var(--border-on-light);
-  padding: 48px 0 40px;
+  background: var(--ground);
+  border-bottom: var(--hairline) solid var(--line);
+  padding-block: var(--sp-7) var(--sp-6);
 }
-.legal-title__inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
-.legal-title h1 {
-  font-size: var(--fs-h1); font-weight: 700; line-height: 1.10;
-  letter-spacing: -0.02em; color: var(--navy);
-  max-width: 18ch;
-}
-.legal-title p {
-  margin-top: 14px; max-width: var(--measure);
-  font-size: var(--fs-lead); line-height: 1.5; color: var(--text-on-light-muted);
-}
-.legal-title .updated {
-  margin-top: 10px; font-size: var(--fs-micro); color: var(--text-on-light-muted);
-}
+.legal-title h1 { color: var(--fg); }
+.legal-title .lead { margin-top: var(--sp-3); max-width: var(--measure-body); color: var(--fg-muted); }
+.legal-title .updated { margin-top: var(--sp-2); color: var(--fg-muted); }
+
 
 /* ==========================================================================
-   §5 — DOCUMENT BODY
-   All document styling is scoped under .legal so it cannot reach the header
-   or the footer (both of which contain <p>, <a>, <ul> and <h3>).
+   §6 — DOCUMENT BODY
+   Everything is scoped under .legal so it cannot reach the header or the
+   footer, both of which contain <p>, <a>, <ul> and <h3>.
    ========================================================================== */
-.legal .container {
-  max-width: 900px; margin: 0 auto; padding: 40px 24px 72px;
-}
+.legal .container { padding-block: var(--sp-6) var(--sp-9); }
 
-/* Table of contents — the first <nav> inside the document column. */
-.legal .container > nav {
-  background: var(--white); border: 1px solid var(--border-on-light);
-  border-radius: var(--r-lg); padding: 28px; margin-bottom: 40px;
-  box-shadow: var(--shadow-1);
-}
-.legal .container > nav h2 {
-  color: var(--navy); margin-bottom: 18px; font-size: var(--fs-h2);
-  border-bottom: 0; padding-bottom: 0;
-}
-.legal .container > nav ol { list-style-position: outside; padding-left: 20px; margin: 0; }
-.legal .container > nav li { margin-bottom: 8px; }
-.legal .container > nav a { color: var(--teal-text); text-decoration: none; }
-.legal .container > nav a:hover { color: var(--teal-text-hover); text-decoration: underline; }
+/* --- Table of contents: the first <nav> inside the document column. ------- */
+.legal .container > nav { margin-bottom: var(--sp-6); }
+.legal .container > nav h2 { margin-bottom: var(--sp-4); border-bottom: 0; padding-bottom: 0; }
+.legal .container > nav ol { list-style-position: outside; padding-left: var(--sp-5); margin: 0; }
+.legal .container > nav li { margin-bottom: var(--sp-2); }
+.legal .container > nav a { color: var(--accent); text-decoration: none; }
+.legal .container > nav a:hover { text-decoration: underline; }
 
-.legal section {
-  background: var(--white); border: 1px solid var(--border-on-light);
-  border-radius: var(--r-lg); padding: 32px; margin-bottom: 28px;
-  box-shadow: var(--shadow-1);
-}
-@media (max-width: 699px) { .legal section { padding: 22px 20px; } }
+/* --- Sections. Geometry is brand.css .card; only the gap is the page's. --- */
+.legal section { margin-bottom: var(--sp-5); }
 
 .legal h2 {
-  color: var(--navy); font-size: var(--fs-h2); font-weight: 700;
-  line-height: 1.2; letter-spacing: -0.01em;
-  margin-bottom: 18px; padding-bottom: 12px;
-  border-bottom: 1px solid var(--rule-on-light);
-  scroll-margin-top: calc(var(--nav-h) + 16px);
+  color: var(--fg);
+  margin-bottom: var(--sp-4); padding-bottom: var(--sp-3);
+  border-bottom: var(--hairline) solid var(--line);
+  scroll-margin-top: calc(var(--nav-h) + var(--sp-4));
 }
-.legal h3 {
-  color: var(--navy); font-size: var(--fs-h3); font-weight: 600;
-  line-height: 1.3; margin: 28px 0 10px;
-  scroll-margin-top: calc(var(--nav-h) + 16px);
-}
-.legal h4 {
-  color: var(--navy); font-size: var(--fs-h4); font-weight: 600;
-  line-height: 1.35; margin: 20px 0 8px;
-}
-.legal p {
-  margin-bottom: 14px; color: var(--text-on-light);
-  max-width: var(--measure);
-}
-.legal ul, .legal ol { margin: 14px 0 14px 22px; }
-.legal li { margin-bottom: 8px; max-width: var(--measure); }
-.legal li > ul, .legal li > ol { margin-top: 8px; }
-.legal strong { color: var(--navy); font-weight: 600; }
+.legal h3 { color: var(--fg); margin: var(--sp-6) 0 var(--sp-2); scroll-margin-top: calc(var(--nav-h) + var(--sp-4)); }
+.legal h4 { color: var(--fg); margin: var(--sp-5) 0 var(--sp-2); }
+.legal p  { margin-bottom: var(--sp-3); color: var(--fg); max-width: var(--measure-body); }
+.legal ul, .legal ol { margin: var(--sp-3) 0 var(--sp-3) var(--sp-5); }
+.legal li { margin-bottom: var(--sp-2); max-width: var(--measure-body); }
+.legal li > ul, .legal li > ol { margin-top: var(--sp-2); }
+.legal strong { color: var(--fg); }
+.legal .definition-term { color: var(--fg); }
 
-/* Links in running text: the darkened teal, and underlined — colour is never
-   the only signal (UI §8.5 rule 6). */
+/* --- Links in running copy. brand.css §9.6 gives every in-copy link ONE
+       treatment: coloured, underlined at rest, and the rule never leaves on
+       hover. --accent on a light ground is --teal-ink, 5.13:1 on white. ---- */
 .legal a {
-  color: var(--teal-text);
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px;
   text-decoration-thickness: 1px;
 }
-.legal a:hover { color: var(--teal-text-hover); text-decoration-thickness: 2px; }
+.legal a:hover { text-decoration-thickness: 2px; }
 
-/* The inline "Back to Top" pill that ends most sections. */
-.legal .back-to-top {
-  display: inline-block; margin-top: 20px; padding: 10px 18px;
-  min-height: 44px; line-height: 24px;
-  background: var(--navy); color: var(--white);
-  border-radius: var(--r-md); font-size: var(--fs-micro); font-weight: 500;
-  text-decoration: none; transition: background 200ms ease-out;
-}
-.legal .back-to-top:hover { background: var(--navy-deep); color: var(--white); text-decoration: none; }
+/* --- The inline "Back to Top" that ends most sections. brand.css .textlink
+       draws it: the system's secondary action is a text link with a rule, not
+       a second box, so a document does not sprinkle 66 buttons down its
+       length (UI U4 — one boxed action per view; here it is the nav CTA). -- */
+.legal .back-to-top { margin-top: var(--sp-4); }
 
-/* ---- Callout boxes. Tailwind slate/amber/red/blue retired for brand tokens.
-   The fill is WHITE, not a tint, and the 4px left rule carries the colour.
-   Reason, measured: --teal-text #00847E is 4.563:1 on #ffffff — 0.06 of
-   headroom. Any tint at all, even 3% mint, drops a link inside the box to
-   ~4.48:1 and fails AA. Keeping every link on pure white is what makes one
-   link colour work across all eight pages. */
+/* --- Callouts. The fill is WHITE, not a tint, and the 4px left rule carries
+       the colour. Measured reason: an in-copy link at --teal-ink has ~0.6 of
+       contrast headroom on white; ANY tint behind it, even 3% mint, drops the
+       pair under 4.5:1. Pure white under every link is what lets one link
+       colour work across all nine pages. Five brand colours, no red — the
+       warning rule is --gold, not a red. --------------------------------- */
 .legal .highlight-box,
-.legal .callout {
-  background: var(--white);
-  border: 1px solid var(--border-on-light); border-left: 4px solid var(--teal);
-  padding: 16px 20px; margin: 20px 0; border-radius: 0 var(--r-sm) var(--r-sm) 0;
-}
-.legal .warning-box {
-  background: var(--white);
-  border: 1px solid var(--border-on-light); border-left: 4px solid var(--gold);
-  padding: 16px 20px; margin: 20px 0; border-radius: 0 var(--r-sm) var(--r-sm) 0;
-}
+.legal .callout,
+.legal .warning-box,
 .legal .info-box,
 .legal .mitc-box {
   background: var(--white);
-  border: 1px solid var(--border-on-light); border-left: 4px solid var(--navy);
-  padding: 16px 20px; margin: 20px 0; border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  border: var(--hairline) solid var(--line);
+  padding: var(--sp-4) var(--sp-5);
+  margin: var(--sp-5) 0;
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
 }
+.legal .highlight-box,
+.legal .callout    { border-left: 4px solid var(--teal-ink); }
+.legal .warning-box{ border-left: 4px solid var(--gold); }
+.legal .info-box,
+.legal .mitc-box   { border-left: 4px solid var(--navy-deep); }
 .legal .highlight-box p:last-child,
 .legal .callout p:last-child,
 .legal .warning-box p:last-child,
 .legal .info-box p:last-child,
 .legal .mitc-box p:last-child { margin-bottom: 0; }
 
-/* ---- Neutral cards */
+/* --- Neutral cards. Geometry is brand.css .card; the page sets the gap. --- */
 .legal .data-card,
 .legal .data-category,
-.legal .contact-card {
-  background: var(--white); border: 1px solid var(--border-on-light);
-  border-radius: var(--r-sm); padding: 20px; margin: 16px 0;
-  box-shadow: var(--shadow-1);
-}
+.legal .contact-card,
+.legal .snapshot-card { margin: var(--sp-4) 0; }
 .legal .data-card h4,
 .legal .data-category h4,
-.legal .contact-card h4 { margin-top: 0; margin-bottom: 10px; color: var(--navy); }
+.legal .contact-card h4 { margin-top: 0; margin-bottom: var(--sp-2); }
 
-/* ---- Do / Don't pairs (investor charter). The ✔ / ❌ glyph carries the
-        meaning; colour only reinforces it. */
-.legal .do-dont-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 20px 0;
-}
-.legal .do-card {
-  background: var(--white); border: 1px solid var(--border-on-light);
-  border-left: 4px solid var(--teal);
-  border-radius: 0 var(--r-sm) var(--r-sm) 0; padding: 20px;
-}
+/* --- Do / Don't pairs (investor charter). The glyph carries the meaning;
+       colour only reinforces it. -------------------------------------------- */
+.legal .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin: var(--sp-5) 0; }
+.legal .do-card,
 .legal .dont-card {
-  background: var(--white); border: 1px solid var(--border-on-light);
-  border-left: 4px solid var(--gold);
-  border-radius: 0 var(--r-sm) var(--r-sm) 0; padding: 20px;
+  background: var(--white);
+  border: var(--hairline) solid var(--line);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: var(--sp-5);
 }
-.legal .do-card h4, .legal .dont-card h4 { margin-top: 0; margin-bottom: 8px; color: var(--navy); }
+.legal .do-card   { border-left: 4px solid var(--teal-ink); }
+.legal .dont-card { border-left: 4px solid var(--gold); }
+.legal .do-card h4, .legal .dont-card h4 { margin-top: 0; margin-bottom: var(--sp-2); }
 .legal .do-card p:last-child, .legal .dont-card p:last-child { margin-bottom: 0; }
 @media (max-width: 767px) { .legal .do-dont-grid { grid-template-columns: 1fr; } }
 
-/* ---- Snapshot tiles (complaints) */
+/* --- Snapshot tiles (complaints) ----------------------------------------- */
 .legal .snapshot-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 14px; margin: 20px 0;
+  gap: var(--sp-3); margin: var(--sp-5) 0;
 }
-.legal .snapshot-card {
-  background: var(--off-white); border: 1px solid var(--border-on-light);
-  border-radius: var(--r-sm); padding: 20px; text-align: center;
-}
-.legal .snapshot-label {
-  font-size: var(--fs-nano); font-weight: 500; color: var(--text-on-light-muted);
-  margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em;
-}
-.legal .snapshot-value {
-  font-size: 32px; font-weight: 600; color: var(--navy);
-  font-variant-numeric: tabular-nums; line-height: 1;
-}
+.legal .snapshot-card { text-align: center; }
+.legal .snapshot-label { color: var(--fg-muted); margin-bottom: var(--sp-2); text-transform: uppercase; }
+.legal .snapshot-value { color: var(--fg); }
 
-/* ---- Tables. Wide tables scroll inside their own box, never the page. */
+/* --- Tables. A wide table scrolls inside its own box, never the page. ----- */
 .legal .table-scroll {
-  overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 20px 0;
-  /* Edge shading so a clipped column reads as "there is more this way". */
-  box-shadow: inset -14px 0 14px -14px rgba(0,45,86,0.28);
+  overflow-x: auto; -webkit-overflow-scrolling: touch; margin: var(--sp-5) 0;
+  /* Edge shading, so a clipped column reads as "there is more this way". */
+  box-shadow: inset -14px 0 14px -14px var(--navy-32);
 }
-.legal table {
-  width: 100%; border-collapse: collapse; margin: 20px 0;
-  font-variant-numeric: tabular-nums;
-}
+.legal table { width: 100%; border-collapse: collapse; margin: var(--sp-5) 0; }
 .legal .table-scroll table { margin: 0; min-width: 520px; }
 .legal th, .legal td {
-  padding: 12px 15px; text-align: left; vertical-align: top;
-  border-bottom: 1px solid var(--border-on-light);
-  font-size: var(--fs-micro);
+  padding: var(--sp-3) var(--sp-4); text-align: left; vertical-align: top;
+  border-bottom: var(--hairline) solid var(--line);
+  color: var(--fg);
 }
-.legal th { background: var(--off-white); color: var(--navy); font-weight: 600; vertical-align: middle; }
+.legal th { background: var(--surface-light); vertical-align: middle; }
 .legal tbody tr:hover td { background: var(--navy-04); }
-/* The complaints tables are numeric grids: centre everything but the row label. */
-.legal .table-scroll th, .legal .table-scroll td { text-align: center; border: 1px solid var(--border-on-light); }
-.legal .table-scroll td:first-child { text-align: left; font-weight: 500; }
-.legal .table-scroll th { background: var(--navy); color: var(--white); }
+/* The complaints tables are numeric grids: centre all but the row label. */
+.legal .table-scroll th,
+.legal .table-scroll td { text-align: center; border: var(--hairline) solid var(--line); }
+.legal .table-scroll td:first-child { text-align: left; }
+.legal .table-scroll th { background: var(--navy-deep); color: var(--text-on-dark); }
 
+/* Inline machine strings. brand.css owns the mono face; the tint is the
+   page applying a token. */
 .legal code {
-  font-family: var(--font-mono); font-size: 0.9em;
+  font-family: var(--font-mono);
   background: var(--navy-04); padding: 2px 6px; border-radius: 4px;
 }
-.legal .definition-term { font-weight: 600; color: var(--navy); }
 
 @media (max-width: 699px) {
-  .legal .container { padding: 28px 20px 56px; }
-  .legal th, .legal td { padding: 10px 12px; font-size: var(--fs-nano); }
+  .legal th, .legal td { padding: var(--sp-2) var(--sp-3); }
 }
 
+
 /* ==========================================================================
-   §6 — BACK TO TOP (floating)
-   Appears after one screen of scroll. 48px target, real <button>, so it is
-   tab-reachable; `visibility: hidden` keeps it out of the tab order until it
-   is on screen.
+   §7 — THE 404 PANEL
+   One light panel, one statement, two actions. Nothing else on the page.
+   ========================================================================== */
+.notfound { padding-block: var(--sp-9) var(--sp-10); background: var(--ground); }
+.notfound__inner { text-align: left; }
+.notfound__panel { max-width: var(--measure-body); }
+.notfound h1 { color: var(--fg); margin-bottom: var(--sp-4); }
+.notfound__sub { color: var(--fg-muted); margin-bottom: var(--sp-7); max-width: var(--measure-lead); }
+.notfound__actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+
+/* ==========================================================================
+   §8 — BACK TO TOP (floating)
+   Appears after one screen of scroll. A real <button>, 48px, tab-reachable;
+   `visibility: hidden` keeps it out of the tab order until it is on screen.
    ========================================================================== */
 .fw-totop {
-  position: fixed; right: 20px; bottom: 20px; z-index: 40;
-  width: 48px; height: 48px; border: 1px solid var(--border-on-light);
-  border-radius: var(--r-pill); background: var(--white); color: var(--navy);
+  position: fixed; right: var(--sp-5); bottom: var(--sp-5); z-index: 40;
+  width: 48px; height: 48px;
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--white); color: var(--navy-deep);
   box-shadow: var(--shadow-1); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-family: inherit;
   opacity: 0; visibility: hidden; transform: translateY(8px);
-  transition: opacity 200ms var(--ease-move), transform 200ms var(--ease-move), visibility 0s linear 200ms;
+  transition: opacity var(--dur-ui) var(--ease-in-out),
+              transform var(--dur-ui) var(--ease-in-out),
+              visibility 0s linear var(--dur-ui);
 }
 .fw-totop[data-visible="true"] {
   opacity: 1; visibility: visible; transform: translateY(0); transition-delay: 0s;
 }
-.fw-totop:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.fw-totop:hover { background: var(--navy-deep); color: var(--white); border-color: var(--navy-deep); }
 .fw-totop svg { width: 20px; height: 20px; display: block; }
-@media (min-width: 700px) { .fw-totop { right: 28px; bottom: 28px; } }
+@media (min-width: 700px) { .fw-totop { right: var(--sp-6); bottom: var(--sp-6); } }
+
 
 /* ==========================================================================
-   §7 — FOOTER  (reproduced from index.html §15 — keep the two in step)
+   §9 — FOOTER LAYOUT  (lifted from index.html §15 — keep the two in step)
+   brand.css §8 sets every type role in here and §10 sets the padding; this
+   is the grid and the rules.
    ========================================================================== */
-.site-footer {
-  background: var(--navy-deep); color: var(--white-56);
-  padding: 64px 0 36px; font-size: var(--fs-micro); line-height: 1.6;
-}
-.site-footer__inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+.site-footer { background: var(--navy-deep); color: var(--white-56); }
 .site-footer__top {
-  display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px;
-  padding-bottom: 32px; border-bottom: 1px solid var(--white-08);
-  margin-bottom: 24px;
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: var(--sp-7);
+  padding-bottom: var(--sp-6); border-bottom: var(--hairline) solid var(--white-08);
+  margin-bottom: var(--sp-5);
 }
-.site-footer__brand h3 {
-  font-size: var(--fs-lead); font-weight: 700; color: var(--text-on-dark);
-  margin-bottom: 10px; letter-spacing: -0.3px;
-}
-.site-footer__brand p { font-size: var(--fs-micro); line-height: 1.65; color: var(--white-56); max-width: 40ch; }
-.site-footer__col h3 {
-  font-size: var(--fs-nano); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--text-on-dark); margin-bottom: 14px;
-}
-.site-footer__col ul { list-style: none; margin: 0; padding: 0; }
-.site-footer__col li { margin: 0; }
+.site-footer__brand h3 { color: var(--text-on-dark); margin-bottom: var(--sp-2); }
+.site-footer__brand p { color: var(--white-56); }
+.site-footer__col h3 { text-transform: uppercase; color: var(--text-on-dark); margin-bottom: var(--sp-3); }
+.site-footer__col ul { list-style: none; }
 .site-footer__col a {
-  display: block; color: var(--white-88); text-decoration: none;
-  font-size: var(--fs-micro); padding: 4px 0; transition: color 150ms ease-out;
+  display: block; color: var(--white-56); margin-bottom: var(--sp-2);
+  transition: color var(--dur-tap) var(--ease-out);
 }
-.site-footer__col a:hover { color: var(--mint); }
-.site-footer__legal {
-  font-size: var(--fs-micro); color: var(--white-56); line-height: 1.7;
-}
+.site-footer__col a:hover { color: var(--text-on-dark); }
+.site-footer__legal { color: var(--white-56); }
 .site-footer__legal p { max-width: 90ch; }
 .site-footer__legal strong { color: var(--white-88); }
-.site-footer__legal p + p { margin-top: 8px; }
+.site-footer__legal p + p { margin-top: var(--sp-2); }
 .site-footer__legal a { color: var(--white-88); }
 .site-footer__legal em { font-style: normal; }
 .site-footer__copyright {
-  margin-top: 20px; padding-top: 20px;
-  border-top: 1px solid var(--white-08);
-  font-size: var(--fs-nano); color: var(--white-56);
-  display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;
+  margin-top: var(--sp-5); padding-top: var(--sp-5);
+  border-top: var(--hairline) solid var(--white-08); color: var(--white-56);
+  display: flex; flex-wrap: wrap; gap: var(--sp-3);
+  justify-content: space-between; align-items: center;
 }
-.site-footer__copyright a { color: var(--white-88); text-decoration: none; }
-.site-footer__copyright a:hover { color: var(--mint); }
+.site-footer__copyright a { color: var(--white-56); text-decoration: none; }
+.site-footer__copyright a:hover { color: var(--text-on-dark); }
 @media (max-width: 900px) {
-  .site-footer__top { grid-template-columns: 1fr; gap: 28px; }
-  .site-footer__inner { padding: 0 24px; }
+  .site-footer__top { grid-template-columns: 1fr; gap: var(--sp-6); }
 }
 
+
 /* ==========================================================================
-   §8 — REDUCED MOTION
+   §10 — PRINT
+   A regulator prints these. Drop every piece of chrome, unbox the document,
+   and put the destination of a link next to the link.
+   ========================================================================== */
+@page { margin: 16mm 14mm; }
+
+@media print {
+  .fw-nav, .fw-nav__scrim, .fw-nav__menu, .legal-crumb,
+  .fw-totop, .skip-link, .back-to-top, .site-footer__top { display: none !important; }
+
+  /* The ink stays brand navy: #002d56 prints as a true dark and is what the
+     document looks like on screen. Only the grounds go to paper white. */
+  html, body { background: #fff !important; }
+  .legal .container, .legal-title__inner { max-width: none; padding-inline: 0; }
+  .legal .container { padding-block: 0; }
+  .legal-title { border-bottom: 1pt solid var(--navy-deep); padding-block: 0 12pt; }
+  /* Two-digit list markers need room once the container padding is gone. */
+  .legal .container > nav ol { padding-left: 24pt; }
+
+  .legal section,
+  .legal .card,
+  .legal .data-card, .legal .data-category, .legal .contact-card,
+  .legal .snapshot-card, .legal .do-card, .legal .dont-card {
+    border: 0 !important; box-shadow: none !important; padding: 0 !important;
+    margin: 0 0 12pt !important; background: #fff !important;
+    break-inside: avoid;
+  }
+  /* The left rule survives — it is the only thing distinguishing a callout
+     once the box is gone — but the hue does not print reliably, so each one
+     goes to the ink colour and keeps its 4px weight. */
+  .legal .highlight-box, .legal .callout,
+  .legal .warning-box, .legal .info-box, .legal .mitc-box,
+  .legal .do-card, .legal .dont-card {
+    border: 0 !important; border-left: 2pt solid var(--navy-deep) !important;
+    padding: 0 0 0 10pt !important; break-inside: avoid;
+  }
+  .legal h2, .legal h3, .legal h4 { break-after: avoid; }
+  .legal table { break-inside: auto; }
+  .legal tr { break-inside: avoid; }
+  .legal .table-scroll { overflow: visible !important; box-shadow: none !important; }
+  /* On paper there is no sideways scroll: the widest table has to fit the
+     page, so its columns are forced into the measure instead of clipped. */
+  .legal .table-scroll table { min-width: 0; width: 100%; table-layout: fixed; }
+  .legal .table-scroll th, .legal .table-scroll td {
+    overflow-wrap: break-word; hyphens: auto; padding: 4pt 3pt;
+  }
+  .legal th, .legal .table-scroll th {
+    background: #eee !important; color: var(--navy-deep) !important;
+    border-color: var(--navy-32) !important;
+  }
+  .legal p, .legal li { max-width: none; }
+  .legal a { text-decoration: underline; }
+  .legal a[href^="http"]::after { content: " (" attr(href) ")"; }
+}
+
+
+/* ==========================================================================
+   §11 — OVERRIDES
+   The ONLY declarations in this file that brand.css would otherwise own.
+   Three of them, all listed in the Wave 3 report. Every value is a brand.css
+   token; none introduces a new colour, size, weight or ratio.
+   ========================================================================== */
+
+/* O1 · --doc-content — the document rail.
+   brand.css §4 owns container widths and offers three measures as column
+   spans (.m-full 12, .m-text 8, .m-narrow 6). A legal document sits between
+   two of them: 8 columns clips a five-column table, 12 columns leaves a
+   68ch paragraph floating in 400px of air. This is the 10-column span, and
+   it does not grow past 1024 — a document is designed at its measure. */
+:root { --doc-content: 100%; }
+@media (min-width: 1024px) { :root { --doc-content: 900px; } }
+
+/* O2 · .legal h3 — the document sub-heading.
+   brand.css §8 has no role between Title 2 and Lead, because the homepage
+   never nests three heading levels. A 43,870px contract does. This is the
+   step brand.css already defines for a Title 2 in a narrow card (§9.3):
+   Lead size, Lead leading, semi weight, snug tracking. No new value. */
+.legal h3 {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-snug);
+}
+
+/* O3 · .legal h4 — the fourth level, and the heading inside a small card.
+   The Body role at the emphasis weight brand.css already uses for `strong`.
+   No new size, no new weight. */
+.legal h4 {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-none);
+}
+
+/* O4 · th weight. brand.css already declares this exact pair for the
+   homepage's comparison table (`.compare th` — caption at semi). The legal
+   tables carry class="caption" for the size; this is only the weight, so a
+   column head reads as a name rather than as another cell. */
+.legal th { font-weight: var(--fw-semi); }
+
+
+/* ==========================================================================
+   §12 — REDUCED MOTION
+   brand.css §11 covers the site; this adds only what lives in this file.
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-  .fw-nav__cta:hover { transform: none; }
+  .fw-totop { transition: none; }
 }

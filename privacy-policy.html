@@ -9,7 +9,7 @@
     <meta name="description" content="How Finwiser collects, uses, stores, shares and protects your personal data across its website and mobile app, and the rights you have over that data.">
 
     <!-- Icons & theme -->
-    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16">
@@ -40,7 +40,8 @@
     <title>Finwiser Privacy Policy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:ital,wght@1,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/brand.css">
   <link rel="stylesheet" href="/legal.css">
   <!-- Breadcrumb (SEO §8.5) -->
   <script type="application/ld+json">
@@ -69,14 +70,47 @@
   }
   </script>
 </head>
-<body>
+<body data-theme="light">
   <a href="#main" class="skip-link">Skip to main content</a>
 
-  <!-- Shared site header — mirrors index.html §1. Light ground. -->
+  <!-- ============================================================ -->
+  <!-- §1 — NAV  (markup mirrors index.html §1; asset and section    -->
+  <!--      links are absolute so the bar works from any depth)      -->
+  <!-- ============================================================ -->
   <header class="fw-nav" id="top" role="banner">
     <div class="fw-nav__inner">
+      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
+           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
+           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
+             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
+                     lockup = 63% of a 390px viewport, over the 40% cap, so
+                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
+                     30px where the render is mud).
+             >=1024  nav logo 48px -> head 48px, the rule is met, and the
+                     247px lockup fits a 64px bar at 75%. Served as rasters,
+                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
+                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
+           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
+           two are drop-in swaps and nothing reflows at the breakpoint. -->
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
-        <img class="fw-nav__logo-img" src="/finwiserlogo.svg" alt="Finwiser" width="274" height="54">
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
+               src="/assets/finwy-3d/finwiser-logo-flat.svg"
+               alt="Finwiser" width="330" height="64" decoding="async">
+        </picture>
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
+               src="/assets/finwy-3d/finwiser-logo-flat-reversed.svg"
+               alt="" width="330" height="64" decoding="async" aria-hidden="true">
+        </picture>
       </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
@@ -86,18 +120,19 @@
       <div class="fw-nav__scrim" aria-hidden="true"></div>
       <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
         <ul class="fw-nav__list">
-          <li><a class="fw-nav__link" href="/#how">How it works</a></li>
-          <li><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
-          <li><a class="fw-nav__link" href="/#team">Team</a></li>
-          <li><a class="fw-nav__link" href="/#faq">Help</a></li>
-          <li><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+          <li style="--li:0"><a class="fw-nav__link" href="/#capabilities">What it does</a></li>
+          <li style="--li:1"><a class="fw-nav__link" href="/#how">How it works</a></li>
+          <li style="--li:2"><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
+          <li style="--li:3"><a class="fw-nav__link" href="/#team">Team</a></li>
+          <li style="--li:4"><a class="fw-nav__link" href="/#faq">Help</a></li>
+          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <nav class="legal-crumb" aria-label="Breadcrumb">
-    <div class="legal-crumb__inner">
+    <div class="legal-crumb__inner caption">
       <ol>
         <li><a href="/">Home</a></li>
         <li><span>Legal</span></li>
@@ -110,14 +145,14 @@
 
     <div class="legal-title">
       <div class="legal-title__inner">
-        <h1>Finwiser Privacy Policy</h1>
-        <p class="updated">Last Updated: 22 April 2026</p>
+        <h1 class="h1">Finwiser Privacy Policy</h1>
+        <p class="caption updated">Last Updated: 22 April 2026</p>
       </div>
     </div>
 
     <div class="container">
-        <nav>
-            <h2>Table of Contents</h2>
+        <nav class="card" aria-label="Table of contents">
+            <h2 class="h2">Table of Contents</h2>
             <ol>
                 <li><a href="#section-1">Applicability and Scope</a></li>
                 <li><a href="#section-2">Categories of Personal Data Collected</a></li>
@@ -134,8 +169,8 @@
         </nav>
 
         <!-- Section 1 -->
-        <section id="section-1">
-            <h2>1. Applicability and Scope</h2>
+        <section class="card" id="section-1">
+            <h2 class="h2">1. Applicability and Scope</h2>
             <p>This Privacy Policy describes how Finwiser ("we", "us", "our") collects, uses, stores, shares, and protects personal data when you access or use the Finwiser Platform (website/mobile application and related services).</p>
 
             <h3>1.1 About the entities behind Finwiser</h3>
@@ -162,7 +197,7 @@
 
             <p>This Policy should be read together with:</p>
             <ul>
-                <li>the <a href="terms.html">Platform Terms & Conditions</a>; and</li>
+                <li>the <a href="terms.html">Platform Terms &amp; Conditions</a>; and</li>
                 <li>if you choose to avail regulated investment advisory services, the Investment Advisory Agreement.</li>
             </ul>
 
@@ -170,16 +205,16 @@
                 <p><strong>Important:</strong> Use of the Platform (including viewing projections or generic insights) does not create an investment advisory relationship. A regulated advisory relationship arises only if you execute a valid Investment Advisory Agreement.</p>
             </div>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 2 -->
-        <section id="section-2">
-            <h2>2. Categories of Personal Data Collected</h2>
+        <section class="card" id="section-2">
+            <h2 class="h2">2. Categories of Personal Data Collected</h2>
             <p>Depending on how you use the Platform, Finwiser may process the following categories of personal data:</p>
 
             <h3>2.1 Data You Provide Directly</h3>
-            <div class="data-category">
+            <div class="card data-category">
                 <ul>
                     <li>identity and contact information (name, mobile number, email address);</li>
                     <li>demographic details you choose to provide (such as age or date of birth, where required for features);</li>
@@ -188,7 +223,7 @@
             </div>
 
             <h3>2.2 Device, Technical, and Usage Data</h3>
-            <div class="data-category">
+            <div class="card data-category">
                 <ul>
                     <li>device identifiers, device type, operating system and app version;</li>
                     <li>IP address and approximate location signals derived from IP (if applicable);</li>
@@ -198,7 +233,7 @@
             </div>
 
             <h3>2.3 Financial Information Accessed via Account Aggregator (Consent-Based)</h3>
-            <div class="data-category">
+            <div class="card data-category">
                 <p>Where you provide explicit consent through the Account Aggregator framework, Finwiser may access and process Financial Information made available by Financial Information Providers (such as banks, AMCs, and other regulated entities) through your chosen Account Aggregator. This may include, depending on consent scope:</p>
                 <ul>
                     <li>account and holding summaries;</li>
@@ -210,7 +245,7 @@
             </div>
 
             <h3>2.4 Derived or Generated Data</h3>
-            <div class="data-category">
+            <div class="card data-category">
                 <p>Finwiser may generate derived data from inputs and permitted data sources, such as:</p>
                 <ul>
                     <li>net worth summaries, ratios, and diagnostics;</li>
@@ -225,12 +260,12 @@
                 <p>The Platform is intended for use by individuals aged <strong>18 years and above</strong>. Finwiser does not knowingly collect personal data from minors. If we become aware that personal data of a minor has been collected without appropriate legal authorisation, such data will be deleted in accordance with Applicable Law.</p>
             </div>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 3 -->
-        <section id="section-3">
-            <h2>3. Purpose of Processing Personal Data</h2>
+        <section class="card" id="section-3">
+            <h2 class="h2">3. Purpose of Processing Personal Data</h2>
             <p>Finwiser processes personal data only for specific, explicit, and lawful purposes consistent with the DPDP Act and Applicable Law. The purposes below are grouped by context.</p>
 
             <h3>3.1 Platform Access and Account Management (Mandatory for All Users)</h3>
@@ -300,12 +335,12 @@
             </ul>
             <p>This may continue after account closure to the extent required by law.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 4 -->
-        <section id="section-4">
-            <h2>4. Consent, Withdrawal, and Consequences</h2>
+        <section class="card" id="section-4">
+            <h2 class="h2">4. Consent, Withdrawal, and Consequences</h2>
 
             <h3>4.1 Basis of Processing and Consent Structure</h3>
             <p>Finwiser processes personal data on the basis of:</p>
@@ -384,12 +419,12 @@
             <p>Where such processing is necessary, Finwiser may be unable to provide access to those features in the absence of the required consent.</p>
             <p>Account creation, authentication, and basic Platform access may remain available; however, refusal or withdrawal of consent may result in restricted or no access to features that depend on such processing.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 5 -->
-        <section id="section-5">
-            <h2>5. Data Sharing and Disclosure</h2>
+        <section class="card" id="section-5">
+            <h2 class="h2">5. Data Sharing and Disclosure</h2>
 
             <h3>5.1 General Principle</h3>
             <div class="highlight-box">
@@ -491,12 +526,12 @@
                 <li>with appropriate contractual and security safeguards.</li>
             </ul>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 6 -->
-        <section id="section-6">
-            <h2>6. Data Retention and Erasure</h2>
+        <section class="card" id="section-6">
+            <h2 class="h2">6. Data Retention and Erasure</h2>
 
             <h3>6.1 Retention Principles</h3>
             <p>Finwiser retains personal data only for as long as necessary to:</p>
@@ -587,12 +622,12 @@
                 <li>product improvement.</li>
             </ul>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 7 -->
-        <section id="section-7">
-            <h2>7. Data Security Safeguards</h2>
+        <section class="card" id="section-7">
+            <h2 class="h2">7. Data Security Safeguards</h2>
 
             <h3>7.1 Security Principles</h3>
             <p>Finwiser implements reasonable security safeguards, appropriate to the nature of personal data processed, in accordance with the <a href="https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a> and Applicable Law.</p>
@@ -643,12 +678,12 @@
                 <li>ensuring the security of their devices and networks used to access the Platform.</li>
             </ul>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 8 -->
-        <section id="section-8">
-            <h2>8. User Rights under the Digital Personal Data Protection Act, 2023</h2>
+        <section class="card" id="section-8">
+            <h2 class="h2">8. User Rights under the Digital Personal Data Protection Act, 2023</h2>
             <p>Finwiser recognises and facilitates the rights available to Users as Data Principals under the DPDP Act, subject to Applicable Law.</p>
 
             <h3>8.1 Right to Access Information</h3>
@@ -704,12 +739,12 @@
                 <li>necessary to protect the rights of other users.</li>
             </ul>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 9 -->
-        <section id="section-9">
-            <h2>9. Grievance Redressal</h2>
+        <section class="card" id="section-9">
+            <h2 class="h2">9. Grievance Redressal</h2>
 
             <h3>9.1 Grievance Redressal Officer</h3>
             <p>In accordance with the <a href="https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a> and Applicable Law, Finwiser has appointed a Grievance Redressal Officer to address concerns relating to the processing of personal data and the exercise of Data Principal rights.</p>
@@ -746,12 +781,12 @@
             <p>If a grievance is not resolved to your satisfaction, you may exercise your statutory right to escalate the matter before the appropriate authority under Applicable Law.</p>
             <p>Nothing in this Privacy Policy restricts your right to approach a competent regulatory or judicial authority.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 10 -->
-        <section id="section-10">
-            <h2>10. Updates to This Privacy Policy</h2>
+        <section class="card" id="section-10">
+            <h2 class="h2">10. Updates to This Privacy Policy</h2>
 
             <h3>10.1 Policy Updates</h3>
             <p>Finwiser may update this Privacy Policy from time to time to reflect:</p>
@@ -774,15 +809,15 @@
             <p>Your continued use of the Platform after the effective date of an updated Privacy Policy constitutes acceptance of such updated Privacy Policy, to the extent permitted under Applicable Law.</p>
             <p>If you do not agree with the updated Privacy Policy, you may discontinue use of the Platform and request account closure.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 11 -->
-        <section id="section-11">
-            <h2>11. Governing Law and Jurisdiction</h2>
+        <section class="card" id="section-11">
+            <h2 class="h2">11. Governing Law and Jurisdiction</h2>
             <p>This Privacy Policy is governed by and construed in accordance with the laws of India. The courts at <strong>Bengaluru, Karnataka</strong> shall have exclusive jurisdiction over any disputes arising out of or in connection with this policy.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
     </div>
 
@@ -791,24 +826,29 @@
   <!-- Shared site footer — identical markup on all eight legal pages.
        Labels and grouping taken verbatim from index.html §15; duplicate
        labels for one destination ("Google Play", "Help") dropped. -->
-  <footer class="site-footer" role="contentinfo">
+  <!-- ============================================================ -->
+  <!-- §15 — FOOTER  (markup mirrors index.html §15)                 -->
+  <!-- ============================================================ -->
+  <footer class="site-footer" role="contentinfo" data-theme="dark">
     <div class="site-footer__inner">
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <h3>Finwiser</h3>
-          <p>The fee-only fiduciary your bank doesn&rsquo;t want you to have. For the eighty million salaried Indians the industry forgot.</p>
+          <p>An AI-powered, SEBI-regulated Financial Operating System for India&rsquo;s middle class. For the salaried Indians the industry forgot.</p>
         </div>
         <nav class="site-footer__col" aria-label="Footer &mdash; Product">
           <h3>Product</h3>
           <ul>
             <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play</a></li>
             <li><a href="/#pricing">Pricing</a></li>
             <li><a href="/#how">How it works</a></li>
             <li><a href="/#team">Team</a></li>
-            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/#faq">Help</a></li>
+            <li><a href="/fw-deck-2026/">For investors &mdash; read the deck</a></li>
           </ul>
         </nav>
-        <nav class="site-footer__col" aria-label="Footer &mdash; Compliance">
+        <nav class="site-footer__col" id="legal" aria-label="Footer &mdash; Compliance">
           <h3>Compliance</h3>
           <ul>
             <li><a href="/terms.html">Terms &amp; Conditions</a></li>
@@ -824,7 +864,7 @@
           <h3>Account</h3>
           <ul>
             <li><a href="/delete-account.html">Delete your account</a></li>
-            <li><a href="mailto:helpdesk@finwiser.org">Email us</a></li>
+            <li><a href="/#faq">Help</a></li>
           </ul>
         </nav>
       </div>
@@ -839,7 +879,6 @@
 
       <div class="site-footer__copyright">
         <span>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</span>
-        <span>For investors &rarr; <a href="/fw-deck-2026/">view the deck</a></span>
       </div>
     </div>
   </footer>
@@ -849,7 +888,9 @@
   </button>
 
   <script>
-    /* Two behaviours only: the header drawer and the back-to-top control.
+    /* Three behaviours: the header drawer, the back-to-top control, and
+       the nav material (is-scrolled / is-over-dark), so the bar behaves the
+       same here as on the homepage.
        Drawer contract copied from index.html — the page underneath must not
        scroll, a tap off the panel dismisses it, Escape dismisses it, and focus
        moves into the drawer on open and back to the button on close. */
@@ -890,7 +931,7 @@
           if (e.target.matches('a')) closeMenu(false);
         });
         addEventListener('resize', function () {
-          if (isMenuOpen() && window.innerWidth > 899) closeMenu(false);
+          if (isMenuOpen() && window.innerWidth > 767) closeMenu(false);
         });
       }
 
@@ -913,6 +954,67 @@
         });
         sync();
       }
+    })();
+    // ============================================================
+    // NAV — adaptive material (UI U6/§8.7, Motion M7).
+    // Two independent signals, both IntersectionObserver, no scroll handler:
+    //   1. is-scrolled  — a sentinel 8px tall at the very top of the document.
+    //   2. is-over-dark — a 1px-tall band immediately under the bar; whichever
+    //      [data-theme] section intersects it owns the bar's colour.
+    // ============================================================
+    (function () {
+      var nav = document.querySelector('.fw-nav');
+      if (!nav || !('IntersectionObserver' in window)) return;
+
+      // --- 1. hairline + shadow after 8px ---
+      var sentinel = document.createElement('div');
+      sentinel.setAttribute('aria-hidden', 'true');
+      sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;';
+      document.body.insertBefore(sentinel, document.body.firstChild);
+      new IntersectionObserver(function (es) {
+        nav.classList.toggle('is-scrolled', !es[0].isIntersecting);
+      }, { threshold: 0 }).observe(sentinel);
+
+      // --- 2. dark/light from the section under the bar ---
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-theme]'));
+      if (!sections.length) return;
+      var io = null;
+      var lit = [];   // sections currently in the band, in document order
+
+      function navH() {
+        return Math.round(nav.getBoundingClientRect().height) || 64;
+      }
+      function apply() {
+        // The band is 1px, so normally exactly one section is in it. If a section
+        // boundary sits exactly under the bar, take the LAST one — that is the one
+        // whose ground is about to fill the frame.
+        if (!lit.length) return;
+        var el = lit[lit.length - 1];
+        nav.classList.toggle('is-over-dark', el.getAttribute('data-theme') === 'dark');
+      }
+      function build() {
+        if (io) io.disconnect();
+        var h = navH();
+        var bottom = -(window.innerHeight - h - 1);
+        io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var i = lit.indexOf(e.target);
+            if (e.isIntersecting && i === -1) lit.push(e.target);
+            else if (!e.isIntersecting && i !== -1) lit.splice(i, 1);
+          });
+          lit.sort(function (a, b) {
+            return a.compareDocumentPosition(b) &amp; Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+          });
+          apply();
+        }, { rootMargin: (-h) + 'px 0px ' + bottom + 'px 0px', threshold: 0 });
+        lit = [];
+        sections.forEach(function (el) { io.observe(el); });
+      }
+      build();
+      var rt;
+      addEventListener('resize', function () {
+        clearTimeout(rt); rt = setTimeout(build, 150);
+      }, { passive: true });
     })();
   </script>
 </body>

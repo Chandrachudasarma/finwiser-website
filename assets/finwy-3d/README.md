@@ -223,4 +223,99 @@ All under `website-audit-2026-08-23/screenshots/tier2/`:
 
 ---
 
-*Built 2026-08-23.*
+
+---
+
+## 9 · Wave 3 — the action storyboard, the flat lockup, the expressions
+
+Added 2026-08-23 by the homepage engineer. Four new build steps; nothing above
+changed except where noted.
+
+### 9.1 · What shipped
+
+| File / folder | What it is |
+|---|---|
+| `hero/finwy3d-hero-act-NN-{408,520,612,780}w.{webp,avif}` | The founder's eight-keyframe wake-up, matted, **registered on one shared canvas** and encoded at four tiers. |
+| `hero/finwy3d-hero-settle-*` | Only written when the settle pose is NOT the last action frame. With act-08 present the settle IS act-08 and no separate file exists. |
+| `hero/manifest.json` | The frame list, the canvas, the tiers. `13-hero-markup.py` reads only this. |
+| `finwiser-logo-flat.svg` / `-reversed.svg` | The lockup with the **flat mark** in the W slot instead of the 3D head. Identical viewBox and aspect (5.152), so it is a drop-in swap. 5.2 KB each against the 3D lockup's 52 KB. |
+| `finwy3d-face-{happy,thinking,worried}-{96,192,288}w.{webp,avif}` | Expression heads for the three copy placements. |
+| `finwy3d-jars-{260,520,780}w.*` | **Re-pointed** from `jars-v01` to `jars-simple-v02`. Same filenames, so no markup changed — but the aspect moved 1144x985 → 1040x972 and the two `<img width/height>` pairs in index.html were updated with it. |
+| `finwy3d-jars-detailed-{520,780}w.*` | `jars-detailed-v01`, staged and **referenced nowhere**: every jar slot on the page is 260 CSS px or smaller (seen-scene 260/130/96, step-02 lane 124/64) and the simple composition is the one that reads at that size. The first slot that is genuinely ≥ 288 CSS px should switch to these. |
+
+### 9.2 · The registration problem, and why the canvas number matters
+
+Each ChatGPT generation frames the character differently. Measured on the raw
+1024x1536 canvases, the silhouette bottoms of act-01/02/03 land at
+**y = 1211 / 1266 / 1292** — played as-is the character sinks ~80 px between
+keyframes and the sequence reads as four different renders cross-fading, not
+as one character moving.
+
+`10-hero-action.py` re-anchors every frame on **(horizontal centroid of the
+bottom 40% of the silhouette, bottom of the silhouette)** — the body axis and
+the ground line — onto one shared canvas sized to the union of all of them.
+Scale is deliberately *not* normalised: the silhouette heights differ because
+the poses differ (sitting is shorter than arms-up), and the onion-skin proves
+the torsos land on each other.
+
+**Current canvas: 1242 x 1185** (aspect 1.0481). It is in index.html twice —
+`--hero-aspect` on `.hero__mascot` and the `width`/`height` on every hero
+`<img>` — and `13-hero-markup.py` rewrites both. **A new keyframe that reaches
+further than the present union bbox changes this number**, which is exactly
+why the markup is generated and not hand-written.
+
+### 9.3 · The matte
+
+Reuses `08-cut-incoming.py`'s structure-driven cut, plus two things it lacked:
+
+* a **median filter** (window 15) on the binary mask — the watershed leaves a
+  ragged bite along the silhouette where the mint wings meet the additive teal
+  bloom, and the two are not separable by colour (measured: dropped pixels
+  average RGB `(50,117,141)`, kept pixels `(35,119,157)`);
+* **multi-component retention** (≥ 0.3% of the largest) so act-03's gold
+  sparkles and the gold motion arcs survive "largest component only".
+
+**Known limitation.** The motion cues the founder asked for are *translucent*
+swooshes. A binary matte cannot represent them, so they ship as solid-ish
+shapes with a smoothed edge rather than as soft trails. At 204–360 CSS px this
+reads as intended; at 2x zoom it does not. The fix is a soft luminance key for
+the sub-body regions, not a threshold tweak — a job for whoever revisits the
+art.
+
+### 9.4 · Nav sizing — the number that settles the ≥ 48 px rule
+
+`12-flat-lockup.py` rasterises both lockups at every candidate nav height and
+measures the head's ink. The result is blunt:
+
+| nav logo height | lockup width | head height | verdict |
+|---|---|---|---|
+| 30 px | 154.6 px | **30.0 px** | flat mark |
+| 38 px | 195.8 px | **38.0 px** | flat mark |
+| 44 px | 226.7 px | **44.0 px** | flat mark |
+| 48 px | 247.3 px | **48.0 px** | 3D head clears its floor |
+| 56 px | 288.5 px | **55.8 px** | 3D head |
+
+**The head's ink is 1:1 with the lockup's height.** §8's "3D head at ≥ 48 CSS
+px" therefore means "lockup at ≥ 48 CSS px", i.e. **≥ 247 px wide** — 63% of a
+390 px phone, over the 40% cap. So the phone nav cannot carry the 3D head at
+all, and ships `finwiser-logo-flat.svg`; ≥ 1024 px ships the 3D lockup at 48 px
+in a 64 px bar. Proof sheet: `screenshots/tier2/home3-nav-logo-variants.png`.
+
+### 9.5 · Rebuild
+
+```
+cd assets/finwy-3d
+python3 src/10-hero-action.py    # matte + register + encode + manifest.json
+python3 src/13-hero-markup.py    # rewrite index.html from the manifest
+python3 src/11-faces-jars.py     # expression heads + both jar scenes
+python3 src/12-flat-lockup.py    # flat-mark lockups + the nav measurement sheet
+```
+
+Steps 10 and 13 are the pair to re-run whenever a new `finwy3d-act-NN-vNN.png`
+lands. They are idempotent, they always take the **highest `vNN`** per frame,
+and 13 refuses to run if the `HERO-FRAMES:BEGIN/END` markers are missing rather
+than guessing where the block goes.
+
+---
+
+*Built 2026-08-23. §9 added the same day, Wave 3.*

@@ -1,0 +1,304 @@
+{
+  "canvas": [
+    1242,
+    1185
+  ],
+  "aspect": 1.0481,
+  "widths": [
+    408,
+    520,
+    612,
+    780
+  ],
+  "frames": [
+    {
+      "key": "act-01",
+      "source": "finwy3d-act-01-v01.png",
+      "files": {
+        "408webp": "assets/finwy-3d/hero/finwy3d-hero-act-01-408w.webp",
+        "408avif": "assets/finwy-3d/hero/finwy3d-hero-act-01-408w.avif",
+        "520webp": "assets/finwy-3d/hero/finwy3d-hero-act-01-520w.webp",
+        "520avif": "assets/finwy-3d/hero/finwy3d-hero-act-01-520w.avif",
+        "612webp": "assets/finwy-3d/hero/finwy3d-hero-act-01-612w.webp",
+        "612avif": "assets/finwy-3d/hero/finwy3d-hero-act-01-612w.avif",
+        "780webp": "assets/finwy-3d/hero/finwy3d-hero-act-01-780w.webp",
+        "780avif": "assets/finwy-3d/hero/finwy3d-hero-act-01-780w.avif"
+      },
+      "px": {
+        "408": [
+          408,
+          389
+        ],
+        "520": [
+          520,
+          496
+        ],
+        "612": [
+          612,
+          584
+        ],
+        "780": [
+          780,
+          744
+        ]
+      }
+    },
+    {
+      "key": "act-02",
+      "source": "finwy3d-act-02-v01.png",
+      "files": {
+        "408webp": "assets/finwy-3d/hero/finwy3d-hero-act-02-408w.webp",
+        "408avif": "assets/finwy-3d/hero/finwy3d-hero-act-02-408w.avif",
+        "520webp": "assets/finwy-3d/hero/finwy3d-hero-act-02-520w.webp",
+        "520avif": "assets/finwy-3d/hero/finwy3d-hero-act-02-520w.avif",
+        "612webp": "assets/finwy-3d/hero/finwy3d-hero-act-02-612w.webp",
+        "612avif": "assets/finwy-3d/hero/finwy3d-hero-act-02-612w.avif",
+        "780webp": "assets/finwy-3d/hero/finwy3d-hero-act-02-780w.webp",
+        "780avif": "assets/finwy-3d/hero/finwy3d-hero-act-02-780w.avif"
+      },
+      "px": {
+        "408": [
+          408,
+          389
+        ],
+        "520": [
+          520,
+          496
+        ],
+        "612": [
+          612,
+          584
+        ],
+        "780": [
+          780,
+          744
+        ]
+      }
+    },
+    {
+      "key": "act-03",
+      "source": "finwy3d-act-03-v01.png",
+      "files": {
+        "408webp": "assets/finwy-3d/hero/finwy3d-hero-act-03-408w.webp",
+        "408avif": "assets/finwy-3d/hero/finwy3d-hero-act-03-408w.avif",
+        "520webp": "assets/finwy-3d/hero/finwy3d-hero-act-03-520w.webp",
+        "520avif": "assets/finwy-3d/hero/finwy3d-hero-act-03-520w.avif",
+        "612webp": "assets/finwy-3d/hero/finwy3d-hero-act-03-612w.webp",
+        "612avif": "assets/finwy-3d/hero/finwy3d-hero-act-03-612w.avif",
+        "780webp": "assets/finwy-3d/hero/finwy3d-hero-act-03-780w.webp",
+        "780avif": "assets/finwy-3d/hero/finwy3d-hero-act-03-780w.avif"
+      },
+      "px": {
+        "408": [
+          408,
+          389
+        ],
+        "520": [
+          520,
+          496
+        ],
+        "612": [
+          612,
+          584
+        ],
+        "780": [
+          780,
+          744
+        ]
+      }
+    },
+    {
+      "key": "act-04",
+      "source": "finwy3d-act-04-v02.png",
+      "files": {
+        "408webp": "assets/finwy-3d/hero/finwy3d-hero-act-04-408w.webp",
+        "408avif": "assets/finwy-3d/hero/finwy3d-hero-act-04-408w.avif",
+        "520webp": "assets/finwy-3d/hero/finwy3d-hero-act-04-520w.webp",
+        "520avif": "assets/finwy-3d/hero/finwy3d-hero-act-04-520w.avif",
+        "612webp": "assets/finwy-3d/hero/finwy3d-hero-act-04-612w.webp",
+        "612avif": "assets/finwy-3d/hero/finwy3d-hero-act-04-612w.avif",
+        "780webp": "assets/finwy-3d/hero/finwy3d-hero-act-04-780w.webp",
+        "780avif": "assets/finwy-3d/hero/finwy3d-hero-act-04-780w.avif"
+      },
+      "px": {
+        "408": [
+          408,
+          389
+        ],
+        "520": [
+          520,
+          496
+        ],
+        "612": [
+          612,
+          584
+        ],
+        "780": [
+          780,
+          744
+        ]
+      }
+    },
+    {
+      "key": "act-05",
+      "source": "finwy3d-act-05-v02.png",
+      "files": {
+        "408webp": "assets/finwy-3d/hero/finwy3d-hero-act-05-408w.webp",
+        "408avif": "assets/finwy-3d/hero/finwy3d-hero-act-05-408w.avif",
+        "520webp": "assets/finwy-3d/hero/finwy3d-hero-act-05-520w.webp",
+        "520avif": "assets/finwy-3d/hero/finwy3d-hero-act-05-520w.avif",
+        "612webp": "assets/finwy-3d/hero/finwy3d-hero-act-05-612w.webp",
+        "612avif": "assets/finwy-3d/hero/finwy3d-hero-act-05-612w.avif",
+        "780webp": "assets/finwy-3d/hero/finwy3d-hero-act-05-780w.webp",
+        "780avif": "assets/finwy-3d/hero/finwy3d-hero-act-05-780w.avif"
+      },
+      "px": {
+        "408": [
+          408,
+          389
+        ],
+        "520": [
+          520,
+          496
+        ],
+        "612": [
+          612,
+          584
+        ],
+        "780": [
+          780,
+          744
+        ]
+      }
+    },
+    {
+      "key": "act-06",
+      "source": "finwy3d-act-06-v01.png",
+      "files": {
+        "408webp": "assets/finwy-3d/hero/finwy3d-hero-act-06-408w.webp",
+        "408avif": "assets/finwy-3d/hero/finwy3d-hero-act-06-408w.avif",
+        "520webp": "assets/finwy-3d/hero/finwy3d-hero-act-06-520w.webp",
+        "520avif": "assets/finwy-3d/hero/finwy3d-hero-act-06-520w.avif",
+        "612webp": "assets/finwy-3d/hero/finwy3d-hero-act-06-612w.webp",
+        "612avif": "assets/finwy-3d/hero/finwy3d-hero-act-06-612w.avif",
+        "780webp": "assets/finwy-3d/hero/finwy3d-hero-act-06-780w.webp",
+        "780avif": "assets/finwy-3d/hero/finwy3d-hero-act-06-780w.avif"
+      },
+      "px": {
+        "408": [
+          408,
+          389
+        ],
+        "520": [
+          520,
+          496
+        ],
+        "612": [
+          612,
+          584
+        ],
+        "780": [
+          780,
+          744
+        ]
+      }
+    },
+    {
+      "key": "act-07",
+      "source": "finwy3d-act-07-v01.png",
+      "files": {
+        "408webp": "assets/finwy-3d/hero/finwy3d-hero-act-07-408w.webp",
+        "408avif": "assets/finwy-3d/hero/finwy3d-hero-act-07-408w.avif",
+        "520webp": "assets/finwy-3d/hero/finwy3d-hero-act-07-520w.webp",
+        "520avif": "assets/finwy-3d/hero/finwy3d-hero-act-07-520w.avif",
+        "612webp": "assets/finwy-3d/hero/finwy3d-hero-act-07-612w.webp",
+        "612avif": "assets/finwy-3d/hero/finwy3d-hero-act-07-612w.avif",
+        "780webp": "assets/finwy-3d/hero/finwy3d-hero-act-07-780w.webp",
+        "780avif": "assets/finwy-3d/hero/finwy3d-hero-act-07-780w.avif"
+      },
+      "px": {
+        "408": [
+          408,
+          389
+        ],
+        "520": [
+          520,
+          496
+        ],
+        "612": [
+          612,
+          584
+        ],
+        "780": [
+          780,
+          744
+        ]
+      }
+    },
+    {
+      "key": "act-08",
+      "source": "finwy3d-act-08-v01.png",
+      "files": {
+        "408webp": "assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp",
+        "408avif": "assets/finwy-3d/hero/finwy3d-hero-act-08-408w.avif",
+        "520webp": "assets/finwy-3d/hero/finwy3d-hero-act-08-520w.webp",
+        "520avif": "assets/finwy-3d/hero/finwy3d-hero-act-08-520w.avif",
+        "612webp": "assets/finwy-3d/hero/finwy3d-hero-act-08-612w.webp",
+        "612avif": "assets/finwy-3d/hero/finwy3d-hero-act-08-612w.avif",
+        "780webp": "assets/finwy-3d/hero/finwy3d-hero-act-08-780w.webp",
+        "780avif": "assets/finwy-3d/hero/finwy3d-hero-act-08-780w.avif"
+      },
+      "px": {
+        "408": [
+          408,
+          389
+        ],
+        "520": [
+          520,
+          496
+        ],
+        "612": [
+          612,
+          584
+        ],
+        "780": [
+          780,
+          744
+        ]
+      }
+    }
+  ],
+  "settle": {
+    "key": "act-08",
+    "source": "finwy3d-act-08-v01.png",
+    "files": {
+      "408webp": "assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp",
+      "408avif": "assets/finwy-3d/hero/finwy3d-hero-act-08-408w.avif",
+      "520webp": "assets/finwy-3d/hero/finwy3d-hero-act-08-520w.webp",
+      "520avif": "assets/finwy-3d/hero/finwy3d-hero-act-08-520w.avif",
+      "612webp": "assets/finwy-3d/hero/finwy3d-hero-act-08-612w.webp",
+      "612avif": "assets/finwy-3d/hero/finwy3d-hero-act-08-612w.avif",
+      "780webp": "assets/finwy-3d/hero/finwy3d-hero-act-08-780w.webp",
+      "780avif": "assets/finwy-3d/hero/finwy3d-hero-act-08-780w.avif"
+    },
+    "px": {
+      "408": [
+        408,
+        389
+      ],
+      "520": [
+        520,
+        496
+      ],
+      "612": [
+        612,
+        584
+      ],
+      "780": [
+        780,
+        744
+      ]
+    }
+  },
+  "settleIsLastAct": true
+}

@@ -121,9 +121,14 @@
   --gold-50:    var(--gold-56);
   --rose:       var(--gold);          /* the sixth hue is retired            */
   --rose-05:    var(--gold-08);
-  --rose-ink:   #c1362b;              /* the STOP colour in the price table,
-                                         5.50:1 on white; paired with a word,
-                                         never colour alone (UI §8.5 rule 6)  */
+  --rose-ink:   var(--text-on-light); /* retired 2026-08-23 — five colours;
+                                         meaning carried by the word. Was
+                                         #c1362b for the price table's STOP
+                                         column. The column already labels
+                                         itself STOP / START in words, so the
+                                         hue was never doing the work (UI §8.5
+                                         rule 6: never colour alone) and there
+                                         is no red left on the site.          */
 }
 
 
@@ -728,7 +733,6 @@ body {
 .pricing__price,
 .flow__counter-num,
 .insight__num,
-.seen__pane-num,
 .ledger-row--surplus .ledger-row__value {
   font-family: var(--font-sans);
   font-size: var(--fs-data-lg);
@@ -737,6 +741,21 @@ body {
   letter-spacing: var(--tr-snug);
   font-variant-numeric: tabular-nums;
 }
+
+/* --- DATA-TILE — a figure inside a stat tile (the "seen" composite) --------
+   One step below DATA-LG: four tiles share a panel, so none of them is
+   "the figure the page is about". Words ("Medium") go one step lower again
+   so a word never shouts like a number. "/ mo" and "of 5" stay inline.    */
+.seen__pane-num {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-snug);
+  font-variant-numeric: tabular-nums;
+  flex-wrap: nowrap; white-space: nowrap;
+}
+.seen__pane--risk .seen__pane-num { font-size: var(--fs-h2); line-height: var(--lh-h2); font-weight: var(--fw-semi); }
 
 /* --- DATA-SM — a tile value, a table figure -------------------------------- */
 .data-sm,
@@ -892,14 +911,37 @@ strong, b,
   --nav-fg-hover: var(--teal-ink);
   --nav-line: var(--border-on-light);
   --nav-shadow: var(--shadow-1);
-  background: rgb(var(--nav-ground));
+  background: transparent;
   border-bottom: var(--hairline) solid transparent;
-  transition: background-color var(--dur-ui) var(--ease-in-out),
-              border-color var(--dur-ui) var(--ease-in-out),
+  transition: border-color var(--dur-ui) var(--ease-in-out),
               box-shadow var(--dur-ui) var(--ease-in-out);
 }
+/* Wave 3 — the bar's MATERIAL sits on a pseudo-element, not on .fw-nav.
+   backdrop-filter makes its own element a containing block for every
+   position:fixed descendant, and the closed mobile drawer is exactly that:
+   fixed, parked at translateX(100%). With the filter on .fw-nav the drawer
+   stopped being viewport-fixed and started counting toward the document's
+   scroll overflow the moment the page moved 8px and .is-scrolled landed —
+   390px client width against a 710px scrollWidth on every phone, at every
+   scroll position past the first. Chrome refused to actually scroll to it, so
+   it never showed up as sideways drag, but it is a real 320px of phantom
+   overflow and any future overflow:auto ancestor would have exposed it.
+   Fixed at the cause: no filter on the ancestor, so no containing block, so
+   the drawer is viewport-fixed again and contributes nothing. Not a wrapper
+   with overflow:hidden. */
+.fw-nav::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgb(var(--nav-ground));
+  transition: background-color var(--dur-ui) var(--ease-in-out);
+}
+/* The pseudo is painted first by document order, so the bar's content only
+   needs its own stacking position to sit on top of it. z-index:-1 on the
+   pseudo would also have worked on paper and does NOT in Chrome: a
+   backdrop-filter element in the negative-z layer composites over the bar's
+   content and the logo and links disappear (screenshotted, not assumed). */
+.fw-nav__inner { position: relative; z-index: 1; }
 @supports ((backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px))) {
-  .fw-nav.is-scrolled {
+  .fw-nav.is-scrolled::before {
     background: rgba(var(--nav-ground), 0.72);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
             backdrop-filter: saturate(180%) blur(20px);
@@ -920,10 +962,15 @@ strong, b,
   gap: var(--sp-5);
 }
 .fw-nav__logo { position: relative; display: block; text-decoration: none; line-height: 0; }
-/* Cap-height 28 px → ~140 px wide. The logo is never more than 40% of a
-   phone's width. */
+/* Wave 3: the lockup's aspect moved 5.067 -> 5.152 when the 3D head opened the
+   W slot (finwy-3d/README §2), and the head's ink is 1:1 with the lockup's
+   height. Sizing is by HEIGHT, so the aspect change is free; what it costs is
+   width — 30px is 155px wide (40% of a 390px phone, at the cap) and 48px is
+   248px (the smallest height at which the 3D head clears its own 48px floor).
+   <1024 therefore serves the FLAT-mark lockup, >=1024 the 3D one. */
+.fw-nav__logo-pic { display: contents; }
 .fw-nav__logo-img { height: 30px; width: auto; display: block; }
-@media (min-width: 1024px) { .fw-nav__logo-img { height: 38px; } }
+@media (min-width: 1024px) { .fw-nav__logo-img { height: 48px; } }
 
 .fw-nav__link {
   font-family: var(--font-sans);
@@ -1043,6 +1090,19 @@ strong, b,
   .connect-card, .steps__card, .seen__pane, .seen__band,
   .connect-active__done { padding: var(--sp-6); }
   .steps__concept { padding: var(--sp-6); }
+}
+/* Below 700px the comparison table's rows ARE cards (IA F10 / UX §8) — the
+   same geometry from the same tokens, not a twenty-seventh card variant. It
+   cannot join the selector list above because above 700px these rows are
+   table rows and a table row cannot take a radius, a border or a padding. */
+@media (max-width: 700px) {
+  .compare tbody tr {
+    border-radius: var(--r-lg);
+    border: var(--hairline) solid var(--line, var(--border-on-dark));
+    background: var(--card-bg, var(--white-04));
+    box-shadow: var(--card-shadow, none);
+    padding: var(--sp-5);
+  }
 }
 /* A row nested inside a card: radius 10, no border, one background step. */
 .card__row, .txn, .factor, .cascade__row, .allocation__row, .ledger-row, .insight {
