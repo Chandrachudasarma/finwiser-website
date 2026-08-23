@@ -1,0 +1,84 @@
+# robots.txt — finwiser.org
+# Finwiser Technologies LLP · SEBI Registered Investment Adviser INA000021331
+#
+# Rule of thumb: only the homepage and the public legal / compliance pages are
+# meant for the index. Everything else below is a working file, a second-audience
+# artefact, or a duplicate. Disallow stops crawling, not indexing — pages already
+# in the index also carry <meta name="robots" content="noindex, nofollow">.
+
+User-agent: *
+Allow: /
+Allow: /robots.txt
+
+# ── Staging / near-duplicate of the homepage ─────────────────────────
+Disallow: /index-staging.html
+
+# ── Internal design previews (also carry meta noindex) ───────────────
+Disallow: /cases-preview
+Disallow: /seen-preview
+Disallow: /step01-preview.html
+Disallow: /step02-preview.html
+Disallow: /step03-preview.html
+Disallow: /*-preview
+Disallow: /hero-cinematic.html
+Disallow: /midnight.html
+Disallow: /cinematic/
+
+# ── Second-audience material (applications, credentials, decks) ──────
+Disallow: /credentials/
+Disallow: /antler/
+Disallow: /ewor/
+Disallow: /zfellows/
+Disallow: /elevate/
+Disallow: /hykr-2026/
+Disallow: /google/
+Disallow: /architecture/
+Disallow: /founder-pitch/
+Disallow: /demob/
+Disallow: /fw-deck-mas-2026/
+Disallow: /fw-deck-mas-2026-v2/
+Disallow: /fw-deck-mas-2026-v3/
+Disallow: /fw-deck-mas-2026-final/
+
+# ── Working files inside the investor deck ───────────────────────────
+Disallow: /fw-deck-2026/rd/
+Disallow: /fw-deck-2026/node_modules/
+Disallow: /fw-deck-2026/index-legacy.html
+Disallow: /fw-deck-2026/chain-relay-composed.html
+Disallow: /fw-deck-2026/wireframe-team-slide.html
+Disallow: /fw-deck-2026/cmp.html
+Disallow: /fw-deck-2026/package.json
+Disallow: /fw-deck-2026/package-lock.json
+
+# ── Source / scratch documents served as crawlable text ──────────────
+Disallow: /claudedocs/
+Disallow: /*.md$
+Disallow: /*.txt$
+
+# ── PDFs. A meta tag cannot de-index a PDF and GitHub Pages cannot send
+#    X-Robots-Tag, so Disallow is the only lever available here.
+Disallow: /*.pdf$
+Disallow: /pitch-deck.pdf
+Disallow: /credentials/finwiser-credentials.pdf
+Disallow: /antler/chandrachuda-resume.pdf
+Disallow: /ewor/chandrachuda-resume.pdf
+Disallow: /zfellows/chandrachuda-resume.pdf
+Disallow: /antler/technical-documentation.pdf
+Disallow: /ewor/technical-documentation.pdf
+Disallow: /architecture/architecture.pdf
+Disallow: /fw-deck-2026/Finwiser-Pitch-Deck-2026.pdf
+
+# ── Video ────────────────────────────────────────────────────────────
+Disallow: /*.mp4$
+Disallow: /demo.mp4
+Disallow: /founder-pitch.mp4
+
+# ── Loose working screenshots at the root ────────────────────────────
+Disallow: /index-merged.png
+Disallow: /step02-early.png
+Disallow: /step02-mid.png
+Disallow: /step02-final.png
+Disallow: /step02-pulse.png
+Disallow: /mascot_loading_notes.gif
+
+Sitemap: https://finwiser.org/sitemap.xml

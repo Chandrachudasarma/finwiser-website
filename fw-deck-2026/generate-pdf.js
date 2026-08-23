@@ -225,7 +225,7 @@ function revealAll(killCss) {
       //    corner) on every page regardless of the wrapper's per-slide scale.
       if (s.id !== 's1') {
         const lg = document.createElement('img');
-        lg.src = 'slides/finny-3d.png';
+        lg.src = 'slides/finwy-3d.png';
         lg.style.cssText =
           'position:absolute; top:20px; right:30px; height:80px; width:auto; z-index:99999; pointer-events:none;';
         s.appendChild(lg);

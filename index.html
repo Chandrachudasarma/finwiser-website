@@ -6,6 +6,102 @@
   <title>Finwiser — AI financial advisor for India's middle class</title>
   <meta name="description" content="Finwiser is an AI-led SEBI Registered Investment Adviser, built for India's salaried middle class. Connect once via Account Aggregator. See every account in one place. Get fee-only advice in three minutes.">
 
+  <!-- Share / icon / structured-data layer. og:/twitter: title+description mirror <title> and <meta name="description"> above — keep them in sync. -->
+  <!-- ── Canonical & indexing ─────────────────────────────────────── -->
+  <link rel="canonical" href="https://finwiser.org/">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+
+  <!-- ── Icons & theme ────────────────────────────────────────────── -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#002d56" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#001f3d" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-title" content="Finwiser">
+
+  <!-- ── Open Graph ───────────────────────────────────────────────── -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Finwiser">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:url" content="https://finwiser.org/">
+  <meta property="og:title" content="Finwiser — AI financial advisor for India's middle class">
+  <meta property="og:description" content="Finwiser is an AI-led SEBI Registered Investment Adviser, built for India's salaried middle class. Connect once via Account Aggregator. See every account in one place. Get fee-only advice in three minutes.">
+  <meta property="og:image" content="https://finwiser.org/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Finwiser — Three minutes. Your full picture. SEBI Registered Investment Adviser INA000021331.">
+
+  <!-- ── Twitter / X ──────────────────────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Finwiser — AI financial advisor for India's middle class">
+  <meta name="twitter:description" content="Finwiser is an AI-led SEBI Registered Investment Adviser, built for India's salaried middle class. Connect once via Account Aggregator. See every account in one place. Get fee-only advice in three minutes.">
+  <meta name="twitter:image" content="https://finwiser.org/og-image.png">
+  <meta name="twitter:image:alt" content="Finwiser — Three minutes. Your full picture. SEBI Registered Investment Adviser INA000021331.">
+
+  <!-- ── Structured data · Organization only ──────────────────────────
+       SoftwareApplication is deliberately NOT here: its offers block is
+       blocked on the ₹49 / ₹199 price contradiction (Content F2), and
+       schema that disagrees with the SEBI Disclosures fee is a compliance
+       exposure. FAQPage is also deferred — its `text` must match the
+       visible answers verbatim.
+       ───────────────────────────────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://finwiser.org/#organization",
+    "name": "Finwiser",
+    "legalName": "Finwiser Technologies LLP",
+    "alternateName": "Finwiser Technologies",
+    "url": "https://finwiser.org/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://finwiser.org/icon-512.png",
+      "width": 512,
+      "height": 512
+    },
+    "image": "https://finwiser.org/og-image.png",
+    "description": "AI-powered, SEBI-regulated financial operating system for India's salaried middle class.",
+    "email": "helpdesk@finwiser.org",
+    "telephone": "+91-88012-94657",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "H.No. 181, 14th Cross, Bluejay Atmosphere Phase II, Andhrahalli Main Road, Nagasandra Post",
+      "addressLocality": "Bengaluru",
+      "addressRegion": "Karnataka",
+      "postalCode": "560073",
+      "addressCountry": "IN"
+    },
+    "areaServed": { "@type": "Country", "name": "India" },
+    "identifier": [
+      { "@type": "PropertyValue", "name": "SEBI Investment Adviser Registration", "value": "INA000021331" },
+      { "@type": "PropertyValue", "name": "BSE Enlistment Number", "value": "2408" },
+      { "@type": "PropertyValue", "name": "NISM Registration", "value": "NISM-202500082015" }
+    ],
+    "founder": {
+      "@type": "Person",
+      "name": "Chandrachuda Sarma Yemmanuru",
+      "jobTitle": "Founder & SEBI Registered Investment Adviser",
+      "sameAs": "https://www.linkedin.com/in/chandrachudasarma/"
+    },
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "helpdesk@finwiser.org",
+      "telephone": "+91-88012-94657",
+      "areaServed": "IN",
+      "availableLanguage": ["en", "hi"]
+    }],
+    "sameAs": [
+      "https://play.google.com/store/apps/details?id=org.finwiser.app",
+      "https://www.linkedin.com/in/chandrachudasarma/"
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet">
@@ -103,7 +199,10 @@
     /* RESET + BASE                                                  */
     /* ============================================================ */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    /* scroll-padding-top applies at EVERY viewport: --nav-h is 68px on
+       desktop and 56px under 900px, so an in-page anchor always clears the
+       sticky nav instead of landing behind it. */
+    html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
     body {
       font-family: var(--font-sans);
       font-weight: 400;
@@ -187,31 +286,18 @@
     }
 
     /* ============================================================ */
-    /* SCROLL SNAP — desktop, motion-allowed                         */
-    /* Snap stops: problem (page 2) + each .steps__row.              */
+    /* SCROLL MODEL                                                  */
+    /* `scroll-snap-type: y mandatory` used to live here with 16     */
+    /* `scroll-snap-align` stops. It ate discrete mouse-wheel input  */
+    /* outright (five 300px notches moved the page 0px at 1440x900)  */
+    /* and dragged anchor landings up to 438px off target. Removed   */
+    /* entirely — NOT downgraded to `proximity`, which keeps the     */
+    /* landing drift for no gain. The "one idea at a time" feel      */
+    /* comes from the `position: sticky` pinned stages below, which  */
+    /* never intercept input. `scroll-padding-top` for the sticky    */
+    /* nav now lives on the base `html` rule, unconditionally, so    */
+    /* phones stop landing anchors underneath the nav.               */
     /* ============================================================ */
-    @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
-      html {
-        scroll-snap-type: y mandatory;
-        scroll-padding-top: var(--nav-h);
-      }
-      .hero          { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .problem       { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .seen          { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .steps__intro  { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .steps__row    { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .case-card     { scroll-snap-align: start; scroll-snap-stop: normal; scroll-margin-top: 160px; }
-      .engine-finale { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .caps          { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .compare       { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .pricing       { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .testify       { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .secure        { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .team          { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .faq           { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .final-cta     { scroll-snap-align: start; scroll-snap-stop: normal; }
-      .site-footer   { scroll-snap-align: start; scroll-snap-stop: normal; }
-    }
 
     /* ============================================================ */
     /* §1 — NAV                                                      */
@@ -233,11 +319,16 @@
     .fw-nav__logo-img { height: 54px; width: auto; display: block; }
     @media (max-width: 899px) { .fw-nav__logo-img { height: 40px; } }
     .fw-nav__list { list-style: none; display: flex; align-items: center; gap: 28px; }
+    /* The nav links take their foreground from the surface they sit on, not
+       from a hard-coded token. The bar is white, so the default is navy; the
+       mobile drawer is navy, so it re-declares these two on itself. Hard-coding
+       --navy-deep here is what made the drawer's four links 1.00:1 invisible. */
     .fw-nav__link {
-      font: 500 14px/1 'Inter', sans-serif; color: var(--navy-deep);
+      font: 500 14px/1 'Inter', sans-serif;
+      color: var(--nav-fg, var(--navy-deep));
       text-decoration: none; transition: color 200ms ease-out;
     }
-    .fw-nav__link:hover { color: var(--teal); }
+    .fw-nav__link:hover { color: var(--nav-fg-hover, var(--teal)); }
     .fw-nav__cta {
       display: inline-flex; align-items: center; height: 36px; padding: 0 18px;
       border-radius: 6px; background: var(--mint); color: var(--navy-deep) !important;
@@ -245,7 +336,9 @@
       transition: transform 200ms ease-out, background-color 200ms ease-out;
     }
     .fw-nav__cta:hover { transform: scale(1.01); background: var(--teal); }
-    .fw-nav__toggle { display: none; background: transparent; border: 0; width: 40px; height: 40px; cursor: pointer; padding: 0; }
+    /* 44x44 is the tap target; the three bars stay 22px wide, so the button
+       grows in hit area only. */
+    .fw-nav__toggle { display: none; background: transparent; border: 0; width: 44px; height: 44px; cursor: pointer; padding: 0; font-family: inherit; }
     .fw-nav__toggle-bar {
       display: block; width: 22px; height: 2px; margin: 5px auto;
       background: var(--navy-deep);
@@ -255,23 +348,48 @@
     .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(2) { opacity: 0; }
     .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+    /* Scrim. Lives outside the media query so the closed state is inert at
+       every width; only the mobile drawer ever opens it. */
+    .fw-nav__scrim {
+      position: fixed; inset: var(--nav-h) 0 0 0; z-index: 0;
+      background: var(--black-45); touch-action: none;
+      opacity: 0; visibility: hidden;
+      transition: opacity 240ms var(--ease-move), visibility 0s linear 240ms;
+    }
+    .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__scrim {
+      opacity: 1; visibility: visible; transition-delay: 0s;
+    }
+
     @media (max-width: 899px) {
       .fw-nav__toggle { display: inline-block; }
       .fw-nav__menu {
-        position: fixed; inset: var(--nav-h) 0 0 auto;
+        /* The drawer is a dark surface: it re-points the nav foreground
+           tokens at the on-dark pair. */
+        --nav-fg: var(--text-on-dark);
+        --nav-fg-hover: var(--mint);
+        position: fixed; inset: var(--nav-h) 0 0 auto; z-index: 1;
         width: min(320px, 86vw); height: calc(100vh - var(--nav-h)); height: calc(100svh - var(--nav-h));
         background: var(--navy-deep);
-        transform: translateX(16px); opacity: 0; visibility: hidden;
-        transition: transform 320ms var(--ease-enter), opacity 240ms, visibility 0s linear 320ms;
+        box-shadow: -16px 0 40px var(--black-32);
+        /* Real travel, not a 16px fade. */
+        transform: translateX(100%); opacity: 1; visibility: hidden;
+        transition: transform 320ms var(--ease-enter), visibility 0s linear 320ms;
         padding: 16px 24px;
       }
       .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__menu {
-        transform: translateX(0); opacity: 1; visibility: visible; transition-delay: 0s;
+        transform: translateX(0); visibility: visible; transition-delay: 0s;
       }
       .fw-nav__list { flex-direction: column; align-items: stretch; gap: 4px; }
       .fw-nav__link, .fw-nav__cta { height: 44px; display: flex; align-items: center; font-size: var(--fs-body); }
       .fw-nav__cta { justify-content: center; margin-top: 12px; }
     }
+    /* Page scroll lock while the drawer is open. The root ALONE — adding
+       `body { overflow: hidden }` as well makes <body> the scroll container,
+       which kills `position: sticky` on the nav: measured, the nav jumped from
+       top:0 to top:-3000 at scroll 3000, so the hamburger left the screen and
+       page content took over its tap target. Root-only blocks wheel and touch
+       just as completely and keeps the nav pinned. Set by the nav script. */
+    html.fw-nav-locked { overflow: hidden; overscroll-behavior: none; }
 
     /* ============================================================ */
     /* §2 — HERO                                                     */
@@ -291,7 +409,14 @@
       font-size: var(--fs-micro); letter-spacing: 0.2px; color: var(--text-on-dark-muted);
       margin-bottom: 24px;
     }
-    .hero__beta-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 4px var(--mint-16); }
+    /* flex-start + half a line box keeps the dot on the FIRST line once the
+       eyebrow wraps (2 lines at 390px, 1 at 1440px); align-items:center on the
+       parent was floating it down to the middle of the block. */
+    .hero__beta-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--mint);
+      box-shadow: 0 0 0 4px var(--mint-16);
+      flex: 0 0 8px; align-self: flex-start; margin-top: calc((1.6em - 8px) / 2);
+    }
     .hero__headline {
       font-family: var(--font-sans); font-weight: 700;
       font-size: var(--fs-h1); line-height: 1.1;
@@ -2438,6 +2563,10 @@
       text-align: left;
       line-height: 1.5;
     }
+    /* The Disclosures link sits on a light card, where both --mint and --teal
+       fall under 3:1. Take the strongest on-light foreground and carry the
+       affordance on the underline instead of on hue. */
+    .pricing__beta a { color: var(--text-on-light); text-decoration: underline; }
     .pricing__commitment {
       margin-top: 14px;
       padding: 12px 16px;
@@ -2677,14 +2806,7 @@
       transition: background 200ms ease-out, border-color 200ms ease-out;
     }
     .final-cta__playstore:hover { background: var(--white-08); border-color: var(--white-16); }
-    .final-cta__creds {
-      font-family: var(--font-mono); font-size: var(--fs-micro);
-      color: var(--text-on-dark-muted); margin-top: 14px;
-    }
-    .final-cta__creds code {
-      background: var(--white-08); padding: 2px 8px; border-radius: 4px;
-      color: var(--text-on-dark);
-    }
+    /* .final-cta__creds removed with the printed test-credential / OTP block. */
 
     /* ============================================================ */
     /* §15 — FOOTER                                                  */
@@ -3525,13 +3647,14 @@
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
       </button>
+      <div class="fw-nav__scrim" aria-hidden="true"></div>
       <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
         <ul class="fw-nav__list">
           <li><a class="fw-nav__link" href="#how">How it works</a></li>
           <li><a class="fw-nav__link" href="#pricing">Pricing</a></li>
           <li><a class="fw-nav__link" href="#team">Team</a></li>
           <li><a class="fw-nav__link" href="#faq">Help</a></li>
-          <li><a class="fw-nav__cta" href="/demo-app">Install</a></li>
+          <li><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
         </ul>
       </nav>
     </div>
@@ -3547,7 +3670,7 @@
         <div class="hero__copy">
           <p class="hero__eyebrow">
             <span class="hero__beta-dot" aria-hidden="true"></span>
-            SEBI Registered &middot; Fee-only &middot; &#8377;199 a month &middot; Live on Google Play
+            SEBI Registered &middot; Fee-only &middot; Free in early access &middot; Live on Google Play
           </p>
           <h1 id="hero-heading" class="hero__headline">
             <span class="word" style="--i:0">Three</span> <span class="word" style="--i:1">minutes.</span><br>
@@ -3555,7 +3678,7 @@
           </h1>
           <p class="hero__sub">Connect your accounts and see your real surplus, your real goals, and what to do next. Fee-only fiduciary advice &mdash; never a commission, never a product pitch.</p>
           <div class="hero__ctas">
-            <a class="btn btn--primary" href="/demo-app">Try the demo &rarr;</a>
+            <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
             <a class="btn btn--ghost" href="/fw-deck-2026/">Read the deck</a>
           </div>
         </div>
@@ -3873,7 +3996,11 @@
           <!-- CENTER — Mascot -->
           <div class="seen__center">
             <div class="seen__mascot" aria-hidden="true">
-              <img src="fw-deck-2026/slides/finwy-allocating.png" alt="" loading="lazy">
+              <img src="fw-deck-2026/slides/finwy-allocating-288.webp"
+                   srcset="fw-deck-2026/slides/finwy-allocating-288.webp 288w,
+                           fw-deck-2026/slides/finwy-allocating-520.webp 520w"
+                   sizes="(max-width: 520px) 96px, (max-width: 900px) 130px, 260px"
+                   width="288" height="192" alt="" loading="lazy" decoding="async">
             </div>
           </div>
 
@@ -4191,7 +4318,11 @@
 
                   <div class="flow__lane flow__lane--finwy" id="s2-lane-finwy">
                     <div class="flow__aura" aria-hidden="true"></div>
-                    <img class="flow__finwy-img" src="fw-deck-2026/slides/finwy-allocating.png" alt="" loading="lazy" decoding="async">
+                    <img class="flow__finwy-img" src="fw-deck-2026/slides/finwy-allocating-288.webp"
+                         srcset="fw-deck-2026/slides/finwy-allocating-288.webp 288w,
+                                 fw-deck-2026/slides/finwy-allocating-520.webp 520w"
+                         sizes="(max-width: 760px) 64px, 124px"
+                         width="288" height="192" alt="" loading="lazy" decoding="async">
                     <p class="flow__finwy-tag">Reading. Sorting. Noticing.</p>
                   </div>
 
@@ -4510,7 +4641,7 @@
               </div>
             </div>
             <div class="trail__mascot" aria-hidden="true">
-              <img src="fw-deck-2026/slides/finny-3d.png" alt="" />
+              <img src="fw-deck-2026/slides/finwy-3d-small.webp" width="126" height="189" alt="" loading="lazy" decoding="async" />
             </div>
           </div>
 
@@ -4594,10 +4725,10 @@
     <section class="engine-finale" aria-label="Two 35-year-olds. Two allocations.">
       <div class="engine-finale__inner">
         <div class="engine__close">
-          <img class="engine__close-mascot" id="engine-closer-mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy" />
+          <img class="engine__close-mascot" id="engine-closer-mascot" src="fw-deck-2026/slides/finwy-wave.png" alt="" loading="lazy" />
           <p class="engine__close-line">Same surplus. Different risk. Different next move &mdash; and it keeps changing.</p>
           <p class="engine__close-finwy">Finwy keeps your goals on track.</p>
-          <a class="engine__cta" href="/demo-app">Get yours &rarr;</a>
+          <a class="engine__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
         </div>
         <p class="engine__footnote">
           Illustrative cases. Names changed; details composed.
@@ -4647,7 +4778,7 @@
     <section class="pricing" id="pricing" aria-labelledby="pricing-heading" data-reveal>
       <div class="pricing__inner">
         <h2 id="pricing-heading" class="pricing__heading">&#8377;199 / month</h2>
-        <p class="pricing__sub">All inclusive. Cancel any time.</p>
+        <p class="pricing__sub">Free while we&rsquo;re in early access. Cancel any time.</p>
         <article class="pricing__card">
           <div class="pricing__compare" role="list" aria-label="What changes with Finwiser">
             <div class="pricing__compare-head pricing__compare-head--stop" aria-hidden="true">STOP</div>
@@ -4712,8 +4843,8 @@
             <cite class="pricing__commitment-sig">&mdash; Chandrachuda Sarma Y., Founder &amp; SEBI RIA</cite>
           </blockquote>
           <div class="pricing__action-row">
-            <a class="btn btn--cream pricing__cta-btn" href="/demo-app">Try the demo &rarr;</a>
-            <p class="pricing__beta">Free to start. &#8377;199 a month when paid plans begin.</p>
+            <a class="btn btn--cream pricing__cta-btn" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
+            <p class="pricing__beta">Free while we&rsquo;re in early access. When paid plans begin: &#8377;199 a month, plus a one-time &#8377;49 to unlock your first personalised report. No commissions, no product sales, no hidden charges. Full fee schedule: <a href="disclosures.html">Disclosures</a>.</p>
           </div>
         </article>
       </div>
@@ -4730,7 +4861,7 @@
       <div class="testify__inner">
         <h2 id="testify-heading" class="testify__heading">Real names, real cities &mdash; coming as users opt in.</h2>
         <blockquote class="testify__statement">
-          <img class="testify__mascot" src="fw-deck-2026/slides/finny-3d.png" alt="" loading="lazy">
+          <img class="testify__mascot" src="fw-deck-2026/slides/finwy-3d-small.webp" width="126" height="189" alt="" loading="lazy" decoding="async">
           <div class="testify__quote">
             <p>Finwiser is in private beta. The first ten families using Finwiser today don&rsquo;t know it yet, but their stories will live here when they&rsquo;re ready to share them.</p>
             <p>SEBI rules &mdash; and our principles &mdash; say we cannot fake testimonials, paraphrase users, or use stock photos. So we don&rsquo;t.</p>
@@ -4751,21 +4882,17 @@
     <!-- ============================================================ -->
     <section class="final-cta" aria-labelledby="cta-heading" data-reveal>
       <div class="final-cta__inner">
-        <img class="final-cta__mascot" src="fw-deck-2026/slides/finny-wave.png" alt="" loading="lazy">
+        <img class="final-cta__mascot" src="fw-deck-2026/slides/finwy-wave.png" alt="" loading="lazy">
         <h2 id="cta-heading" class="final-cta__heading">Three minutes. Your full picture. Try it.</h2>
         <p class="final-cta__sub">Sample data, real flow. See exactly what Finwiser would tell you about your money.</p>
         <div class="final-cta__row">
-          <a class="btn btn--primary" href="/demo-app">Try the demo &rarr;</a>
+          <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
           <a class="btn btn--ghost" href="/fw-deck-2026/">Read the deck</a>
         </div>
         <a class="final-cta__playstore" href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="var(--mint)"><path d="M3 2.5v19l8-9.5z" opacity="0.7"/><path d="M3 2.5l8 9.5 4.5-4-12.5-7v1.5z" opacity="0.5"/></svg>
           <span>Get it on Google Play</span>
         </a>
-        <p class="final-cta__creds">
-          <span aria-hidden="true">Demo sign-in: <code>9876543210</code> &middot; OTP <code>123456</code></span>
-          <span class="visually-hidden">Synthetic demo credentials. Phone nine eight seven six five four three two one zero. OTP one two three four five six.</span>
-        </p>
       </div>
     </section>
 
@@ -4881,15 +5008,15 @@
         <h2 id="faq-heading" class="faq__heading">Questions you&rsquo;re probably asking.</h2>
         <p class="faq__sub">Asked by real users. And, honestly, the founder&rsquo;s family.</p>
 
-        <details class="faq__item"><summary>What does fee-only mean? (and why does it matter?)</summary><div class="faq__answer">You pay Finwiser &#8377;199 a month &mdash; and that&rsquo;s the only money Finwiser ever earns from you. We don&rsquo;t get a commission for recommending a mutual fund, an insurance policy, or any other product. So when Finwy says &ldquo;buy this debt fund,&rdquo; it&rsquo;s because the math says so &mdash; not because someone paid us.<br><br>That&rsquo;s it. That&rsquo;s fee-only. (Most &ldquo;advisers&rdquo; you&rsquo;ve met earn a commission when you buy something &mdash; Finwiser doesn&rsquo;t.)</div></details>
+        <details class="faq__item"><summary>What does fee-only mean? (and why does it matter?)</summary><div class="faq__answer">Once paid plans begin, you pay Finwiser &#8377;199 a month &mdash; and that&rsquo;s the only money Finwiser ever earns from you. We don&rsquo;t get a commission for recommending a mutual fund, an insurance policy, or any other product. So when Finwy says &ldquo;buy this debt fund,&rdquo; it&rsquo;s because the math says so &mdash; not because someone paid us.<br><br>That&rsquo;s it. That&rsquo;s fee-only. (Most &ldquo;advisers&rdquo; you&rsquo;ve met earn a commission when you buy something &mdash; Finwiser doesn&rsquo;t.)</div></details>
         <details class="faq__item"><summary>How does Finwiser see my accounts without my password?</summary><div class="faq__answer">Through Account Aggregator &mdash; an RBI-regulated rail where you grant consent through your AA app, and Finwiser receives read-only data. Finwiser never sees, asks for, or stores your bank password.</div></details>
         <details class="faq__item"><summary>Can Finwiser move my money?</summary><div class="faq__answer">No. Read-only access only. Finwiser can see balances and transactions, and give advice. It cannot place trades, transfer funds, or change anything in your accounts.</div></details>
-        <details class="faq__item"><summary>What if I want to cancel?</summary><div class="faq__answer">One tap in the app. Your subscription stops at the end of the current month. We don&rsquo;t ask why, we don&rsquo;t try to &ldquo;save&rdquo; you, and we don&rsquo;t keep your data &mdash; see the refund question below.</div></details>
+        <details class="faq__item"><summary>What if I want to cancel?</summary><div class="faq__answer">One tap in the app. Once paid plans begin, your subscription will stop at the end of the current month. We won&rsquo;t ask why, we won&rsquo;t try to &ldquo;save&rdquo; you, and we don&rsquo;t keep your data &mdash; see the refund question below.</div></details>
         <details class="faq__item"><summary>How is this different from my CA or agent?</summary><div class="faq__answer">A CA is great at filing returns and reading the rules. An agent is paid commissions to sell you specific products. Finwiser is a SEBI-registered Investment Adviser &mdash; same regulatory category as a fee-only human RIA &mdash; but priced per family, available in-app, and runs continuous math instead of a once-a-year review.</div></details>
         <details class="faq__item"><summary>How is this different from other investing apps?</summary><div class="faq__answer">Investing apps (Groww, Kuvera, Zerodha) are distributors &mdash; their job is to help you transact. Finwiser is an Adviser &mdash; our job is to tell you whether the transaction is right for you. Different licence, different incentive, different answer.</div></details>
         <details class="faq__item"><summary>Does it work with my joint account?</summary><div class="faq__answer">Yes &mdash; and both of you stay in control. Each account holder approves the connection through Account Aggregator independently, from their own banking app. Once both have consented, the account appears in your shared family picture.</div></details>
         <details class="faq__item"><summary>Hindi support?</summary><div class="faq__answer">Coming. The app is English-first today; Hindi is on the roadmap.</div></details>
-        <details class="faq__item"><summary>Refund policy?</summary><div class="faq__answer">Cancel any time and you&rsquo;re not billed for the next month. We don&rsquo;t pro-rate &mdash; if you cancel on the 25th, you keep access until the end of that month. We don&rsquo;t auto-renew in surprise.</div></details>
+        <details class="faq__item"><summary>Refund policy?</summary><div class="faq__answer">Once paid plans begin: cancel any time and you won&rsquo;t be billed for the next month. We won&rsquo;t pro-rate &mdash; if you cancel on the 25th, you keep access until the end of that month. No surprise auto-renewals.</div></details>
         <details class="faq__item"><summary>What&rsquo;s the SEBI registration number?</summary><div class="faq__answer">INA000021331. Registered as Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser). Verify on SEBI&rsquo;s intermediary search at <a href="https://www.sebi.gov.in/intermediaries.html" target="_blank" rel="noopener noreferrer">sebi.gov.in</a>.</div></details>
         <details class="faq__item"><summary>If I have a complaint, who do I escalate to?</summary><div class="faq__answer">Email <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a> or call <strong>+91 88012 94657</strong> &mdash; we acknowledge in 1 working day, target resolution in 7 working days, outer limit 21. If unresolved, escalate via SEBI SCORES (<a href="https://scores.sebi.gov.in" target="_blank" rel="noopener noreferrer">scores.sebi.gov.in</a>) or SmartODR (<a href="https://smartodr.in" target="_blank" rel="noopener noreferrer">smartodr.in</a>). The Grievance Redressal Officer named in the footer is the same person you&rsquo;re emailing &mdash; Chandrachuda Sarma Yemmanuru.</div></details>
         <details class="faq__item"><summary>Where&rsquo;s Finwiser based?</summary><div class="faq__answer">Bengaluru. Registered office address is in the footer &mdash; this is a single-proprietor SEBI RIA, run by a real human who picks up the phone.</div></details>
@@ -4911,7 +5038,7 @@
         <nav class="site-footer__col" aria-label="Footer &mdash; Product">
           <h3>Product</h3>
           <ul>
-            <li><a href="/demo-app">Try the demo</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
             <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play</a></li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#how">How it works</a></li>
@@ -5518,28 +5645,57 @@
       }
 
       // ---- Nav: hamburger ----
+      /* Drawer contract: the page underneath must not scroll, a tap anywhere
+         off the panel must dismiss it, Escape must dismiss it, and focus goes
+         into the drawer on open and back to the button on close. The lock is a
+         class on <html> rather than an inline style so the CSS owns it. */
       var toggle = document.querySelector('.fw-nav__toggle');
       var menu = document.getElementById('fw-nav-menu');
+      var scrim = document.querySelector('.fw-nav__scrim');
 
-      function closeMenu() {
+      function isMenuOpen() {
+        return !!toggle && toggle.getAttribute('aria-expanded') === 'true';
+      }
+      /* focus() scrolls its target into view, and both of these targets sit in
+         permanently-visible fixed/sticky chrome. Worse, scroll-into-view
+         honours scroll-padding-top, and a sticky element pinned at top:0 can
+         never satisfy that padding — so focusing the hamburger walks the page
+         all the way back to y=0. Move focus without moving the page. */
+      function focusNoScroll(el) {
+        if (!el) return;
+        try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
+      }
+      function openMenu() {
+        if (!toggle) return;
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+        document.documentElement.classList.add('fw-nav-locked');
+        focusNoScroll(menu && menu.querySelector('a[href]'));
+      }
+      function closeMenu(returnFocus) {
         if (!toggle) return;
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open menu');
+        document.documentElement.classList.remove('fw-nav-locked');
+        if (returnFocus) focusNoScroll(toggle);
       }
       if (toggle && menu) {
         toggle.addEventListener('click', function () {
-          var open = toggle.getAttribute('aria-expanded') !== 'true';
-          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-          toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+          if (isMenuOpen()) closeMenu(false); else openMenu();
         });
         document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-            closeMenu();
-            toggle.focus();
-          }
+          if (e.key === 'Escape' && isMenuOpen()) closeMenu(true);
         });
+        if (scrim) {
+          scrim.addEventListener('click', function () { closeMenu(true); });
+        }
         menu.addEventListener('click', function (e) {
-          if (e.target.matches('a')) closeMenu();
+          if (e.target.matches('a')) closeMenu(false);
+        });
+        /* Rotating past the breakpoint leaves the drawer styles behind but
+           would strand the scroll lock — drop it with the drawer. */
+        addEventListener('resize', function () {
+          if (isMenuOpen() && window.innerWidth > 899) closeMenu(false);
         });
       }
 
