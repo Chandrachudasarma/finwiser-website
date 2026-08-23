@@ -42,11 +42,12 @@
   <meta name="twitter:image:alt" content="Finwiser — Three minutes. Your full picture. SEBI Registered Investment Adviser INA000021331.">
 
   <!-- ── Structured data · Organization only ──────────────────────────
-       SoftwareApplication is deliberately NOT here: its offers block is
-       blocked on the ₹49 / ₹199 price contradiction (Content F2), and
-       schema that disagrees with the SEBI Disclosures fee is a compliance
-       exposure. FAQPage is also deferred — its `text` must match the
-       visible answers verbatim.
+       SoftwareApplication and FAQPage are now both present. The offer block
+       states the settled pricing (free in early access; ₹199/month + a
+       one-time ₹49 advisory unlock when paid plans begin), which matches the
+       Disclosures page and the visible pricing copy. The FAQ entities were
+       generated from the twelve rendered <details> elements, HTML stripped —
+       question and answer text is verbatim.
        ───────────────────────────────────────────────────────────────── -->
   <script type="application/ld+json">
   {
@@ -102,6 +103,140 @@
   }
   </script>
 
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://finwiser.org/#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does fee-only mean? (and why does it matter?)",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Once paid plans begin, you pay Finwiser ₹199 a month — and that’s the only money Finwiser ever earns from you. We don’t get a commission for recommending a mutual fund, an insurance policy, or any other product. So when Finwy says “buy this debt fund,” it’s because the math says so — not because someone paid us. That’s it. That’s fee-only. (Most “advisers” you’ve met earn a commission when you buy something — Finwiser doesn’t.)"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Finwiser see my accounts without my password?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Through Account Aggregator — an RBI-regulated rail where you grant consent through your AA app, and Finwiser receives read-only data. Finwiser never sees, asks for, or stores your bank password."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Finwiser move my money?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Read-only access only. Finwiser can see balances and transactions, and give advice. It cannot place trades, transfer funds, or change anything in your accounts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I want to cancel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One tap in the app. Once paid plans begin, your subscription will stop at the end of the current month. We won’t ask why, we won’t try to “save” you, and we don’t keep your data — see the refund question below."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from my CA or agent?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A CA is great at filing returns and reading the rules. An agent is paid commissions to sell you specific products. Finwiser is a SEBI-registered Investment Adviser — same regulatory category as a fee-only human RIA — but priced per family, available in-app, and runs continuous math instead of a once-a-year review."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from other investing apps?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Investing apps are distributors — their job is to help you transact. Finwiser is an Adviser — our job is to tell you whether the transaction is right for you. Different licence, different incentive, different answer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work with my joint account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — and both of you stay in control. Each account holder approves the connection through Account Aggregator independently, from their own banking app. Once both have consented, the account appears in your shared family picture."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hindi support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Coming. The app is English-first today; Hindi is on the roadmap."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Refund policy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Once paid plans begin: cancel any time and you won’t be billed for the next month. We won’t pro-rate — if you cancel on the 25th, you keep access until the end of that month. No surprise auto-renewals."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What’s the SEBI registration number?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "INA000021331. Registered as Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser). Verify on SEBI’s intermediary search at sebi.gov.in."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "If I have a complaint, who do I escalate to?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Email helpdesk@finwiser.org or call +91 88012 94657 — we acknowledge in 1 working day, target resolution in 7 working days, outer limit 21. If unresolved, escalate via SEBI SCORES (scores.sebi.gov.in) or SmartODR (smartodr.in). The Grievance Redressal Officer named in the footer is the same person you’re emailing — Chandrachuda Sarma Yemmanuru."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where’s Finwiser based?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bengaluru. Registered office address is in the footer — this is a single-proprietor SEBI RIA, run by a real human who picks up the phone."
+      }
+    }
+  ]
+}
+  </script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://finwiser.org/#app",
+  "name": "Finwiser",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Android",
+  "url": "https://play.google.com/store/apps/details?id=org.finwiser.app",
+  "installUrl": "https://play.google.com/store/apps/details?id=org.finwiser.app",
+  "downloadUrl": "https://play.google.com/store/apps/details?id=org.finwiser.app",
+  "description": "Finwiser connects your bank, investment, pension, loan and card accounts over India's RBI-regulated Account Aggregator rail and shows what is actually left each month, which goals it can reach, and where the next rupee should go. Fee-only, SEBI Registered Investment Adviser INA000021331.",
+  "image": "https://finwiser.org/og-image.png",
+  "inLanguage": "en-IN",
+  "countriesSupported": "IN",
+  "publisher": {
+    "@id": "https://finwiser.org/#organization"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR",
+    "availability": "https://schema.org/InStock",
+    "description": "Free during early access; ₹199/month plus a one-time ₹49 advisory unlock once paid plans begin"
+  }
+}
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet">
@@ -127,7 +262,7 @@
       --border-on-light: rgba(0,45,86,0.10);
       --shadow-soft: 0 4px 18px rgba(0,45,86,0.08);
 
-      --nav-h: 68px;
+      --nav-h: 64px;
 
       --gold: #f5c26b;
       --rose: #e87b6f;
@@ -143,7 +278,7 @@
       --white-04: rgba(255,255,255,0.04);
       --white-08: rgba(255,255,255,0.08);
       --white-16: rgba(255,255,255,0.16);
-      --white-32: rgba(255,255,255,0.32);
+      --white-32: rgba(255,255,255,0.32);   /* borders/surfaces only — NEVER text (2.82:1) */
       --white-56: rgba(255,255,255,0.56);
       --white-88: rgba(255,255,255,0.88);
 
@@ -156,6 +291,13 @@
 
       --rose-05:  rgba(232,123,111,0.05);
 
+      /* Teal is 2.6:1 on white — unusable as text. --teal-text is the ink
+         version (4.55:1 on #ffffff); --teal-ink is a shade darker so it also
+         clears 4.5:1 on the --off-white ground. */
+      --teal-text: #00847E;
+      --teal-ink:  #007A74;
+      --rose-ink:  #C1362B;   /* 5.50:1 on white — replaces #ef4444 at 3.76:1 */
+
       --teal-08:  rgba(0,182,173,0.08);
       --teal-16:  rgba(0,182,173,0.16);
       --teal-56:  rgba(0,182,173,0.56);
@@ -165,7 +307,7 @@
       --font-serif: 'Lora', Georgia, serif;
       --font-mono:  ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-      --fs-nano:  11px;
+      --fs-nano:  12px;   /* size floor — was 11px (UX F8) */
       --fs-micro: 13px;
       --fs-body:  15px;
       --fs-lead:  17px;
@@ -187,6 +329,17 @@
       --dur-base:  320ms;
       --dur-slow:  520ms;
       --dur-scene: 900ms;
+
+      /* Micro-interaction ladder (Motion §9.3/§9.6). Four durations, three
+         easings — every hover, press, accordion, drawer and nav state uses
+         these and nothing else. The scene scrub keeps its own clock (Tier 2). */
+      --dur-tap:    120ms;   /* :active, chevron */
+      --dur-ui:     200ms;   /* hover, nav condense, focus */
+      --dur-move:   320ms;   /* accordion, drawer, cross-fade */
+      --dur-reveal: 480ms;   /* entrances */
+      --ease-out:   cubic-bezier(0.2, 0.8, 0.2, 1);   /* arrivals */
+      --ease-std:   cubic-bezier(0.4, 0, 0.2, 1);     /* state changes */
+      --ease-in:    cubic-bezier(0.4, 0, 1, 1);       /* exits */
 
       interpolate-size: allow-keywords;
     }
@@ -213,6 +366,10 @@
       text-rendering: optimizeLegibility;
     }
     img { max-width: 100%; height: auto; display: block; }
+    /* <picture> is a wrapper for format negotiation only — it must never
+       introduce a layout box, or every img that relied on `margin: 0 auto`
+       or on absolute positioning against its section would move. */
+    picture { display: contents; }
 
     /* ============================================================ */
     /* A11Y                                                          */
@@ -230,9 +387,13 @@
     .skip-link:focus { top: 16px; outline: 3px solid var(--navy-deep); outline-offset: 2px; }
 
     :focus { outline: none; }
-    a:focus-visible, button:focus-visible, [tabindex="0"]:focus-visible, summary:focus-visible {
-      outline: 2px solid var(--mint); outline-offset: 3px; border-radius: 4px;
+    a:focus-visible, button:focus-visible, summary:focus-visible,
+    details:focus-visible, [tabindex]:focus-visible, .device:focus-visible {
+      outline: 2px solid var(--mint); outline-offset: 2px; border-radius: 4px;
     }
+    /* The browser default is a blue wash — on a mint button it reads as a bug.
+       Every interactive element below declares its own :active instead. */
+    a, button, summary, [role="button"] { -webkit-tap-highlight-color: transparent; }
 
     /* ============================================================ */
     /* SHARED — buttons, container, reveal                          */
@@ -244,14 +405,48 @@
       font-family: inherit; font-weight: 600; font-size: var(--fs-body); line-height: 1;
       padding: 14px 28px; border-radius: 8px; text-decoration: none;
       cursor: pointer; border: 1px solid transparent;
-      transition: transform 200ms ease-out, background-color 200ms ease-out, border-color 200ms ease-out, color 200ms ease-out;
+      transition: transform var(--dur-ui) var(--ease-out),
+                  box-shadow var(--dur-ui) var(--ease-out),
+                  background-color var(--dur-ui) var(--ease-std),
+                  border-color var(--dur-ui) var(--ease-std),
+                  color var(--dur-ui) var(--ease-std);
     }
     .btn--primary { background: var(--mint); color: var(--navy); border-color: var(--mint); }
-    .btn--primary:hover { transform: scale(1.01); background: var(--teal); border-color: var(--teal); }
     .btn--ghost { background: transparent; color: var(--text-on-dark); border-color: var(--white-32); }
-    .btn--ghost:hover { transform: scale(1.01); border-color: var(--white-56); }
     .btn--cream { background: var(--navy); color: var(--white); border-color: var(--navy); }
-    .btn--cream:hover { transform: scale(1.01); background: var(--navy-deep); }
+    /* Hover is a pointer-only affordance — it never fires on a phone, where the
+       1.01 scale was 1.5px anyway (Motion M6). */
+    @media (hover: hover) and (pointer: fine) {
+      .btn:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 6px 20px rgba(0,45,86,0.14); }
+      .btn--primary:hover { background: var(--teal); border-color: var(--teal); }
+      .btn--ghost:hover { border-color: var(--white-56); }
+      .btn--cream:hover { background: var(--navy-deep); }
+    }
+    /* The press. This is the only feedback a thumb ever gets, so it exists on
+       every device, and it is fast enough to feel like a button (120ms). */
+    .btn:active, .fw-nav__cta:active, .engine__cta:active,
+    .final-cta__playstore:active, .trust__verify:active {
+      transform: scale(0.97) !important;
+      transition-duration: var(--dur-tap) !important;
+    }
+    /* Underline reveal on in-copy links. */
+    .faq__answer a, .secure__footnote a, .team__linkedin, .trust__verify,
+    .site-footer__col a, .site-footer__legal a {
+      text-decoration: none;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      background-size: 0% 1px;
+      transition: background-size var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-std);
+    }
+    .faq__answer a { background-size: 100% 1px; }
+    @media (hover: hover) and (pointer: fine) {
+      .secure__footnote a:hover, .team__linkedin:hover, .trust__verify:hover,
+      .site-footer__col a:hover, .site-footer__legal a:hover { background-size: 100% 1px; }
+      .faq__answer a:hover { background-size: 0% 1px; }
+      .secure__card { transition: transform var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-std); }
+      .secure__card:hover { transform: translateY(-2px); border-color: var(--mint-32); box-shadow: 0 16px 34px rgba(0,0,0,0.30); }
+    }
 
     [data-reveal] { opacity: 0; transform: translateY(8px); transition: opacity 600ms var(--ease-enter), transform 600ms var(--ease-enter); }
     [data-reveal].is-in { opacity: 1; transform: translateY(0); }
@@ -282,7 +477,11 @@
         transition-duration: 0.001ms !important;
       }
       [data-reveal] { opacity: 1 !important; transform: none !important; }
-      .btn:hover { transform: none; }
+      .btn:hover, .btn:active, .fw-nav__cta:hover, .fw-nav__cta:active,
+      .cap:hover, .secure__card:hover { transform: none !important; }
+      .fw-nav__link::after { transition: none; }
+      .faq__answer { transition: none !important; }
+      .fw-nav__menu .fw-nav__list > li { opacity: 1 !important; transform: none !important; }
     }
 
     /* ============================================================ */
@@ -302,22 +501,61 @@
     /* ============================================================ */
     /* §1 — NAV                                                      */
     /* ============================================================ */
+    /* The bar is a MATERIAL, not a slab (UI U6/§8.7, Motion M7). Two things
+       change with the page underneath it: the ground tint + the logo variant
+       (driven by the IntersectionObserver on [data-theme] sections), and a
+       hairline + shadow that appear once the page has moved 8px. --nav-ground
+       is an r,g,b triplet so one token drives both the opaque fallback and the
+       translucent blurred version. */
     .fw-nav {
       position: sticky; top: 0; left: 0; right: 0; z-index: 50;
       height: var(--nav-h);
-      background: var(--white);
-      border-bottom: 1px solid var(--border-on-light);
+      --nav-ground: 255,255,255;
+      --nav-fg: var(--navy-deep);
+      --nav-fg-hover: var(--teal-text);
+      --nav-line: rgba(0,45,86,0.12);
+      --nav-shadow: 0 1px 18px rgba(0,45,86,0.10);
+      background: rgb(var(--nav-ground));            /* solid fallback */
+      border-bottom: 1px solid transparent;
+      transition: background-color var(--dur-ui) var(--ease-std),
+                  border-color var(--dur-ui) var(--ease-std),
+                  box-shadow var(--dur-ui) var(--ease-std);
     }
+    @supports ((backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px))) {
+      .fw-nav.is-scrolled {
+        background: rgba(var(--nav-ground), 0.72);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+                backdrop-filter: saturate(180%) blur(20px);
+      }
+    }
+    .fw-nav.is-over-dark {
+      --nav-ground: 0,45,86;
+      --nav-fg: var(--text-on-dark);
+      --nav-fg-hover: var(--mint);
+      --nav-line: rgba(255,255,255,0.16);
+      --nav-shadow: 0 1px 18px rgba(0,0,0,0.38);
+    }
+    /* State change after 8px of scroll — a hairline and a shadow, nothing else. */
+    .fw-nav.is-scrolled { border-bottom-color: var(--nav-line); box-shadow: var(--nav-shadow); }
     .fw-nav__inner {
       max-width: 1200px; height: 100%; margin: 0 auto; padding: 0 24px;
       display: flex; align-items: center; justify-content: space-between; gap: 24px;
     }
     .fw-nav__logo {
-      display: inline-flex; align-items: center;
+      position: relative; display: block; padding: 7px 0;
       text-decoration: none; line-height: 0;
     }
-    .fw-nav__logo-img { height: 54px; width: auto; display: block; }
-    @media (max-width: 899px) { .fw-nav__logo-img { height: 40px; } }
+    /* Positive and reversed are the same viewBox, so they register exactly on
+       top of each other and cross-fade with no reflow and no src flash. */
+    .fw-nav__logo-img { height: 44px; width: auto; display: block; }
+    .fw-nav__logo-img--rev {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity var(--dur-ui) var(--ease-std);
+    }
+    .fw-nav.is-over-dark .fw-nav__logo-img--pos { opacity: 0; }
+    .fw-nav.is-over-dark .fw-nav__logo-img--rev { opacity: 1; }
+    /* 30px tall = 152px wide = 39% of a 390px viewport (was 203px / 52%). */
+    @media (max-width: 899px) { .fw-nav__logo-img { height: 30px; } }
     .fw-nav__list { list-style: none; display: flex; align-items: center; gap: 28px; }
     /* The nav links take their foreground from the surface they sit on, not
        from a hard-coded token. The bar is white, so the default is navy; the
@@ -328,21 +566,32 @@
       color: var(--nav-fg, var(--navy-deep));
       text-decoration: none; transition: color 200ms ease-out;
     }
+    .fw-nav__link { position: relative; padding: 6px 0; }
+    .fw-nav__link::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+      background: currentColor; border-radius: 2px;
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform var(--dur-ui) var(--ease-out);
+    }
     .fw-nav__link:hover { color: var(--nav-fg-hover, var(--teal)); }
+    .fw-nav__link:hover::after, .fw-nav__link:focus-visible::after { transform: scaleX(1); }
+    .fw-nav__link:active { opacity: 0.7; transition-duration: var(--dur-tap); }
     .fw-nav__cta {
       display: inline-flex; align-items: center; height: 36px; padding: 0 18px;
       border-radius: 6px; background: var(--mint); color: var(--navy-deep) !important;
       font: 600 14px/1 'Inter', sans-serif; text-decoration: none;
       transition: transform 200ms ease-out, background-color 200ms ease-out;
     }
-    .fw-nav__cta:hover { transform: scale(1.01); background: var(--teal); }
+    .fw-nav__cta:hover { transform: translateY(-1px) scale(1.02); background: var(--teal); }
+    .fw-nav__cta:active { transform: scale(0.97); transition-duration: var(--dur-tap); }
     /* 44x44 is the tap target; the three bars stay 22px wide, so the button
        grows in hit area only. */
     .fw-nav__toggle { display: none; background: transparent; border: 0; width: 44px; height: 44px; cursor: pointer; padding: 0; font-family: inherit; }
     .fw-nav__toggle-bar {
       display: block; width: 22px; height: 2px; margin: 5px auto;
-      background: var(--navy-deep);
-      transition: transform 240ms var(--ease-enter), opacity 200ms ease-out;
+      background: var(--nav-fg, var(--navy-deep));
+      transition: transform 240ms var(--ease-enter), opacity 200ms ease-out,
+                  background-color var(--dur-ui) var(--ease-std);
     }
     .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(2) { opacity: 0; }
@@ -354,7 +603,7 @@
       position: fixed; inset: var(--nav-h) 0 0 0; z-index: 0;
       background: var(--black-45); touch-action: none;
       opacity: 0; visibility: hidden;
-      transition: opacity 240ms var(--ease-move), visibility 0s linear 240ms;
+      transition: opacity var(--dur-move) var(--ease-std), visibility 0s linear var(--dur-move);
     }
     .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__scrim {
       opacity: 1; visibility: visible; transition-delay: 0s;
@@ -373,11 +622,20 @@
         box-shadow: -16px 0 40px var(--black-32);
         /* Real travel, not a 16px fade. */
         transform: translateX(100%); opacity: 1; visibility: hidden;
-        transition: transform 320ms var(--ease-enter), visibility 0s linear 320ms;
+        transition: transform var(--dur-move) var(--ease-out), visibility 0s linear var(--dur-move);
         padding: 16px 24px;
       }
       .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__menu {
         transform: translateX(0); visibility: visible; transition-delay: 0s;
+      }
+      /* The drawer's travel has something to deliver: the links arrive behind it. */
+      .fw-nav__menu .fw-nav__list > li {
+        opacity: 0; transform: translateX(12px);
+        transition: opacity var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out);
+      }
+      .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__menu .fw-nav__list > li {
+        opacity: 1; transform: none;
+        transition-delay: calc(120ms + var(--li, 0) * 40ms);
       }
       .fw-nav__list { flex-direction: column; align-items: stretch; gap: 4px; }
       .fw-nav__link, .fw-nav__cta { height: 44px; display: flex; align-items: center; font-size: var(--fs-body); }
@@ -397,7 +655,7 @@
     .hero {
       background: var(--navy); color: var(--text-on-dark);
       min-height: 85vh; min-height: 85svh; display: flex; align-items: center;
-      padding: clamp(64px, 9vw, 112px) 0; overflow: hidden;
+      padding: clamp(36px, 7vw, 96px) 0; overflow: hidden;
     }
     .hero__inner {
       width: 100%; max-width: 1180px; margin: 0 auto;
@@ -407,7 +665,7 @@
     .hero__eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
       font-size: var(--fs-micro); letter-spacing: 0.2px; color: var(--text-on-dark-muted);
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
     /* flex-start + half a line box keeps the dot on the FIRST line once the
        eyebrow wraps (2 lines at 390px, 1 at 1440px); align-items:center on the
@@ -420,25 +678,27 @@
     .hero__headline {
       font-family: var(--font-sans); font-weight: 700;
       font-size: var(--fs-h1); line-height: 1.1;
-      letter-spacing: -0.5px; color: var(--text-on-dark); margin-bottom: 24px;
+      letter-spacing: -0.5px; color: var(--text-on-dark); margin-bottom: 18px;
     }
     .hero__headline .word {
       display: inline-block;
       clip-path: inset(0 100% 0 0); opacity: 0; transform: translateY(8px);
-      animation: hero-word-reveal 600ms var(--ease-enter) forwards;
-      animation-delay: calc(var(--i, 0) * 80ms);
+      animation: hero-word-reveal var(--dur-reveal) var(--ease-out) forwards;
+      animation-delay: calc(var(--i, 0) * 60ms);
     }
     @keyframes hero-word-reveal { to { clip-path: inset(0 0 0 0); opacity: 1; transform: translateY(0); } }
     .hero__sub {
       font-size: var(--fs-lead); line-height: 1.55; max-width: 56ch;
-      color: var(--text-on-dark-muted); margin-bottom: 32px;
+      color: var(--text-on-dark-muted); margin-bottom: 24px;
       opacity: 0; transform: translateY(12px);
-      animation: hero-rise 500ms var(--ease-enter) 1100ms forwards;
+      animation: hero-rise var(--dur-reveal) var(--ease-out) 300ms forwards;
     }
+    /* The CTA is present and tappable on the FIRST painted frame. It used to
+       be opacity:0 until 1,250ms with the mascot chain running past 2,400ms
+       (Motion §8) — only the mascot animates now. */
     .hero__ctas {
-      display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
-      opacity: 0; transform: translateY(12px);
-      animation: hero-rise 500ms var(--ease-enter) 1250ms forwards;
+      display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
+      opacity: 1; transform: none;
     }
     .hero__creds {
       font-family: var(--font-mono);
@@ -452,7 +712,7 @@
       padding: 2px 8px; border-radius: 4px;
     }
     .hero__visual {
-      position: relative; aspect-ratio: 1 / 1; max-width: 460px; width: 100%; justify-self: end;
+      position: relative; aspect-ratio: 1 / 1; max-width: 320px; width: 100%; justify-self: end;
       opacity: 0; transform: translateY(16px);
       animation: hero-rise 600ms var(--ease-enter) 0ms forwards;
     }
@@ -461,7 +721,18 @@
       background: radial-gradient(closest-side, var(--mint-16), transparent 70%);
       filter: blur(2px);
     }
-    .hero__mascot { position: relative; width: 100%; aspect-ratio: 409 / 455; filter: drop-shadow(1.5px 0 0 var(--mint)) drop-shadow(-1.5px 0 0 var(--mint)) drop-shadow(0 1.5px 0 var(--mint)) drop-shadow(0 -1.5px 0 var(--mint)) drop-shadow(0 0 22px color-mix(in srgb, var(--mint) 55%, transparent)) drop-shadow(0 24px 48px var(--black-32)); }
+    /* One soft ambient shadow. The four axis-aligned 1.5px mint drop-shadows
+       that faked a keyline are gone (Assets F4 / UI U8): they outlined every
+       internal edge of the bitmap, and they cost a full filter pass on the one
+       element that swaps 15 frames.
+       Capped at 260 CSS px desktop / 204 mobile: the source is 409px, so 204 is
+       exactly 2x on a phone. Bigger is not sharper — it is only bigger. */
+    .hero__mascot {
+      position: relative; width: 100%; max-width: 260px; margin: 0 auto;
+      aspect-ratio: 409 / 455;
+      filter: drop-shadow(0 24px 48px var(--black-32));
+    }
+    .hero__mascot picture { display: contents; }
     .hero__mascot img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
@@ -478,6 +749,13 @@
       animation: chip-float 6s var(--ease-move) infinite;
     }
     .hero__chip svg { width: 16px; height: 16px; fill: var(--mint); }
+    @media (max-width: 900px) {
+      .hero__chip { font-size: 12px; padding: 7px 10px; gap: 6px; border-radius: 8px; }
+      .hero__chip svg { width: 13px; height: 13px; }
+      .hero__chip--bank { top: 2%;    left: -8%; }
+      .hero__chip--mf   { top: 46%;   right: -9%; }
+      .hero__chip--card { bottom: 4%; left: -6%; }
+    }
     .hero__chip--bank { top: 8%; left: -4%; }
     .hero__chip--mf   { top: 44%; right: -6%; animation-delay: -2s; }
     .hero__chip--card { bottom: 10%; left: 6%; animation-delay: -4s; }
@@ -486,9 +764,10 @@
 
     @media (max-width: 900px) {
       .hero { min-height: 70vh; min-height: 70svh; }
-      .hero__inner { grid-template-columns: 1fr; gap: 40px; }
-      .hero__visual { justify-self: center; max-width: 320px; }
-      .hero__sub { font-size: var(--fs-body); }
+      .hero__inner { grid-template-columns: 1fr; gap: 20px; }
+      .hero__visual { justify-self: center; max-width: 296px; }
+      .hero__mascot { max-width: 204px; }
+      .hero__sub { font-size: var(--fs-body); margin-bottom: 20px; }
     }
     @media (prefers-reduced-motion: reduce) {
       .hero__headline .word, .hero__sub, .hero__ctas, .hero__creds, .hero__visual,
@@ -505,47 +784,40 @@
       border-top: 1px solid var(--white-04);
       border-bottom: 1px solid var(--white-04);
     }
+    /* The proof is PRINTED, not hovered. A tooltip on a mobile-first product
+       is an unsupported claim: phones have no hover, so every phone visitor
+       used to read "Bank-grade security" with no evidence behind it. */
     .trust__chips {
-      list-style: none; display: flex; flex-wrap: wrap;
-      justify-content: center; gap: 32px; max-width: 1180px;
+      list-style: none; display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px 32px; max-width: 1180px;
       margin: 0 auto; padding: 0 24px;
     }
     .trust__chip {
-      position: relative; display: inline-flex; align-items: center; gap: 10px;
+      position: relative; display: flex; align-items: flex-start; gap: 10px;
       color: var(--text-on-dark);
       font: 500 14px/1.4 Inter, sans-serif;
-      padding: 6px 4px; border-radius: 6px;
+      padding: 2px 0;
     }
-    .trust__chip[tabindex="0"] { cursor: default; }
+    .trust__text { display: block; }
+    .trust__label { display: block; font-weight: 600; }
+    .trust__proof {
+      display: block; margin-top: 4px;
+      font: 400 13px/1.5 Inter, sans-serif;
+      color: var(--text-on-dark-muted);
+    }
     .trust__icon {
-      width: 20px; height: 20px; flex: 0 0 20px;
+      width: 20px; height: 20px; flex: 0 0 20px; margin-top: 1px;
       fill: none; stroke: var(--mint); stroke-width: 1.5;
       stroke-linecap: round; stroke-linejoin: round;
     }
     .trust__verify {
-      color: var(--mint); margin-left: 8px; font-size: var(--fs-micro); text-decoration: none;
+      color: var(--mint); text-decoration: none; white-space: nowrap;
       border-bottom: 1px solid var(--mint-32); padding-bottom: 1px;
     }
     .trust__verify:hover, .trust__verify:focus-visible { border-bottom-color: var(--mint); }
-    .trust__tooltip {
-      position: absolute; left: 50%; top: calc(100% + 10px);
-      transform: translateX(-50%) translateY(-4px);
-      background: var(--navy); color: var(--text-on-dark);
-      font: 400 12px/1.4 ui-monospace, monospace;
-      padding: 6px 10px; border-radius: 4px; white-space: nowrap;
-      border: 1px solid var(--mint-32);
-      opacity: 0; pointer-events: none;
-      transition: opacity 200ms ease, transform 200ms ease;
-      z-index: 5;
-    }
-    .trust__chip:hover .trust__tooltip,
-    .trust__chip:focus-within .trust__tooltip {
-      opacity: 1; transform: translateX(-50%) translateY(0);
-    }
-    @media (max-width: 600px) {
-      .trust__chips { flex-direction: column; align-items: flex-start; gap: 14px; padding-left: 24px; }
-      .trust__tooltip { left: 0; transform: translateY(-4px); white-space: normal; max-width: 90vw; }
-      .trust__chip:focus-within .trust__tooltip { transform: translateY(0); }
+    @media (max-width: 900px) {
+      .trust__chips { grid-template-columns: 1fr; gap: 16px; }
     }
 
     /* ============================================================ */
@@ -554,7 +826,10 @@
     .problem {
       background: var(--off-white); color: var(--text-on-light);
       padding: clamp(64px, 10vw, 100px) 0;
-      min-height: calc(100vh - var(--nav-h)); min-height: calc(100svh - var(--nav-h));
+      /* Two beats' worth, not a full viewport: the section carries a
+         headline, one question and one line, and used to hold a whole
+         screen open around them (19.8% fill measured on mobile). */
+      min-height: 62vh; min-height: 62svh;
       display: flex; align-items: center;
     }
     .problem__inner { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 32px; text-align: center; }
@@ -568,7 +843,7 @@
       letter-spacing: -0.4px;
     }
     .problem__heading em {
-      font-style: italic; color: var(--teal); font-weight: 700;
+      font-style: italic; color: var(--teal-text); font-weight: 700;
     }
     .problem__h-prefix {
       display: block;
@@ -632,7 +907,7 @@
       font-weight: 500;
       font-size: clamp(30px, 5vw, 50px);
       line-height: 1.15;
-      color: var(--teal);
+      color: var(--teal-ink);
       max-width: 22ch;
       margin: 40px auto 8px;
       letter-spacing: -0.4px;
@@ -1012,10 +1287,10 @@
       letter-spacing: -0.6px; line-height: 1.05;
       color: var(--text-on-dark);
     }
-    .seen__pane-currency { font-size: 0.7em; color: var(--mint); font-weight: 700; margin-right: 3px; }
+    .seen__pane-currency { font-size: max(12px, 0.7em); color: var(--mint); font-weight: 700; margin-right: 3px; }
     .seen__pane-unit {
       font-family: var(--font-sans);
-      font-size: 0.45em; color: var(--text-on-dark-muted);
+      font-size: max(12px, 0.45em); color: var(--text-on-dark-muted);
       margin-left: 5px; font-weight: 500;
     }
     .seen__pane--surplus .seen__pane-eyebrow { color: #f5c26b; }
@@ -1043,7 +1318,7 @@
       background: linear-gradient(90deg, var(--mint-56), var(--mint));
     }
     .seen__composite-disclaimer {
-      font-size: var(--fs-nano); color: var(--white-32);
+      font-size: var(--fs-nano); color: var(--white-56);
       text-align: center; margin-top: 14px;
       letter-spacing: 0.2px;
     }
@@ -1177,16 +1452,8 @@
     @supports (overflow: clip) {
       .steps { overflow-x: clip; }
     }
-    .steps__intro {
-      max-width: 1100px; margin: 0 auto 60px; padding: 0 32px; text-align: center;
-      min-height: calc(100vh - var(--nav-h)); min-height: calc(100svh - var(--nav-h));
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-    }
-    .steps__heading {
-      font-size: var(--fs-h2); font-weight: 700;
-      letter-spacing: -0.4px; line-height: 1.18; margin-bottom: 12px;
-    }
-    .steps__sub { font-size: var(--fs-lead); color: var(--text-on-dark-muted); max-width: 56ch; margin: 0 auto; }
+    /* .steps__intro / .steps__heading / .steps__sub removed with the
+       standalone "Three minutes. Three steps." title screen. */
     .steps__callout {
       margin-top: 18px;
       padding: 14px 18px;
@@ -1268,6 +1535,10 @@
         top: calc(var(--nav-h) + 16px);
       }
     }
+    /* §6b — the second half of the stepper, after Security & data. Same
+       section, no second top pad (Security already supplied the air) and
+       no trailing gap before the engine. */
+    .steps--tail { padding-top: clamp(48px, 6vw, 72px); }
     .steps__num-col {
       position: sticky; top: 30vh; height: max-content; padding-top: 12px;
     }
@@ -1303,7 +1574,10 @@
       transition: opacity 400ms var(--ease-enter), transform 600ms var(--ease-enter);
     }
     .is-active .steps__card { opacity: 1; transform: translateY(0); }
-    .steps__card h3 {
+    /* .steps__card-title carries the section's h2 — the standalone
+       "Three minutes. Three steps." title screen was deleted and its heading
+       merged into the first panel it introduced. Same visual weight as h3. */
+    .steps__card h3, .steps__card-title {
       font-size: var(--fs-h3); font-weight: 700; color: var(--text-on-dark);
       margin-bottom: 10px; letter-spacing: -0.2px;
     }
@@ -1367,7 +1641,7 @@
       50%      { opacity: 0.5; }
     }
     .connect-feed__count {
-      font: 700 11px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+      font: 700 12px/1 ui-monospace, 'SF Mono', Menlo, monospace;
       color: var(--mint); letter-spacing: 0.2px;
       padding: 5px 9px; border-radius: 999px;
       background: var(--mint-08);
@@ -1434,7 +1708,7 @@
       letter-spacing: -0.2px; margin-top: 4px;
     }
     .connect-active__done-sub {
-      font: 500 11px/1.4 'Inter', sans-serif;
+      font: 500 12px/1.4 'Inter', sans-serif;
       color: var(--text-on-dark-muted); letter-spacing: 0.2px;
     }
 
@@ -1495,10 +1769,14 @@
       flex-shrink: 0; overflow: hidden;
     }
     .connect-card__mark img { width: 18px; height: 18px; object-fit: contain; }
+    /* Typeset name, not a hot-linked bank SVG (Assets §4 / UX F7). Auto-width
+       so five characters fit at the 12px floor; still a 22px-tall tile. */
     .connect-card__mark--mono {
-      font: 800 8px/1 'Inter', sans-serif;
-      letter-spacing: 0.3px; color: var(--navy-deep);
+      width: auto; min-width: 22px; padding: 0 6px;
+      font: 800 12px/1 'Inter', sans-serif;
+      letter-spacing: 0; color: var(--navy-deep);
       background: var(--mint); text-transform: uppercase;
+      font-variant-numeric: tabular-nums;
     }
     .connect-card__id {
       display: flex; flex-direction: column; gap: 2px; min-width: 0;
@@ -1509,7 +1787,7 @@
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .connect-card__num {
-      font: 500 10.5px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+      font: 500 12px/1 ui-monospace, 'SF Mono', Menlo, monospace;
       color: var(--text-on-dark-muted); letter-spacing: 0.2px;
     }
     .connect-card__amount {
@@ -1526,7 +1804,7 @@
       opacity: 1; transform: translateX(0); color: var(--mint);
     }
     .connect-card__amount-label {
-      font: 600 9px/1 'Inter', sans-serif;
+      font: 600 12px/1 'Inter', sans-serif;
       letter-spacing: 0.6px; text-transform: uppercase;
       color: var(--text-on-dark-muted); margin-right: 6px;
     }
@@ -1536,7 +1814,7 @@
       gap: 8px; min-height: 22px;
     }
     .connect-card__approve {
-      font: 700 10px/1 'Inter', sans-serif;
+      font: 700 12px/1 'Inter', sans-serif;
       text-transform: uppercase; letter-spacing: 0.7px;
       padding: 7px 12px; border-radius: 999px;
       background: var(--mint); color: var(--navy-deep);
@@ -1564,7 +1842,7 @@
     .connect-card.is-approved .connect-card__approve { display: none; }
     .connect-card__check {
       display: none;
-      font: 700 10px/1 'Inter', sans-serif;
+      font: 700 12px/1 'Inter', sans-serif;
       text-transform: uppercase; letter-spacing: 0.7px;
       color: var(--mint); align-items: center; gap: 5px;
     }
@@ -1591,7 +1869,7 @@
       transition: border-color 320ms ease, background 320ms ease, box-shadow 320ms ease;
     }
     .connect-stat__label {
-      font: 700 10px/1 'Inter', sans-serif;
+      font: 700 12px/1 'Inter', sans-serif;
       letter-spacing: 0.7px; text-transform: uppercase;
       color: var(--text-on-dark-muted);
     }
@@ -1666,7 +1944,7 @@
     .engine__intro { text-align: center; margin-bottom: 24px; }
     .engine__intro-eyebrow {
       font-family: var(--font-sans);
-      font-size: 11px; font-weight: 700;
+      font-size: 12px; font-weight: 700;
       letter-spacing: 0.22em; text-transform: uppercase;
       color: var(--text-on-light-muted);
       margin-bottom: 8px;
@@ -1677,7 +1955,7 @@
       font-weight: 500; line-height: 1.1; letter-spacing: -0.015em;
       color: var(--navy);
     }
-    .engine__intro-title em { font-style: italic; color: var(--teal); }
+    .engine__intro-title em { font-style: italic; color: var(--teal-text); }
 
     /* Sticky shared head — sits at top of engine while user scrolls cards */
     .engine__shared-head {
@@ -1832,7 +2110,7 @@
       position: absolute;
       top: calc(100% + 6px); left: 50%;
       transform: translateX(-50%);
-      font-size: 8.5px; font-weight: 700;
+      font-size: 12px; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--text-on-light-muted);
       white-space: nowrap;
@@ -1842,7 +2120,7 @@
       position: absolute;
       top: calc(100% + 18px); left: 50%;
       transform: translate(-50%, -4px);
-      font-size: 11px; font-weight: 700;
+      font-size: 12px; font-weight: 700;
       color: var(--navy);
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
@@ -1871,7 +2149,7 @@
       width: 16px; height: 16px;
       border-radius: 50%;
       background: var(--mint); color: var(--white);
-      font-size: 10px; font-weight: 800;
+      font-size: 12px; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 2px 5px rgba(0,45,86,0.18);
       animation: engineTickPop 420ms var(--ease-overshoot);
@@ -1915,7 +2193,7 @@
       width: 18px; height: 18px;
       border-radius: 50%;
       background: var(--gold); color: var(--navy-deep);
-      font-size: 10px; font-weight: 800;
+      font-size: 12px; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 2px 6px rgba(245,194,107,0.5);
       animation: engineTickPop 460ms var(--ease-overshoot);
@@ -1955,7 +2233,7 @@
       will-change: transform;
     }
     .trail__mascot img {
-      width: 100%; height: 100%;
+      width: 100%; height: 100%; object-fit: contain;
       filter: drop-shadow(0 5px 12px rgba(0,45,86,0.18));
       transform-origin: bottom center;
       animation: engineMascotBreathe 3200ms ease-in-out infinite;
@@ -2054,12 +2332,14 @@
       font-weight: 800;
       line-height: 0.95; letter-spacing: -0.03em;
       font-variant-numeric: tabular-nums;
-      color: var(--mint);
+      /* was --mint: 1.77:1 on this white card (UI U8). The mint lane now reads
+         navy, the teal lane reads --teal-ink; the lanes stay distinguishable. */
+      color: var(--navy);
     }
-    .lane--teal .input-stat__num { color: var(--teal); }
+    .lane--teal .input-stat__num { color: var(--teal-ink); }
     .input-stat__num--loss { color: var(--rose) !important; }
     .input-stat__num small {
-      font-size: 0.42em; font-weight: 700;
+      font-size: max(12px, 0.42em); font-weight: 700;
       color: var(--navy);
       vertical-align: 0.2em; margin-left: 0.04em;
     }
@@ -2073,8 +2353,8 @@
       font-size: var(--fs-micro); color: var(--text-on-light-muted);
       font-weight: 500; margin-top: 6px;
     }
-    .lane--mint .input__rating-key { color: var(--mint); font-weight: 700; }
-    .lane--teal .input__rating-key { color: var(--teal); font-weight: 700; }
+    .lane--mint .input__rating-key { color: var(--navy); font-weight: 700; }
+    .lane--teal .input__rating-key { color: var(--teal-ink); font-weight: 700; }
     .input__trigger {
       font-size: var(--fs-nano); font-style: italic;
       color: var(--text-on-light-muted);
@@ -2105,10 +2385,10 @@
       background: var(--white);
       border: 1.5px solid var(--mint);
       display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 800;
-      color: var(--mint);
+      font-size: 12px; font-weight: 800;
+      color: var(--navy);
     }
-    .lane--teal .verdict__avatar { color: var(--teal); border-color: var(--teal); }
+    .lane--teal .verdict__avatar { color: var(--teal-ink); border-color: var(--teal); }
     .verdict__verb {
       font-family: var(--font-sans);
       font-size: clamp(20px, 2.4vw, 26px);
@@ -2148,7 +2428,7 @@
       border-top: 1px dashed var(--border-on-light);
     }
     .allocation__head {
-      font-size: 10.5px; font-weight: 700;
+      font-size: 12px; font-weight: 700;
       letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--text-on-light-muted);
       margin-bottom: 6px;
@@ -2182,7 +2462,7 @@
     }
     .allocation__row {
       display: flex; align-items: baseline; gap: 6px;
-      font-size: 10.5px;
+      font-size: 12px;
       opacity: 0; transform: translateY(3px);
       transition: opacity 320ms var(--ease-out-cubic),
                   transform 320ms var(--ease-out-cubic);
@@ -2217,16 +2497,12 @@
     .a-rose  { background: var(--rose); }
     .a-slate { background: var(--slate); }
 
-    /* Closer */
-    /* Engine finale — its own snap-stop page after the 3 case cards. */
-    .engine-finale {
-      background: var(--off-white); color: var(--text-on-light);
-      min-height: calc(100vh - var(--nav-h)); min-height: calc(100svh - var(--nav-h));
-      padding: clamp(48px, 6vw, 72px) 0;
-      display: flex; align-items: center; justify-content: center;
-    }
+    /* Closer — lives inside .engine now. It used to be its own
+       full-viewport section carrying a mascot, two lines and one button
+       (9.2% screen fill). Same content, no empty screen around it. */
     .engine-finale__inner {
-      width: 100%; max-width: 880px; margin: 0 auto; padding: 0 32px;
+      width: 100%; max-width: 880px; margin: 0 auto;
+      padding: clamp(32px, 4vw, 48px) 32px 0;
       text-align: center;
     }
     .engine__close {
@@ -2257,18 +2533,18 @@
       max-width: 720px; line-height: 1.3;
       letter-spacing: -0.012em;
     }
-    .engine__close-line em { font-style: italic; color: var(--teal); }
+    .engine__close-line em { font-style: italic; color: var(--teal-text); }
     .engine__close-finwy {
       font-family: var(--font-serif);
       font-size: clamp(18px, 2.2vw, 24px);
       font-weight: 600; font-style: italic;
-      color: var(--teal); line-height: 1.3;
+      color: var(--teal-ink); line-height: 1.3;
       margin-top: 2px;
     }
     .engine__cta {
       display: inline-flex; align-items: center; gap: 8px;
       font: 700 15px/1 var(--font-sans);
-      padding: 14px 26px; border-radius: 10px;
+      padding: 15px 26px; min-height: 44px; border-radius: 10px;
       background: var(--mint); color: var(--navy-deep);
       text-decoration: none;
       margin-top: 10px;
@@ -2295,8 +2571,8 @@
       .engine .lane--teal .lane__input { border-bottom-color: var(--teal-24); }
       .engine .factor { width: 40px; height: 40px; }
       .engine .factor svg { width: 15px; height: 15px; }
-      .engine .factor__label { font-size: 7.5px; }
-      .engine .factor__readout { font-size: 10px; top: calc(100% + 16px); }
+      .engine .factor__label { font-size: 12px; }
+      .engine .factor__readout { font-size: 12px; top: calc(100% + 16px); }
       .engine .trail { padding: 14px 10px 36px; }
       .engine .trail__row { padding: 0; gap: 4px; }
       .engine .trail__row::before { left: 22px; right: 22px; }
@@ -2349,14 +2625,58 @@
       .cap { transition: opacity 600ms var(--ease-enter), transform 200ms ease-out, box-shadow 200ms ease-out; }
       .cap:hover { transform: translateY(-2px); box-shadow: 0 16px 32px var(--mint-16); }
     }
-    .cap__icon {
-      width: 32px; height: 32px; stroke: var(--mint); fill: none; stroke-width: 1.5;
-      stroke-linecap: round; stroke-linejoin: round; margin-bottom: 14px;
-    }
     .cap__heading { font-size: var(--fs-lead); font-weight: 700; color: var(--text-on-light); margin-bottom: 6px; }
     .cap__body { font-size: var(--fs-body); color: var(--text-on-light-muted); line-height: 1.6; }
-    @media (max-width: 900px) { .caps__grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .caps__grid { grid-template-columns: 1fr; } }
+    .cap__shot { margin-bottom: 16px; }
+    /* Two columns all the way down to 360px (UX §8): six single-column cards
+       were ~1,900px of scroll on a phone for six sentences. */
+    @media (max-width: 900px) {
+      .caps { padding: 48px 0; }
+      .caps__inner { padding: 0 16px; }
+      .caps__sub { margin-bottom: 28px; }
+      .caps__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; align-items: start; }
+      .cap { padding: 14px 14px 16px; border-radius: 14px; }
+      .cap__heading { font-size: var(--fs-body); }
+      .cap__body { font-size: var(--fs-micro); line-height: 1.55; }
+      .cap__shot { margin-bottom: 12px; }
+    }
+    @media (max-width: 359px) { .caps__grid { grid-template-columns: 1fr; } }
+
+    /* ============================================================ */
+    /* APP SCREENS — ONE device frame, used identically everywhere.  */
+    /* CSS only: a rounded rect, a 5px bezel, one shadow. No raster  */
+    /* chrome, so it costs nothing and scales to any slot.           */
+    /* ============================================================ */
+    .device {
+      position: relative; display: block; width: 100%;
+      max-width: var(--device-w, 300px); margin: 0 auto;
+      padding: 5px; border-radius: 20px;
+      background: linear-gradient(155deg, #17364f 0%, #0a1a2c 100%);
+      box-shadow: 0 10px 26px rgba(0,45,86,0.20);
+    }
+    .device::after {
+      content: ''; position: absolute; inset: 0; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.14); pointer-events: none;
+    }
+    .device__screen {
+      display: block; border-radius: 15px; overflow: hidden;
+      background: var(--off-white);
+    }
+    .device__screen img { width: 100%; height: auto; display: block; }
+    [data-theme="dark"] .device { box-shadow: 0 16px 40px rgba(0,0,0,0.42); }
+
+    .compare__proof {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px; max-width: 720px; margin: 40px auto 0;
+    }
+    .compare__proof-item figcaption {
+      margin-top: 14px; font-size: var(--fs-micro);
+      color: var(--text-on-dark-muted); line-height: 1.5;
+    }
+    @media (max-width: 600px) {
+      .compare__proof { gap: 16px; margin-top: 28px; }
+      .compare__proof-item figcaption { font-size: var(--fs-nano); margin-top: 10px; }
+    }
 
     /* ============================================================ */
     /* §9 — WHY DIFFERENT (comparison table)                         */
@@ -2445,7 +2765,7 @@
       font-family: var(--font-mono); font-size: clamp(48px, 7vw, 72px);
       font-weight: 800; color: var(--navy); line-height: 1; margin-bottom: 8px;
     }
-    .pricing__price span { font-family: var(--font-sans); font-size: 0.4em; color: var(--text-on-light-muted); font-weight: 500; }
+    .pricing__price span { font-family: var(--font-sans); font-size: max(12px, 0.4em); color: var(--text-on-light-muted); font-weight: 500; }
     .pricing__price em {
       font-family: var(--font-sans); font-style: normal; font-size: 0.7em;
     }
@@ -2468,8 +2788,8 @@
       border-bottom: 2px solid currentColor;
       text-align: left;
     }
-    .pricing__compare-head--stop { color: #ef4444; }
-    .pricing__compare-head--start { color: #10b981; }
+    .pricing__compare-head--stop { color: var(--rose-ink); }
+    .pricing__compare-head--start { color: var(--teal-ink); }
     .pricing__cell {
       display: flex;
       align-items: center;
@@ -2480,8 +2800,8 @@
       text-align: left;
       line-height: 1.35;
     }
-    .pricing__cell--stop { color: #ef4444; }
-    .pricing__cell--start { color: #10b981; }
+    .pricing__cell--stop { color: var(--rose-ink); }
+    .pricing__cell--start { color: var(--teal-ink); }
     @media (max-width: 600px) {
       .pricing__compare {
         grid-template-columns: 1fr;
@@ -2506,11 +2826,11 @@
     }
     .pricing__mark--x {
       width: 20px; height: 20px;
-      color: #ef4444;
+      color: var(--rose-ink);
     }
     .pricing__mark--check {
       width: 22px; height: 22px;
-      color: #10b981;
+      color: var(--teal-ink);
     }
 
     /* Scroll-triggered reveal — each cell rises in on scroll-in.
@@ -2686,7 +3006,25 @@
       margin-top: 32px; font-size: var(--fs-micro); color: var(--text-on-dark-muted);
     }
     .secure__footnote a { color: var(--mint); text-decoration: underline; }
-    @media (max-width: 700px) { .secure__grid { grid-template-columns: 1fr; } }
+    /* Four security cards stayed two-up on a phone too — 1,700px of scroll
+       for four paragraphs otherwise (UX §8). */
+    @media (max-width: 700px) {
+      .secure { padding: 48px 0; }
+      .secure__inner { padding: 0 16px; }
+      .secure__sub { margin-bottom: 28px; }
+      .secure__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; align-items: start; }
+      .secure__card { padding: 16px 14px; }
+      .secure__heading-card { font-size: var(--fs-body); }
+      .secure__body { font-size: var(--fs-micro); }
+      .secure__icon { width: 26px; height: 26px; margin-bottom: 10px; }
+    }
+    /* Measured, not assumed: card 2 carries three times the copy of the other
+       three, so two-up its row is as tall as the whole single column and the
+       card beside it is left half empty. At 390 the section measures 1,348px in
+       one column vs 1,397 (span) / 1,569 (plain) in two. One column is both
+       shorter AND squarer here, so the density fix stops at 600px. The six
+       Capabilities cards, whose copy IS balanced, go two-up all the way down. */
+    @media (max-width: 600px) { .secure__grid { grid-template-columns: 1fr; } }
 
     /* ============================================================ */
     /* §12.5 — TEAM / FOUNDER (compact)                              */
@@ -2695,7 +3033,7 @@
     .team__inner { max-width: 620px; margin: 0 auto; padding: 0 32px; text-align: center; }
     .team__eyebrow {
       font-size: var(--fs-nano); font-weight: 700; letter-spacing: 1.4px;
-      text-transform: uppercase; color: var(--teal); margin-bottom: 24px;
+      text-transform: uppercase; color: var(--teal-ink); margin-bottom: 24px;
     }
     .team__card {
       display: flex; align-items: center; gap: 20px; text-align: left;
@@ -2712,10 +3050,17 @@
     }
     .team__name { font-size: var(--fs-lead); font-weight: 700; color: var(--navy); margin-bottom: 3px; }
     .team__role { font-size: var(--fs-nano); color: var(--text-on-light-muted); line-height: 1.5; margin-bottom: 10px; }
+    .team__record {
+      font-size: var(--fs-body); color: var(--text-on-light); line-height: 1.65;
+      max-width: 62ch; margin-bottom: 12px;
+    }
+    /* One "Get the app" at each decision point — after Capabilities and
+       after Security & data — instead of the old cluster in the middle. */
+    .section-cta { margin-top: 36px; display: flex; justify-content: center; }
     .team__linkedin {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: var(--fs-micro); font-weight: 600; color: var(--teal);
-      text-decoration: none; transition: color 200ms ease;
+      display: inline-flex; align-items: center; gap: 7px; min-height: 44px;
+      font-size: var(--fs-micro); font-weight: 600; color: var(--teal-text);
+      text-decoration: none; transition: color var(--dur-ui) var(--ease-std);
     }
     .team__linkedin:hover { color: var(--navy); }
     .team__linkedin svg { width: 15px; height: 15px; fill: currentColor; }
@@ -2752,24 +3097,43 @@
       display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
     }
     .faq__item summary::-webkit-details-marker { display: none; }
+    .faq__item summary { transition: background-color var(--dur-ui) var(--ease-std), padding-left var(--dur-ui) var(--ease-std); }
+    @media (hover: hover) and (pointer: fine) {
+      .faq__item summary:hover { background: rgba(0,45,86,0.04); padding-left: 10px; }
+    }
+    .faq__item summary:active { background: rgba(0,45,86,0.07); transition-duration: var(--dur-tap); }
     .faq__item summary::after {
       content: ''; flex-shrink: 0; width: 14px; height: 14px;
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%235a6b7d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><polyline points='4,6 8,10 12,6'/></svg>");
       background-size: contain;
-      transform: rotate(0); transition: transform 200ms var(--ease-move);
+      transform: rotate(0); transition: transform var(--dur-tap) var(--ease-std);
       margin-top: 6px;
     }
     .faq__item[open] summary::after { transform: rotate(180deg); }
-    .faq__item ::details-content {
-      transition: height 240ms var(--ease-move), content-visibility 240ms;
-      height: 0; overflow: hidden;
+    /* The old rule was `.faq__item ::details-content` — a DESCENDANT selector,
+       which matches nothing, so twelve accordions opened in a single frame
+       (Motion M8). The height is now animated by JS on .faq__answer, which
+       works in every browser rather than only where ::details-content exists. */
+    /* Where ::details-content exists (Chrome 131+, and :root already turns on
+       `interpolate-size: allow-keywords`) the browser animates the real box —
+       including the discrete content-visibility flip, which is what kept the
+       JS version from ever having a start value to transition from. */
+    @supports selector(::details-content) {
+      .faq__item::details-content {
+        height: 0; overflow: hidden; opacity: 0;
+        transition: height var(--dur-move) var(--ease-std),
+                    opacity var(--dur-move) var(--ease-std),
+                    content-visibility var(--dur-move) allow-discrete;
+      }
+      .faq__item[open]::details-content { height: auto; opacity: 1; }
     }
-    .faq__item[open]::details-content { height: auto; }
     .faq__answer {
+      overflow: hidden;
+      transition: height var(--dur-move) var(--ease-std), opacity var(--dur-move) var(--ease-std);
       padding: 0 0 24px;
       font-size: var(--fs-body); color: var(--text-on-light-muted); line-height: 1.65;
     }
-    .faq__answer a { color: var(--teal); }
+    .faq__answer a { color: var(--teal-text); }
 
     /* ============================================================ */
     /* §14 — FINAL CTA                                               */
@@ -2777,7 +3141,9 @@
     .final-cta {
       background: var(--navy); color: var(--text-on-dark);
       padding: clamp(48px, 6vw, 72px) 0; text-align: center;
-      min-height: calc(100vh - var(--nav-h)); min-height: calc(100svh - var(--nav-h));
+      /* Enough to read as a close, not a whole empty screen: mascot,
+         headline, one line and the button measure ~450px. */
+      min-height: 66vh; min-height: 66svh;
       display: flex; align-items: center; justify-content: center;
     }
     .final-cta__inner { width: 100%; max-width: 800px; margin: 0 auto; padding: 0 32px; }
@@ -2799,7 +3165,7 @@
     .final-cta__row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
     .final-cta__playstore {
       display: inline-flex; align-items: center; gap: 10px;
-      margin-top: 8px; padding: 10px 18px;
+      margin-top: 8px; padding: 12px 18px; min-height: 44px;
       background: var(--white-08); border: 1px solid var(--border-on-dark);
       border-radius: 8px; color: var(--text-on-dark);
       font-size: var(--fs-micro); text-decoration: none;
@@ -2885,8 +3251,8 @@
     }
     @keyframes flow-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     .flow__caption-meta {
-      font: 500 11px/1 'Inter', sans-serif;
-      color: var(--white-32); letter-spacing: 0.2px;
+      font: 500 12px/1 'Inter', sans-serif;
+      color: var(--white-56); letter-spacing: 0.2px;
     }
     .flow__stage {
       position: relative; display: grid;
@@ -2904,9 +3270,9 @@
     }
     .flow__lane-label {
       position: absolute; top: 10px; left: 12px;
-      font: 700 9.5px/1 'Inter', sans-serif;
+      font: 700 12px/1 'Inter', sans-serif;
       letter-spacing: 0.7px; text-transform: uppercase;
-      color: var(--white-32);
+      color: var(--white-56);
       pointer-events: none; z-index: 0;
     }
     .flow__counter {
@@ -2921,14 +3287,14 @@
     }
     .flow__counter-label {
       display: block; margin-top: 8px;
-      font: 700 10.5px/1 'Inter', sans-serif;
+      font: 700 12px/1 'Inter', sans-serif;
       letter-spacing: 0.9px; text-transform: uppercase;
       color: var(--white-56);
     }
     .flow__counter-sub {
       display: block; margin-top: 4px;
-      font: 500 10.5px/1 'Inter', sans-serif;
-      color: var(--white-32); letter-spacing: 0.2px;
+      font: 500 12px/1 'Inter', sans-serif;
+      color: var(--white-56); letter-spacing: 0.2px;
       opacity: 0; transition: opacity 400ms ease 200ms;
     }
     .is-done .flow__counter-sub { opacity: 1; }
@@ -2948,7 +3314,7 @@
     .flow__counter-bar-seg--variable { background: var(--gold); }
     .flow__counter-breakdown {
       display: flex; justify-content: center; gap: 8px;
-      font: 600 10px/1.3 'Inter', sans-serif;
+      font: 600 12px/1.3 'Inter', sans-serif;
       color: var(--text-on-dark-muted); letter-spacing: 0.2px;
       flex-wrap: wrap;
       opacity: 0; transition: opacity 480ms ease;
@@ -2958,11 +3324,11 @@
     .flow__counter-breakdown .bd-income   b { color: var(--mint); }
     .flow__counter-breakdown .bd-fixed    b { color: var(--teal); }
     .flow__counter-breakdown .bd-variable b { color: var(--gold); }
-    .flow__counter-breakdown .bd-sep { color: var(--white-16); }
+    .flow__counter-breakdown .bd-sep { color: var(--white-56); }
     .flow__counter-stamp {
       display: block; margin-top: 16px;
-      font: 500 9px/1 ui-monospace, 'SF Mono', Menlo, monospace;
-      color: var(--white-32);
+      font: 500 12px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--white-56);
       letter-spacing: 0.4px; text-transform: uppercase;
     }
     .flow__lane--stream::before {
@@ -3064,12 +3430,12 @@
     }
     .ledger-row--surplus .ledger-row__value {
       font-size: 36px; letter-spacing: -0.6px;
-      color: var(--white-32);
+      color: var(--white-56);
       animation: surplus-blank 2.4s var(--ease-move) infinite;
     }
     @keyframes surplus-blank { 0%, 100% { opacity: 0.55; } 50% { opacity: 1.00; } }
     .ledger-row--surplus .ledger-row__per {
-      font: 500 11px/1 'Inter', sans-serif;
+      font: 500 12px/1 'Inter', sans-serif;
       color: var(--white-56); letter-spacing: 0.2px; margin-left: 4px;
     }
     .is-revealed .ledger-row--surplus {
@@ -3109,12 +3475,12 @@
       transition: opacity 460ms ease 60ms, transform 720ms var(--ease-move);
     }
     .txn__date {
-      font: 700 9.5px/1 'Inter', sans-serif;
+      font: 700 12px/1 'Inter', sans-serif;
       letter-spacing: 0.8px; text-transform: uppercase;
-      color: var(--white-32);
+      color: var(--white-56);
     }
     .txn__narration {
-      font: 600 11.5px/1.3 'Inter', sans-serif;
+      font: 600 12px/1.3 'Inter', sans-serif;
       color: var(--white-88); letter-spacing: -0.05px;
     }
     .txn__amount {
@@ -3123,13 +3489,13 @@
     }
     .txn__amount--income { color: var(--mint); }
     .txn__account {
-      font: 500 9.5px/1 ui-monospace, 'SF Mono', Menlo, monospace;
-      color: var(--white-32); letter-spacing: 0.3px; margin-top: 3px;
+      font: 500 12px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--white-56); letter-spacing: 0.3px; margin-top: 3px;
     }
     .txn__tag {
       display: none; margin-top: 6px; align-self: flex-start;
       padding: 3px 8px; border-radius: 999px;
-      font: 700 9px/1 'Inter', sans-serif;
+      font: 700 12px/1 'Inter', sans-serif;
       letter-spacing: 0.7px; text-transform: uppercase;
     }
     .txn.is-classified .txn__tag, .txn.is-routed .txn__tag { display: inline-block; }
@@ -3169,7 +3535,7 @@
     .insight--runway   .insight__num { color: var(--gold); }
     .insight--idle     .insight__num { color: var(--mint); }
     .insight__label {
-      font: 600 11px/1.2 'Inter', sans-serif;
+      font: 600 12px/1.2 'Inter', sans-serif;
       letter-spacing: 0.8px; text-transform: uppercase;
       color: var(--text-on-dark-muted);
     }
@@ -3214,7 +3580,7 @@
       .flow__insights { grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 10px; padding-top: 10px; }
       .insight { padding: 10px 10px 9px; gap: 4px; }
       .insight__num { font-size: 28px; }
-      .insight__label { font-size: 10px; letter-spacing: 0.5px; }
+      .insight__label { font-size: 12px; letter-spacing: 0.5px; }
       .txn { display: none; }
     }
 
@@ -3250,7 +3616,7 @@
     .steps__concept--allocate .src-chip {
       display: inline-flex; align-items: center;
       padding: 6px 11px;
-      font: 500 11.5px/1 'Inter', sans-serif;
+      font: 500 12px/1 'Inter', sans-serif;
       letter-spacing: 0.1px;
       color: var(--white-56);
       background: var(--white-04);
@@ -3270,7 +3636,7 @@
     .steps__concept--allocate .src-arrow {
       display: inline-flex; align-items: center; justify-content: center;
       width: 22px; height: 22px;
-      color: var(--white-32);
+      color: var(--white-56);
       font: 500 14px/1 'Inter', sans-serif;
       opacity: 0; transition: opacity 360ms ease 500ms;
     }
@@ -3344,9 +3710,9 @@
     .steps__concept--allocate .topbanner__cell--surplus { align-items: flex-start; }
     .steps__concept--allocate .topbanner__cell--balance { align-items: flex-end; text-align: right; }
     .steps__concept--allocate .topbanner__label {
-      font: 600 9.5px/1 'Inter', sans-serif;
+      font: 600 12px/1 'Inter', sans-serif;
       letter-spacing: 1px; text-transform: uppercase;
-      color: var(--white-32);
+      color: var(--white-56);
     }
     .steps__concept--allocate .topbanner__value {
       font: 800 26px/1 'Inter', sans-serif;
@@ -3358,7 +3724,7 @@
     }
     .steps__concept--allocate .topbanner__value small {
       font: 500 12px/1 'Inter', sans-serif;
-      color: var(--white-32);
+      color: var(--white-56);
       letter-spacing: 0.2px;
       margin-left: 3px;
       vertical-align: baseline;
@@ -3382,9 +3748,9 @@
       grid-template-columns: 48px 1fr 130px 110px 130px;
       column-gap: 12px;
       padding: 0 14px 4px;
-      font: 600 10px/1 'Inter', sans-serif;
+      font: 600 12px/1 'Inter', sans-serif;
       letter-spacing: 0.8px; text-transform: uppercase;
-      color: var(--white-32);
+      color: var(--white-56);
     }
     .steps__concept--allocate .cascade__colheads span { text-align: right; }
     .steps__concept--allocate .cascade__colheads span:nth-child(1) { text-align: left; }
@@ -3412,11 +3778,11 @@
     .steps__concept--allocate .pri {
       display: inline-flex; align-items: center; justify-content: center;
       min-width: 32px; height: 22px; padding: 0 9px; border-radius: 999px;
-      font: 700 10px/1 'Inter', sans-serif; letter-spacing: 0.6px;
+      font: 700 12px/1 'Inter', sans-serif; letter-spacing: 0.6px;
       font-variant-numeric: tabular-nums;
     }
     .steps__concept--allocate .pri--p0 { background: var(--mint); color: var(--navy-deep); }
-    .steps__concept--allocate .pri--p1 { background: var(--teal); color: var(--white); }
+    .steps__concept--allocate .pri--p1 { background: var(--teal); color: var(--navy-deep); }
     .steps__concept--allocate .pri--p2 { background: var(--mint-08); color: var(--mint); border: 1px solid var(--mint-32); }
     .steps__concept--allocate .pri--p3 { background: var(--white-04); color: var(--white-56); border: 1px solid var(--white-16); }
     .steps__concept--allocate .cascade__name {
@@ -3445,12 +3811,12 @@
       background: var(--mint-08);
       border: 1px solid var(--mint-32);
       color: var(--mint);
-      font: 600 9.5px/1 'Inter', sans-serif;
+      font: 600 12px/1 'Inter', sans-serif;
       letter-spacing: 0.4px; text-transform: uppercase;
       white-space: nowrap;
     }
     .steps__concept--allocate .name__sub {
-      font: 500 11.5px/1.35 'Inter', sans-serif;
+      font: 500 12px/1.35 'Inter', sans-serif;
       color: var(--white-56);
       letter-spacing: 0.05px;
     }
@@ -3509,7 +3875,7 @@
       color: var(--white-56);
     }
     .steps__concept--allocate .cascade__allocated.is-status {
-      font: 500 11.5px/1.2 'Inter', sans-serif;
+      font: 500 12px/1.2 'Inter', sans-serif;
       color: var(--gold);
       letter-spacing: 0.05px;
       font-weight: 500;
@@ -3584,14 +3950,14 @@
       .steps__concept--allocate .cascade__cutoff::after {
         content: 'SURPLUS RUNS OUT HERE';
         position: absolute; left: 50%; top: -7px; transform: translate(-50%, -100%);
-        font: 600 9px/1 'Inter', sans-serif; letter-spacing: 0.12em;
+        font: 600 12px/1 'Inter', sans-serif; letter-spacing: 0.12em;
         color: var(--gold-50); white-space: nowrap;
         opacity: 0; transition: opacity 320ms ease;
       }
       .steps__concept--allocate .cascade__cutoff.is-drawn::after { opacity: 1; }
       .steps__concept--allocate .name__fund-mobile {
         display: block;
-        font: 500 11px/1.3 'Inter', sans-serif;
+        font: 500 12px/1.3 'Inter', sans-serif;
         color: var(--white-56);
         letter-spacing: 0.05px;
         margin-top: 2px;
@@ -3637,10 +4003,11 @@
   <!-- ============================================================ -->
   <!-- §1 — NAV                                                      -->
   <!-- ============================================================ -->
-  <header class="fw-nav" role="banner">
+  <header class="fw-nav is-over-dark" role="banner">
     <div class="fw-nav__inner">
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
-        <img class="fw-nav__logo-img" src="finwiserlogo.svg" alt="Finwiser" width="274" height="54">
+        <img class="fw-nav__logo-img fw-nav__logo-img--pos" src="finwiserlogo-optimised.svg" alt="Finwiser" width="274" height="54" decoding="async">
+        <img class="fw-nav__logo-img fw-nav__logo-img--rev" src="finwiserlogo-reversed.svg" alt="" width="274" height="54" decoding="async" aria-hidden="true">
       </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
@@ -3650,11 +4017,12 @@
       <div class="fw-nav__scrim" aria-hidden="true"></div>
       <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
         <ul class="fw-nav__list">
-          <li><a class="fw-nav__link" href="#how">How it works</a></li>
-          <li><a class="fw-nav__link" href="#pricing">Pricing</a></li>
-          <li><a class="fw-nav__link" href="#team">Team</a></li>
-          <li><a class="fw-nav__link" href="#faq">Help</a></li>
-          <li><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+          <li style="--li:0"><a class="fw-nav__link" href="#capabilities">What it does</a></li>
+          <li style="--li:1"><a class="fw-nav__link" href="#how">How it works</a></li>
+          <li style="--li:2"><a class="fw-nav__link" href="#pricing">Pricing</a></li>
+          <li style="--li:3"><a class="fw-nav__link" href="#team">Team</a></li>
+          <li style="--li:4"><a class="fw-nav__link" href="#faq">Help</a></li>
+          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
         </ul>
       </nav>
     </div>
@@ -3665,41 +4033,85 @@
     <!-- ============================================================ -->
     <!-- §2 — HERO                                                     -->
     <!-- ============================================================ -->
-    <section class="hero" aria-labelledby="hero-heading" data-snap-anim="hero-wakeup">
+    <section class="hero" aria-labelledby="hero-heading" data-snap-anim="hero-wakeup" data-theme="dark">
       <div class="hero__inner">
         <div class="hero__copy">
           <p class="hero__eyebrow">
             <span class="hero__beta-dot" aria-hidden="true"></span>
             SEBI Registered &middot; Fee-only &middot; Free in early access &middot; Live on Google Play
           </p>
-          <h1 id="hero-heading" class="hero__headline">
-            <span class="word" style="--i:0">Three</span> <span class="word" style="--i:1">minutes.</span><br>
-            <span class="word" style="--i:2">Your</span> <span class="word" style="--i:3">full</span> <span class="word" style="--i:4">picture.</span>
+          <h1 id="hero-heading" class="hero__headline" aria-label="Three minutes. Your full picture.">
+            <span class="word" style="--i:0" aria-hidden="true">Three</span> <span class="word" style="--i:1" aria-hidden="true">minutes.</span><br>
+            <span class="word" style="--i:2" aria-hidden="true">Your</span> <span class="word" style="--i:3" aria-hidden="true">full</span> <span class="word" style="--i:4" aria-hidden="true">picture.</span>
           </h1>
-          <p class="hero__sub">Connect your accounts and see your real surplus, your real goals, and what to do next. Fee-only fiduciary advice &mdash; never a commission, never a product pitch.</p>
+          <p class="hero__sub">Finwiser is an Android app that connects to your bank accounts and shows what&rsquo;s actually left each month, which goals it can reach, and where the next rupee should go. Never a commission, never a product pitch.</p>
           <div class="hero__ctas">
             <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
-            <a class="btn btn--ghost" href="/fw-deck-2026/">Read the deck</a>
           </div>
         </div>
         <div class="hero__visual" aria-hidden="true">
           <div class="hero__halo"></div>
           <div class="hero__mascot" id="hero-mascot" role="img" aria-label="Finwy mascot waking up to say hi">
-            <img src="fw-deck-2026/slides/frame-1.png" class="is-active" data-frame="1" alt="" loading="eager" decoding="async">
-            <img src="fw-deck-2026/slides/frame-2.png" data-frame="2" alt="" loading="eager" decoding="async">
-            <img src="fw-deck-2026/slides/frame-3.png" data-frame="3" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-4.png" data-frame="4" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-5.png" data-frame="5" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-6.png" data-frame="6" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-7.png" data-frame="7" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-8.png" data-frame="8" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-9.png" data-frame="9" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-10.png" data-frame="10" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-11.png" data-frame="11" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-12.png" data-frame="12" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-13.png" data-frame="13" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-14.png" data-frame="14" alt="" loading="lazy" decoding="async">
-            <img src="fw-deck-2026/slides/frame-15.png" data-frame="15" alt="" loading="lazy" decoding="async">
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-1-409w.avif">
+              <img src="fw-deck-2026/slides/frame-1-409w.webp" class="is-active" data-frame="1" alt="" width="409" height="455" loading="eager" fetchpriority="high" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-2-409w.avif">
+              <img src="fw-deck-2026/slides/frame-2-409w.webp" data-frame="2" alt="" width="409" height="455" loading="eager" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-3-409w.avif">
+              <img src="fw-deck-2026/slides/frame-3-409w.webp" data-frame="3" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-4-409w.avif">
+              <img src="fw-deck-2026/slides/frame-4-409w.webp" data-frame="4" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-5-409w.avif">
+              <img src="fw-deck-2026/slides/frame-5-409w.webp" data-frame="5" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-6-409w.avif">
+              <img src="fw-deck-2026/slides/frame-6-409w.webp" data-frame="6" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-7-409w.avif">
+              <img src="fw-deck-2026/slides/frame-7-409w.webp" data-frame="7" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-8-409w.avif">
+              <img src="fw-deck-2026/slides/frame-8-409w.webp" data-frame="8" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-9-409w.avif">
+              <img src="fw-deck-2026/slides/frame-9-409w.webp" data-frame="9" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-10-409w.avif">
+              <img src="fw-deck-2026/slides/frame-10-409w.webp" data-frame="10" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-11-409w.avif">
+              <img src="fw-deck-2026/slides/frame-11-409w.webp" data-frame="11" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-12-409w.avif">
+              <img src="fw-deck-2026/slides/frame-12-409w.webp" data-frame="12" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-13-409w.avif">
+              <img src="fw-deck-2026/slides/frame-13-409w.webp" data-frame="13" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-14-409w.avif">
+              <img src="fw-deck-2026/slides/frame-14-409w.webp" data-frame="14" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
+            <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-15-409w.avif">
+              <img src="fw-deck-2026/slides/frame-15-409w.webp" data-frame="15" alt="" width="409" height="455" loading="lazy" decoding="async">
+            </picture>
           </div>
           <div class="hero__chip hero__chip--bank">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10 12 4l9 6v2H3zM5 13h2v6H5zm4 0h2v6H9zm4 0h2v6h-2zm4 0h2v6h-2zM3 20h18v2H3z"/></svg>
@@ -3720,33 +4132,39 @@
     <!-- ============================================================ -->
     <!-- §3 — TRUST STRIP                                              -->
     <!-- ============================================================ -->
-    <aside class="trust" aria-label="Regulatory and security credentials">
+    <aside class="trust" aria-label="Regulatory and security credentials" data-theme="dark">
       <ul class="trust__chips" role="list">
-        <li class="trust__chip" tabindex="0" aria-describedby="tt-sebi">
+        <li class="trust__chip">
           <svg class="trust__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
             <path d="M2 8 L10 3 L18 8"/>
             <path d="M3 8 V16 M7 8 V16 M10 8 V16 M13 8 V16 M17 8 V16"/>
             <path d="M2 17 H18"/>
           </svg>
-          <span>SEBI Registered Investment Adviser &middot; INA000021331
-            <a class="trust__verify" href="https://www.sebi.gov.in/intermediaries.html" target="_blank" rel="noopener noreferrer">verify on SEBI <span aria-hidden="true">&rarr;</span><span class="visually-hidden"> (opens in a new tab)</span></a>
+          <span class="trust__text">
+            <span class="trust__label">SEBI Registered Investment Adviser &middot; INA000021331</span>
+            <span class="trust__proof">Verify the registration on sebi.gov.in &mdash;
+              <a class="trust__verify" href="https://www.sebi.gov.in/intermediaries.html" target="_blank" rel="noopener noreferrer">SEBI intermediary search <span aria-hidden="true">&rarr;</span><span class="visually-hidden"> (opens in a new tab)</span></a>
+            </span>
           </span>
-          <span class="trust__tooltip" role="tooltip" id="tt-sebi">Search this number on sebi.gov.in to verify the registration is active.</span>
         </li>
-        <li class="trust__chip" tabindex="0" aria-describedby="tt-sec">
+        <li class="trust__chip">
           <svg class="trust__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
             <rect x="5" y="9" width="10" height="8" rx="1.5"/>
             <path d="M7 9 V6 a3 3 0 0 1 6 0 V9"/>
           </svg>
-          <span>Bank-grade security</span>
-          <span class="trust__tooltip" role="tooltip" id="tt-sec">256-bit TLS in transit, AES-256 at rest</span>
+          <span class="trust__text">
+            <span class="trust__label">Bank-grade security</span>
+            <span class="trust__proof">AES-256 at rest &middot; TLS 1.3 in transit</span>
+          </span>
         </li>
-        <li class="trust__chip" tabindex="0" aria-describedby="tt-pwd">
+        <li class="trust__chip">
           <svg class="trust__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
             <path d="M10 2 L17 5 V10 c0 4-3 7-7 8 c-4-1-7-4-7-8 V5 Z"/>
           </svg>
-          <span>We never see your password</span>
-          <span class="trust__tooltip" role="tooltip" id="tt-pwd">Account Aggregator — consent-mediated, revocable any time</span>
+          <span class="trust__text">
+            <span class="trust__label">We never see your bank password</span>
+            <span class="trust__proof">Consent runs on the Account Aggregator rail &mdash; India&rsquo;s RBI-licensed way to share bank data without sharing a password. Revocable any time.</span>
+          </span>
         </li>
       </ul>
     </aside>
@@ -3754,7 +4172,7 @@
     <!-- ============================================================ -->
     <!-- §4 — THE PROBLEM                                              -->
     <!-- ============================================================ -->
-    <section class="problem" aria-labelledby="problem-heading" data-reveal>
+    <section class="problem" aria-labelledby="problem-heading" data-reveal data-theme="light">
       <div class="problem__inner">
         <h2 id="problem-heading" class="problem__heading" aria-label="You&rsquo;re earning, saving, investing &mdash; and you still can&rsquo;t answer one question.">
           <span class="problem__h-prefix" aria-hidden="true">You&rsquo;re</span>
@@ -3767,9 +4185,108 @@
     </section>
 
     <!-- ============================================================ -->
+    <!-- §8 — CAPABILITIES                                             -->
+    <!-- ============================================================ -->
+    <section class="caps" id="capabilities" aria-labelledby="caps-heading" data-reveal data-theme="light">
+      <div class="caps__inner">
+        <h2 id="caps-heading" class="caps__heading">Everything below is already running.</h2>
+        <p class="caps__sub">Not what we&rsquo;ll build. What the Android app does today.</p>
+        <ul class="caps__grid" role="list">
+          <li class="cap" style="--i:0">
+            <div class="device cap__shot">
+              <span class="device__screen">
+                <picture>
+                  <source type="image/avif" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/portfolio-320w.avif 320w, assets/app/portfolio-480w.avif 480w, assets/app/portfolio-720w.avif 720w">
+                  <img src="assets/app/portfolio-480w.webp" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/portfolio-320w.webp 320w, assets/app/portfolio-480w.webp 480w, assets/app/portfolio-720w.webp 720w"
+                       width="480" height="570" loading="lazy" decoding="async"
+                       alt="Finwiser&rsquo;s portfolio screen: portfolio score 50 out of 100, net worth &#8377;35.6L, and a What You Own bar split across mutual funds 22.4%, NPS 10.9%, banks 2.2% and equities 3.7%.">
+                </picture>
+              </span>
+            </div>
+            <h3 class="cap__heading">See every account in one place.</h3>
+            <p class="cap__body">Thirty-plus account types across seven buckets &mdash; banking, investments, pensions, insurance, loans &amp; cards, business, physical assets &mdash; sorted by a six-tier classification. One picture.</p>
+          </li>
+          <li class="cap" style="--i:1">
+            <div class="device cap__shot">
+              <span class="device__screen">
+                <picture>
+                  <source type="image/avif" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/cashflow-320w.avif 320w, assets/app/cashflow-480w.avif 480w, assets/app/cashflow-720w.avif 720w">
+                  <img src="assets/app/cashflow-480w.webp" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/cashflow-320w.webp 320w, assets/app/cashflow-480w.webp 480w, assets/app/cashflow-720w.webp 720w"
+                       width="480" height="570" loading="lazy" decoding="async"
+                       alt="Finwiser&rsquo;s income-versus-expenses screen for the month: &#8377;3.85L came in, &#8377;5.21L went out, of which &#8377;3.71L was the user&rsquo;s own spending across 27 transactions.">
+                </picture>
+              </span>
+            </div>
+            <h3 class="cap__heading">Auto-categorise every transaction.</h3>
+            <p class="cap__body">UPI, salary, rent, EMIs, OTT, that one Swiggy habit. Sorted automatically.</p>
+          </li>
+          <li class="cap" style="--i:2">
+            <div class="device cap__shot">
+              <span class="device__screen">
+                <picture>
+                  <source type="image/avif" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/snapshot-320w.avif 320w, assets/app/snapshot-480w.avif 480w, assets/app/snapshot-720w.avif 720w">
+                  <img src="assets/app/snapshot-480w.webp" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/snapshot-320w.webp 320w, assets/app/snapshot-480w.webp 480w, assets/app/snapshot-720w.webp 720w"
+                       width="480" height="570" loading="lazy" decoding="async"
+                       alt="Finwiser&rsquo;s Financial Snapshot: True Net Worth &#8377;35.6L marked Positive, and True Cash Flow at minus &#8377;1.36L marked Negative &mdash; income &#8377;2.65L against expenses &#8377;4.01L.">
+                </picture>
+              </span>
+            </div>
+            <h3 class="cap__heading">Tell you your real monthly surplus.</h3>
+            <p class="cap__body">Not what your bank shows. What&rsquo;s actually left after the obligations you forgot. Updated daily.</p>
+          </li>
+          <li class="cap" style="--i:3">
+            <div class="device cap__shot">
+              <span class="device__screen">
+                <picture>
+                  <source type="image/avif" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/health-320w.avif 320w, assets/app/health-480w.avif 480w, assets/app/health-720w.avif 720w">
+                  <img src="assets/app/health-480w.webp" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/health-320w.webp 320w, assets/app/health-480w.webp 480w, assets/app/health-720w.webp 720w"
+                       width="480" height="570" loading="lazy" decoding="async"
+                       alt="Finwiser&rsquo;s financial health screen: savings score 0 out of 100 rated Poor, and an overall Financial Health score of 65 out of 100 broken into debt management 95, cash flow 40, savings rate 45 and investments 80.">
+                </picture>
+              </span>
+            </div>
+            <h3 class="cap__heading">Watch the ratios that matter.</h3>
+            <p class="cap__body">13 financial ratios &mdash; savings rate, debt-to-income, retirement readiness, emergency-fund cover and nine more &mdash; in plain language, not a finance textbook.</p>
+          </li>
+          <li class="cap" style="--i:4">
+            <div class="device cap__shot">
+              <span class="device__screen">
+                <picture>
+                  <source type="image/avif" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/goals-320w.avif 320w, assets/app/goals-480w.avif 480w, assets/app/goals-720w.avif 720w">
+                  <img src="assets/app/goals-480w.webp" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/goals-320w.webp 320w, assets/app/goals-480w.webp 480w, assets/app/goals-720w.webp 720w"
+                       width="480" height="570" loading="lazy" decoding="async"
+                       alt="Finwiser&rsquo;s goals screen: an Emergency Fund needing &#8377;15.2K a month and 54% funded, and a Retirement Fund needing &#8377;81.5K a month and 26% funded, both flagged must-have.">
+                </picture>
+              </span>
+            </div>
+            <h3 class="cap__heading">Rank goals. Allocate every rupee.</h3>
+            <p class="cap__body">Emergency first, retirement next, lifestyle last. Surplus goes where it matters most &mdash; automatically.</p>
+          </li>
+          <li class="cap" style="--i:5">
+            <div class="device cap__shot">
+              <span class="device__screen">
+                <picture>
+                  <source type="image/avif" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/goal-detail-320w.avif 320w, assets/app/goal-detail-480w.avif 480w, assets/app/goal-detail-720w.avif 720w">
+                  <img src="assets/app/goal-detail-480w.webp" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/goal-detail-320w.webp 320w, assets/app/goal-detail-480w.webp 480w, assets/app/goal-detail-720w.webp 720w"
+                       width="480" height="570" loading="lazy" decoding="async"
+                       alt="The Emergency Fund goal in Finwiser: the required SIP exceeds the available surplus, with three options &mdash; increase the SIP by &#8377;11.2K, extend by 36 months, or top up &#8377;18.6K.">
+                </picture>
+              </span>
+            </div>
+            <h3 class="cap__heading">Recalibrate as life changes.</h3>
+            <p class="cap__body">Bonus, layoff, market drop, new EMI &mdash; the plan updates without you opening the app.</p>
+          </li>
+        </ul>
+        <div class="section-cta">
+          <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
     <!-- §5 — WHAT FINWY SEES                                          -->
     <!-- ============================================================ -->
-    <section class="seen" aria-labelledby="seen-heading" data-snap-anim="seen">
+    <section class="seen" aria-labelledby="seen-heading" data-snap-anim="seen" data-theme="dark">
       <div class="seen__inner">
         <h2 id="seen-heading" class="seen__heading">Watch your money come together.</h2>
         <p class="seen__sub seen__sub--trifecta">
@@ -4067,23 +4584,23 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- §6 — HOW IT WORKS (signature scroll-driven stepper)           -->
+    <!-- §6 — HOW IT WORKS, part 1 (steps 01 & 02)                     -->
+    <!-- The standalone "Three minutes. Three steps." title screen was  -->
+    <!-- deleted; its heading now opens step 01's panel. Step 03 lives  -->
+    <!-- in §6b, after Security & data — the objection that decides the -->
+    <!-- install has to be answered before the third ask.               -->
     <!-- ============================================================ -->
-    <section class="steps" id="how" aria-labelledby="steps-heading">
-      <div class="steps__intro">
-        <h2 id="steps-heading" class="steps__heading">Three minutes. Three steps.</h2>
-        <p class="steps__sub">Connect once. Finwiser handles the rest &mdash; and recalibrates as life changes.</p>
-      </div>
+    <section class="steps" id="how" aria-labelledby="steps-heading" data-theme="dark">
       <div class="steps__rail">
         <div class="steps__line" aria-hidden="true"><div class="steps__line-fill" id="steps-line-fill"></div></div>
 
         <div class="steps__row" data-step="1" id="connect-step-row" data-snap-anim="step-1-connect">
           <div class="steps__num-col"><div class="steps__num">01</div></div>
           <div class="steps__card">
-            <h3>Connect every account in a few taps.</h3>
-            <p>You approve each connection on your bank&rsquo;s own RBI-regulated rail. Finwy never sees your password. Disconnect any time, one tap.</p>
+            <h2 id="steps-heading" class="steps__card-title">Connect once. Never think about it again.</h2>
+            <p>Every account, in a few taps. You approve each connection on your bank&rsquo;s own RBI-regulated rail &mdash; the Account Aggregator. Finwy, the adviser inside Finwiser, never sees your bank password. Disconnect any time, one tap.</p>
             <ul class="steps__tags" role="list">
-              <li>Account Aggregator</li><li>Email statements</li><li>Credit bureau</li>
+              <li>Account Aggregator</li><li>Email statements</li><li>Credit score from Experian</li>
             </ul>
             <div class="steps__concept steps__concept--connect" aria-hidden="true">
               <div class="connect-feed__head">
@@ -4120,7 +4637,7 @@
 
                 <article class="connect-card" data-cat="assets" data-value="480000">
                   <div class="connect-card__head">
-                    <span class="connect-card__mark"><img src="https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg" alt=""></span>
+                    <span class="connect-card__mark connect-card__mark--mono">ICICI</span>
                     <span class="connect-card__id">
                       <span class="connect-card__name">ICICI Bank</span>
                       <span class="connect-card__num">xxxx 1234 &middot; Savings</span>
@@ -4183,7 +4700,7 @@
                     <span class="connect-card__mark connect-card__mark--mono">CR</span>
                     <span class="connect-card__id">
                       <span class="connect-card__name">Credit Score</span>
-                      <span class="connect-card__num">Credit report</span>
+                      <span class="connect-card__num">Experian report</span>
                     </span>
                   </div>
                   <span class="connect-card__amount"><span class="connect-card__amount-label">score</span>782</span>
@@ -4195,7 +4712,7 @@
 
                 <article class="connect-card" data-cat="assets" data-value="140000">
                   <div class="connect-card__head">
-                    <span class="connect-card__mark"><img src="https://upload.wikimedia.org/wikipedia/commons/2/28/HDFC_Bank_Logo.svg" alt=""></span>
+                    <span class="connect-card__mark connect-card__mark--mono">HDFC</span>
                     <span class="connect-card__id">
                       <span class="connect-card__name">HDFC Bank</span>
                       <span class="connect-card__num">xxxx 5678 &middot; Savings</span>
@@ -4210,7 +4727,7 @@
 
                 <article class="connect-card" data-cat="assets" data-value="220000">
                   <div class="connect-card__head">
-                    <span class="connect-card__mark"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-logo.svg" alt=""></span>
+                    <span class="connect-card__mark connect-card__mark--mono">SBI</span>
                     <span class="connect-card__id">
                       <span class="connect-card__name">SBI</span>
                       <span class="connect-card__num">xxxx 9012 &middot; Savings</span>
@@ -4461,6 +4978,53 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §12 — SECURITY & DATA                                         -->
+    <!-- ============================================================ -->
+    <section class="secure" aria-labelledby="secure-heading" data-reveal data-theme="dark">
+      <div class="secure__inner">
+        <h2 id="secure-heading" class="secure__heading">We never see your password. We never sell your data.</h2>
+        <p class="secure__sub">Your data is yours. Here&rsquo;s the plumbing &mdash; in plain language.</p>
+        <div class="secure__grid" role="list">
+          <article class="secure__card" role="listitem" style="--i:0">
+            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M16 4 L26 7 V14 c0 7-4 12-10 14 c-6-2-10-7-10-14 V7 Z"/><rect x="13" y="15" width="6" height="6" rx="1"/><path d="M14 15 V13 a2 2 0 0 1 4 0 V15"/></svg>
+            <h3 class="secure__heading-card">Bank-grade encryption.</h3>
+            <p class="secure__body">All data &mdash; at rest and in transit &mdash; encrypted with AES-256 and TLS 1.3. The same standards your bank uses for online banking.</p>
+          </article>
+          <article class="secure__card" role="listitem" style="--i:1">
+            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><rect x="4" y="6" width="24" height="20" rx="2"/><path d="M4 12h24"/><path d="M9 18l4 4 8-8"/></svg>
+            <h3 class="secure__heading-card">Account Aggregator only &mdash; the RBI-regulated rail.</h3>
+            <p class="secure__body">Finwiser never asks for your bank password. We use Account Aggregator &mdash; the consent-based, RBI-regulated rail that every major Indian bank already supports. Finwiser is listed as a Financial Information User on Sahamati&rsquo;s public register.</p>
+            <p class="secure__body secure__body--aside"><strong>What&rsquo;s an Account Aggregator?</strong> An RBI-licensed entity that hands your bank data to Finwiser only after you explicitly consent &mdash; and only what you consent to.</p>
+          </article>
+          <article class="secure__card" role="listitem" style="--i:2">
+            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M4 16s4-8 12-8 12 8 12 8-4 8-12 8-12-8-12-8z"/><circle cx="16" cy="16" r="3.5"/><path d="M6 6 26 26"/></svg>
+            <h3 class="secure__heading-card">Read-only access. Always.</h3>
+            <p class="secure__body">Finwiser can see your accounts. It cannot move money, place trades, or change anything. Even if Finwiser wanted to, the rails don&rsquo;t allow it.</p>
+          </article>
+          <article class="secure__card" role="listitem" style="--i:3">
+            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M28 16a12 12 0 11-3.5-8.5"/><path d="M28 4v8h-8"/><path d="M11 11l10 10M21 11l-10 10"/></svg>
+            <h3 class="secure__heading-card">Revoke at any time.</h3>
+            <p class="secure__body">Withdraw consent in your Account Aggregator app. Finwiser loses access immediately. Your data is deleted from active systems within 72 hours.</p>
+          </article>
+        </div>
+        <p class="secure__footnote">More detail on what data we use, where it lives, and how long: <a href="privacy-policy.html">read the Privacy Policy</a>.</p>
+        <div class="section-cta">
+          <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §6b — HOW IT WORKS, part 2 (step 03 — the goal cascade)       -->
+    <!-- ============================================================ -->
+    <section class="steps steps--tail" aria-label="Step 03 — where your surplus goes" data-theme="dark">
+      <div class="steps__rail">
+
+        <div class="steps__line" aria-hidden="true"><div class="steps__line-fill"></div></div>
         <div class="steps__bridge" aria-hidden="true">
           <p>That surplus you just saw? <em>Here&rsquo;s where it should go first.</em></p>
         </div>
@@ -4469,7 +5033,7 @@
           <div class="steps__num-col"><div class="steps__num">03</div></div>
           <div class="steps__card">
             <h3>Tell Finwy your goals. Let math decide.</h3>
-            <p>You list what matters &mdash; emergency, retirement, the flat in 2031. Finwy ranks them, allocates every rupee, and says up front which ones fit.</p>
+            <p>You list what matters &mdash; emergency, retirement, the flat in 2031. Finwy ranks them, allocates every rupee, and says up front which ones fit. That is the Next Best Rupee: the one move that matters most this month.</p>
             <ul class="steps__tags" role="list">
               <li>Next Best Rupee&trade;</li><li>Reads your portfolio</li><li>Tells you which goals fit</li>
             </ul>
@@ -4592,20 +5156,19 @@
     <!-- ============================================================ -->
     <!-- §7 — THE ENGINE (Two of you. Two answers.)                   -->
     <!-- ============================================================ -->
-    <section class="engine" aria-label="Two of you. Two answers.">
+    <section class="engine" aria-label="Two of you. Two answers." data-theme="light">
       <div class="engine__shared-head">
         <div class="engine__shared-inner">
           <p class="engine__intro-eyebrow">Watch how Finwy reasons</p>
-          <p class="engine__intro-title">Same surplus. Different lives. <em>Different next move.</em></p>
-          <h3 class="engine__case-tagline" id="engine-case-tagline" data-flap-text>Same surplus. Opposite portfolios.</h3>
-          <p class="engine__case-sub" id="engine-case-sub" data-flap-text>Both 35. Both earn &#8377;52,000 surplus a month.</p>
+          <h3 class="engine__case-tagline" id="engine-case-tagline" data-flap-text>Two people. Same money. Opposite advice.</h3>
+          <p class="engine__case-sub" id="engine-case-sub" data-flap-text>Both 35. Both with &#8377;52,000 left over every month.</p>
         </div>
       </div>
       <div class="engine__inner">
 
         <!-- 1 — Same surplus. Opposite portfolios. -->
-        <article class="case-card" id="pair-portfolios" data-pair="portfolios" data-decisive="4" data-snap-anim="engine-portfolios" data-tagline="Same surplus. Opposite portfolios." data-sub="Both 35. Both earn &#8377;52,000 surplus a month." aria-labelledby="engine-case-tagline">
-          <p class="visually-hidden">Both 35-year-olds with 52,000 surplus. Riya has 83 percent in equity in a 46-lakh portfolio. Aman has zero, with 6 lakh sitting in fixed deposit. Risk is the decisive factor. Riya is told to stop adding equity and rebalance. Aman to start equity.</p>
+        <article class="case-card" id="pair-portfolios" data-pair="portfolios" data-decisive="4" data-snap-anim="engine-portfolios" data-tagline="Two people. Same money. Opposite advice." data-sub="Both 35. Both with &#8377;52,000 left over every month." aria-labelledby="engine-case-tagline">
+          <p class="visually-hidden">Both 35, both with 52,000 rupees left over every month. Riya has 83 percent in equity in a 46-lakh portfolio. Aman has zero, with 6 lakh sitting in fixed deposit. Risk is the decisive factor. Riya is told to stop adding equity and rebalance. Aman to start equity.</p>
 
           <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Risk">
             <div class="trail__row" aria-hidden="true">
@@ -4654,7 +5217,7 @@
                 <div class="input-stat"><span class="input-stat__num">&#8377;46L</span><span class="input-stat__label">portfolio</span></div>
               </div>
               <p class="input__rating">Self-rated <span class="input__rating-key">Conservative</span></p>
-              <p class="input__trigger">Opened Finwy after a colleague&rsquo;s heart attack at 38.</p>
+              <p class="input__trigger">Opened Finwiser after a colleague&rsquo;s heart attack at 38.</p>
             </div>
             <div class="lane__verdict">
               <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">R</span> Riya</p>
@@ -4687,7 +5250,7 @@
                 <div class="input-stat"><span class="input-stat__num">&#8377;6L</span><span class="input-stat__label">all in FD</span></div>
               </div>
               <p class="input__rating">Self-rated <span class="input__rating-key">Aggressive</span></p>
-              <p class="input__trigger">Opened Finwy after his crypto-friend&rsquo;s third disaster.</p>
+              <p class="input__trigger">Opened Finwiser after his crypto-friend&rsquo;s third disaster.</p>
             </div>
             <div class="lane__verdict">
               <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">A</span> Aman</p>
@@ -4717,16 +5280,17 @@
         <!-- 3 — Same income. Different lives. -->
 
       </div>
-    </section>
 
-    <!-- ============================================================ -->
-    <!-- §7b — ENGINE FINALE (closing thought)                         -->
-    <!-- ============================================================ -->
-    <section class="engine-finale" aria-label="Two 35-year-olds. Two allocations.">
+      <!-- §7b — closer. Was a standalone full-viewport section
+           (.engine-finale, 9.2% screen fill on desktop). Merged into the
+           scene it closes; every word and the CTA are unchanged in kind. -->
       <div class="engine-finale__inner">
         <div class="engine__close">
-          <img class="engine__close-mascot" id="engine-closer-mascot" src="fw-deck-2026/slides/finwy-wave.png" alt="" loading="lazy" />
-          <p class="engine__close-line">Same surplus. Different risk. Different next move &mdash; and it keeps changing.</p>
+          <picture>
+              <source type="image/avif" srcset="fw-deck-2026/slides/frame-5-409w.avif">
+              <img class="engine__close-mascot" id="engine-closer-mascot" src="fw-deck-2026/slides/frame-5-409w.webp" width="409" height="455" alt="" loading="lazy" decoding="async" />
+            </picture>
+          <p class="engine__close-line">Risk decided it. And risk keeps changing.</p>
           <p class="engine__close-finwy">Finwy keeps your goals on track.</p>
           <a class="engine__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
         </div>
@@ -4740,10 +5304,10 @@
     <!-- ============================================================ -->
     <!-- §9 — WHY DIFFERENT (comparison table)                         -->
     <!-- ============================================================ -->
-    <section class="compare" aria-labelledby="compare-heading" data-reveal>
+    <section class="compare" aria-labelledby="compare-heading" data-reveal data-theme="dark">
       <div class="compare__inner">
-        <h2 id="compare-heading" class="compare__heading">Most apps stop at the dashboard. Finwiser starts at the conflict.</h2>
-        <p class="compare__sub">Net-worth trackers show you the chart. Investing apps sell you their funds. Your CA does the math manually, once a year. Finwiser is the only one whose business model says no to commissions.</p>
+        <h2 id="compare-heading" class="compare__heading">Most apps stop at the dashboard.</h2>
+        <p class="compare__sub">Finwiser starts where the trade-offs begin. Net-worth trackers show you the chart. Investing apps sell you their funds. Your CA does the math manually, once a year. Finwiser is the only one here that cannot earn a commission &mdash; by regulation, not by promise.</p>
         <div class="compare__wrap">
           <table>
             <caption class="visually-hidden">Capabilities of net-worth trackers, mutual-fund distributors, traditional financial advisers, and Finwiser.</caption>
@@ -4769,13 +5333,41 @@
           </table>
         </div>
         <p class="compare__tally">1 of 8 &middot; 0 of 8 &middot; 4 of 8 &middot; <strong>8 of 8 &mdash; Finwiser</strong></p>
+        <div class="compare__proof">
+          <figure class="compare__proof-item">
+            <div class="device">
+              <span class="device__screen">
+                <picture>
+                  <source type="image/avif" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/suitability-320w.avif 320w, assets/app/suitability-480w.avif 480w, assets/app/suitability-720w.avif 720w">
+                  <img src="assets/app/suitability-480w.webp" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/suitability-320w.webp 320w, assets/app/suitability-480w.webp 480w, assets/app/suitability-720w.webp 720w"
+                       width="480" height="570" loading="lazy" decoding="async"
+                       alt="Finwiser&rsquo;s suitability gauge scoring 100: 75% of these investments should be market-linked and this portfolio is at 78% &mdash; &lsquo;You&rsquo;re in the right range&rsquo;.">
+                </picture>
+              </span>
+            </div>
+            <figcaption>Suitability, scored against your own goals &mdash; not a product shelf.</figcaption>
+          </figure>
+          <figure class="compare__proof-item">
+            <div class="device">
+              <span class="device__screen">
+                <picture>
+                  <source type="image/avif" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/advisor-320w.avif 320w, assets/app/advisor-480w.avif 480w, assets/app/advisor-720w.avif 720w">
+                  <img src="assets/app/advisor-480w.webp" sizes="(max-width: 359px) 78vw, (max-width: 600px) 40vw, (max-width: 900px) 38vw, 300px" srcset="assets/app/advisor-320w.webp 320w, assets/app/advisor-480w.webp 480w, assets/app/advisor-720w.webp 720w"
+                       width="480" height="570" loading="lazy" decoding="async"
+                       alt="Finwiser&rsquo;s in-app adviser: Goalwy introduces itself and flags that no term cover is visible against a &#8377;76,39,200 income gap, so one hospital stay would empty the emergency fund.">
+                </picture>
+              </span>
+            </div>
+            <figcaption>The adviser is in the app. No appointment, no commission.</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
     <!-- ============================================================ -->
     <!-- §10 — PRICING                                                 -->
     <!-- ============================================================ -->
-    <section class="pricing" id="pricing" aria-labelledby="pricing-heading" data-reveal>
+    <section class="pricing" id="pricing" aria-labelledby="pricing-heading" data-reveal data-theme="light">
       <div class="pricing__inner">
         <h2 id="pricing-heading" class="pricing__heading">&#8377;199 / month</h2>
         <p class="pricing__sub">Free while we&rsquo;re in early access. Cancel any time.</p>
@@ -4851,6 +5443,33 @@
     </section>
 
     <!-- ============================================================ -->
+    <!-- §12.5 — TEAM / FOUNDER                                        -->
+    <!-- ============================================================ -->
+    <section class="team" id="team" aria-labelledby="team-heading" data-reveal data-theme="light">
+      <div class="team__inner">
+        <h2 id="team-heading" class="team__eyebrow">The human behind Finwiser</h2>
+        <article class="team__card">
+          <picture>
+            <source type="image/avif" srcset="founder-chandrachuda-v2-176w.avif 176w, founder-chandrachuda-v2-264w.avif 264w" sizes="88px">
+            <img class="team__avatar" src="founder-chandrachuda-v2-264w.webp"
+                 srcset="founder-chandrachuda-v2-176w.webp 176w, founder-chandrachuda-v2-264w.webp 264w" sizes="88px"
+                 alt="Chandrachuda Sarma Yemmanuru, founder of Finwiser" width="264" height="264" loading="lazy" decoding="async">
+          </picture>
+          <div class="team__info">
+            <p class="team__name">Chandrachuda Sarma Yemmanuru</p>
+            <p class="team__role">Founder &amp; Designated Partner, Finwiser Technologies LLP &middot; SEBI Registered Investment Adviser (INA000021331)</p>
+            <p class="team__record">Before Finwiser he ran a &#8377;150 Cr P&amp;L. He has built Finwiser alone since July 2025: about 480,000 lines of code, a six-tier classification of every account you hold, 13 financial ratios, and a live credit-bureau connection to Experian. No sales team. No commissions.</p>
+            <a class="team__linkedin" href="https://www.linkedin.com/in/chandrachudasarma/" target="_blank" rel="noopener noreferrer" aria-label="Chandrachuda Sarma Yemmanuru on LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+              <span>View LinkedIn profile</span>
+            </a>
+          </div>
+        </article>
+        <p class="team__entity">Finwiser is built by <strong>Finwiser Technologies LLP</strong> (LLPIN ACT-7598), the technology entity. Regulated investment advice is provided by the founder as a SEBI Registered Investment Adviser (INA000021331).</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
     <!-- §11 — TESTIMONIALS (HIDDEN per spine §2.10 LOAD-BEARING       -->
     <!-- decision: hide entirely until real testimonials exist with    -->
     <!-- consent + SEBI-compliant wording. Restore by removing the     -->
@@ -4880,14 +5499,16 @@
     <!-- ============================================================ -->
     <!-- §14 — FINAL CTA                                               -->
     <!-- ============================================================ -->
-    <section class="final-cta" aria-labelledby="cta-heading" data-reveal>
+    <section class="final-cta" aria-labelledby="cta-heading" data-reveal data-theme="dark">
       <div class="final-cta__inner">
-        <img class="final-cta__mascot" src="fw-deck-2026/slides/finwy-wave.png" alt="" loading="lazy">
-        <h2 id="cta-heading" class="final-cta__heading">Three minutes. Your full picture. Try it.</h2>
-        <p class="final-cta__sub">Sample data, real flow. See exactly what Finwiser would tell you about your money.</p>
+        <picture>
+          <source type="image/avif" srcset="fw-deck-2026/slides/frame-5-409w.avif">
+          <img class="final-cta__mascot" src="fw-deck-2026/slides/frame-5-409w.webp" width="409" height="455" alt="" loading="lazy" decoding="async">
+        </picture>
+        <h2 id="cta-heading" class="final-cta__heading">Your money, finally in one place.</h2>
+        <p class="final-cta__sub">The Android app is on Google Play. Connect your accounts and see your own numbers.</p>
         <div class="final-cta__row">
           <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
-          <a class="btn btn--ghost" href="/fw-deck-2026/">Read the deck</a>
         </div>
         <a class="final-cta__playstore" href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="var(--mint)"><path d="M3 2.5v19l8-9.5z" opacity="0.7"/><path d="M3 2.5l8 9.5 4.5-4-12.5-7v1.5z" opacity="0.5"/></svg>
@@ -4897,113 +5518,9 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- REFERENCE — everything below sits AFTER the closing CTA.      -->
-    <!-- The film ends at the button; detail follows for whoever wants -->
-    <!-- it. Nothing SEBI-required lives here: registration, GRO and   -->
-    <!-- the risk disclosure are in the footer, which still comes last.-->
-    <!-- ============================================================ -->
-
-    <!-- ============================================================ -->
-    <!-- §8 — CAPABILITIES                                             -->
-    <!-- ============================================================ -->
-    <section class="caps" id="capabilities" aria-labelledby="caps-heading" data-reveal>
-      <div class="caps__inner">
-        <h2 id="caps-heading" class="caps__heading">What Finwiser does for you, right now.</h2>
-        <p class="caps__sub">Not what we&rsquo;ll build. What runs today.</p>
-        <ul class="caps__grid" role="list">
-          <li class="cap" style="--i:0">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="6" y="8" width="20" height="6" rx="2"/><rect x="6" y="16" width="20" height="6" rx="2"/><rect x="6" y="24" width="20" height="4" rx="2"/></svg>
-            <h3 class="cap__heading">See every account in one place.</h3>
-            <p class="cap__body">Banking, investments, pensions, insurance, loans &amp; cards, business, physical assets &mdash; thirty-plus account types across seven buckets. One picture.</p>
-          </li>
-          <li class="cap" style="--i:1">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 14l7-9h11a3 3 0 013 3v11l-9 7a3 3 0 01-4 0L5 18a3 3 0 010-4z"/><circle cx="20" cy="11" r="1.5"/></svg>
-            <h3 class="cap__heading">Auto-categorise every transaction.</h3>
-            <p class="cap__body">UPI, salary, rent, EMIs, OTT, that one Swiggy habit. Sorted automatically.</p>
-          </li>
-          <li class="cap" style="--i:2">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 22l8-8 5 5 11-12"/><path d="M19 7h9v9"/></svg>
-            <h3 class="cap__heading">Tell you your real monthly surplus.</h3>
-            <p class="cap__body">Not what your bank shows. What&rsquo;s actually left after the obligations you forgot. Updated daily.</p>
-          </li>
-          <li class="cap" style="--i:3">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 22a12 12 0 0124 0"/><path d="M16 22l6-6"/><circle cx="16" cy="22" r="1.5"/></svg>
-            <h3 class="cap__heading">Watch the ratios that matter.</h3>
-            <p class="cap__body">Savings rate. Debt-to-income. Retirement readiness. Emergency-fund cover. In plain language, not a finance textbook.</p>
-          </li>
-          <li class="cap" style="--i:4">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="7"/><circle cx="16" cy="16" r="2.5"/></svg>
-            <h3 class="cap__heading">Rank goals. Allocate every rupee.</h3>
-            <p class="cap__body">Emergency first, retirement next, lifestyle last. Surplus goes where it matters most &mdash; automatically.</p>
-          </li>
-          <li class="cap" style="--i:5">
-            <svg class="cap__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M28 16a12 12 0 11-3.5-8.5"/><path d="M28 4v8h-8"/></svg>
-            <h3 class="cap__heading">Recalibrate as life changes.</h3>
-            <p class="cap__body">Bonus, layoff, market drop, new EMI &mdash; the plan updates without you opening the app.</p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- §12 — SECURITY & DATA                                         -->
-    <!-- ============================================================ -->
-    <section class="secure" aria-labelledby="secure-heading" data-reveal>
-      <div class="secure__inner">
-        <h2 id="secure-heading" class="secure__heading">We never see your password. We never sell your data.</h2>
-        <p class="secure__sub">Your data is yours. Here&rsquo;s the plumbing &mdash; in plain language.</p>
-        <div class="secure__grid" role="list">
-          <article class="secure__card" role="listitem" style="--i:0">
-            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M16 4 L26 7 V14 c0 7-4 12-10 14 c-6-2-10-7-10-14 V7 Z"/><rect x="13" y="15" width="6" height="6" rx="1"/><path d="M14 15 V13 a2 2 0 0 1 4 0 V15"/></svg>
-            <h3 class="secure__heading-card">Bank-grade encryption.</h3>
-            <p class="secure__body">All data &mdash; at rest and in transit &mdash; encrypted with AES-256 and TLS 1.3. The same standards your bank uses for online banking.</p>
-          </article>
-          <article class="secure__card" role="listitem" style="--i:1">
-            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><rect x="4" y="6" width="24" height="20" rx="2"/><path d="M4 12h24"/><path d="M9 18l4 4 8-8"/></svg>
-            <h3 class="secure__heading-card">Account Aggregator only. RBI-regulated.</h3>
-            <p class="secure__body">Finwiser never asks for your bank password. We use Account Aggregator &mdash; the consent-based, RBI-regulated rail that 1,000+ banks already support.</p>
-            <p class="secure__body secure__body--aside"><strong>What&rsquo;s an Account Aggregator?</strong> An RBI-licensed entity that hands your bank data to Finwiser only after you explicitly consent &mdash; and only what you consent to.</p>
-          </article>
-          <article class="secure__card" role="listitem" style="--i:2">
-            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M4 16s4-8 12-8 12 8 12 8-4 8-12 8-12-8-12-8z"/><circle cx="16" cy="16" r="3.5"/><path d="M6 6 26 26"/></svg>
-            <h3 class="secure__heading-card">Read-only access. Always.</h3>
-            <p class="secure__body">Finwiser can see your accounts. It cannot move money, place trades, or change anything. Even if Finwiser wanted to, the rails don&rsquo;t allow it.</p>
-          </article>
-          <article class="secure__card" role="listitem" style="--i:3">
-            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M28 16a12 12 0 11-3.5-8.5"/><path d="M28 4v8h-8"/><path d="M11 11l10 10M21 11l-10 10"/></svg>
-            <h3 class="secure__heading-card">Revoke at any time.</h3>
-            <p class="secure__body">Withdraw consent in your Account Aggregator app. Finwiser loses access immediately. Your data is deleted from active systems within 72 hours.</p>
-          </article>
-        </div>
-        <p class="secure__footnote">More detail on what data we use, where it lives, and how long: <a href="privacy-policy.html">read the Privacy Policy</a>.</p>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- §12.5 — TEAM / FOUNDER                                        -->
-    <!-- ============================================================ -->
-    <section class="team" id="team" aria-labelledby="team-heading" data-reveal>
-      <div class="team__inner">
-        <h2 id="team-heading" class="team__eyebrow">The human behind Finwiser</h2>
-        <article class="team__card">
-          <img class="team__avatar" src="founder-chandrachuda.png" alt="Chandrachuda Sarma Yemmanuru, founder of Finwiser" width="168" height="168" loading="lazy">
-          <div class="team__info">
-            <p class="team__name">Chandrachuda Sarma Yemmanuru</p>
-            <p class="team__role">Founder &amp; Designated Partner, Finwiser Technologies LLP &middot; SEBI Registered Investment Adviser</p>
-            <a class="team__linkedin" href="https://www.linkedin.com/in/chandrachudasarma/" target="_blank" rel="noopener noreferrer" aria-label="Chandrachuda Sarma Yemmanuru on LinkedIn">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
-              <span>View LinkedIn profile</span>
-            </a>
-          </div>
-        </article>
-        <p class="team__entity">Finwiser is built by <strong>Finwiser Technologies LLP</strong> (LLPIN ACT-7598), the technology entity. Regulated investment advice is provided by the founder as a SEBI Registered Investment Adviser (INA000021331).</p>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
     <!-- §13 — FAQ                                                     -->
     <!-- ============================================================ -->
-    <section class="faq" id="faq" aria-labelledby="faq-heading">
+    <section class="faq" id="faq" aria-labelledby="faq-heading" data-theme="light">
       <div class="faq__inner">
         <h2 id="faq-heading" class="faq__heading">Questions you&rsquo;re probably asking.</h2>
         <p class="faq__sub">Asked by real users. And, honestly, the founder&rsquo;s family.</p>
@@ -5013,7 +5530,7 @@
         <details class="faq__item"><summary>Can Finwiser move my money?</summary><div class="faq__answer">No. Read-only access only. Finwiser can see balances and transactions, and give advice. It cannot place trades, transfer funds, or change anything in your accounts.</div></details>
         <details class="faq__item"><summary>What if I want to cancel?</summary><div class="faq__answer">One tap in the app. Once paid plans begin, your subscription will stop at the end of the current month. We won&rsquo;t ask why, we won&rsquo;t try to &ldquo;save&rdquo; you, and we don&rsquo;t keep your data &mdash; see the refund question below.</div></details>
         <details class="faq__item"><summary>How is this different from my CA or agent?</summary><div class="faq__answer">A CA is great at filing returns and reading the rules. An agent is paid commissions to sell you specific products. Finwiser is a SEBI-registered Investment Adviser &mdash; same regulatory category as a fee-only human RIA &mdash; but priced per family, available in-app, and runs continuous math instead of a once-a-year review.</div></details>
-        <details class="faq__item"><summary>How is this different from other investing apps?</summary><div class="faq__answer">Investing apps (Groww, Kuvera, Zerodha) are distributors &mdash; their job is to help you transact. Finwiser is an Adviser &mdash; our job is to tell you whether the transaction is right for you. Different licence, different incentive, different answer.</div></details>
+        <details class="faq__item"><summary>How is this different from other investing apps?</summary><div class="faq__answer">Investing apps are distributors &mdash; their job is to help you transact. Finwiser is an Adviser &mdash; our job is to tell you whether the transaction is right for you. Different licence, different incentive, different answer.</div></details>
         <details class="faq__item"><summary>Does it work with my joint account?</summary><div class="faq__answer">Yes &mdash; and both of you stay in control. Each account holder approves the connection through Account Aggregator independently, from their own banking app. Once both have consented, the account appears in your shared family picture.</div></details>
         <details class="faq__item"><summary>Hindi support?</summary><div class="faq__answer">Coming. The app is English-first today; Hindi is on the roadmap.</div></details>
         <details class="faq__item"><summary>Refund policy?</summary><div class="faq__answer">Once paid plans begin: cancel any time and you won&rsquo;t be billed for the next month. We won&rsquo;t pro-rate &mdash; if you cancel on the 25th, you keep access until the end of that month. No surprise auto-renewals.</div></details>
@@ -5028,12 +5545,12 @@
   <!-- ============================================================ -->
   <!-- §15 — FOOTER                                                  -->
   <!-- ============================================================ -->
-  <footer class="site-footer" role="contentinfo">
+  <footer class="site-footer" role="contentinfo" data-theme="dark">
     <div class="site-footer__inner">
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <h3>Finwiser</h3>
-          <p>The fee-only fiduciary your bank doesn&rsquo;t want you to have. For the eighty million salaried Indians the industry forgot.</p>
+          <p>An AI-powered, SEBI-regulated Financial Operating System for India&rsquo;s middle class. For the salaried Indians the industry forgot.</p>
         </div>
         <nav class="site-footer__col" aria-label="Footer &mdash; Product">
           <h3>Product</h3>
@@ -5043,10 +5560,11 @@
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#how">How it works</a></li>
             <li><a href="#team">Team</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#faq">Help</a></li>
+            <li><a href="/fw-deck-2026/">For investors &mdash; read the deck</a></li>
           </ul>
         </nav>
-        <nav class="site-footer__col" aria-label="Footer &mdash; Compliance">
+        <nav class="site-footer__col" id="legal" aria-label="Footer &mdash; Compliance">
           <h3>Compliance</h3>
           <ul>
             <li><a href="terms.html">Terms &amp; Conditions</a></li>
@@ -5077,7 +5595,6 @@
 
       <div class="site-footer__copyright">
         <span>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</span>
-        <span>For investors &rarr; <a href="/fw-deck-2026/">view the deck</a></span>
       </div>
     </div>
   </footer>
@@ -5377,6 +5894,10 @@
 
       function makeFlapCell(ch, blank) {
         var cell = document.createElement('span');
+        /* Each cell holds the same glyph three times (spacer + top + bottom
+           halves), so a screen reader heard every character tripled. The cells
+           are decoration; the sentence lives on the element's aria-label. */
+        cell.setAttribute('aria-hidden', 'true');
         cell.className = 'flap-cell' + (blank ? ' flap-cell--blank' : '');
         cell.dataset.letter = blank ? '' : ch;
 
@@ -5407,6 +5928,7 @@
       function flapInit(el, blankInitial) {
         if (!el) return;
         var text = el.textContent || '';
+        el.setAttribute('aria-label', text);
         el.textContent = '';
         el.dataset.flapCurrent = blankInitial ? '' : text;
         for (var i = 0; i < text.length; i++) {
@@ -5504,6 +6026,7 @@
         if (flapTimers[key]) flapTimers[key].forEach(clearTimeout);
         flapTimers[key] = [];
 
+        el.setAttribute('aria-label', newText);
         var oldText = el.dataset.flapCurrent || '';
         if (oldText === newText) return;
         el.dataset.flapCurrent = newText;
@@ -5551,8 +6074,9 @@
       var heroMascot       = document.getElementById('hero-mascot');
       var heroFrames       = heroMascot ? heroMascot.querySelectorAll('img[data-frame]') : [];
       var HERO_FRAME_MS    = 90;
-      var HERO_SLEEP_HOLD  = 1400;  // ms — hold frame 1 (sleeping) before flipbook starts
-      var heroTimers       = [];
+      var HERO_SLEEP_HOLD  = 400;   // ms — was 1,400: 1.4s of sleeping mascot before
+                                    // the hero is usable is the wrong trade (Motion §8)
+      var heroRaf          = 0;
 
       /* Both iPhone flight-recorder logs show the page's only >50ms frames
          while parked idle on the hero (5 janks, 59-96ms, at 6-11s). Prime
@@ -5578,8 +6102,8 @@
       }
 
       function heroClearTimers() {
-        heroTimers.forEach(clearTimeout);
-        heroTimers = [];
+        if (heroRaf) cancelAnimationFrame(heroRaf);
+        heroRaf = 0;
       }
 
       function heroShowFrame(n) {
@@ -5605,15 +6129,23 @@
         // sequence — it's the "sleeping" pose and we want it clearly visible
         // before the flipbook begins.
         heroShowFrame(0);
+        /* ONE clock. The frame index is derived from elapsed time inside a
+           single rAF loop, so it is monotonic by construction — 15 independent
+           setTimeouts are not, and the second chain that used to run alongside
+           this one made the mascot jump backwards from frame 15 to a mid-jump
+           pose at ~1.9s (Motion M4). That second chain is deleted. */
+        var last = heroFrames.length - 1;
         return new Promise(function (resolve) {
-          for (var i = 0; i < heroFrames.length; i++) {
-            (function (idx) {
-              heroTimers.push(setTimeout(function () {
-                heroShowFrame(idx);
-                if (idx === heroFrames.length - 1) resolve();
-              }, HERO_SLEEP_HOLD + idx * HERO_FRAME_MS));
-            })(i);
-          }
+          var t0 = performance.now(), shown = -1;
+          (function tick(now) {
+            var e = now - t0;
+            var idx = e < HERO_SLEEP_HOLD ? 0
+                    : Math.floor((e - HERO_SLEEP_HOLD) / HERO_FRAME_MS);
+            if (idx > last) idx = last;
+            if (idx !== shown) { shown = idx; heroShowFrame(idx); }
+            if (idx >= last) { heroRaf = 0; resolve(); return; }
+            heroRaf = requestAnimationFrame(tick);
+          })(performance.now());
         });
       }
 
@@ -6045,27 +6577,37 @@
           }, { threshold: 0.4, rootMargin: '-20% 0px -30% 0px' });
           steps.forEach(function (s) { stepIO.observe(s); });
         }
-        // Fallback line fill if scroll-timeline isn't supported
-        var fill = document.getElementById('steps-line-fill');
+        // Fallback line fill if scroll-timeline isn't supported.
+        // There are two rails now — steps 01/02, then step 03 after the
+        // Security section — so each rail drives its own fill from its own
+        // rect. The @supports path (animation-timeline: view()) is already
+        // per-element and needed no change.
         var supportsTimeline = CSS.supports('animation-timeline: scroll()');
-        if (fill && !supportsTimeline && !reduce) {
-          var rail = document.querySelector('.steps__rail');
+        if (!supportsTimeline && !reduce) {
+          var railPairs = Array.prototype.slice
+            .call(document.querySelectorAll('.steps__rail'))
+            .map(function (r) { return { rail: r, fill: r.querySelector('.steps__line-fill') }; })
+            .filter(function (x) { return x.fill; });
           var rafFill = false;
           function updateFill() {
             if (rafFill) return;
             rafFill = true;
             requestAnimationFrame(function () {
-              var rect = rail.getBoundingClientRect();
               var vh = (window.__fwStableVH ? window.__fwStableVH() : window.innerHeight);
-              var raw = (vh - rect.top) / (rect.height + vh);
-              var p = Math.max(0, Math.min(1, raw));
-              fill.style.transform = 'scaleY(' + p + ')';
+              railPairs.forEach(function (x) {
+                var rect = x.rail.getBoundingClientRect();
+                var raw = (vh - rect.top) / (rect.height + vh);
+                var p = Math.max(0, Math.min(1, raw));
+                x.fill.style.transform = 'scaleY(' + p + ')';
+              });
               rafFill = false;
             });
           }
-          updateFill();
-          window.addEventListener('scroll', updateFill, { passive: true });
-          window.addEventListener('resize', updateFill);
+          if (railPairs.length) {
+            updateFill();
+            window.addEventListener('scroll', updateFill, { passive: true });
+            window.addEventListener('resize', updateFill);
+          }
         }
       }
 
@@ -7152,48 +7694,173 @@
   </script>
 
   <script>
-  // Hero mascot — sleep → wake → hi (mirrors deck slide 1 timing)
-  (function() {
-    const root = document.getElementById('hero-mascot');
-    if (!root) return;
-    const frames = Array.from(root.querySelectorAll('img'));
-    if (frames.length < 15) return;
-    const timing = [700, 700, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2000];
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function show(n) {
-      frames.forEach(f => f.classList.remove('is-active'));
-      frames[n].classList.add('is-active');
+  /* The second hero-mascot flipbook chain used to live here: a 15-step
+     setTimeout ladder on timing [700,700,100…2000] that started ~2,400ms in,
+     on top of the SnapAnim chain that had already finished. Two clocks on one
+     element is what made Finwy play forward to frame 15 and then jump back to
+     a mid-jump pose (Motion M4). The surviving chain is the single rAF clock
+     in the main script — see heroPlaySequence(). Deleted, not disabled. */
+
+
+  // ============================================================
+  // NAV — adaptive material (UI U6/§8.7, Motion M7).
+  // Two independent signals, both IntersectionObserver, no scroll handler:
+  //   1. is-scrolled  — a sentinel 8px tall at the very top of the document.
+  //   2. is-over-dark — a 1px-tall band immediately under the bar; whichever
+  //      [data-theme] section intersects it owns the bar's colour.
+  // ============================================================
+  (function () {
+    var nav = document.querySelector('.fw-nav');
+    if (!nav || !('IntersectionObserver' in window)) return;
+
+    // --- 1. hairline + shadow after 8px ---
+    var sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;';
+    document.body.insertBefore(sentinel, document.body.firstChild);
+    new IntersectionObserver(function (es) {
+      nav.classList.toggle('is-scrolled', !es[0].isIntersecting);
+    }, { threshold: 0 }).observe(sentinel);
+
+    // --- 2. dark/light from the section under the bar ---
+    var sections = Array.prototype.slice.call(document.querySelectorAll('[data-theme]'));
+    if (!sections.length) return;
+    var io = null;
+    var lit = [];   // sections currently in the band, in document order
+
+    function navH() {
+      return Math.round(nav.getBoundingClientRect().height) || 64;
     }
-    if (reduced) { show(14); return; }
-    let started = false;
-    function play() {
-      if (started) return;
-      started = true;
-      let i = 0;
-      function step() {
-        show(i);
-        if (i >= 14) return;
-        setTimeout(() => { i++; step(); }, timing[i]);
+    function apply() {
+      // The band is 1px, so normally exactly one section is in it. If a section
+      // boundary sits exactly under the bar, take the LAST one — that is the one
+      // whose ground is about to fill the frame.
+      if (!lit.length) return;
+      var el = lit[lit.length - 1];
+      nav.classList.toggle('is-over-dark', el.getAttribute('data-theme') === 'dark');
+    }
+    function build() {
+      if (io) io.disconnect();
+      var h = navH();
+      var bottom = -(window.innerHeight - h - 1);
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var i = lit.indexOf(e.target);
+          if (e.isIntersecting && i === -1) lit.push(e.target);
+          else if (!e.isIntersecting && i !== -1) lit.splice(i, 1);
+        });
+        lit.sort(function (a, b) {
+          return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+        });
+        apply();
+      }, { rootMargin: (-h) + 'px 0px ' + bottom + 'px 0px', threshold: 0 });
+      lit = [];
+      sections.forEach(function (el) { io.observe(el); });
+    }
+    build();
+    var rt;
+    addEventListener('resize', function () {
+      clearTimeout(rt); rt = setTimeout(build, 150);
+    }, { passive: true });
+  })();
+
+  // ============================================================
+  // FAQ accordion — animate the height (Motion M8).
+  // `transition: all` on a details element interpolates nothing, and the
+  // ::details-content rule in the stylesheet was a descendant selector that
+  // matched no element, so twelve answers opened in a single frame.
+  // ============================================================
+  (function () {
+    var items = document.querySelectorAll('.faq__item');
+    if (!items.length) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Modern engines animate ::details-content natively (see the stylesheet).
+    // This JS is the fallback for engines that do not have that pseudo.
+    if (window.CSS && CSS.supports && CSS.supports('selector(::details-content)')) return;
+    var MS = 320;
+    Array.prototype.forEach.call(items, function (d) {
+      var sum = d.querySelector('summary');
+      var ans = d.querySelector('.faq__answer');
+      if (!sum || !ans) return;
+      var busy = null;
+      sum.addEventListener('click', function (e) {
+        if (reduce) return;                 // instant open/close
+        e.preventDefault();
+        if (busy) { clearTimeout(busy); busy = null; }
+        if (d.open) {
+          ans.style.height = ans.scrollHeight + 'px';
+          void ans.offsetHeight;
+          ans.style.height = '0px';
+          ans.style.opacity = '0';
+          busy = setTimeout(function () {
+            d.open = false; ans.style.height = ''; ans.style.opacity = ''; busy = null;
+          }, MS);
+        } else {
+          /* The answer is not rendered at all while the details is closed, so
+             it has no previous computed height to transition FROM. One forced
+             reflow is not enough — the element has to survive a whole frame in
+             its 0px state before the target height will animate. Two rAFs. */
+          ans.style.height = '0px';
+          ans.style.opacity = '0';
+          d.open = true;
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              ans.style.height = ans.scrollHeight + 'px';
+              ans.style.opacity = '1';
+              busy = setTimeout(function () {
+                ans.style.height = ''; ans.style.opacity = ''; busy = null;
+              }, MS);
+            });
+          });
+        }
+      });
+    });
+  })();
+
+  // ============================================================
+  // Off-screen animation brake (Motion M9).
+  // Seven infinite CSS animations ran permanently, and at the bottom of the
+  // page all seven were running with none of them visible. One observer over
+  // the themed sections pauses every INFINITE animation inside a section that
+  // is off-screen and resumes it on re-entry. Finite animations are left alone
+  // so no entrance is ever frozen half-played.
+  // ============================================================
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    if (!Element.prototype.getAnimations) return;
+    var sections = document.querySelectorAll('[data-theme]');
+    if (!sections.length) return;
+
+    function setState(el, state) {
+      var list;
+      try { list = el.getAnimations({ subtree: true }); } catch (err) { return; }
+      for (var i = 0; i < list.length; i++) {
+        var a = list[i], eff = a.effect;
+        if (!eff || !eff.getTiming) continue;
+        if (eff.getTiming().iterations !== Infinity) continue;
+        try { state === 'paused' ? a.pause() : a.play(); } catch (err) {}
       }
-      step();
     }
-    // Wait for hero-rise (1500ms delay + 600ms duration) so Finwy is visibly asleep when revealed
-    const visual = root.closest('.hero__visual');
-    function startWhenVisible() {
-      if (!('IntersectionObserver' in window)) { play(); return; }
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { play(); io.disconnect(); } });
-      }, { threshold: 0.4 });
-      io.observe(root);
-    }
-    if (visual) {
-      let armed = false;
-      const arm = () => { if (armed) return; armed = true; startWhenVisible(); };
-      visual.addEventListener('animationend', arm, { once: true });
-      setTimeout(arm, 2400); // safety net if animationend never fires
-    } else {
-      setTimeout(startWhenVisible, 2100);
-    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        setState(e.target, e.isIntersecting ? 'running' : 'paused');
+      });
+    }, { rootMargin: '120px 0px 120px 0px', threshold: 0 });
+    Array.prototype.forEach.call(sections, function (el) { io.observe(el); });
+
+    // Animations that only start when a scene activates are not in the first
+    // sweep; re-apply on scroll-idle so late arrivals are covered too.
+    var t;
+    addEventListener('scroll', function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        Array.prototype.forEach.call(sections, function (el) {
+          var r = el.getBoundingClientRect();
+          var vis = r.bottom > -120 && r.top < window.innerHeight + 120;
+          setState(el, vis ? 'running' : 'paused');
+        });
+      }, 220);
+    }, { passive: true });
   })();
 
   // ============================================================

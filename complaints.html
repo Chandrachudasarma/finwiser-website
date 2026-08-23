@@ -38,232 +38,83 @@
     <meta name="twitter:image" content="https://finwiser.org/og-image.png">
     <meta name="twitter:image:alt" content="Finwiser — Three minutes. Your full picture. SEBI Registered Investment Adviser INA000021331.">
     <title>Finwiser — Monthly Complaints Status</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #00b6ad;
-            --primary-dark: #002d56;
-            --primary-light: #35d6c6;
-            --bg-gradient-start: #002d56;
-            --bg-gradient-end: #001f3d;
-            --text-dark: #002d56;
-            --text-light: #5a6b7d;
-            --bg-light: #f7f9fb;
-            --white: #ffffff;
-
-            /* Type — shared site-wide */
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-            --fs-nano:  11px;
-            --fs-micro: 13px;
-            --fs-body:  15px;
-            --fs-lead:  17px;
-            --fs-h3:    clamp(20px, 2.5vw, 26px);
-            --fs-h2:    clamp(28px, 4vw, 44px);
-            --fs-h1:    clamp(36px, 6vw, 60px);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            line-height: 1.7;
-            color: var(--text-dark);
-            background: var(--bg-light);
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
-            color: var(--white);
-            padding: 60px 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: var(--fs-h2);
-            margin-bottom: 10px;
-        }
-
-        header p {
-            opacity: 0.9;
-            font-size: var(--fs-lead);
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        section {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        h2 {
-            color: var(--primary-dark);
-            font-size: var(--fs-h3);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-light);
-        }
-
-        h3 {
-            color: var(--text-dark);
-            font-size: var(--fs-lead);
-            margin: 25px 0 15px 0;
-        }
-
-        p {
-            margin-bottom: 15px;
-        }
-
-        ul, ol {
-            margin: 15px 0 15px 25px;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        strong {
-            color: var(--text-dark);
-        }
-
-        a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .highlight-box {
-            background: #f0fdfa;
-            border-left: 4px solid var(--primary);
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .info-box {
-            background: #eff6ff;
-            border-left: 4px solid #3b82f6;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 0 8px 8px 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-        }
-
-        th {
-            background: var(--primary-dark);
-            color: var(--white);
-            font-weight: 600;
-        }
-
-        td:first-child {
-            text-align: left;
-            font-weight: 500;
-        }
-
-        tr:nth-child(even) td {
-            background: #f8fafc;
-        }
-
-        .table-scroll {
-            overflow-x: auto;
-        }
-
-        .snapshot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .snapshot-card {
-            background: #f0fdfa;
-            border: 1px solid #99f6e4;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .snapshot-label {
-            font-size: var(--fs-micro);
-            color: var(--text-light);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .snapshot-value {
-            font-size: var(--fs-h2);
-            font-weight: 700;
-            color: var(--primary-dark);
-        }
-
-        footer {
-            background: var(--text-dark);
-            color: var(--white);
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-        }
-
-        footer a {
-            color: var(--primary-light);
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: var(--fs-h2);
-            }
-
-            .container {
-                padding: 20px 15px;
-            }
-
-            section {
-                padding: 20px;
-            }
-
-            table {
-                font-size: var(--fs-micro);
-            }
-
-            th, td {
-                padding: 8px 6px;
-            }
-        }
-    </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/legal.css">
+  <!-- Breadcrumb (SEO §8.5) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://finwiser.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Legal",
+        "item": "https://finwiser.org/#legal"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Grievances"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
-    <header id="top">
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <!-- Shared site header — mirrors index.html §1. Light ground. -->
+  <header class="fw-nav" id="top" role="banner">
+    <div class="fw-nav__inner">
+      <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
+        <img class="fw-nav__logo-img" src="/finwiserlogo.svg" alt="Finwiser" width="274" height="54">
+      </a>
+      <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+      </button>
+      <div class="fw-nav__scrim" aria-hidden="true"></div>
+      <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
+        <ul class="fw-nav__list">
+          <li><a class="fw-nav__link" href="/#how">How it works</a></li>
+          <li><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
+          <li><a class="fw-nav__link" href="/#team">Team</a></li>
+          <li><a class="fw-nav__link" href="/#faq">Help</a></li>
+          <li><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="legal-crumb" aria-label="Breadcrumb">
+    <div class="legal-crumb__inner">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li><span>Legal</span></li>
+        <li><span aria-current="page">Grievances</span></li>
+      </ol>
+    </div>
+  </nav>
+
+  <main id="main" class="legal">
+
+    <div class="legal-title">
+      <div class="legal-title__inner">
         <h1>Monthly Complaints Status</h1>
         <p>Investor Grievance Disclosure &mdash; Finwiser (SEBI RIA: INA000021331)</p>
-        <p>Last Updated: 23 August 2026</p>
-    </header>
+        <p class="updated">Last Updated: 23 August 2026</p>
+      </div>
+    </div>
 
     <div class="container">
         <!-- Snapshot -->
@@ -408,20 +259,134 @@
         </section>
     </div>
 
-    <footer>
-        <p>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</p>
-        <p>
-            <a href="index.html">Home</a> |
-            <a href="mailto:helpdesk@finwiser.org">Contact Us</a> |
-            <a href="terms.html">Terms &amp; Conditions</a> |
-            <a href="privacy-policy.html">Privacy Policy</a> |
-            <a href="investor-charter.html">Investor Charter</a> |
-            <a href="disclosures.html">Disclosures</a> |
-            <a href="delete-account.html">Delete Account</a>
-        </p>
-        <p style="margin-top: 15px; font-size: var(--fs-micro); opacity: 0.8;">
-            SEBI Registered Investment Adviser &ndash; Individual | Registration No: INA000021331
-        </p>
-    </footer>
+  </main>
+
+  <!-- Shared site footer — identical markup on all eight legal pages.
+       Labels and grouping taken verbatim from index.html §15; duplicate
+       labels for one destination ("Google Play", "Help") dropped. -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="site-footer__inner">
+      <div class="site-footer__top">
+        <div class="site-footer__brand">
+          <h3>Finwiser</h3>
+          <p>The fee-only fiduciary your bank doesn&rsquo;t want you to have. For the eighty million salaried Indians the industry forgot.</p>
+        </div>
+        <nav class="site-footer__col" aria-label="Footer &mdash; Product">
+          <h3>Product</h3>
+          <ul>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="/#how">How it works</a></li>
+            <li><a href="/#team">Team</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+          </ul>
+        </nav>
+        <nav class="site-footer__col" aria-label="Footer &mdash; Compliance">
+          <h3>Compliance</h3>
+          <ul>
+            <li><a href="/terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/investor-charter.html">Investor Charter</a></li>
+            <li><a href="/investment-advisory-agreement.html">Advisory Agreement</a></li>
+            <li><a href="/disclosures.html">Disclosures</a></li>
+            <li><a href="/complaints.html">Grievances</a></li>
+            <li><a href="/accessibility.html">Accessibility</a></li>
+          </ul>
+        </nav>
+        <nav class="site-footer__col" aria-label="Footer &mdash; Account">
+          <h3>Account</h3>
+          <ul>
+            <li><a href="/delete-account.html">Delete your account</a></li>
+            <li><a href="mailto:helpdesk@finwiser.org">Email us</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="site-footer__legal">
+        <p><strong>Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser)</strong> &middot; SEBI Registered Investment Adviser &middot; Reg. No. INA000021331 &middot; BSE Enlistment 2408 &middot; NISM Reg. NISM-202500082015</p>
+        <p>Principal / Registered Office: H.No. 181, 14th Cross, Bluejay Atmosphere Phase II, Andhrahalli Main Road, Nagasandra Post, Bengaluru &ndash; 560073, Karnataka, India.</p>
+        <p>Grievance Redressal Officer: Chandrachuda Sarma Yemmanuru &middot; <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a> &middot; +91 88012 94657 &middot; Acknowledgement T+1 working day &middot; Resolution target T+7 &middot; Outer limit T+21 working days.</p>
+        <p><em>Investments in the securities market are subject to market risks. Read all the related documents carefully before investing. Registration granted by SEBI, enlistment as a member of BASL, and certification from NISM in no way guarantee performance of the intermediary or provide any assurance of returns to investors.</em></p>
+        <p>For grievances unresolved by the Adviser, escalate via SEBI SCORES at <a href="https://scores.sebi.gov.in" target="_blank" rel="noopener noreferrer">scores.sebi.gov.in</a> or the SmartODR platform at <a href="https://smartodr.in" target="_blank" rel="noopener noreferrer">smartodr.in</a>. SEBI Toll-Free: 1800 22 7575 / 1800 266 7575.</p>
+      </div>
+
+      <div class="site-footer__copyright">
+        <span>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</span>
+        <span>For investors &rarr; <a href="/fw-deck-2026/">view the deck</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="fw-totop" type="button" aria-label="Back to top" data-visible="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V6"/><path d="M5 13l7-7 7 7"/></svg>
+  </button>
+
+  <script>
+    /* Two behaviours only: the header drawer and the back-to-top control.
+       Drawer contract copied from index.html — the page underneath must not
+       scroll, a tap off the panel dismisses it, Escape dismisses it, and focus
+       moves into the drawer on open and back to the button on close. */
+    (function () {
+      var toggle = document.querySelector('.fw-nav__toggle');
+      var menu = document.getElementById('fw-nav-menu');
+      var scrim = document.querySelector('.fw-nav__scrim');
+
+      function isMenuOpen() { return !!toggle && toggle.getAttribute('aria-expanded') === 'true'; }
+      /* focus() scrolls its target into view, and the hamburger sits in sticky
+         chrome that can never satisfy scroll-padding-top — focusing it would
+         walk the page back to y=0. Move focus without moving the page. */
+      function focusNoScroll(el) {
+        if (!el) return;
+        try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
+      }
+      function openMenu() {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+        document.documentElement.classList.add('fw-nav-locked');
+        focusNoScroll(menu && menu.querySelector('a[href]'));
+      }
+      function closeMenu(returnFocus) {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+        document.documentElement.classList.remove('fw-nav-locked');
+        if (returnFocus) focusNoScroll(toggle);
+      }
+      if (toggle && menu) {
+        toggle.addEventListener('click', function () {
+          if (isMenuOpen()) closeMenu(false); else openMenu();
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && isMenuOpen()) closeMenu(true);
+        });
+        if (scrim) scrim.addEventListener('click', function () { closeMenu(true); });
+        menu.addEventListener('click', function (e) {
+          if (e.target.matches('a')) closeMenu(false);
+        });
+        addEventListener('resize', function () {
+          if (isMenuOpen() && window.innerWidth > 899) closeMenu(false);
+        });
+      }
+
+      /* Back to top: shows after one screen of scroll on documents that are
+         tens of thousands of pixels tall. */
+      var toTop = document.querySelector('.fw-totop');
+      if (toTop) {
+        var ticking = false;
+        function sync() {
+          toTop.setAttribute('data-visible', window.scrollY > window.innerHeight ? 'true' : 'false');
+          ticking = false;
+        }
+        addEventListener('scroll', function () {
+          if (!ticking) { ticking = true; requestAnimationFrame(sync); }
+        }, { passive: true });
+        toTop.addEventListener('click', function () {
+          var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+          focusNoScroll(document.querySelector('.fw-nav__logo'));
+        });
+        sync();
+      }
+    })();
+  </script>
 </body>
 </html>
