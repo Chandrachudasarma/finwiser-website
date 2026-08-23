@@ -1,0 +1,1206 @@
+/* =============================================================================
+   FINWISER DESIGN SYSTEM — brand.css
+   =============================================================================
+
+   This file is the ONLY place on finwiser.org where the following are decided:
+
+       colour · typography · spacing · the grid · radius · shadow · border
+       the two buttons · the one card · the chip · the nav · section rhythm
+
+   Nothing else on the site may declare `font:`, `font-size`, `line-height`,
+   `font-weight`, `letter-spacing`, `border-radius`, `box-shadow` or a
+   container width. Page stylesheets declare layout, colour application,
+   position and animation — and read every value from a token here.
+
+   How to read it
+   --------------
+   §1  Colour            five brand colours + one geometric tint ladder
+   §2  Type              the roles: size / line-height / weight / tracking
+   §3  Spacing           an 11-step scale and the fixed vertical rhythm
+   §4  Grid              four breakpoints, twelve columns, ONE container
+   §5  Radius · shadow · border
+   §6  Motion            four durations, four easings (Motion §9.3)
+   §7  Ground system     two page grounds, one rule for which is which
+   §8  Type role table   which element on the page carries which role
+   §9  Components        nav · button · card · chip · row · link · media
+   §10 Section rhythm    one vertical padding per breakpoint
+   §11 Reduced motion
+
+   How to extend it
+   ----------------
+   A new piece of text does not get a new size. It joins a role in §8.
+   A new panel does not get a new border. It becomes a `.card`.
+   If neither is true, the system is wrong and §1–§5 change — not the page.
+
+   Source: website-audit-2026-08-23/05-ui-visual-designer.md §8 (target system),
+   findings U1–U5 and U9–U13; 06-brand-graphic-designer.md §7 (identity).
+   ========================================================================== */
+
+
+/* =============================================================================
+   §1 · COLOUR
+   -----------------------------------------------------------------------------
+   Five brand colours. Everything else on the page is one of these at one of
+   six opacities, or one of the two derived surfaces.
+
+     --navy-deep   the brand ground. The ONLY dark page ground.
+     --white       the ONLY light page ground.
+     --mint        the single accent. Never carries text on a light ground.
+     --teal-ink    the light-ground accent: links, eyebrows, accent figures.
+                   4.55:1 on #ffffff — the value --teal #00b6ad could not reach.
+     --gold        the only data-highlight. Not decorative.
+
+   Two derived surfaces carry elevation, and are never page grounds:
+     --surface-dark  #002d56  a card ON --navy-deep
+     --surface-light #f7f9fb  a card ON --white
+
+   Retired in this release: --rose (#e87b6f) as a hue, --teal (#00b6ad) as a
+   text colour, #10b981, #ef4444, #ffe4a8, and every ad-hoc alpha step.
+   ========================================================================== */
+
+:root {
+  /* ---- the five ---------------------------------------------------------- */
+  --navy-deep: #001f3d;
+  --white:     #ffffff;
+  --mint:      #35d6c6;
+  --teal-ink:  #007a74;   /* the light-ground accent: 5.13:1 on #ffffff and
+                             4.61:1 on the #f7f9fb card fill — the shade that
+                             clears 4.5:1 on BOTH light surfaces (#00847e
+                             clears white at 4.55 but fails the card at 4.32) */
+  --gold:      #f5c26b;
+
+  /* ---- derived surfaces (elevation, never a page ground) ----------------- */
+  --surface-dark:  #002d56;
+  --surface-light: #f7f9fb;
+
+  /* ---- ink --------------------------------------------------------------- */
+  --text-on-light:        #002d56;
+  --text-on-light-muted:  #5a6b7d;   /* 4.62:1 on #ffffff                     */
+  --text-on-dark:         rgba(255,255,255,0.94);
+  --text-on-dark-muted:   rgba(255,255,255,0.74);
+
+  /* ---- the tint ladder — six steps, no seventh --------------------------- */
+  --mint-04:  rgba(53,214,198,0.04);
+  --mint-08:  rgba(53,214,198,0.08);
+  --mint-16:  rgba(53,214,198,0.16);
+  --mint-32:  rgba(53,214,198,0.32);
+  --mint-56:  rgba(53,214,198,0.56);
+  --mint-88:  rgba(53,214,198,0.88);
+
+  --white-04: rgba(255,255,255,0.04);
+  --white-08: rgba(255,255,255,0.08);
+  --white-16: rgba(255,255,255,0.16);
+  --white-32: rgba(255,255,255,0.32);  /* border / surface ONLY — never text  */
+  --white-56: rgba(255,255,255,0.56);  /* the floor for muted text on dark    */
+  --white-88: rgba(255,255,255,0.88);
+
+  --navy-04:  rgba(0,45,86,0.04);
+  --navy-08:  rgba(0,45,86,0.08);
+  --navy-16:  rgba(0,45,86,0.16);
+  --navy-32:  rgba(0,45,86,0.32);
+
+  --gold-08:  rgba(245,194,107,0.08);
+  --gold-16:  rgba(245,194,107,0.16);
+  --gold-32:  rgba(245,194,107,0.32);
+  --gold-56:  rgba(245,194,107,0.56);
+
+  --black-32: rgba(0,0,0,0.32);
+  --black-45: rgba(0,0,0,0.45);
+
+  /* Compatibility aliases. The page still names these; they now resolve to
+     system values instead of to a sixth and seventh hue. */
+  --navy:       var(--surface-dark);
+  --off-white:  var(--surface-light);
+  --teal:       var(--teal-ink);
+  --teal-text:  var(--teal-ink);
+  --teal-08:    rgba(0,122,116,0.08);
+  --teal-16:    rgba(0,122,116,0.16);
+  --teal-32:    rgba(0,122,116,0.32);
+  --teal-56:    rgba(0,122,116,0.56);
+  --gold-20:    var(--gold-16);
+  --gold-50:    var(--gold-56);
+  --rose:       var(--gold);          /* the sixth hue is retired            */
+  --rose-05:    var(--gold-08);
+  --rose-ink:   #c1362b;              /* the STOP colour in the price table,
+                                         5.50:1 on white; paired with a word,
+                                         never colour alone (UI §8.5 rule 6)  */
+}
+
+
+/* =============================================================================
+   §2 · TYPE
+   -----------------------------------------------------------------------------
+   Two faces. Ten roles. Four weights. Three tracking values. No eleventh role,
+   no 800, no 900, no `font:` shorthand.
+
+     Inter        everything structural, and EVERY numeral and every ₹
+     Lora italic  one role only — Quote: the user's own doubt, spoken inward
+     mono         literal machine strings (a registration number, an account
+                  mask, a timestamp). Never a figure, never a heading.
+
+   Each role below is a triple of tokens — size, line-height, weight — plus one
+   of three tracking values. The desktop size of every display-scale role is a
+   clamp whose viewport term is still climbing at 1920, so a large screen is
+   designed rather than stretched (U3).
+
+     role        mobile ≤699    desktop ≥1024                  wt   lh     track
+     ---------   -----------    ---------------------------    --   ----   -----
+     display     40             clamp(56, 4.6vw, 88)           700  1.05   −0.02
+     h1          30             clamp(38, 3.2vw, 60)           700  1.10   −0.02
+     h2          22             clamp(24, 1.9vw, 34)           600  1.20   −0.01
+     lead        17             clamp(19, 1.5vw, 24)           400  1.50    0
+     body        16             17                             400  1.60    0
+     caption     14             14                             400  1.45    0
+     label       13             13                             500  1.30   +0.06
+     data-lg     32             clamp(44, 3.4vw, 66)           600  1.00   −0.01
+     data-sm     18             20                             600  1.20    0
+     quote       22             30                             500i 1.35   −0.01
+
+   Hard floor: 13 px. Anything below it is texture and carries aria-hidden.
+   Measure caps: display/h1 18ch · lead 36ch · body/caption 68ch.
+   ========================================================================== */
+
+:root {
+  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-serif: 'Lora', Georgia, serif;
+  --font-mono:  ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* --- size (mobile values; §4 media queries raise them) ------------------ */
+  --fs-display: 40px;
+  --fs-h1:      30px;
+  --fs-h2:      22px;
+  --fs-lead:    17px;
+  --fs-body:    16px;
+  --fs-caption: 14px;
+  --fs-label:   13px;
+  --fs-data-lg: 32px;
+  --fs-data-sm: 18px;
+  --fs-quote:   22px;
+
+  /* --- line-height -------------------------------------------------------- */
+  --lh-display: 1.05;
+  --lh-h1:      1.10;
+  --lh-h2:      1.20;
+  --lh-lead:    1.50;
+  --lh-body:    1.60;
+  --lh-caption: 1.45;
+  --lh-label:   1.30;
+  --lh-data-lg: 1.00;
+  --lh-data-sm: 1.20;
+  --lh-quote:   1.35;
+
+  /* --- weight — four, no more --------------------------------------------- */
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semi:    600;
+  --fw-bold:    700;
+
+  /* --- tracking — three, no more ------------------------------------------ */
+  --tr-tight: -0.02em;
+  --tr-snug:  -0.01em;
+  --tr-none:  0;
+  --tr-wide:  0.06em;
+
+  /* --- measure caps -------------------------------------------------------- */
+  --measure-display: 18ch;
+  --measure-lead:    36ch;
+  --measure-body:    68ch;
+}
+
+@media (min-width: 700px) {
+  :root {
+    /* round(…, 1px) keeps every clamped size on the whole pixel. Without it a
+       vw term lands on 27.36 / 46.08 / 66.24 px and the stems soften — the
+       exact artefact the audit measured at 768 (§3.1). */
+    --fs-display: clamp(48px, round(4.6vw, 1px), 88px);
+    --fs-h1:      clamp(34px, round(3.2vw, 1px), 60px);
+    --fs-h2:      clamp(23px, round(1.9vw, 1px), 34px);
+    --fs-lead:    clamp(18px, round(1.5vw, 1px), 24px);
+    --fs-body:    17px;
+    --fs-data-lg: clamp(38px, round(3.4vw, 1px), 66px);
+    --fs-data-sm: 20px;
+    --fs-quote:   clamp(26px, round(2.1vw, 1px), 34px);
+  }
+}
+
+
+/* =============================================================================
+   §3 · SPACING
+   -----------------------------------------------------------------------------
+   One 4-pt scale. Nine of the twenty-six gaps previously in use sat off any
+   grid (3, 5, 6, 7, 10, 14, 18, 22 px); they are gone.
+
+   Fixed vertical rhythm inside every section — one value per relationship:
+       label → title      --sp-3   12
+       title → lead       --sp-4   16
+       lead  → subject    --sp-7   48
+       subject → CTA      --sp-7   48
+   ========================================================================== */
+
+:root {
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  24px;
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  64px;
+  --sp-9:  96px;
+  --sp-10: 128px;
+  --sp-11: 160px;
+}
+
+
+/* =============================================================================
+   §4 · GRID
+   -----------------------------------------------------------------------------
+     breakpoint      cols   gutter   margin   content max
+     320–599          4      16       24      fluid
+     600–1023         8      24       32      fluid
+     1024–1439       12      24       40      1080
+     ≥1440           12      32       40      1280
+
+   ONE container class. Every section, the nav and the footer use it, so the
+   logo and the H1 sit on the same rail at every width — replacing seven
+   container widths and ten content left-edges (U1).
+
+   Three permitted content measures, expressed as column spans:
+       .m-full    12 col   the default
+       .m-text     8 col   long-form copy
+       .m-narrow   6 col   a single centred statement
+   Below 1024 all three are the full container: a 4- or 8-column field has no
+   room for an offset.
+   ========================================================================== */
+
+:root {
+  --grid-cols: 4;
+  --gutter:    16px;
+  --margin:    24px;
+  --content:   100%;
+  --nav-h:     56px;
+}
+
+@media (min-width: 600px) {
+  :root { --grid-cols: 8; --gutter: 24px; --margin: 32px; }
+}
+@media (min-width: 1024px) {
+  :root { --grid-cols: 12; --gutter: 24px; --margin: 40px; --content: 1080px; --nav-h: 64px; }
+}
+@media (min-width: 1440px) {
+  :root { --gutter: 32px; --content: 1280px; }
+}
+
+/* The container. `--content` is the CONTENT width; the padding sits outside it,
+   so the rail is identical whether or not the viewport has reached the cap. */
+.container,
+.fw-nav__inner,
+.hero__inner,
+.trust__chips,
+.problem__inner,
+.seen__inner,
+.steps__rail,
+.engine__inner,
+.engine-finale__inner,
+.caps__inner,
+.compare__inner,
+.pricing__inner,
+.testify__inner,
+.secure__inner,
+.team__inner,
+.faq__inner,
+.final-cta__inner,
+.site-footer__inner {
+  width: 100%;
+  max-width: calc(var(--content) + 2 * var(--margin));
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+/* The three measures. Applied to the block, never to the container. */
+.m-full   { width: 100%; }
+.m-text   { width: 100%; max-width: calc(var(--content) * 0.6667); margin-inline: auto; }
+.m-narrow { width: 100%; max-width: calc(var(--content) * 0.5);    margin-inline: auto; }
+
+/* A 12-column track, for the sections that genuinely lay out on columns. */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+
+/* =============================================================================
+   §5 · RADIUS · SHADOW · BORDER
+   -----------------------------------------------------------------------------
+   Four radii (from fifteen). Two elevation shadows (from twenty-one) plus one
+   accent bloom, which is a light effect and not an elevation. Two borders.
+
+   No shadow on any card sitting on a dark ground — elevation on dark is
+   carried by the background step (--surface-dark on --navy-deep), never by a
+   shadow that cannot be seen.
+   ========================================================================== */
+
+:root {
+  --r-sm:   8px;     /* chips inside cards, inputs, small media               */
+  --r-md:   10px;    /* buttons, nested rows, media tiles                     */
+  --r-lg:   16px;    /* every card                                            */
+  --r-pill: 999px;   /* chips, dots, avatars                                  */
+
+  --shadow-1: 0 2px 8px rgba(0,45,86,0.06);     /* resting card on light      */
+  --shadow-2: 0 12px 32px rgba(0,31,61,0.28);   /* lifted / active only       */
+
+  /* The mint bloom — Brand §7 motif 3. It marks "this is lit", and it is a
+     LIGHT effect, not an elevation: a ring is drawn with `outline` (which
+     follows the border-radius and costs no layout) and a glow with
+     `drop-shadow` (which follows the shape's alpha, not its box). That is
+     why the page renders exactly two box-shadow values — the two above.
+     Eight ring widths (1–16 px) collapse into one. */
+  --ring-mint: 4px solid var(--mint-16);
+  --ring-gold: 4px solid var(--gold-16);
+  --ring-teal: 4px solid var(--teal-16);
+  --ring-none: 4px solid transparent;   /* the rest state a ring animates from */
+  --glow-mint: drop-shadow(0 0 8px var(--mint-56));
+
+  --hairline: 1px;
+  --border-on-dark:  rgba(255,255,255,0.12);
+  --border-on-light: rgba(0,45,86,0.10);
+
+  /* Legacy names still used by the page; both resolve into the pair above. */
+  --shadow-soft: var(--shadow-1);
+  --shadow-card: var(--shadow-1);
+}
+
+
+/* =============================================================================
+   §6 · MOTION  (Tier 2 Wave 2 — reconciled to Motion §9.3)
+   -----------------------------------------------------------------------------
+   FOUR durations, FOUR easings, for the whole site. There is no second set:
+   Tier 1's --dur-move / --dur-fast / --dur-base / --dur-slow and the
+   --ease-enter / --ease-move / --ease-exit / --ease-std / --ease-spring /
+   --ease-out-cubic aliases are deleted, not aliased, so nobody can reach for
+   a value that is not in this block. The audit counted 54 durations and 7
+   easings across the page (Motion M10); the bar is 4 and 4.
+
+   Nearest-value map used for the sweep (ties go to the shorter token):
+       <=180ms  -> --dur-tap      200-320ms -> --dur-ui
+       340-540  -> --dur-reveal   560-900   -> --dur-scene
+
+   Two things are deliberately NOT in the set and are not "durations":
+     * `linear` on a scroll-timeline animation. That is the identity function
+       the scrub law (§9.4) requires — the reader's finger is the easing.
+     * an ambient loop PERIOD (breathe / float). A period is not a transition;
+       where one is needed it is written calc(var(--dur-scene) * N) so it is
+       still derived from this block.
+   ========================================================================== */
+
+:root {
+  --dur-tap:    120ms;   /* :active, tap highlight, chevron                   */
+  --dur-ui:     240ms;   /* hover, nav condense, accordion, drawer, focus     */
+  --dur-reveal: 400ms;   /* element entrances, staggered reveals              */
+  --dur-scene:  700ms;   /* chapter cross-fades, hero entrance                */
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.30, 1);    /* arrivals               */
+  --ease-in-out: cubic-bezier(0.40, 0, 0.20, 1);    /* state changes          */
+  --ease-in:     cubic-bezier(0.40, 0, 1, 1);       /* exits                  */
+  --ease-emph:   cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoot — max 2 uses */
+
+  interpolate-size: allow-keywords;
+}
+
+
+/* =============================================================================
+   §7 · GROUND SYSTEM
+   -----------------------------------------------------------------------------
+   Two page grounds, one rule, four inversions.
+
+       DARK  = the mechanism.        hero + credentials · the scroll film
+                                     (discovery, the three steps, security) ·
+                                     the footer
+       LIGHT = the human and the     the problem · what it does · the engine ·
+               commercial.           comparison · price · founder · the ask ·
+                                     the FAQ
+
+   #002d56 is a card on the dark ground, never a ground.
+   #f7f9fb is a card on the light ground, never a ground.
+   A ground change is a hard cut: no gradient, no rule, no seam treatment
+   beyond the colour change itself. Two grounds of the same family are never
+   adjacent, which is what removes the 3%-luminance seam at .team/.faq (U11).
+
+   Every component below reads --fg / --fg-muted / --surface / --line /
+   --accent, so a section changes side by changing one attribute.
+   ========================================================================== */
+
+[data-theme="dark"] {
+  --ground:    var(--navy-deep);
+  --surface:   var(--surface-dark);
+  --fg:        var(--text-on-dark);
+  --fg-muted:  var(--text-on-dark-muted);
+  --line:      var(--border-on-dark);
+  --accent:    var(--mint);
+  --card-bg:   var(--white-04);
+  --card-shadow: none;
+}
+
+[data-theme="light"] {
+  --ground:    var(--white);
+  --surface:   var(--surface-light);
+  --fg:        var(--text-on-light);
+  --fg-muted:  var(--text-on-light-muted);
+  --line:      var(--border-on-light);
+  --accent:    var(--teal-ink);
+  --card-bg:   var(--white);
+  --card-shadow: var(--shadow-1);
+}
+
+:root { color-scheme: light dark; }
+
+
+/* =============================================================================
+   §8 · TYPE ROLE TABLE
+   -----------------------------------------------------------------------------
+   The assignment. Every piece of text on finwiser.org appears exactly once
+   below. A new element joins a list; it does not get a size.
+   ========================================================================== */
+
+/* --- base ------------------------------------------------------------------ */
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-none);
+}
+
+/* --- DISPLAY — the two page-level statements, and the scene numerals ------- */
+.display,
+.hero__headline,
+.final-cta__heading,
+.steps__num {
+  font-family: var(--font-sans);
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tr-tight);
+}
+.hero__headline,
+.final-cta__heading { max-width: var(--measure-display); text-wrap: balance; }
+
+/* --- H1 / Title 1 — every section headline --------------------------------- */
+.h1,
+.problem__h-pivot,
+.seen__heading,
+.caps__heading,
+.compare__heading,
+.pricing__heading,
+.testify__heading,
+.secure__heading,
+.faq__heading,
+.engine__intro-title,
+.engine-finale__heading {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tr-tight);
+  max-width: var(--measure-display);
+  text-wrap: balance;
+}
+.problem__h-pivot,
+.seen__heading,
+.caps__heading,
+.compare__heading,
+.pricing__heading,
+.testify__heading,
+.secure__heading,
+.faq__heading,
+.engine__intro-title { margin-inline: auto; }
+
+/* --- H2 / Title 2 — card and step headings --------------------------------- */
+.h2,
+.problem__h-trio,
+.steps__card h3,
+.steps__card-title,
+.cap__heading,
+.secure__heading-card,
+.team__name,
+.site-footer__brand h3,
+.engine__case-tagline,
+.case-card__head h3,
+.faq__item summary,
+.pricing__compare-head,
+.verdict__verb,
+.connect-active__done-text {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-snug);
+}
+.problem__h-trio { max-width: var(--measure-display); margin-inline: auto; }
+
+/* --- LEAD — the one support line under a heading --------------------------- */
+.lead,
+.hero__sub,
+.problem__h-prefix,
+.problem__body,
+.problem__bullet,
+.seen__sub,
+.seen__finwy-speech,
+.caps__sub,
+.compare__sub,
+.pricing__sub,
+.secure__sub,
+.faq__sub,
+.final-cta__sub,
+.steps__callout,
+.steps__bridge p,
+.engine__close-line,
+.engine__close-finwy,
+.testify__quote,
+.src-replace {
+  font-family: var(--font-sans);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-none);
+}
+.hero__sub,
+.problem__body,
+.seen__sub,
+.caps__sub,
+.compare__sub,
+.pricing__sub,
+.secure__sub,
+.faq__sub,
+.final-cta__sub { max-width: var(--measure-lead); }
+.problem__body,
+.seen__sub,
+.caps__sub,
+.compare__sub,
+.pricing__sub,
+.secure__sub,
+.final-cta__sub { margin-inline: auto; }
+
+/* --- BODY — prose ---------------------------------------------------------- */
+.body,
+.steps__card p,
+.cap__body,
+.faq__answer,
+.faq__answer p,
+.team__record,
+.problem__closer,
+.compare__tally,
+.pricing__commitment p,
+.secure__body,
+.site-footer__brand p,
+.engine__case-body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-none);
+}
+.steps__card p,
+.cap__body,
+.faq__answer,
+.team__record,
+.problem__closer,
+.site-footer__brand p { max-width: var(--measure-body); }
+
+/* --- CAPTION — the supporting fact, the footnote, the table cell ----------- */
+.caption,
+.trust__proof,
+.compare th,
+.compare td,
+.compare thead th,
+.compare__proof-item figcaption,
+.pricing__terms,
+.pricing__not,
+.pricing__beta,
+.pricing__cell,
+.secure__footnote,
+.secure__body--aside,
+.site-footer__col a,
+.site-footer__legal,
+.site-footer__copyright,
+.team__role,
+.team__entity,
+.team__linkedin,
+.engine__footnote,
+.engine__case-sub,
+.case-card__head-sub,
+.testify__ghost,
+.steps__tags li,
+.input__trigger,
+.input__rating,
+.verdict__line,
+.seen__composite-disclaimer,
+.seen__cluster-name,
+.hero__chip,
+.hero__creds,
+.connect-active__done-sub,
+.connect-card__name,
+.txn__narration,
+.allocation__row,
+.name__title,
+.name__sub,
+.name__fund-mobile,
+.cascade__fund,
+.src-chip,
+.steps__concept-icon,
+.flow__caption,
+.flow__caption-meta,
+.flow__counter-sub,
+.flow__counter-breakdown,
+.pricing__commitment-sig {
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-none);
+}
+.trust__proof,
+.secure__footnote,
+.site-footer__legal,
+.team__entity,
+.engine__footnote { max-width: var(--measure-body); }
+
+/* Captions that name a thing rather than describe it carry medium weight. */
+.compare th,
+.pricing__cell,
+.connect-card__name,
+.name__title,
+.team__linkedin,
+.trust__label,
+.compare tbody th,
+.compare__finwiser,
+.seen__cluster-name,
+.flow__caption,
+.txn__narration,
+.pricing__commitment-sig { font-weight: var(--fw-semi); }
+
+/* --- LABEL — the uppercase eyebrow and every tile label -------------------- */
+.label,
+.eyebrow,
+.hero__eyebrow,
+.team__eyebrow,
+.seen__pane-eyebrow,
+.seen__finwy-tag,
+.engine__intro-eyebrow,
+.site-footer__col h3,
+.connect-card__amount-label,
+.connect-card__approve,
+.connect-card__check,
+.connect-card__mark--mono,
+.connect-stat__label,
+.connect-feed__caption,
+.flow__lane-label,
+.flow__counter-label,
+.flow__finwy-tag,
+.txn__tag,
+.txn__date,
+.insight__label,
+.allocation__head,
+.factor__label,
+.verdict__attr,
+.input__meta,
+.input-stat__label,
+.ledger-row__label,
+.topbanner__label,
+.cascade__colheads,
+.pri,
+.name__pill,
+.steps__chip {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tr-wide);
+}
+/* Uppercase tracking is for machine words, never a proper noun — the
+   comparison table's column heads name products, so they are captions. */
+.connect-card__name,
+.flow__caption { letter-spacing: var(--tr-none); }
+
+/* --- DATA-LG — the figure the page is about -------------------------------- */
+.data-lg,
+.pricing__price,
+.flow__counter-num,
+.insight__num,
+.seen__pane-num,
+.ledger-row--surplus .ledger-row__value {
+  font-family: var(--font-sans);
+  font-size: var(--fs-data-lg);
+  line-height: var(--lh-data-lg);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-snug);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- DATA-SM — a tile value, a table figure -------------------------------- */
+.data-sm,
+.connect-card__amount,
+.connect-stat__value,
+.connect-feed__count,
+.txn__amount,
+.ledger-row__value,
+.seen__cluster-count,
+.cascade__required,
+.cascade__allocated,
+.allocation__amount,
+.factor__readout,
+.input-stat__num,
+.topbanner__value,
+.connect-active__done-mark {
+  font-family: var(--font-sans);
+  font-size: var(--fs-data-sm);
+  line-height: var(--lh-data-sm);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-none);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- QUOTE — Lora italic. The user's own doubt, and nothing else ----------- */
+.quote,
+.problem__thought,
+.alloc__caption-hero {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-quote);
+  line-height: var(--lh-quote);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tr-snug);
+}
+.problem__thought { max-width: var(--measure-lead); margin-inline: auto; }
+
+/* --- MONO — literal machine strings only ----------------------------------- */
+.mono,
+.hero__creds code,
+.connect-card__num,
+.txn__account,
+.flow__counter-stamp {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tr-none);
+}
+
+/* --- EMPHASIS — the only weight change allowed inside a role --------------- */
+strong, b,
+.trust__label,
+.src-replace b,
+.lane--mint .input__rating-key,
+.lane--teal .input__rating-key,
+.compare__finwiser { font-weight: var(--fw-semi); }
+
+/* semi, not bold. The LABEL role is 13/500 and its emphasis step used to
+   be 700, which was a 19th rendered type combination the moment the engine
+   scene stopped waiting for a timer (Wave 2 / M2 renders it on the opening
+   frame, where the stopwatch used to leave it unset). 600 is the emphasis
+   weight this role already uses elsewhere at the same size, so the active
+   factor still reads heavier and the page still renders 18 combinations.
+   The decisive factor's READOUT keeps its role weight for the same reason:
+   it is already 600, and what marks it decisive is the filled mint pill,
+   the gold star and the mint label — a fourth signal in a fourth weight
+   was a 20th combination for no extra meaning. */
+.factor.is-active .factor__label,
+.factor.is-decisive .factor__label { font-weight: var(--fw-semi); }
+
+/* "Not feasible" used to drop to 500 inside the 600 DATA-SM role. M1 made
+   the end of the cascade a rest state on both devices, so that exception
+   became a permanently rendered 19th type combination — and it was never
+   carrying the meaning anyway: the verdict is gold on a dashed, faded row.
+   Colour keeps the distinction; the role keeps its weight. */
+.allocation__name { font-weight: var(--fw-medium); }
+
+/* --- SUB-GLYPHS — the unit, the suffix, the marker inside a figure ---------
+   A "/month", an "L", a "★". They sit inside a role and step down one. */
+.pricing__price span,
+.pricing__price em,
+.input-stat__num small,
+.topbanner__value small,
+.seen__pane-unit,
+.name__star,
+.src-arrow {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tr-none);
+}
+/* The ₹ is NOT a sub-glyph. It is the same size and face as its digits (U9). */
+
+/* --- MARKERS — generated content that is a state, not a sentence ----------- */
+.factor.is-considered::after,
+.factor.is-decisive::after,
+.cascade__cutoff::after,
+.verdict__avatar,
+.connect-card__mark,
+.connect-card__check::before {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-wide);
+}
+
+/* --- MECHANICAL — a line-height that is a box, not a rhythm ---------------- */
+/* The split-flap display: the letter box IS the line box, so line-height is
+   geometry here. It takes the Title-2 size so the flip reads as a heading. */
+.flap-cell, .flap-spacer, .flap-letter {
+  font-size: var(--fs-h2);
+  line-height: 1;
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-snug);
+}
+.fw-nav__logo { line-height: 0; }
+.fw-nav__toggle { font-family: inherit; }          /* U13 — it rendered in Arial */
+
+.trust__chip, .site-footer {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+.trust__label { font-size: var(--fs-caption); line-height: var(--lh-caption); }
+
+/* --- ₹ and every numeral (U9) ---------------------------------------------
+   The rupee is the most-repeated glyph in the product. One face — Inter —
+   with tabular figures, so columns of money align and the full stop is a
+   full stop rather than the heavy mid-dot the system monospace draws. */
+.rupee, [data-amount], .amount,
+.data-lg, .data-sm,
+.compare td, .pricing__price, .pricing__cell {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+
+/* =============================================================================
+   §9 · COMPONENTS
+   ========================================================================== */
+
+/* --- 9.1 · THE NAV ---------------------------------------------------------
+   Height 56 / 64 — one 8 px step. It uses the site container, so the logo
+   shares the H1's rail. The bar is a material, not a slab: the ground tint
+   and the logo variant are driven by the section underneath it. (§8.7) */
+
+.fw-nav {
+  position: sticky; top: 0; left: 0; right: 0; z-index: 50;
+  height: var(--nav-h);
+  --nav-ground: 255,255,255;
+  --nav-fg: var(--navy-deep);
+  --nav-fg-hover: var(--teal-ink);
+  --nav-line: var(--border-on-light);
+  --nav-shadow: var(--shadow-1);
+  background: rgb(var(--nav-ground));
+  border-bottom: var(--hairline) solid transparent;
+  transition: background-color var(--dur-ui) var(--ease-in-out),
+              border-color var(--dur-ui) var(--ease-in-out),
+              box-shadow var(--dur-ui) var(--ease-in-out);
+}
+@supports ((backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px))) {
+  .fw-nav.is-scrolled {
+    background: rgba(var(--nav-ground), 0.72);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+            backdrop-filter: saturate(180%) blur(20px);
+  }
+}
+.fw-nav.is-over-dark {
+  --nav-ground: 0,31,61;
+  --nav-fg: var(--text-on-dark);
+  --nav-fg-hover: var(--mint);
+  --nav-line: var(--border-on-dark);
+  --nav-shadow: var(--shadow-1);
+}
+.fw-nav.is-scrolled { border-bottom-color: var(--nav-line); box-shadow: var(--nav-shadow); }
+
+.fw-nav__inner {
+  height: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-5);
+}
+.fw-nav__logo { position: relative; display: block; text-decoration: none; line-height: 0; }
+/* Cap-height 28 px → ~140 px wide. The logo is never more than 40% of a
+   phone's width. */
+.fw-nav__logo-img { height: 30px; width: auto; display: block; }
+@media (min-width: 1024px) { .fw-nav__logo-img { height: 38px; } }
+
+.fw-nav__link {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1;
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tr-none);
+  color: var(--nav-fg);
+  text-decoration: none; white-space: nowrap;
+  position: relative; padding: var(--sp-2) 0;
+  transition: color var(--dur-ui) var(--ease-in-out);
+}
+/* Between 768 and 1023 the full nav has to fit 704 px of rail: the gap steps
+   down one, the CTA's padding steps down one. Nothing else changes. */
+.fw-nav__list { gap: var(--sp-5); }
+@media (min-width: 1024px) { .fw-nav__list { gap: var(--sp-6); } }
+
+/* --- 9.2 · THE TWO BUTTONS -------------------------------------------------
+   Primary   48 px, radius 10, 0 24 padding, 16/600, mint fill, navy label.
+             No shadow. No scale on hover — the fill changes.
+   Secondary the same box, transparent, one hairline.
+   A third form — a text link with a chevron — is NOT a button and carries no
+   box, so that every view has exactly one boxed action.
+   The Play Store badge is Google's supplied asset and is exempt.          */
+
+/* Platform line under a primary CTA — caption role, muted on either ground. */
+.cta-platform { margin: var(--space-2, 8px) 0 0; font-size: var(--fs-caption); line-height: 1.4; color: var(--fg-muted, var(--white-56)); }
+
+.btn,
+.engine__cta,
+.skip-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--sp-2);
+  height: 48px; padding: 0 var(--sp-5);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1;
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-none);
+  border-radius: var(--r-md);
+  border: var(--hairline) solid transparent;
+  text-decoration: none; cursor: pointer;
+  box-shadow: none;
+  transition: background-color var(--dur-ui) var(--ease-in-out),
+              border-color var(--dur-ui) var(--ease-in-out),
+              color var(--dur-ui) var(--ease-in-out),
+              transform var(--dur-tap) var(--ease-out);
+}
+.btn--primary,
+.engine__cta,
+.skip-link { background: var(--mint); color: var(--navy-deep); border-color: var(--mint); }
+.btn--secondary,
+.btn--ghost { background: transparent; color: var(--text-on-dark); border-color: var(--white-32); }
+[data-theme="light"] .btn--secondary,
+[data-theme="light"] .btn--ghost { color: var(--teal-ink); border-color: var(--teal-16); }
+/* --cream was a third fill. It is the primary button on a light ground. */
+.btn--cream { background: var(--navy-deep); color: var(--white); border-color: var(--navy-deep); }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover, .engine__cta:hover { background: var(--teal-ink); border-color: var(--teal-ink); color: var(--white); }
+  .btn--secondary:hover, .btn--ghost:hover { border-color: var(--mint); color: var(--mint); }
+  [data-theme="light"] .btn--secondary:hover, [data-theme="light"] .btn--ghost:hover { border-color: var(--teal-ink); }
+  .btn--cream:hover { background: var(--surface-dark); border-color: var(--surface-dark); }
+}
+.btn:active, .engine__cta:active, .fw-nav__cta:active { transform: scale(0.97); transition-duration: var(--dur-tap); }
+
+/* The nav's action is the primary button at 40 px. */
+.fw-nav__cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 40px; padding: 0 var(--sp-3); white-space: nowrap;
+  border-radius: var(--r-md);
+  background: var(--mint); color: var(--navy-deep) !important;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body); line-height: 1;
+  font-weight: var(--fw-semi); letter-spacing: var(--tr-none);
+  text-decoration: none;
+  transition: background-color var(--dur-ui) var(--ease-in-out), transform var(--dur-tap) var(--ease-out);
+}
+.fw-nav__cta:hover { background: var(--teal-ink); color: var(--white) !important; }
+.fw-nav__cta:active { transform: scale(0.97); transition-duration: var(--dur-tap); }
+
+/* The text link with a chevron — the secondary action everywhere. */
+.textlink {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body); line-height: var(--lh-body);
+  font-weight: var(--fw-semi); letter-spacing: var(--tr-none);
+  color: var(--accent, var(--mint));
+  text-decoration: none;
+  border-bottom: var(--hairline) solid currentColor;
+  padding-bottom: 2px;
+}
+
+/* --- 9.3 · THE CARD --------------------------------------------------------
+   One card. Radius 16, one hairline, one fill, one padding pair, and a shadow
+   only on a light ground. Twenty-six variants collapse into this plus
+   modifiers that change CONTENT, never geometry.                          */
+
+.card,
+.cap,
+.secure__card,
+.pricing__card,
+.team__card,
+.case-card,
+.seen__pane,
+.seen__band,
+.connect-card,
+.steps__card {
+  border-radius: var(--r-lg);
+  border: var(--hairline) solid var(--line, var(--border-on-dark));
+  background: var(--card-bg, var(--white-04));
+  box-shadow: var(--card-shadow, none);
+  padding: var(--sp-5);
+}
+@media (min-width: 1024px) {
+  .card, .cap, .secure__card, .pricing__card, .team__card, .case-card,
+  .connect-card, .steps__card, .seen__pane, .seen__band,
+  .connect-active__done { padding: var(--sp-6); }
+  .steps__concept { padding: var(--sp-6); }
+}
+/* A row nested inside a card: radius 10, no border, one background step. */
+.card__row, .txn, .factor, .cascade__row, .allocation__row, .ledger-row, .insight {
+  border-radius: var(--r-md);
+}
+/* Cards in a grid sit on their content — they are never stretched to an
+   equal height with a hollow bottom (U5). */
+.caps__grid, .secure__grid { align-items: start; }
+
+/* THE TWO-UP CARD ON A FOUR-COLUMN FIELD.
+   Below 600 px the grid is four columns wide and a card in a two-up row gets
+   about 130 px of text. A Title-2 heading there sets one word per line, so a
+   card that narrow steps its heading and its body down exactly one role —
+   Title 2 → Lead, Body → Caption — and takes the 16 px padding. This is a
+   breakpoint value of the role, not a new size. */
+@media (max-width: 599px) {
+  .card, .cap, .secure__card, .pricing__card, .team__card, .case-card,
+  .connect-card, .steps__card, .steps__concept, .seen__pane, .seen__band,
+  .connect-active__done { padding: var(--sp-4); }
+
+  .cap__heading, .secure__heading-card {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    font-weight: var(--fw-semi);
+    letter-spacing: var(--tr-snug);
+  }
+  .cap__body, .steps__card p {
+    font-size: var(--fs-caption);
+    line-height: var(--lh-caption);
+  }
+}
+
+/* --- 9.4 · THE CHIP --------------------------------------------------------
+   One chip: 32 px tall, pill radius, 13/500, mint tint. */
+.chip,
+.steps__tags li,
+.connect-active__count,
+.name__pill,
+.src-chip {
+  display: inline-flex; align-items: center;
+  min-height: 32px; padding: 0 var(--sp-3);
+  border-radius: var(--r-pill);
+  background: var(--mint-08);
+  border: var(--hairline) solid var(--mint-16);
+  color: var(--accent, var(--mint));
+}
+
+/* --- 9.5 · THE ROW (FAQ, list) --------------------------------------------- */
+.faq__item summary { min-height: 56px; }
+
+/* --- 9.6 · LINKS — one treatment, everywhere (U13) -------------------------
+   An in-copy link is underlined at rest. Hover changes the colour, never the
+   presence of the rule. Three link treatments become one.                 */
+.faq__answer a,
+.secure__footnote a,
+.pricing__beta a,
+.team__linkedin,
+.trust__verify,
+.site-footer__legal a,
+.textlink {
+  text-decoration: none;
+  border-bottom: var(--hairline) solid currentColor;
+  padding-bottom: 1px;
+  background-image: none;
+  transition: color var(--dur-ui) var(--ease-in-out), opacity var(--dur-ui) var(--ease-in-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .faq__answer a:hover, .secure__footnote a:hover, .pricing__beta a:hover,
+  .team__linkedin:hover, .trust__verify:hover, .site-footer__legal a:hover {
+    color: var(--accent);
+  }
+}
+/* A footer COLUMN link is navigation, not copy: no rule, colour on hover.
+   Two link treatments in total — one for copy, one for navigation — replacing
+   the three arbitrary ones the audit found (U13). */
+.site-footer__col a { text-decoration: none; border-bottom: 0; }
+
+/* --- 9.7 · FOCUS ----------------------------------------------------------- */
+:focus { outline: none; }
+a:focus-visible, button:focus-visible, summary:focus-visible,
+details:focus-visible, [tabindex]:focus-visible, .device:focus-visible {
+  outline: 2px solid var(--mint); outline-offset: 3px; border-radius: var(--r-sm);
+}
+
+/* --- 9.8 · MEDIA -----------------------------------------------------------
+   Every image anchors to a column span. ONE device frame everywhere: one
+   radius, one 4 px bezel, one hairline, and NO shadow — a framed screenshot
+   inside a card must not read as a second card. */
+.device {
+  border-radius: var(--r-lg);
+  border: var(--hairline) solid var(--line);
+  background: var(--surface);
+  box-shadow: none;
+  padding: var(--sp-1);
+}
+.media, .device__screen { border-radius: var(--r-md); overflow: hidden; }
+
+/* A panel nested inside a card is a row: radius 10, no border, one step. */
+.steps__concept {
+  border-radius: var(--r-md);
+  border: 0;
+  background: var(--white-04);
+  padding: var(--sp-5);
+}
+
+
+/* =============================================================================
+   §10 · SECTION RHYTHM
+   -----------------------------------------------------------------------------
+   Exactly three vertical paddings — 64 / 96 / 128 — replacing the ten in use
+   at 1440 and the seven fractional `vw` values at 768. Never a `vw`.
+   ========================================================================== */
+
+:root { --section-y: var(--sp-8); }
+@media (min-width: 700px)  { :root { --section-y: var(--sp-9); } }
+@media (min-width: 1024px) { :root { --section-y: var(--sp-10); } }
+
+.section-y,
+.hero, .problem, .caps, .seen, .steps, .secure, .engine,
+.compare, .pricing, .team, .testify, .final-cta, .faq, .site-footer {
+  padding-block: var(--section-y);
+}
+.trust { padding-block: var(--sp-5); }
+
+/* THE SEAM.
+   Section padding is the GAP, not a per-side value. Two sections that share a
+   ground are one passage and the seam between them carries a single gap; a
+   ground change is a chapter break and carries two, which is what makes the
+   four inversions read as chapters rather than as accidents (U11). */
+[data-theme="dark"]  + [data-theme="dark"],
+[data-theme="light"] + [data-theme="light"] { padding-top: 0; }
+
+/* The footer is a colophon, not a section: it takes the smallest step. */
+.site-footer { padding-block: var(--sp-8); }
+
+/* The fixed vertical rhythm (§3). */
+.rhythm-label  { margin-bottom: var(--sp-3); }
+.rhythm-title  { margin-bottom: var(--sp-4); }
+.rhythm-lead   { margin-bottom: var(--sp-7); }
+.rhythm-subject{ margin-bottom: var(--sp-7); }
+
+
+/* =============================================================================
+   §11 · REDUCED MOTION
+   -----------------------------------------------------------------------------
+   The reduced-motion build is the density reference for the whole redesign:
+   every scene must be readable in its final state with no motion at all.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .btn:hover, .btn:active, .fw-nav__cta:hover, .fw-nav__cta:active,
+  .cap:hover, .secure__card:hover { transform: none !important; }
+}
