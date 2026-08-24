@@ -1656,9 +1656,26 @@
          where `align-self: center` can actually halve it. Measured on
          step 02 at 390: the first beat went from 24.7% fill (a numeral
          alone over 700px of navy) to a composed frame. */
-      #connect-step-row, #s2-row { grid-template-rows: max-content 1fr;  }
+      /* MOBILE VOID FIX (founder, 2026-08-24). Steps 01/02 pass through on
+         the phone — they do NOT pin (that stays desktop-only, >=901/860).
+         The 5-/6-beat track (1300/1560px) was far taller than the card
+         (~726/~1072px at 390), and `align-self:center` split the spare into
+         a ~257px navy gap ABOVE the card and another below: you scrolled
+         into the scene through empty navy with only the italic numeral in
+         it, and the concept scrub was already playing under the fold. Drop
+         the reserved track to the row's own content and anchor the card to
+         the top under the numeral, so the CARD is what you scroll through.
+         The scrub is preserved: fwScrub's travel = offsetHeight, so the
+         connect/surplus concept still scrubs across the card's natural
+         scroll-through (card is taller than the phone viewport at 667; it
+         fits fully at 844) — same animation, just no empty runway. Numeral
+         + card now read as one block. */
+      #connect-step-row, #s2-row {
+        grid-template-rows: max-content max-content;
+        min-height: auto;
+      }
       #connect-step-row .steps__card,
-      #s2-row .steps__card { align-self: center;  }
+      #s2-row .steps__card { align-self: start;  }
       /* The phone stacks the row into two grid rows, and `align-content`
          was handing the track's spare 667px to the FIRST one — the one
          that holds nothing but the numeral "03". The result was a 625px
