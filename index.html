@@ -1778,6 +1778,9 @@
 
     /* Card — the unit that approves */
     .connect-card {
+      /* Opaque surface — the settled deck must read as DEPTH (edges peeking),
+         never as a text soup of every layer showing through a translucent card. */
+      background: var(--surface-dark);
       position: absolute;
       top: 14px; left: 50%;
       width: 252px; min-height: 116px;

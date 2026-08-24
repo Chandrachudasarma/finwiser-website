@@ -748,14 +748,17 @@ body {
    so a word never shouts like a number. "/ mo" and "of 5" stay inline.    */
 .seen__pane-num {
   font-family: var(--font-sans);
-  font-size: var(--fs-h1);
-  line-height: var(--lh-h1);
+  font-size: var(--fs-h2);           /* matched to the sibling list's volume —
+                                        the composite's two columns speak at one
+                                        scale; the page's one big number stays
+                                        ₹41,300 in step 02 (founder, 2026-08-24) */
+  line-height: var(--lh-h2);
   font-weight: var(--fw-semi);
   letter-spacing: var(--tr-snug);
   font-variant-numeric: tabular-nums;
   flex-wrap: nowrap; white-space: nowrap;
 }
-.seen__pane--risk .seen__pane-num { font-size: var(--fs-h2); line-height: var(--lh-h2); font-weight: var(--fw-semi); }
+.seen__pane--risk .seen__pane-num { font-size: var(--fs-lead); line-height: var(--lh-lead); font-weight: var(--fw-semi); }
 
 /* --- DATA-SM — a tile value, a table figure -------------------------------- */
 .data-sm,
