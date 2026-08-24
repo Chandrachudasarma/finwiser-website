@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Page not found &mdash; Finwiser</title>
+  <meta name="description" content="That Finwiser page does not exist. Go to the homepage or install the app.">
+  <!-- A 404 is served at many URLs; none of them should be indexed. -->
+  <meta name="robots" content="noindex">
+
+  <!-- Icons & theme -->
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#002d56" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#001f3d" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-title" content="Finwiser">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:ital,wght@1,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/brand.css">
+  <link rel="stylesheet" href="/legal.css">
+</head>
+<body data-theme="light">
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <!-- ============================================================ -->
+  <!-- §1 — NAV  (markup mirrors index.html §1; asset and section    -->
+  <!--      links are absolute so the bar works from any depth)      -->
+  <!-- ============================================================ -->
+  <header class="fw-nav" id="top" role="banner">
+    <div class="fw-nav__inner">
+      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
+           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
+           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
+             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
+                     lockup = 63% of a 390px viewport, over the 40% cap, so
+                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
+                     30px where the render is mud).
+             >=1024  nav logo 48px -> head 48px, the rule is met, and the
+                     247px lockup fits a 64px bar at 75%. Served as rasters,
+                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
+                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
+           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
+           two are drop-in swaps and nothing reflows at the breakpoint. -->
+      <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
+               src="/assets/finwy-3d/finwiser-logo-flat.svg"
+               alt="Finwiser" width="330" height="64" decoding="async">
+        </picture>
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
+               src="/assets/finwy-3d/finwiser-logo-flat-reversed.svg"
+               alt="" width="330" height="64" decoding="async" aria-hidden="true">
+        </picture>
+      </a>
+      <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+      </button>
+      <div class="fw-nav__scrim" aria-hidden="true"></div>
+      <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
+        <ul class="fw-nav__list">
+          <li style="--li:0"><a class="fw-nav__link" href="/#capabilities">What it does</a></li>
+          <li style="--li:1"><a class="fw-nav__link" href="/#how">How it works</a></li>
+          <li style="--li:2"><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
+          <li style="--li:3"><a class="fw-nav__link" href="/#team">Team</a></li>
+          <li style="--li:4"><a class="fw-nav__link" href="/#faq">Help</a></li>
+          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="notfound">
+    <div class="container notfound__inner">
+      <div class="notfound__panel">
+        <h1 class="h1">This page isn&rsquo;t here.</h1>
+        <p class="lead notfound__sub">The link may be old, or the address mistyped. Everything Finwiser publishes is one click away from the homepage.</p>
+        <div class="notfound__actions">
+          <a class="btn btn--cream" href="/">Go to the homepage</a>
+          <a class="btn btn--secondary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- §15 — FOOTER  (markup mirrors index.html §15)                 -->
+  <!-- ============================================================ -->
+  <footer class="site-footer" role="contentinfo" data-theme="dark">
+    <div class="site-footer__inner">
+      <div class="site-footer__top">
+        <div class="site-footer__brand">
+          <h3>Finwiser</h3>
+          <p>An AI-powered, SEBI-regulated Financial Operating System for India&rsquo;s middle class. For the salaried Indians the industry forgot.</p>
+        </div>
+        <nav class="site-footer__col" aria-label="Footer &mdash; Product">
+          <h3>Product</h3>
+          <ul>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="/#how">How it works</a></li>
+            <li><a href="/#team">Team</a></li>
+            <li><a href="/#faq">Help</a></li>
+            <li><a href="/fw-deck-2026/">For investors &mdash; read the deck</a></li>
+          </ul>
+        </nav>
+        <nav class="site-footer__col" id="legal" aria-label="Footer &mdash; Compliance">
+          <h3>Compliance</h3>
+          <ul>
+            <li><a href="/terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/investor-charter.html">Investor Charter</a></li>
+            <li><a href="/investment-advisory-agreement.html">Advisory Agreement</a></li>
+            <li><a href="/disclosures.html">Disclosures</a></li>
+            <li><a href="/complaints.html">Grievances</a></li>
+            <li><a href="/accessibility.html">Accessibility</a></li>
+          </ul>
+        </nav>
+        <nav class="site-footer__col" aria-label="Footer &mdash; Account">
+          <h3>Account</h3>
+          <ul>
+            <li><a href="/delete-account.html">Delete your account</a></li>
+            <li><a href="/#faq">Help</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="site-footer__legal">
+        <p><strong>Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser)</strong> &middot; SEBI Registered Investment Adviser &middot; Reg. No. INA000021331 &middot; BSE Enlistment 2408 &middot; NISM Reg. NISM-202500082015</p>
+        <p>Principal / Registered Office: H.No. 181, 14th Cross, Bluejay Atmosphere Phase II, Andhrahalli Main Road, Nagasandra Post, Bengaluru &ndash; 560073, Karnataka, India.</p>
+        <p>Grievance Redressal Officer: Chandrachuda Sarma Yemmanuru &middot; <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a> &middot; +91 88012 94657 &middot; Acknowledgement T+1 working day &middot; Resolution target T+7 &middot; Outer limit T+21 working days.</p>
+        <p><em>Investments in the securities market are subject to market risks. Read all the related documents carefully before investing. Registration granted by SEBI, enlistment as a member of BASL, and certification from NISM in no way guarantee performance of the intermediary or provide any assurance of returns to investors.</em></p>
+        <p>For grievances unresolved by the Adviser, escalate via SEBI SCORES at <a href="https://scores.sebi.gov.in" target="_blank" rel="noopener noreferrer">scores.sebi.gov.in</a> or the SmartODR platform at <a href="https://smartodr.in" target="_blank" rel="noopener noreferrer">smartodr.in</a>. SEBI Toll-Free: 1800 22 7575 / 1800 266 7575.</p>
+      </div>
+
+      <div class="site-footer__copyright">
+        <span>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Two behaviours: the header drawer and the nav material, both copied
+       from index.html so the bar is identical site-wide. For the drawer — the
+       page underneath must not scroll, a tap off the panel dismisses it,
+       Escape dismisses it, and focus moves into the drawer on open and back
+       to the button on close. */
+    (function () {
+      var toggle = document.querySelector('.fw-nav__toggle');
+      var menu = document.getElementById('fw-nav-menu');
+      var scrim = document.querySelector('.fw-nav__scrim');
+      if (!toggle || !menu) return;
+
+      function isMenuOpen() { return toggle.getAttribute('aria-expanded') === 'true'; }
+      function focusNoScroll(el) {
+        if (!el) return;
+        try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
+      }
+      function openMenu() {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+        document.documentElement.classList.add('fw-nav-locked');
+        focusNoScroll(menu.querySelector('a[href]'));
+      }
+      function closeMenu(returnFocus) {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+        document.documentElement.classList.remove('fw-nav-locked');
+        if (returnFocus) focusNoScroll(toggle);
+      }
+      toggle.addEventListener('click', function () {
+        if (isMenuOpen()) closeMenu(false); else openMenu();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && isMenuOpen()) closeMenu(true);
+      });
+      if (scrim) scrim.addEventListener('click', function () { closeMenu(true); });
+      menu.addEventListener('click', function (e) {
+        if (e.target.matches('a')) closeMenu(false);
+      });
+      addEventListener('resize', function () {
+        if (isMenuOpen() && window.innerWidth > 767) closeMenu(false);
+      });
+    })();
+    // ============================================================
+    // NAV — adaptive material (UI U6/§8.7, Motion M7).
+    // Two independent signals, both IntersectionObserver, no scroll handler:
+    //   1. is-scrolled  — a sentinel 8px tall at the very top of the document.
+    //   2. is-over-dark — a 1px-tall band immediately under the bar; whichever
+    //      [data-theme] section intersects it owns the bar's colour.
+    // ============================================================
+    (function () {
+      var nav = document.querySelector('.fw-nav');
+      if (!nav || !('IntersectionObserver' in window)) return;
+
+      // --- 1. hairline + shadow after 8px ---
+      var sentinel = document.createElement('div');
+      sentinel.setAttribute('aria-hidden', 'true');
+      sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;';
+      document.body.insertBefore(sentinel, document.body.firstChild);
+      new IntersectionObserver(function (es) {
+        nav.classList.toggle('is-scrolled', !es[0].isIntersecting);
+      }, { threshold: 0 }).observe(sentinel);
+
+      // --- 2. dark/light from the section under the bar ---
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-theme]'));
+      if (!sections.length) return;
+      var io = null;
+      var lit = [];   // sections currently in the band, in document order
+
+      function navH() {
+        return Math.round(nav.getBoundingClientRect().height) || 64;
+      }
+      function apply() {
+        // The band is 1px, so normally exactly one section is in it. If a section
+        // boundary sits exactly under the bar, take the LAST one — that is the one
+        // whose ground is about to fill the frame.
+        if (!lit.length) return;
+        var el = lit[lit.length - 1];
+        nav.classList.toggle('is-over-dark', el.getAttribute('data-theme') === 'dark');
+      }
+      function build() {
+        if (io) io.disconnect();
+        var h = navH();
+        var bottom = -(window.innerHeight - h - 1);
+        io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var i = lit.indexOf(e.target);
+            if (e.isIntersecting && i === -1) lit.push(e.target);
+            else if (!e.isIntersecting && i !== -1) lit.splice(i, 1);
+          });
+          lit.sort(function (a, b) {
+            return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+          });
+          apply();
+        }, { rootMargin: (-h) + 'px 0px ' + bottom + 'px 0px', threshold: 0 });
+        lit = [];
+        sections.forEach(function (el) { io.observe(el); });
+      }
+      build();
+      var rt;
+      addEventListener('resize', function () {
+        clearTimeout(rt); rt = setTimeout(build, 150);
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>

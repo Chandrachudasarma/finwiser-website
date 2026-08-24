@@ -9,7 +9,7 @@
     <meta name="description" content="The Platform Terms and Conditions governing use of the Finwiser website, mobile app and related services, and the two legal identities behind the brand.">
 
     <!-- Icons & theme -->
-    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16">
@@ -37,10 +37,11 @@
     <meta name="twitter:description" content="The Platform Terms and Conditions governing use of the Finwiser website, mobile app and related services, and the two legal identities behind the brand.">
     <meta name="twitter:image" content="https://finwiser.org/og-image.png">
     <meta name="twitter:image:alt" content="Finwiser — Three minutes. Your full picture. SEBI Registered Investment Adviser INA000021331.">
-    <title>Finwiser Platform Terms & Conditions</title>
+    <title>Finwiser Platform Terms &amp; Conditions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:ital,wght@1,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/brand.css">
   <link rel="stylesheet" href="/legal.css">
   <!-- Breadcrumb (SEO §8.5) -->
   <script type="application/ld+json">
@@ -63,20 +64,53 @@
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Terms & Conditions"
+        "name": "Terms &amp; Conditions"
       }
     ]
   }
   </script>
 </head>
-<body>
+<body data-theme="light">
   <a href="#main" class="skip-link">Skip to main content</a>
 
-  <!-- Shared site header — mirrors index.html §1. Light ground. -->
+  <!-- ============================================================ -->
+  <!-- §1 — NAV  (markup mirrors index.html §1; asset and section    -->
+  <!--      links are absolute so the bar works from any depth)      -->
+  <!-- ============================================================ -->
   <header class="fw-nav" id="top" role="banner">
     <div class="fw-nav__inner">
+      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
+           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
+           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
+             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
+                     lockup = 63% of a 390px viewport, over the 40% cap, so
+                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
+                     30px where the render is mud).
+             >=1024  nav logo 48px -> head 48px, the rule is met, and the
+                     247px lockup fits a 64px bar at 75%. Served as rasters,
+                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
+                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
+           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
+           two are drop-in swaps and nothing reflows at the breakpoint. -->
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
-        <img class="fw-nav__logo-img" src="/finwiserlogo.svg" alt="Finwiser" width="274" height="54">
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
+               src="/assets/finwy-3d/finwiser-logo-flat.svg"
+               alt="Finwiser" width="330" height="64" decoding="async">
+        </picture>
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
+               src="/assets/finwy-3d/finwiser-logo-flat-reversed.svg"
+               alt="" width="330" height="64" decoding="async" aria-hidden="true">
+        </picture>
       </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
@@ -86,22 +120,23 @@
       <div class="fw-nav__scrim" aria-hidden="true"></div>
       <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
         <ul class="fw-nav__list">
-          <li><a class="fw-nav__link" href="/#how">How it works</a></li>
-          <li><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
-          <li><a class="fw-nav__link" href="/#team">Team</a></li>
-          <li><a class="fw-nav__link" href="/#faq">Help</a></li>
-          <li><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+          <li style="--li:0"><a class="fw-nav__link" href="/#capabilities">What it does</a></li>
+          <li style="--li:1"><a class="fw-nav__link" href="/#how">How it works</a></li>
+          <li style="--li:2"><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
+          <li style="--li:3"><a class="fw-nav__link" href="/#team">Team</a></li>
+          <li style="--li:4"><a class="fw-nav__link" href="/#faq">Help</a></li>
+          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <nav class="legal-crumb" aria-label="Breadcrumb">
-    <div class="legal-crumb__inner">
+    <div class="legal-crumb__inner caption">
       <ol>
         <li><a href="/">Home</a></li>
         <li><span>Legal</span></li>
-        <li><span aria-current="page">Terms & Conditions</span></li>
+        <li><span aria-current="page">Terms &amp; Conditions</span></li>
       </ol>
     </div>
   </nav>
@@ -110,14 +145,14 @@
 
     <div class="legal-title">
       <div class="legal-title__inner">
-        <h1>Finwiser Platform Terms &amp; Conditions</h1>
-        <p class="updated">Last Updated: 22 April 2026</p>
+        <h1 class="h1">Finwiser Platform Terms &amp; Conditions</h1>
+        <p class="caption updated">Last Updated: 22 April 2026</p>
       </div>
     </div>
 
     <div class="container">
-        <nav>
-            <h2>Table of Contents</h2>
+        <nav class="card" aria-label="Table of contents">
+            <h2 class="h2">Table of Contents</h2>
             <ol>
                 <li><a href="#section-1">Applicability, Nature of the Platform, and Acceptance</a></li>
                 <li><a href="#section-2">Definitions</a></li>
@@ -139,14 +174,14 @@
         </nav>
 
         <!-- Section 1 -->
-        <section id="section-1">
-            <h2>1. Applicability, Nature of the Platform, and Acceptance</h2>
-            <p>These Platform Terms & Conditions ("Terms") govern your access to and use of the Finwiser website, mobile application, and related digital interfaces (collectively, the "Platform").</p>
+        <section class="card" id="section-1">
+            <h2 class="h2">1. Applicability, Nature of the Platform, and Acceptance</h2>
+            <p>These Platform Terms &amp; Conditions ("Terms") govern your access to and use of the Finwiser website, mobile application, and related digital interfaces (collectively, the "Platform").</p>
             <h3>1A. About the Parties to this Agreement</h3>
             <p>These Terms constitute an agreement between you (the "User" or "you") and two distinct legal identities operating under the Finwiser brand:</p>
             <ol type="a">
                 <li><strong>Finwiser Technologies LLP</strong> — a limited liability partnership registered under the laws of India, which is the platform provider. Technologies LLP publishes the Finwiser mobile application on Google Play and the iOS App Store, operates the backend servers, and is responsible for the technical operation of the platform.</li>
-                <li><strong>Chandrachuda Sarma Yemmanuru</strong> — a SEBI Registered Investment Adviser (Individual), holding SEBI RIA registration number <a href="https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doRecognisedFpi=yes&intmId=13" target="_blank" rel="noopener">INA000021331</a>, who provides the regulated investment advisory services delivered through the platform. Upon formation of <strong>Finwiser Advisory LLP</strong> and transfer of the RIA registration, this party will be replaced by Finwiser Advisory LLP; such transfer will be communicated to Users in advance and these Terms will be updated accordingly.</li>
+                <li><strong>Chandrachuda Sarma Yemmanuru</strong> — a SEBI Registered Investment Adviser (Individual), holding SEBI RIA registration number <a href="https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doRecognisedFpi=yes&amp;intmId=13" target="_blank" rel="noopener">INA000021331</a>, who provides the regulated investment advisory services delivered through the platform. Upon formation of <strong>Finwiser Advisory LLP</strong> and transfer of the RIA registration, this party will be replaced by Finwiser Advisory LLP; such transfer will be communicated to Users in advance and these Terms will be updated accordingly.</li>
             </ol>
             <p>Both parties are collectively referred to as "Finwiser", "we", "us" or "our" in these Terms. Rights and obligations specific to either party are identified where relevant.</p>
 
@@ -169,42 +204,42 @@
             <h3>1.3 Updates to Terms</h3>
             <p>We may revise these Terms from time to time. Updated Terms will be published on the Platform with a revised effective date. Continued use of the Platform after such publication constitutes acceptance of the revised Terms.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 2 -->
-        <section id="section-2">
-            <h2>2. Definitions</h2>
+        <section class="card" id="section-2">
+            <h2 class="h2">2. Definitions</h2>
             <p>For the purposes of these Terms, unless the context otherwise requires:</p>
 
-            <p><span class="definition-term">Account</span> — Means the user account created by you on the Platform for accessing Platform features.</p>
+            <p><strong class="definition-term">Account</strong> — Means the user account created by you on the Platform for accessing Platform features.</p>
 
-            <p><span class="definition-term">Applicable Law</span> — Means all applicable laws, rules, regulations, circulars, directions, and guidelines in force in India, including those issued by <a href="https://www.sebi.gov.in/" target="_blank" rel="noopener">SEBI</a>, <a href="https://www.rbi.org.in/" target="_blank" rel="noopener">RBI</a>, and under the <a href="https://www.meity.gov.in/content/information-technology-act" target="_blank" rel="noopener">Information Technology Act, 2000</a> and the <a href="https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a>.</p>
+            <p><strong class="definition-term">Applicable Law</strong> — Means all applicable laws, rules, regulations, circulars, directions, and guidelines in force in India, including those issued by <a href="https://www.sebi.gov.in/" target="_blank" rel="noopener">SEBI</a>, <a href="https://www.rbi.org.in/" target="_blank" rel="noopener">RBI</a>, and under the <a href="https://www.meity.gov.in/content/information-technology-act" target="_blank" rel="noopener">Information Technology Act, 2000</a> and the <a href="https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a>.</p>
 
-            <p><span class="definition-term">Platform</span> — Means the Finwiser software application, website, dashboards, calculators, tools, visualisations, and related technology interfaces made available to Users.</p>
+            <p><strong class="definition-term">Platform</strong> — Means the Finwiser software application, website, dashboards, calculators, tools, visualisations, and related technology interfaces made available to Users.</p>
 
-            <p><span class="definition-term">User</span> — Means any individual who accesses or uses the Platform, whether or not such individual has entered into an investment advisory relationship with Finwiser.</p>
+            <p><strong class="definition-term">User</strong> — Means any individual who accesses or uses the Platform, whether or not such individual has entered into an investment advisory relationship with Finwiser.</p>
 
-            <p><span class="definition-term">Client</span> — Means a User who has executed a valid Investment Advisory Agreement with Finwiser and is receiving regulated investment advisory services.</p>
+            <p><strong class="definition-term">Client</strong> — Means a User who has executed a valid Investment Advisory Agreement with Finwiser and is receiving regulated investment advisory services.</p>
 
-            <p><span class="definition-term">Generic Outputs</span> — Means automated or system-generated projections, simulations, estimates, alerts, scores, benchmarks, insights, or generic recommendations made available through the Platform without undertaking a full suitability assessment.</p>
+            <p><strong class="definition-term">Generic Outputs</strong> — Means automated or system-generated projections, simulations, estimates, alerts, scores, benchmarks, insights, or generic recommendations made available through the Platform without undertaking a full suitability assessment.</p>
 
-            <p><span class="definition-term">Investment Advice</span> — Means personalised, suitability-based advice provided by Finwiser only under a valid Investment Advisory Agreement, in accordance with <a href="https://www.sebi.gov.in/legal/regulations/jan-2020/securities-and-exchange-board-of-india-investment-advisers-regulations-2013-last-amended-on-january-23-2020-_45791.html" target="_blank" rel="noopener">SEBI (Investment Advisers) Regulations, 2013</a>.</p>
+            <p><strong class="definition-term">Investment Advice</strong> — Means personalised, suitability-based advice provided by Finwiser only under a valid Investment Advisory Agreement, in accordance with <a href="https://www.sebi.gov.in/legal/regulations/jan-2020/securities-and-exchange-board-of-india-investment-advisers-regulations-2013-last-amended-on-january-23-2020-_45791.html" target="_blank" rel="noopener">SEBI (Investment Advisers) Regulations, 2013</a>.</p>
 
-            <p><span class="definition-term">Account Aggregator (AA)</span> — Means an entity regulated by the Reserve Bank of India that enables consent-based sharing of financial information.</p>
+            <p><strong class="definition-term">Account Aggregator (AA)</strong> — Means an entity regulated by the Reserve Bank of India that enables consent-based sharing of financial information.</p>
 
-            <p><span class="definition-term">FIU (Financial Information User)</span> — Means Finwiser acting in its capacity to request financial information through the Account Aggregator ecosystem pursuant to User consent.</p>
+            <p><strong class="definition-term">FIU (Financial Information User)</strong> — Means Finwiser acting in its capacity to request financial information through the Account Aggregator ecosystem pursuant to User consent.</p>
 
-            <p><span class="definition-term">Financial Information (FI)</span> — Means financial data made available through the Account Aggregator framework pursuant to explicit User consent.</p>
+            <p><strong class="definition-term">Financial Information (FI)</strong> — Means financial data made available through the Account Aggregator framework pursuant to explicit User consent.</p>
 
-            <p><span class="definition-term">User Data</span> — Means personal data, financial data, and other information provided by you, generated through your use of the Platform, or accessed with your consent.</p>
+            <p><strong class="definition-term">User Data</strong> — Means personal data, financial data, and other information provided by you, generated through your use of the Platform, or accessed with your consent.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 3 -->
-        <section id="section-3">
-            <h2>3. Eligibility and Jurisdiction</h2>
+        <section class="card" id="section-3">
+            <h2 class="h2">3. Eligibility and Jurisdiction</h2>
 
             <h3>3.1 Eligibility</h3>
             <p>To use the Platform, you represent and warrant that:</p>
@@ -222,12 +257,12 @@
             <h3>3.3 Right to Restrict Access</h3>
             <p>Finwiser reserves the right to suspend, restrict, or deny access to the Platform, in whole or in part, where required by Applicable Law, regulatory direction, security considerations, or risk management policies.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 4 -->
-        <section id="section-4">
-            <h2>4. Scope of Platform Services and Role Clarity</h2>
+        <section class="card" id="section-4">
+            <h2 class="h2">4. Scope of Platform Services and Role Clarity</h2>
 
             <h3>4.1 Nature of Platform Services</h3>
             <p>The Platform provides technology-enabled tools and features that allow Users to:</p>
@@ -288,12 +323,12 @@
             <p>Use of the Platform, including reliance on Generic Outputs, does not guarantee: financial performance, achievement of goals, accuracy of projections, or suitability for any particular User.</p>
             <p>Financial markets are subject to risk, uncertainty, and external factors beyond Finwiser's control.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 5 -->
-        <section id="section-5">
-            <h2>5. Registration, Account Security, and Communications</h2>
+        <section class="card" id="section-5">
+            <h2 class="h2">5. Registration, Account Security, and Communications</h2>
 
             <h3>5.1 Account Registration</h3>
             <p>To access certain features of the Platform, you must create an Account by providing information as requested during the registration process.</p>
@@ -338,12 +373,12 @@
             <p>Finwiser may disclose User Data or Account information where required by Applicable Law, in response to lawful requests from regulatory, judicial, or law enforcement authorities, or to protect the rights, safety, or integrity of the Platform, Users, or the public.</p>
             <p>Such disclosures shall be limited to what is legally required or reasonably necessary.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 6 -->
-        <section id="section-6">
-            <h2>6. Account Aggregator (AA), FIU Access, and Purpose-Limited Use of Financial Information</h2>
+        <section class="card" id="section-6">
+            <h2 class="h2">6. Account Aggregator (AA), FIU Access, and Purpose-Limited Use of Financial Information</h2>
 
             <h3>6.1 Consent-Based Access Through the Account Aggregator Framework</h3>
             <p>Where enabled on the Platform, Finwiser may act as a Financial Information User (FIU) and request access to a User's Financial Information (FI) through one or more RBI-regulated Account Aggregators (AA).</p>
@@ -360,15 +395,15 @@
             <p>Finwiser cannot initiate transactions, move funds, modify accounts, or exercise control over any financial product or account.</p>
             <p>All execution and control remain exclusively with the User and the relevant financial institutions.</p>
 
-            <h3>6.3 Purpose-Driven Processing & Service Evolution</h3>
+            <h3>6.3 Purpose-Driven Processing &amp; Service Evolution</h3>
             <p>Finwiser acts as a Data Fiduciary. We process Financial Information (FI) accessed through the AA framework only for purposes that provide direct value to you. These include, but are not limited to:</p>
             <ul>
                 <li><strong>Consolidated Financial Health Mapping:</strong> Aggregating fragmented assets and liabilities to compute your real-time Net Worth and Solvency ratios.</li>
-                <li><strong>Investable Surplus & Cashflow Optimization:</strong> Analysing income and spending patterns to identify "hidden" surplus, optimize emergency buffers, and ensure debt-servicing (EMI) sustainability.</li>
+                <li><strong>Investable Surplus &amp; Cashflow Optimization:</strong> Analysing income and spending patterns to identify "hidden" surplus, optimize emergency buffers, and ensure debt-servicing (EMI) sustainability.</li>
                 <li><strong>Predictive Goal Modeling:</strong> Running simulations to determine the probability of achieving life goals (Retirement, Education, etc.) based on your actual account trajectories.</li>
-                <li><strong>Personalised Suitability & Risk Monitoring:</strong> (For Clients) Ensuring investment recommendations stay within your risk capacity and automatically alerting you if your asset allocation drifts beyond target thresholds.</li>
-                <li><strong>Intelligent Service Enhancements & Value Discovery:</strong> Processing data to identify opportunities for financial optimization, such as Tax Efficiency Insights, Protection Gap Analysis, and Cost Optimization.</li>
-                <li><strong>Regulatory & Safety Audits:</strong> Maintaining an evidence-based audit trail of your financial state at the time of advice to comply with SEBI Suitability and Record-keeping norms.</li>
+                <li><strong>Personalised Suitability &amp; Risk Monitoring:</strong> (For Clients) Ensuring investment recommendations stay within your risk capacity and automatically alerting you if your asset allocation drifts beyond target thresholds.</li>
+                <li><strong>Intelligent Service Enhancements &amp; Value Discovery:</strong> Processing data to identify opportunities for financial optimization, such as Tax Efficiency Insights, Protection Gap Analysis, and Cost Optimization.</li>
+                <li><strong>Regulatory &amp; Safety Audits:</strong> Maintaining an evidence-based audit trail of your financial state at the time of advice to comply with SEBI Suitability and Record-keeping norms.</li>
             </ul>
             <p>FI shall not be used for marketing or solicitation, cross-selling of financial products, profiling for unrelated purposes, or any purpose not explicitly disclosed and consented to.</p>
 
@@ -400,12 +435,12 @@
             <h3>6.9 AA Ecosystem Participant Responsibilities (FIU)</h3>
             <p>Finwiser, in its capacity as a Financial Information User (FIU), acknowledges its rights and responsibilities as an AA ecosystem participant and undertakes to comply with applicable AA ecosystem rules, standards, and participation terms governing FIU conduct, including consent-based access, purpose limitation, secure handling, retention restrictions, and restrictions on onward sharing.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 7 -->
-        <section id="section-7">
-            <h2>7. User Data, Privacy, and Regulatory Retention</h2>
+        <section class="card" id="section-7">
+            <h2 class="h2">7. User Data, Privacy, and Regulatory Retention</h2>
 
             <h3>7.1 Privacy Policy Governs Detailed Data Practices</h3>
             <p>Finwiser's collection, use, storage, sharing, and protection of User Data are governed by its <a href="privacy-policy.html">Privacy Policy</a>, which forms an integral part of these Terms.</p>
@@ -441,12 +476,12 @@
             <p><strong>No Raw Data Export:</strong> Finwiser does not provide copies of raw transaction data, bank statements, or original financial records, and does not act as a system of record for such information.</p>
             <p><strong>User Recourse:</strong> For certified copies of original records or raw financial data portability, Users must use the interfaces provided by their respective Financial Information Providers (such as banks or AMCs) or their chosen Account Aggregator.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 8 -->
-        <section id="section-8">
-            <h2>8. User Restrictions and Acceptable Use</h2>
+        <section class="card" id="section-8">
+            <h2 class="h2">8. User Restrictions and Acceptable Use</h2>
 
             <h3>8.1 Permitted Use</h3>
             <p>You may use the Platform only for personal, lawful purposes and strictly in accordance with these Terms and Applicable Law.</p>
@@ -486,12 +521,12 @@
             <h3>8.4 No Waiver</h3>
             <p>Failure by Finwiser to enforce any restriction at any time shall not constitute a waiver of its right to enforce such restriction in the future.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 9 -->
-        <section id="section-9">
-            <h2>9. Intellectual Property and Platform Ownership</h2>
+        <section class="card" id="section-9">
+            <h2 class="h2">9. Intellectual Property and Platform Ownership</h2>
 
             <h3>9.1 Ownership of the Platform</h3>
             <p>All rights, title, and interest in and to the Platform, including its software, architecture, interfaces, algorithms, workflows, designs, trademarks, logos, text, graphics, and other content (collectively, the "Platform IP"), are owned by or licensed to Finwiser.</p>
@@ -518,12 +553,12 @@
             <p>All rights not expressly granted to you under these Terms are reserved by Finwiser.</p>
             <p>Unauthorised use of the Platform IP may result in termination of access and legal action under Applicable Law.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 10 -->
-        <section id="section-10">
-            <h2>10. Third-Party Links, Integrations, and Services</h2>
+        <section class="card" id="section-10">
+            <h2 class="h2">10. Third-Party Links, Integrations, and Services</h2>
 
             <h3>10.1 Third-Party Services</h3>
             <p>The Platform may contain links to, integrations with, or references to third-party websites, applications, platforms, tools, or services ("Third-Party Services"), including but not limited to execution platforms or brokers, Account Aggregators, data providers, payment gateways, and communication or verification services.</p>
@@ -545,12 +580,12 @@
             <p>Where Third-Party Services require access to your data, such access shall occur only with your consent or as required under Applicable Law and data sharing shall be governed by the Privacy Policy and applicable third-party policies.</p>
             <p>Finwiser does not authorise Third-Party Services to use your data beyond what is necessary to provide their services.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 11 -->
-        <section id="section-11">
-            <h2>11. Disclaimers</h2>
+        <section class="card" id="section-11">
+            <h2 class="h2">11. Disclaimers</h2>
 
             <h3>11.1 Platform Provided on "As Is" Basis</h3>
             <p>The Platform, including all tools, features, Generic Outputs, content, and functionality, is provided on an <strong>"as is"</strong> and <strong>"as available"</strong> basis.</p>
@@ -600,12 +635,12 @@
             <h3>11.8 Statutory Rights Preserved</h3>
             <p>Nothing in this Section shall exclude or limit any rights or remedies that cannot be excluded or limited under Applicable Law.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 12 -->
-        <section id="section-12">
-            <h2>12. Limitation of Liability (Platform Services Only)</h2>
+        <section class="card" id="section-12">
+            <h2 class="h2">12. Limitation of Liability (Platform Services Only)</h2>
 
             <h3>12.1 Scope of Limitation</h3>
             <p>This Section applies only to your access to and use of the Platform, including its tools, features, Generic Outputs, content, and technology-enabled functionality.</p>
@@ -634,12 +669,12 @@
             <h3>12.6 Statutory and Regulatory Carve-Out</h3>
             <p>Nothing in these Terms shall exclude or limit liability arising from wilful misconduct or fraud, override obligations imposed under the <a href="https://www.sebi.gov.in/legal/regulations/jan-2020/securities-and-exchange-board-of-india-investment-advisers-regulations-2013-last-amended-on-january-23-2020-_45791.html" target="_blank" rel="noopener">SEBI (Investment Advisers) Regulations, 2013</a>, or restrict statutory rights or remedies available to Users under Applicable Law.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 13 -->
-        <section id="section-13">
-            <h2>13. Suspension, Termination, and Account Closure</h2>
+        <section class="card" id="section-13">
+            <h2 class="h2">13. Suspension, Termination, and Account Closure</h2>
 
             <h3>13.1 User-Initiated Closure</h3>
             <p>You may request closure or deactivation of your Account at any time through the Platform or by contacting support.</p>
@@ -667,12 +702,12 @@
             <p>Termination or suspension shall not affect rights or obligations accrued prior to termination or relieve either party from obligations that are intended to survive termination, including obligations relating to data protection, confidentiality, disputes, and compliance with Applicable Law.</p>
             <p>Finwiser may restore access where a suspension was applied due to an error or where the underlying issue is resolved, subject to Applicable Law and risk controls.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 14 -->
-        <section id="section-14">
-            <h2>14. Grievance Redressal and Regulatory Escalation</h2>
+        <section class="card" id="section-14">
+            <h2 class="h2">14. Grievance Redressal and Regulatory Escalation</h2>
 
             <h3>14.1 Grievance Redressal Officer</h3>
             <p>Finwiser has appointed a Grievance Redressal Officer in accordance with Applicable Law.</p>
@@ -686,12 +721,12 @@
             <p>If your grievance relates to regulated investment advisory services and remains unresolved, you may escalate through applicable regulatory mechanisms, including the <a href="https://scores.sebi.gov.in/" target="_blank" rel="noopener">SEBI SCORES platform</a>, where applicable.</p>
             <p>Nothing in these Terms restricts your statutory rights to approach competent courts, regulators, or authorities.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 15 -->
-        <section id="section-15">
-            <h2>15. Governing Law, Dispute Resolution, and Jurisdiction</h2>
+        <section class="card" id="section-15">
+            <h2 class="h2">15. Governing Law, Dispute Resolution, and Jurisdiction</h2>
 
             <h3>15.1 Governing Law</h3>
             <p>These Terms shall be governed by and construed in accordance with the laws of India.</p>
@@ -709,12 +744,12 @@
             <h3>15.3 Jurisdiction</h3>
             <p>Subject to Section 15.2, the courts at <strong>Bengaluru, Karnataka</strong> shall have jurisdiction over matters arising out of or relating to these Terms.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 16 -->
-        <section id="section-16">
-            <h2>16. Miscellaneous</h2>
+        <section class="card" id="section-16">
+            <h2 class="h2">16. Miscellaneous</h2>
 
             <h3>16.1 Force Majeure</h3>
             <p>Finwiser shall not be liable for failure or delay in performance due to events beyond its reasonable control, including acts of God, natural disasters, war, governmental actions, system outages, telecom/internet failures, cyber incidents not attributable to Finwiser, or regulatory restrictions.</p>
@@ -747,7 +782,7 @@
             <h3>16.8 Electronic Record</h3>
             <p>These Terms are an electronic record under the <a href="https://www.meity.gov.in/content/information-technology-act" target="_blank" rel="noopener">Information Technology Act, 2000</a> and do not require physical or digital signatures to be binding.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
     </div>
 
@@ -756,24 +791,29 @@
   <!-- Shared site footer — identical markup on all eight legal pages.
        Labels and grouping taken verbatim from index.html §15; duplicate
        labels for one destination ("Google Play", "Help") dropped. -->
-  <footer class="site-footer" role="contentinfo">
+  <!-- ============================================================ -->
+  <!-- §15 — FOOTER  (markup mirrors index.html §15)                 -->
+  <!-- ============================================================ -->
+  <footer class="site-footer" role="contentinfo" data-theme="dark">
     <div class="site-footer__inner">
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <h3>Finwiser</h3>
-          <p>The fee-only fiduciary your bank doesn&rsquo;t want you to have. For the eighty million salaried Indians the industry forgot.</p>
+          <p>An AI-powered, SEBI-regulated Financial Operating System for India&rsquo;s middle class. For the salaried Indians the industry forgot.</p>
         </div>
         <nav class="site-footer__col" aria-label="Footer &mdash; Product">
           <h3>Product</h3>
           <ul>
             <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play</a></li>
             <li><a href="/#pricing">Pricing</a></li>
             <li><a href="/#how">How it works</a></li>
             <li><a href="/#team">Team</a></li>
-            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/#faq">Help</a></li>
+            <li><a href="/fw-deck-2026/">For investors &mdash; read the deck</a></li>
           </ul>
         </nav>
-        <nav class="site-footer__col" aria-label="Footer &mdash; Compliance">
+        <nav class="site-footer__col" id="legal" aria-label="Footer &mdash; Compliance">
           <h3>Compliance</h3>
           <ul>
             <li><a href="/terms.html">Terms &amp; Conditions</a></li>
@@ -789,7 +829,7 @@
           <h3>Account</h3>
           <ul>
             <li><a href="/delete-account.html">Delete your account</a></li>
-            <li><a href="mailto:helpdesk@finwiser.org">Email us</a></li>
+            <li><a href="/#faq">Help</a></li>
           </ul>
         </nav>
       </div>
@@ -804,7 +844,6 @@
 
       <div class="site-footer__copyright">
         <span>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</span>
-        <span>For investors &rarr; <a href="/fw-deck-2026/">view the deck</a></span>
       </div>
     </div>
   </footer>
@@ -814,7 +853,9 @@
   </button>
 
   <script>
-    /* Two behaviours only: the header drawer and the back-to-top control.
+    /* Three behaviours: the header drawer, the back-to-top control, and
+       the nav material (is-scrolled / is-over-dark), so the bar behaves the
+       same here as on the homepage.
        Drawer contract copied from index.html — the page underneath must not
        scroll, a tap off the panel dismisses it, Escape dismisses it, and focus
        moves into the drawer on open and back to the button on close. */
@@ -855,7 +896,7 @@
           if (e.target.matches('a')) closeMenu(false);
         });
         addEventListener('resize', function () {
-          if (isMenuOpen() && window.innerWidth > 899) closeMenu(false);
+          if (isMenuOpen() && window.innerWidth > 767) closeMenu(false);
         });
       }
 
@@ -878,6 +919,67 @@
         });
         sync();
       }
+    })();
+    // ============================================================
+    // NAV — adaptive material (UI U6/§8.7, Motion M7).
+    // Two independent signals, both IntersectionObserver, no scroll handler:
+    //   1. is-scrolled  — a sentinel 8px tall at the very top of the document.
+    //   2. is-over-dark — a 1px-tall band immediately under the bar; whichever
+    //      [data-theme] section intersects it owns the bar's colour.
+    // ============================================================
+    (function () {
+      var nav = document.querySelector('.fw-nav');
+      if (!nav || !('IntersectionObserver' in window)) return;
+
+      // --- 1. hairline + shadow after 8px ---
+      var sentinel = document.createElement('div');
+      sentinel.setAttribute('aria-hidden', 'true');
+      sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;';
+      document.body.insertBefore(sentinel, document.body.firstChild);
+      new IntersectionObserver(function (es) {
+        nav.classList.toggle('is-scrolled', !es[0].isIntersecting);
+      }, { threshold: 0 }).observe(sentinel);
+
+      // --- 2. dark/light from the section under the bar ---
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-theme]'));
+      if (!sections.length) return;
+      var io = null;
+      var lit = [];   // sections currently in the band, in document order
+
+      function navH() {
+        return Math.round(nav.getBoundingClientRect().height) || 64;
+      }
+      function apply() {
+        // The band is 1px, so normally exactly one section is in it. If a section
+        // boundary sits exactly under the bar, take the LAST one — that is the one
+        // whose ground is about to fill the frame.
+        if (!lit.length) return;
+        var el = lit[lit.length - 1];
+        nav.classList.toggle('is-over-dark', el.getAttribute('data-theme') === 'dark');
+      }
+      function build() {
+        if (io) io.disconnect();
+        var h = navH();
+        var bottom = -(window.innerHeight - h - 1);
+        io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var i = lit.indexOf(e.target);
+            if (e.isIntersecting && i === -1) lit.push(e.target);
+            else if (!e.isIntersecting && i !== -1) lit.splice(i, 1);
+          });
+          lit.sort(function (a, b) {
+            return a.compareDocumentPosition(b) &amp; Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+          });
+          apply();
+        }, { rootMargin: (-h) + 'px 0px ' + bottom + 'px 0px', threshold: 0 });
+        lit = [];
+        sections.forEach(function (el) { io.observe(el); });
+      }
+      build();
+      var rt;
+      addEventListener('resize', function () {
+        clearTimeout(rt); rt = setTimeout(build, 150);
+      }, { passive: true });
     })();
   </script>
 </body>

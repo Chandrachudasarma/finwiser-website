@@ -9,7 +9,7 @@
     <meta name="description" content="The Investment Advisory Agreement between Finwiser (SEBI RIA INA000021331) and its clients, including the Most Important Terms and Conditions annexure.">
 
     <!-- Icons & theme -->
-    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16">
@@ -40,7 +40,8 @@
     <title>Finwiser Investment Advisory Agreement</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:ital,wght@1,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/brand.css">
   <link rel="stylesheet" href="/legal.css">
   <!-- Breadcrumb (SEO §8.5) -->
   <script type="application/ld+json">
@@ -69,14 +70,47 @@
   }
   </script>
 </head>
-<body>
+<body data-theme="light">
   <a href="#main" class="skip-link">Skip to main content</a>
 
-  <!-- Shared site header — mirrors index.html §1. Light ground. -->
+  <!-- ============================================================ -->
+  <!-- §1 — NAV  (markup mirrors index.html §1; asset and section    -->
+  <!--      links are absolute so the bar works from any depth)      -->
+  <!-- ============================================================ -->
   <header class="fw-nav" id="top" role="banner">
     <div class="fw-nav__inner">
+      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
+           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
+           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
+             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
+                     lockup = 63% of a 390px viewport, over the 40% cap, so
+                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
+                     30px where the render is mud).
+             >=1024  nav logo 48px -> head 48px, the rule is met, and the
+                     247px lockup fits a 64px bar at 75%. Served as rasters,
+                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
+                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
+           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
+           two are drop-in swaps and nothing reflows at the breakpoint. -->
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
-        <img class="fw-nav__logo-img" src="/finwiserlogo.svg" alt="Finwiser" width="274" height="54">
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
+               src="/assets/finwy-3d/finwiser-logo-flat.svg"
+               alt="Finwiser" width="330" height="64" decoding="async">
+        </picture>
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
+               src="/assets/finwy-3d/finwiser-logo-flat-reversed.svg"
+               alt="" width="330" height="64" decoding="async" aria-hidden="true">
+        </picture>
       </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
@@ -86,18 +120,19 @@
       <div class="fw-nav__scrim" aria-hidden="true"></div>
       <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
         <ul class="fw-nav__list">
-          <li><a class="fw-nav__link" href="/#how">How it works</a></li>
-          <li><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
-          <li><a class="fw-nav__link" href="/#team">Team</a></li>
-          <li><a class="fw-nav__link" href="/#faq">Help</a></li>
-          <li><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+          <li style="--li:0"><a class="fw-nav__link" href="/#capabilities">What it does</a></li>
+          <li style="--li:1"><a class="fw-nav__link" href="/#how">How it works</a></li>
+          <li style="--li:2"><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
+          <li style="--li:3"><a class="fw-nav__link" href="/#team">Team</a></li>
+          <li style="--li:4"><a class="fw-nav__link" href="/#faq">Help</a></li>
+          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <nav class="legal-crumb" aria-label="Breadcrumb">
-    <div class="legal-crumb__inner">
+    <div class="legal-crumb__inner caption">
       <ol>
         <li><a href="/">Home</a></li>
         <li><span>Legal</span></li>
@@ -110,8 +145,8 @@
 
     <div class="legal-title">
       <div class="legal-title__inner">
-        <h1>Finwiser Investment Advisory Agreement</h1>
-        <p class="updated">Last Updated: April 2026</p>
+        <h1 class="h1">Finwiser Investment Advisory Agreement</h1>
+        <p class="caption updated">Last Updated: April 2026</p>
       </div>
     </div>
 
@@ -123,9 +158,9 @@
         </div>
 
         <!-- Table of Contents -->
-        <nav>
-            <h2>Table of Contents</h2>
-            <p style="margin-bottom: 15px; color: var(--text-light);">Part A: Investment Advisory Agreement &nbsp;|&nbsp; Part B: MITC Annexure</p>
+        <nav class="card" aria-label="Table of contents">
+            <h2 class="h2">Table of Contents</h2>
+            <p style="margin-bottom: var(--sp-4); color: var(--fg-muted);">Part A: Investment Advisory Agreement &nbsp;|&nbsp; Part B: MITC Annexure</p>
             <ol>
                 <li><a href="#s1">Parties and Recitals</a></li>
                 <li><a href="#s2">Definitions</a></li>
@@ -150,7 +185,7 @@
         </nav>
 
         <!-- Preamble -->
-        <section>
+        <section class="card">
             <div class="highlight-box">
                 <p style="margin-bottom: 0;">This Investment Advisory Agreement ("Agreement") is a binding contract between you ("Client") and <strong>Chandrachuda Sarma Yemmanuru</strong>, a SEBI Registered Investment Adviser &mdash; Individual (Registration No. <strong>INA000021331</strong>), operating as <strong>Finwiser</strong> ("Adviser" or "Finwiser").</p>
             </div>
@@ -159,11 +194,11 @@
         </section>
 
         <!-- Section 1: Parties -->
-        <section id="s1">
-            <h2>1. Parties and Recitals</h2>
+        <section class="card" id="s1">
+            <h2 class="h2">1. Parties and Recitals</h2>
 
             <h3>1.1 The Adviser</h3>
-            <table>
+            <table class="caption">
                 <tr><th>Field</th><th>Details</th></tr>
                 <tr><td>Name</td><td>Chandrachuda Sarma Yemmanuru</td></tr>
                 <tr><td>SEBI Registration No.</td><td>INA000021331</td></tr>
@@ -186,36 +221,36 @@
             </ul>
             <p><strong>NOW, THEREFORE,</strong> in consideration of the mutual obligations set forth herein, the parties agree as follows:</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 2: Definitions -->
-        <section id="s2">
-            <h2>2. Definitions</h2>
+        <section class="card" id="s2">
+            <h2 class="h2">2. Definitions</h2>
             <p>Unless otherwise defined herein, capitalised terms shall have the meanings assigned in the <a href="terms.html">Platform Terms &amp; Conditions</a>. The following additional definitions apply to this Agreement:</p>
 
-            <p><span class="definition-term">Advisory Services</span> &mdash; Personalised, suitability-based investment advice provided by the Adviser to the Client under this Agreement, including financial planning, portfolio review, goal-based allocation, and rebalancing recommendations.</p>
+            <p><strong class="definition-term">Advisory Services</strong> &mdash; Personalised, suitability-based investment advice provided by the Adviser to the Client under this Agreement, including financial planning, portfolio review, goal-based allocation, and rebalancing recommendations.</p>
 
-            <p><span class="definition-term">Assets Under Advice (AUA)</span> &mdash; The aggregate net asset value of securities and investment products for which the Adviser has rendered advice to the Client, irrespective of whether implementation is concluded by the Adviser, the Client, or other service providers.</p>
+            <p><strong class="definition-term">Assets Under Advice (AUA)</strong> &mdash; The aggregate net asset value of securities and investment products for which the Adviser has rendered advice to the Client, irrespective of whether implementation is concluded by the Adviser, the Client, or other service providers.</p>
 
-            <p><span class="definition-term">Client Family</span> &mdash; The Client and their dependents or related persons as may be defined under the IA Regulations for the purpose of fee aggregation.</p>
+            <p><strong class="definition-term">Client Family</strong> &mdash; The Client and their dependents or related persons as may be defined under the IA Regulations for the purpose of fee aggregation.</p>
 
-            <p><span class="definition-term">IA Regulations</span> &mdash; SEBI (Investment Advisers) Regulations, 2013, as amended from time to time, including all circulars, directions, and guidance issued thereunder.</p>
+            <p><strong class="definition-term">IA Regulations</strong> &mdash; SEBI (Investment Advisers) Regulations, 2013, as amended from time to time, including all circulars, directions, and guidance issued thereunder.</p>
 
-            <p><span class="definition-term">Investment Advice</span> &mdash; Advice relating to investing in, purchasing, selling, or otherwise dealing in securities or investment products, and advice on investment portfolio containing securities or investment products, provided for the benefit of the Client after suitability assessment, as defined under the IA Regulations.</p>
+            <p><strong class="definition-term">Investment Advice</strong> &mdash; Advice relating to investing in, purchasing, selling, or otherwise dealing in securities or investment products, and advice on investment portfolio containing securities or investment products, provided for the benefit of the Client after suitability assessment, as defined under the IA Regulations.</p>
 
-            <p><span class="definition-term">MITC</span> &mdash; Most Important Terms and Conditions, as set out in the Annexure to this Agreement, in compliance with the applicable SEBI circular.</p>
+            <p><strong class="definition-term">MITC</strong> &mdash; Most Important Terms and Conditions, as set out in the Annexure to this Agreement, in compliance with the applicable SEBI circular.</p>
 
-            <p><span class="definition-term">Risk Profile</span> &mdash; The assessment of the Client's risk appetite, risk tolerance, and risk capacity, determined through the risk profiling process described in Section 5.</p>
+            <p><strong class="definition-term">Risk Profile</strong> &mdash; The assessment of the Client's risk appetite, risk tolerance, and risk capacity, determined through the risk profiling process described in Section 5.</p>
 
-            <p><span class="definition-term">Suitability Assessment</span> &mdash; The process of evaluating whether a specific investment recommendation is appropriate for the Client based on their Risk Profile, financial situation, investment objectives, and constraints.</p>
+            <p><strong class="definition-term">Suitability Assessment</strong> &mdash; The process of evaluating whether a specific investment recommendation is appropriate for the Client based on their Risk Profile, financial situation, investment objectives, and constraints.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 3: Nature and Scope -->
-        <section id="s3">
-            <h2>3. Nature and Scope of Advisory Services</h2>
+        <section class="card" id="s3">
+            <h2 class="h2">3. Nature and Scope of Advisory Services</h2>
 
             <h3>3.1 Services Provided</h3>
             <p>Subject to the terms of this Agreement and completion of onboarding (including KYC and risk profiling), the Adviser shall provide the Client with:</p>
@@ -244,12 +279,12 @@
             <h3>3.4 Relationship with Platform Terms</h3>
             <p>This Agreement governs personalised Advisory Services only. The Finwiser Platform's general features (including net worth dashboards, generic outputs, calculators, and educational content) remain governed by the <a href="terms.html">Platform Terms &amp; Conditions</a>. In case of conflict between this Agreement and the Platform Terms on matters relating to Advisory Services, this Agreement shall prevail.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 4: Client Obligations -->
-        <section id="s4">
-            <h2>4. Client Obligations</h2>
+        <section class="card" id="s4">
+            <h2 class="h2">4. Client Obligations</h2>
 
             <h3>4.1 Disclosure of Financial Information</h3>
             <p>The Client shall provide complete and accurate information regarding:</p>
@@ -273,12 +308,12 @@
             <h3>4.4 Independent Decision-Making</h3>
             <p>While the Adviser provides personalised recommendations, all investment decisions and their implementation remain the Client's sole responsibility. The Client acknowledges that they retain full discretion to accept, reject, or modify any recommendation.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 5: Risk Profiling and Suitability -->
-        <section id="s5">
-            <h2>5. Risk Profiling and Suitability</h2>
+        <section class="card" id="s5">
+            <h2 class="h2">5. Risk Profiling and Suitability</h2>
 
             <h3>5.1 Risk Profiling Process</h3>
             <p>Before providing any Investment Advice, the Adviser shall conduct a risk profiling assessment to determine the Client's:</p>
@@ -313,17 +348,17 @@
             <h3>5.5 Limitations of Risk Profiling Tools</h3>
             <p>The Client acknowledges that risk profiling tools, including questionnaires and algorithmic assessments, are designed to be fit for purpose but may have inherent limitations. Where such limitations are identified, the Adviser shall take reasonable steps to mitigate them through supplementary analysis or clarification.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 6: Fee Structure -->
-        <section id="s6">
-            <h2>6. Fee Structure and Payment</h2>
+        <section class="card" id="s6">
+            <h2 class="h2">6. Fee Structure and Payment</h2>
 
             <h3>6.1 Fee Mode</h3>
             <p>The Adviser operates on a <strong>Fixed Fee</strong> basis, as permitted under Regulation 15A of the IA Regulations. The applicable fees are:</p>
 
-            <table>
+            <table class="caption">
                 <tr><th>Service</th><th>Fee</th><th>Nature</th></tr>
                 <tr><td>Advisory Unlock</td><td>&#8377;49</td><td>One-time fee for initial personalised advisory report (portfolio diagnostics, problem identification, and recommended actions)</td></tr>
                 <tr><td>Ongoing Advisory</td><td>&#8377;199 per month</td><td>Continuous personalised advisory services, including portfolio monitoring, goal tracking, surplus allocation, and periodic rebalancing recommendations</td></tr>
@@ -349,12 +384,12 @@
             <h3>6.5 Refund Policy</h3>
             <p>The one-time Advisory Unlock fee (&#8377;49) is non-refundable once the personalised advisory report has been generated and delivered, <strong>except as required under Applicable Law or where the report is not delivered or is materially defective</strong>. For the ongoing advisory subscription (&#8377;199/month), the Client may cancel at any time, and no further charges shall apply from the next billing cycle. Pro-rata refunds for the current billing period are not provided unless required under Applicable Law.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 7: AI Tools Disclosure -->
-        <section id="s7">
-            <h2>7. Use of Artificial Intelligence Tools</h2>
+        <section class="card" id="s7">
+            <h2 class="h2">7. Use of Artificial Intelligence Tools</h2>
 
             <div class="highlight-box">
                 <p style="margin-bottom: 0;">This Section constitutes disclosure under Regulation 15(14) and Regulation 18 of the SEBI (Investment Advisers) Regulations, 2013 (as amended).</p>
@@ -390,12 +425,12 @@
             </ul>
             <p>The Adviser undertakes to periodically review algorithmic models for accuracy and appropriateness.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 8: Conflicts of Interest -->
-        <section id="s8">
-            <h2>8. Conflicts of Interest</h2>
+        <section class="card" id="s8">
+            <h2 class="h2">8. Conflicts of Interest</h2>
 
             <h3>8.1 Disclosure of Conflicts</h3>
             <p>The Adviser shall disclose to the Client all actual or potential conflicts of interest as and when they arise, including any connection or association with issuers of products or securities that may impair objectivity or independence.</p>
@@ -413,12 +448,12 @@
             <h3>8.3 Holdings Disclosure</h3>
             <p>Where the Adviser holds a personal position in any financial product or security that is the subject matter of advice to the Client, the Adviser shall disclose such holding at the time of providing the relevant advice.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 9: No Execution Without Consent -->
-        <section id="s9">
-            <h2>9. No Execution Without Specific Consent</h2>
+        <section class="card" id="s9">
+            <h2 class="h2">9. No Execution Without Specific Consent</h2>
 
             <div class="warning-box">
                 <p style="margin-bottom: 0;"><strong>Important:</strong> This Agreement is for investment advisory services only. The Adviser cannot execute or carry out any trade (purchase or sell transaction) on behalf of the Client without the Client's specific and positive consent on every trade.</p>
@@ -437,12 +472,12 @@
             </ul>
             <p>If any person claiming to represent Finwiser requests such credentials, the Client should immediately report it to <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 10: Disclosure Obligations -->
-        <section id="s10">
-            <h2>10. Disclosure Obligations</h2>
+        <section class="card" id="s10">
+            <h2 class="h2">10. Disclosure Obligations</h2>
 
             <h3>10.1 Disclosures by the Adviser</h3>
             <p>The Adviser shall disclose to the Client:</p>
@@ -466,12 +501,12 @@
                 <li>Grievance redressal mechanism and SEBI SCORES link.</li>
             </ul>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 11: Record Keeping -->
-        <section id="s11">
-            <h2>11. Record Keeping</h2>
+        <section class="card" id="s11">
+            <h2 class="h2">11. Record Keeping</h2>
 
             <h3>11.1 Records Maintained</h3>
             <p>The Adviser shall maintain the following records in compliance with Regulation 19 of the IA Regulations:</p>
@@ -491,12 +526,12 @@
             <h3>11.3 Electronic Records</h3>
             <p>Records may be maintained in electronic form. The Adviser shall ensure adequate security and backup measures for electronic records.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 12: Confidentiality and Data Protection -->
-        <section id="s12">
-            <h2>12. Confidentiality and Data Protection</h2>
+        <section class="card" id="s12">
+            <h2 class="h2">12. Confidentiality and Data Protection</h2>
 
             <h3>12.1 Confidentiality Obligation</h3>
             <p>The Adviser shall not divulge any confidential information about the Client without the Client's prior permission, except where such disclosure is required to be made in compliance with any law for the time being in force, as required under Regulation 15 of the IA Regulations.</p>
@@ -513,12 +548,12 @@
             <h3>12.3 AI Data Security</h3>
             <p>The Adviser is solely responsible for the security, confidentiality, and integrity of Client data processed through AI tools, as required under Regulation 15(14) of the IA Regulations.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 13: Risk Acknowledgments -->
-        <section id="s13">
-            <h2>13. Risk Acknowledgments and Disclaimers</h2>
+        <section class="card" id="s13">
+            <h2 class="h2">13. Risk Acknowledgments and Disclaimers</h2>
 
             <h3>13.1 Market Risk</h3>
             <p>The Client acknowledges that:</p>
@@ -540,12 +575,12 @@
             <h3>13.4 Dependence on Client Information</h3>
             <p>The quality and suitability of advice depends on the accuracy and completeness of information provided by the Client and accessed through the Account Aggregator framework. Incomplete or inaccurate information may result in advice that does not fully reflect the Client's circumstances.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 14: Limitation of Liability -->
-        <section id="s14">
-            <h2>14. Limitation of Liability</h2>
+        <section class="card" id="s14">
+            <h2 class="h2">14. Limitation of Liability</h2>
 
             <h3>14.1 Scope</h3>
             <p>This Section applies to the Advisory Services provided under this Agreement. It is subject to and does not override the Adviser's fiduciary obligations, suitability requirements, and other obligations under the IA Regulations.</p>
@@ -567,12 +602,12 @@
                 <li>Restrict statutory rights or remedies available to the Client under Applicable Law, including rights under the Consumer Protection Act, 2019.</li>
             </ul>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 15: Termination -->
-        <section id="s15">
-            <h2>15. Termination</h2>
+        <section class="card" id="s15">
+            <h2 class="h2">15. Termination</h2>
 
             <h3>15.1 Client-Initiated Termination</h3>
             <p>The Client may terminate this Agreement at any time by:</p>
@@ -601,15 +636,15 @@
                 <li>Pending grievances shall continue to be addressed per Section 16.</li>
             </ul>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 16: Grievance Redressal -->
-        <section id="s16">
-            <h2>16. Grievance Redressal</h2>
+        <section class="card" id="s16">
+            <h2 class="h2">16. Grievance Redressal</h2>
 
             <h3>16.1 Grievance Officer</h3>
-            <table>
+            <table class="caption">
                 <tr><th>Field</th><th>Details</th></tr>
                 <tr><td>Name</td><td>Chandrachuda Sarma Yemmanuru</td></tr>
                 <tr><td>Email</td><td><a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></td></tr>
@@ -627,12 +662,12 @@
             <h3>16.3 No Restriction on Statutory Rights</h3>
             <p>Nothing in this Agreement restricts the Client's right to approach any competent regulatory authority, judicial authority, or consumer forum under Applicable Law.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 17: Governing Law -->
-        <section id="s17">
-            <h2>17. Governing Law and Dispute Resolution</h2>
+        <section class="card" id="s17">
+            <h2 class="h2">17. Governing Law and Dispute Resolution</h2>
 
             <h3>17.1 Governing Law</h3>
             <p>This Agreement shall be governed by and construed in accordance with the laws of India.</p>
@@ -651,12 +686,12 @@
             <h3>17.4 Jurisdiction</h3>
             <p>Subject to the above, the courts of Bengaluru, Karnataka shall have jurisdiction over matters arising under this Agreement.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 18: General Provisions -->
-        <section id="s18">
-            <h2>18. General Provisions</h2>
+        <section class="card" id="s18">
+            <h2 class="h2">18. General Provisions</h2>
 
             <h3>18.1 Entire Agreement</h3>
             <p>This Agreement, together with the <a href="terms.html">Platform Terms &amp; Conditions</a>, the <a href="privacy-policy.html">Privacy Policy</a>, and the MITC Annexure, constitutes the entire agreement between the parties for Advisory Services. In case of conflict:</p>
@@ -682,12 +717,12 @@
             <h3>18.6 Survival</h3>
             <p>Sections 8 (Conflicts of Interest), 11 (Record Keeping), 12 (Confidentiality), 13 (Risk Acknowledgments), 14 (Limitation of Liability), 16 (Grievance Redressal), and 17 (Governing Law) shall survive termination of this Agreement.</p>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- MITC Annexure -->
-        <section id="mitc">
-            <h2>Annexure: Most Important Terms and Conditions (MITC)</h2>
+        <section class="card" id="mitc">
+            <h2 class="h2">Annexure: Most Important Terms and Conditions (MITC)</h2>
 
             <div class="mitc-box">
                 <p style="margin-bottom: 0;">This Annexure is issued in compliance with the SEBI Circular on Most Important Terms and Conditions for Investment Advisers (SEBI/HO/MIRSD/MIRSD-PoD/P/CIR/2025/19, dated February 17, 2025). It summarises the key terms of the Investment Advisory Agreement in a clear and accessible format.</p>
@@ -705,7 +740,7 @@
 
             <!-- MITC 2 -->
             <h3>2. Service Fees</h3>
-            <table>
+            <table class="caption">
                 <tr><th>Component</th><th>Amount</th><th>Description</th></tr>
                 <tr><td>Fee Mode</td><td colspan="2">Fixed Fee (per Regulation 15A)</td></tr>
                 <tr><td>Advisory Unlock</td><td>&#8377;49 (one-time)</td><td>Initial personalised advisory report</td></tr>
@@ -733,7 +768,7 @@
 
             <!-- MITC 5 -->
             <h3>5. Grievance Redressal</h3>
-            <table>
+            <table class="caption">
                 <tr><th>Channel</th><th>Details</th></tr>
                 <tr><td>Grievance Officer</td><td>Chandrachuda Sarma Yemmanuru &mdash; <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></td></tr>
                 <tr><td>Response</td><td>Acknowledgement within 1 working day of receipt; resolution within 7 calendar days; SEBI outer limit of 21 calendar days</td></tr>
@@ -787,7 +822,7 @@
                 <li>Financial data access occurs exclusively through the consent-based Account Aggregator framework, which is read-only and non-transactional.</li>
             </ul>
 
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
     </div>
@@ -797,24 +832,29 @@
   <!-- Shared site footer — identical markup on all eight legal pages.
        Labels and grouping taken verbatim from index.html §15; duplicate
        labels for one destination ("Google Play", "Help") dropped. -->
-  <footer class="site-footer" role="contentinfo">
+  <!-- ============================================================ -->
+  <!-- §15 — FOOTER  (markup mirrors index.html §15)                 -->
+  <!-- ============================================================ -->
+  <footer class="site-footer" role="contentinfo" data-theme="dark">
     <div class="site-footer__inner">
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <h3>Finwiser</h3>
-          <p>The fee-only fiduciary your bank doesn&rsquo;t want you to have. For the eighty million salaried Indians the industry forgot.</p>
+          <p>An AI-powered, SEBI-regulated Financial Operating System for India&rsquo;s middle class. For the salaried Indians the industry forgot.</p>
         </div>
         <nav class="site-footer__col" aria-label="Footer &mdash; Product">
           <h3>Product</h3>
           <ul>
             <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play</a></li>
             <li><a href="/#pricing">Pricing</a></li>
             <li><a href="/#how">How it works</a></li>
             <li><a href="/#team">Team</a></li>
-            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/#faq">Help</a></li>
+            <li><a href="/fw-deck-2026/">For investors &mdash; read the deck</a></li>
           </ul>
         </nav>
-        <nav class="site-footer__col" aria-label="Footer &mdash; Compliance">
+        <nav class="site-footer__col" id="legal" aria-label="Footer &mdash; Compliance">
           <h3>Compliance</h3>
           <ul>
             <li><a href="/terms.html">Terms &amp; Conditions</a></li>
@@ -830,7 +870,7 @@
           <h3>Account</h3>
           <ul>
             <li><a href="/delete-account.html">Delete your account</a></li>
-            <li><a href="mailto:helpdesk@finwiser.org">Email us</a></li>
+            <li><a href="/#faq">Help</a></li>
           </ul>
         </nav>
       </div>
@@ -845,7 +885,6 @@
 
       <div class="site-footer__copyright">
         <span>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</span>
-        <span>For investors &rarr; <a href="/fw-deck-2026/">view the deck</a></span>
       </div>
     </div>
   </footer>
@@ -855,7 +894,9 @@
   </button>
 
   <script>
-    /* Two behaviours only: the header drawer and the back-to-top control.
+    /* Three behaviours: the header drawer, the back-to-top control, and
+       the nav material (is-scrolled / is-over-dark), so the bar behaves the
+       same here as on the homepage.
        Drawer contract copied from index.html — the page underneath must not
        scroll, a tap off the panel dismisses it, Escape dismisses it, and focus
        moves into the drawer on open and back to the button on close. */
@@ -896,7 +937,7 @@
           if (e.target.matches('a')) closeMenu(false);
         });
         addEventListener('resize', function () {
-          if (isMenuOpen() && window.innerWidth > 899) closeMenu(false);
+          if (isMenuOpen() && window.innerWidth > 767) closeMenu(false);
         });
       }
 
@@ -919,6 +960,67 @@
         });
         sync();
       }
+    })();
+    // ============================================================
+    // NAV — adaptive material (UI U6/§8.7, Motion M7).
+    // Two independent signals, both IntersectionObserver, no scroll handler:
+    //   1. is-scrolled  — a sentinel 8px tall at the very top of the document.
+    //   2. is-over-dark — a 1px-tall band immediately under the bar; whichever
+    //      [data-theme] section intersects it owns the bar's colour.
+    // ============================================================
+    (function () {
+      var nav = document.querySelector('.fw-nav');
+      if (!nav || !('IntersectionObserver' in window)) return;
+
+      // --- 1. hairline + shadow after 8px ---
+      var sentinel = document.createElement('div');
+      sentinel.setAttribute('aria-hidden', 'true');
+      sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;';
+      document.body.insertBefore(sentinel, document.body.firstChild);
+      new IntersectionObserver(function (es) {
+        nav.classList.toggle('is-scrolled', !es[0].isIntersecting);
+      }, { threshold: 0 }).observe(sentinel);
+
+      // --- 2. dark/light from the section under the bar ---
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-theme]'));
+      if (!sections.length) return;
+      var io = null;
+      var lit = [];   // sections currently in the band, in document order
+
+      function navH() {
+        return Math.round(nav.getBoundingClientRect().height) || 64;
+      }
+      function apply() {
+        // The band is 1px, so normally exactly one section is in it. If a section
+        // boundary sits exactly under the bar, take the LAST one — that is the one
+        // whose ground is about to fill the frame.
+        if (!lit.length) return;
+        var el = lit[lit.length - 1];
+        nav.classList.toggle('is-over-dark', el.getAttribute('data-theme') === 'dark');
+      }
+      function build() {
+        if (io) io.disconnect();
+        var h = navH();
+        var bottom = -(window.innerHeight - h - 1);
+        io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var i = lit.indexOf(e.target);
+            if (e.isIntersecting && i === -1) lit.push(e.target);
+            else if (!e.isIntersecting && i !== -1) lit.splice(i, 1);
+          });
+          lit.sort(function (a, b) {
+            return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+          });
+          apply();
+        }, { rootMargin: (-h) + 'px 0px ' + bottom + 'px 0px', threshold: 0 });
+        lit = [];
+        sections.forEach(function (el) { io.observe(el); });
+      }
+      build();
+      var rt;
+      addEventListener('resize', function () {
+        clearTimeout(rt); rt = setTimeout(build, 150);
+      }, { passive: true });
     })();
   </script>
 </body>

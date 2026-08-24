@@ -9,7 +9,7 @@
     <meta name="description" content="Statutory disclosures issued by Finwiser under the SEBI (Investment Advisers) Regulations, 2013 — registration, fees, conflicts of interest and terms of service.">
 
     <!-- Icons & theme -->
-    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16">
@@ -40,7 +40,8 @@
     <title>Finwiser — Statutory Disclosures</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:ital,wght@1,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/brand.css">
   <link rel="stylesheet" href="/legal.css">
   <!-- Breadcrumb (SEO §8.5) -->
   <script type="application/ld+json">
@@ -69,14 +70,47 @@
   }
   </script>
 </head>
-<body>
+<body data-theme="light">
   <a href="#main" class="skip-link">Skip to main content</a>
 
-  <!-- Shared site header — mirrors index.html §1. Light ground. -->
+  <!-- ============================================================ -->
+  <!-- §1 — NAV  (markup mirrors index.html §1; asset and section    -->
+  <!--      links are absolute so the bar works from any depth)      -->
+  <!-- ============================================================ -->
   <header class="fw-nav" id="top" role="banner">
     <div class="fw-nav__inner">
+      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
+           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
+           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
+             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
+                     lockup = 63% of a 390px viewport, over the 40% cap, so
+                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
+                     30px where the render is mud).
+             >=1024  nav logo 48px -> head 48px, the rule is met, and the
+                     247px lockup fits a 64px bar at 75%. Served as rasters,
+                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
+                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
+           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
+           two are drop-in swaps and nothing reflows at the breakpoint. -->
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
-        <img class="fw-nav__logo-img" src="/finwiserlogo.svg" alt="Finwiser" width="274" height="54">
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
+               src="/assets/finwy-3d/finwiser-logo-flat.svg"
+               alt="Finwiser" width="330" height="64" decoding="async">
+        </picture>
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
+               src="/assets/finwy-3d/finwiser-logo-flat-reversed.svg"
+               alt="" width="330" height="64" decoding="async" aria-hidden="true">
+        </picture>
       </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
@@ -86,18 +120,19 @@
       <div class="fw-nav__scrim" aria-hidden="true"></div>
       <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
         <ul class="fw-nav__list">
-          <li><a class="fw-nav__link" href="/#how">How it works</a></li>
-          <li><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
-          <li><a class="fw-nav__link" href="/#team">Team</a></li>
-          <li><a class="fw-nav__link" href="/#faq">Help</a></li>
-          <li><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+          <li style="--li:0"><a class="fw-nav__link" href="/#capabilities">What it does</a></li>
+          <li style="--li:1"><a class="fw-nav__link" href="/#how">How it works</a></li>
+          <li style="--li:2"><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
+          <li style="--li:3"><a class="fw-nav__link" href="/#team">Team</a></li>
+          <li style="--li:4"><a class="fw-nav__link" href="/#faq">Help</a></li>
+          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <nav class="legal-crumb" aria-label="Breadcrumb">
-    <div class="legal-crumb__inner">
+    <div class="legal-crumb__inner caption">
       <ol>
         <li><a href="/">Home</a></li>
         <li><span>Legal</span></li>
@@ -110,15 +145,15 @@
 
     <div class="legal-title">
       <div class="legal-title__inner">
-        <h1>Statutory Disclosures</h1>
-        <p>Issued under the SEBI (Investment Advisers) Regulations, 2013</p>
-        <p class="updated">Last Updated: 23 April 2026</p>
+        <h1 class="h1">Statutory Disclosures</h1>
+        <p class="lead">Issued under the SEBI (Investment Advisers) Regulations, 2013</p>
+        <p class="caption updated">Last Updated: 23 April 2026</p>
       </div>
     </div>
 
     <div class="container">
-        <nav>
-            <h2>Table of Contents</h2>
+        <nav class="card" aria-label="Table of contents">
+            <h2 class="h2">Table of Contents</h2>
             <ol>
                 <li><a href="#section-1">Registration &amp; Identity</a></li>
                 <li><a href="#section-2">Fee Structure</a></li>
@@ -133,9 +168,9 @@
         </nav>
 
         <!-- Section 1: Registration & Identity -->
-        <section id="section-1">
-            <h2>1. Registration &amp; Identity</h2>
-            <div class="data-card">
+        <section class="card" id="section-1">
+            <h2 class="h2">1. Registration &amp; Identity</h2>
+            <div class="card data-card">
                 <h4>Investment Adviser (Regulated Identity)</h4>
                 <ul>
                     <li><strong>Name:</strong> Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser)</li>
@@ -144,12 +179,11 @@
                     <li><strong>Type:</strong> Non-Corporate Investment Adviser</li>
                     <li><strong>Validity:</strong> 04 November 2025 &mdash; Perpetual (subject to timely payment of prescribed fees)</li>
                     <li><strong>BASL / IAASB Enlistment Number:</strong> 2408</li>
-                    <li><strong>PAN:</strong> ADXPY4227H</li>
                     <li><strong>GSTIN:</strong> 29ADXPY4227H1ZN</li>
                 </ul>
             </div>
 
-            <div class="data-card">
+            <div class="card data-card">
                 <h4>Platform Provider (Non-Regulated Identity)</h4>
                 <ul>
                     <li><strong>Name:</strong> Finwiser Technologies LLP</li>
@@ -159,7 +193,7 @@
                 <p><strong>Advisory fee flow:</strong> Advisory fees are received by the Investment Adviser exclusively. Finwiser Technologies LLP does not receive or share in advisory revenue. Any platform-service fee (if introduced) would flow from the Investment Adviser to the LLP only, never from the client to the LLP.</p>
             </div>
 
-            <div class="data-card">
+            <div class="card data-card">
                 <h4>NISM Certification of Principal Officer</h4>
                 <ul>
                     <li><strong>NISM Registration Number:</strong> NISM-202500082015</li>
@@ -169,14 +203,14 @@
                 <p>Certifications will be renewed prior to expiry in accordance with Regulation 7(2) of the SEBI (Investment Advisers) Regulations, 2013.</p>
             </div>
 
-            <div class="data-card">
+            <div class="card data-card">
                 <h4>Registered / Principal Office</h4>
                 <p>H.No. 181, 14th Cross, Bluejay Atmosphere Phase II,<br>
                 Andhrahalli Main Road, Nagasandra Post,<br>
                 Bengaluru &ndash; 560073, Karnataka, India</p>
             </div>
 
-            <div class="data-card">
+            <div class="card data-card">
                 <h4>Contact</h4>
                 <ul>
                     <li><strong>Email:</strong> <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></li>
@@ -186,15 +220,15 @@
             </div>
 
             <p>Investors may verify the SEBI registration status of the Adviser at any time on <a href="https://www.sebi.gov.in" target="_blank" rel="noopener">www.sebi.gov.in</a> &rarr; Intermediaries &rarr; Investment Adviser &rarr; search by registration number INA000021331.</p>
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 2: Fee Structure -->
-        <section id="section-2">
-            <h2>2. Fee Structure</h2>
+        <section class="card" id="section-2">
+            <h2 class="h2">2. Fee Structure</h2>
             <p>Finwiser operates on the <strong>Fixed Fee</strong> mode permitted under Regulation 15A of the SEBI (Investment Advisers) Regulations, 2013. Fees are disclosed below and specified in detail in the Investment Advisory Agreement executed with each client.</p>
 
-            <table>
+            <table class="caption">
                 <thead>
                     <tr>
                         <th>Service</th>
@@ -246,12 +280,12 @@
 
             <h3>2.5 Changes to Fee Amounts</h3>
             <p>Any change in the fee structure or amounts will be communicated to clients by <strong>at least 21 calendar days' prior written notice</strong> (email). Revised fees take effect only upon the client's continued subscription after such notification; a client who does not wish to continue at revised fees may terminate at no further charge.</p>
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 3: Conflict of Interest -->
-        <section id="section-3">
-            <h2>3. Conflict of Interest Disclosure</h2>
+        <section class="card" id="section-3">
+            <h2 class="h2">3. Conflict of Interest Disclosure</h2>
             <p>In compliance with Regulations 15, 15A, and 22 of the SEBI (Investment Advisers) Regulations, 2013, Finwiser makes the following disclosures:</p>
 
             <ul>
@@ -267,12 +301,12 @@
             <div class="highlight-box">
                 <p><strong>Finwiser is a fee-only, commission-free Investment Adviser.</strong> The Adviser works for the client, not for product manufacturers. This is the single most important differentiator from bank relationship managers and commission-earning distributors.</p>
             </div>
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 4: Execution & Distribution -->
-        <section id="section-4">
-            <h2>4. Execution &amp; Distribution Services</h2>
+        <section class="card" id="section-4">
+            <h2 class="h2">4. Execution &amp; Distribution Services</h2>
             <p>Finwiser does <strong>not</strong> provide execution or distribution services. Specifically:</p>
             <ul>
                 <li>Finwiser does not place, route, or execute any buy / sell / switch order on behalf of the client.</li>
@@ -281,12 +315,12 @@
                 <li>All execution decisions remain with the client, who may execute through any platform of their choice. Finwiser may provide educational information about Direct Plans and reputable execution platforms, but does not endorse or benefit from any specific execution channel.</li>
             </ul>
             <p>In line with Regulation 22 of the IA Regulations, the Investment Adviser maintains arm's-length separation between advice (regulated) and execution (not offered). This separation eliminates any incentive to recommend products based on execution revenue.</p>
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 5: Risk Profiling -->
-        <section id="section-5">
-            <h2>5. Risk Profiling &amp; Suitability Assessment</h2>
+        <section class="card" id="section-5">
+            <h2 class="h2">5. Risk Profiling &amp; Suitability Assessment</h2>
             <p>In compliance with Regulations 16 and 17 of the SEBI (Investment Advisers) Regulations, 2013, Finwiser follows a documented Risk Profiling and Suitability Assessment process:</p>
 
             <h3>5.1 Risk Profiling</h3>
@@ -332,12 +366,12 @@
                 <li>Risk profile and suitability assessment documentation;</li>
                 <li>Investment Advisory Agreement, fees charged, and the advice register.</li>
             </ul>
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 6: Advisory Agreement & MITC -->
-        <section id="section-6">
-            <h2>6. Investment Advisory Agreement &amp; MITC</h2>
+        <section class="card" id="section-6">
+            <h2 class="h2">6. Investment Advisory Agreement &amp; MITC</h2>
             <p>An executed Investment Advisory Agreement (IAA) is a pre-condition for the rendering of any advice. The agreement includes:</p>
             <ul>
                 <li>Scope of services and exclusions;</li>
@@ -352,27 +386,27 @@
             <p>The Most Important Terms &amp; Conditions (MITC) &mdash; a one-page summary of the IAA &mdash; is provided along with the full agreement and highlights the key commitments both parties are making.</p>
 
             <p>Read the full <a href="investment-advisory-agreement.html">Investment Advisory Agreement and MITC</a>.</p>
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 7: Regulatory & Grievance Links -->
-        <section id="section-7">
-            <h2>7. Regulatory Bodies &amp; Grievance Redressal</h2>
-            <div class="data-card">
+        <section class="card" id="section-7">
+            <h2 class="h2">7. Regulatory Bodies &amp; Grievance Redressal</h2>
+            <div class="card data-card">
                 <h4>Primary Regulator</h4>
                 <p><strong>Securities and Exchange Board of India (SEBI)</strong><br>
                 SEBI Bhavan II, Plot C7, G Block, Bandra Kurla Complex, Bandra (E), Mumbai &ndash; 400 051<br>
                 Website: <a href="https://www.sebi.gov.in" target="_blank" rel="noopener">www.sebi.gov.in</a></p>
             </div>
 
-            <div class="data-card">
+            <div class="card data-card">
                 <h4>Supervisory Body (IAASB)</h4>
                 <p><strong>BSE Administration &amp; Supervision Limited (BASL)</strong><br>
                 P. J. Towers, Dalal Street, Mumbai &ndash; 400 001<br>
                 Website: <a href="https://www.bseasl.com" target="_blank" rel="noopener">www.bseasl.com</a></p>
             </div>
 
-            <div class="data-card">
+            <div class="card data-card">
                 <h4>Complaint Platforms</h4>
                 <ul>
                     <li><strong>SEBI SCORES 2.0:</strong> <a href="https://scores.sebi.gov.in" target="_blank" rel="noopener">scores.sebi.gov.in</a> &mdash; SEBI's centralised complaint redress system operating a two-tier review (first tier by the Designated Body BASL within 21 days; if unresolved, second tier by SEBI within a further 21 days).</li>
@@ -381,12 +415,12 @@
             </div>
 
             <p>For Finwiser's internal grievance mechanism, see the <a href="investor-charter.html#section-e">Investor Charter &mdash; Grievance Redressal</a> section and the <a href="complaints.html">Monthly Complaints Status</a> page.</p>
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 8: Cautionary Notes -->
-        <section id="section-8">
-            <h2>8. Cautionary Notes for Investors</h2>
+        <section class="card" id="section-8">
+            <h2 class="h2">8. Cautionary Notes for Investors</h2>
             <ul>
                 <li><strong>Investment in securities is subject to market risk.</strong> Past performance is not indicative of future returns. Read all scheme-related documents carefully before investing.</li>
                 <li><strong>No guaranteed returns.</strong> Finwiser does not promise or imply any minimum or assured return on any investment. Any such claim made by a third party in the name of Finwiser should be reported to Finwiser and to SEBI immediately.</li>
@@ -399,15 +433,15 @@
             <div class="info-box">
                 <p>To report suspected impersonation, fraud, or unauthorised use of the Finwiser name, write immediately to <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>, and file a complaint on SEBI SCORES.</p>
             </div>
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
 
         <!-- Section 9: Annual Compliance Audit -->
-        <section id="section-9">
-            <h2>9. Annual Compliance Audit</h2>
+        <section class="card" id="section-9">
+            <h2 class="h2">9. Annual Compliance Audit</h2>
             <p>In compliance with <strong>Regulation 19(3)</strong> of the SEBI (Investment Advisers) Regulations, 2013, the Investment Adviser is required to conduct an annual audit of compliance with the Regulations by an independent member of the Institute of Chartered Accountants of India (ICAI), the Institute of Company Secretaries of India (ICSI), or the Institute of Cost Accountants of India (ICAI&ndash;CMA).</p>
 
-            <div class="data-card">
+            <div class="card data-card">
                 <h4>FY 2025&ndash;26 (First Year of Operations)</h4>
                 <ul>
                     <li><strong>Audit Period Covered:</strong> 04 November 2025 (SEBI registration date) to 31 March 2026.</li>
@@ -417,7 +451,7 @@
             </div>
 
             <p>Audit observations, remedial actions, and any qualifications will be disclosed on this page in line with SEBI's transparency framework, once the first annual audit is complete. This page will be updated immediately upon receipt of the audit report.</p>
-            <a href="#top" class="back-to-top">Back to Top</a>
+            <a href="#top" class="textlink back-to-top">Back to Top</a>
         </section>
     </div>
 
@@ -426,24 +460,29 @@
   <!-- Shared site footer — identical markup on all eight legal pages.
        Labels and grouping taken verbatim from index.html §15; duplicate
        labels for one destination ("Google Play", "Help") dropped. -->
-  <footer class="site-footer" role="contentinfo">
+  <!-- ============================================================ -->
+  <!-- §15 — FOOTER  (markup mirrors index.html §15)                 -->
+  <!-- ============================================================ -->
+  <footer class="site-footer" role="contentinfo" data-theme="dark">
     <div class="site-footer__inner">
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <h3>Finwiser</h3>
-          <p>The fee-only fiduciary your bank doesn&rsquo;t want you to have. For the eighty million salaried Indians the industry forgot.</p>
+          <p>An AI-powered, SEBI-regulated Financial Operating System for India&rsquo;s middle class. For the salaried Indians the industry forgot.</p>
         </div>
         <nav class="site-footer__col" aria-label="Footer &mdash; Product">
           <h3>Product</h3>
           <ul>
             <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play</a></li>
             <li><a href="/#pricing">Pricing</a></li>
             <li><a href="/#how">How it works</a></li>
             <li><a href="/#team">Team</a></li>
-            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/#faq">Help</a></li>
+            <li><a href="/fw-deck-2026/">For investors &mdash; read the deck</a></li>
           </ul>
         </nav>
-        <nav class="site-footer__col" aria-label="Footer &mdash; Compliance">
+        <nav class="site-footer__col" id="legal" aria-label="Footer &mdash; Compliance">
           <h3>Compliance</h3>
           <ul>
             <li><a href="/terms.html">Terms &amp; Conditions</a></li>
@@ -459,7 +498,7 @@
           <h3>Account</h3>
           <ul>
             <li><a href="/delete-account.html">Delete your account</a></li>
-            <li><a href="mailto:helpdesk@finwiser.org">Email us</a></li>
+            <li><a href="/#faq">Help</a></li>
           </ul>
         </nav>
       </div>
@@ -474,7 +513,6 @@
 
       <div class="site-footer__copyright">
         <span>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</span>
-        <span>For investors &rarr; <a href="/fw-deck-2026/">view the deck</a></span>
       </div>
     </div>
   </footer>
@@ -484,7 +522,9 @@
   </button>
 
   <script>
-    /* Two behaviours only: the header drawer and the back-to-top control.
+    /* Three behaviours: the header drawer, the back-to-top control, and
+       the nav material (is-scrolled / is-over-dark), so the bar behaves the
+       same here as on the homepage.
        Drawer contract copied from index.html — the page underneath must not
        scroll, a tap off the panel dismisses it, Escape dismisses it, and focus
        moves into the drawer on open and back to the button on close. */
@@ -525,7 +565,7 @@
           if (e.target.matches('a')) closeMenu(false);
         });
         addEventListener('resize', function () {
-          if (isMenuOpen() && window.innerWidth > 899) closeMenu(false);
+          if (isMenuOpen() && window.innerWidth > 767) closeMenu(false);
         });
       }
 
@@ -548,6 +588,67 @@
         });
         sync();
       }
+    })();
+    // ============================================================
+    // NAV — adaptive material (UI U6/§8.7, Motion M7).
+    // Two independent signals, both IntersectionObserver, no scroll handler:
+    //   1. is-scrolled  — a sentinel 8px tall at the very top of the document.
+    //   2. is-over-dark — a 1px-tall band immediately under the bar; whichever
+    //      [data-theme] section intersects it owns the bar's colour.
+    // ============================================================
+    (function () {
+      var nav = document.querySelector('.fw-nav');
+      if (!nav || !('IntersectionObserver' in window)) return;
+
+      // --- 1. hairline + shadow after 8px ---
+      var sentinel = document.createElement('div');
+      sentinel.setAttribute('aria-hidden', 'true');
+      sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;';
+      document.body.insertBefore(sentinel, document.body.firstChild);
+      new IntersectionObserver(function (es) {
+        nav.classList.toggle('is-scrolled', !es[0].isIntersecting);
+      }, { threshold: 0 }).observe(sentinel);
+
+      // --- 2. dark/light from the section under the bar ---
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-theme]'));
+      if (!sections.length) return;
+      var io = null;
+      var lit = [];   // sections currently in the band, in document order
+
+      function navH() {
+        return Math.round(nav.getBoundingClientRect().height) || 64;
+      }
+      function apply() {
+        // The band is 1px, so normally exactly one section is in it. If a section
+        // boundary sits exactly under the bar, take the LAST one — that is the one
+        // whose ground is about to fill the frame.
+        if (!lit.length) return;
+        var el = lit[lit.length - 1];
+        nav.classList.toggle('is-over-dark', el.getAttribute('data-theme') === 'dark');
+      }
+      function build() {
+        if (io) io.disconnect();
+        var h = navH();
+        var bottom = -(window.innerHeight - h - 1);
+        io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var i = lit.indexOf(e.target);
+            if (e.isIntersecting && i === -1) lit.push(e.target);
+            else if (!e.isIntersecting && i !== -1) lit.splice(i, 1);
+          });
+          lit.sort(function (a, b) {
+            return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+          });
+          apply();
+        }, { rootMargin: (-h) + 'px 0px ' + bottom + 'px 0px', threshold: 0 });
+        lit = [];
+        sections.forEach(function (el) { io.observe(el); });
+      }
+      build();
+      var rt;
+      addEventListener('resize', function () {
+        clearTimeout(rt); rt = setTimeout(build, 150);
+      }, { passive: true });
     })();
   </script>
 </body>

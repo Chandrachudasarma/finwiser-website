@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>What is an Account Aggregator? Plain-English guide | Finwiser</title>
+  <meta name="description" content="The Account Aggregator is India's RBI-licensed consent rail for your own bank data. What it is, who the three parties are, what flows, what never does, and how to revoke it.">
+
+  <!-- ── Canonical & indexing ─────────────────────────────────────── -->
+  <link rel="canonical" href="https://finwiser.org/account-aggregator.html">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+
+  <!-- ── Icons & theme (copied from index.html) ───────────────────── -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#002d56" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#001f3d" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-title" content="Finwiser">
+
+  <!-- ── Open Graph ───────────────────────────────────────────────── -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Finwiser">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:url" content="https://finwiser.org/account-aggregator.html">
+  <meta property="og:title" content="What is an Account Aggregator? Plain-English guide">
+  <meta property="og:description" content="India's RBI-licensed consent rail for your own bank data. What it is, who the three parties are, what flows, what never does, and how to revoke it.">
+  <meta property="og:image" content="https://finwiser.org/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Finwiser — Three minutes. Your full picture. SEBI Registered Investment Adviser INA000021331.">
+
+  <!-- ── Twitter / X ──────────────────────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="What is an Account Aggregator? Plain-English guide">
+  <meta name="twitter:description" content="India's RBI-licensed consent rail for your own bank data — what flows, what never does, and how to revoke it.">
+  <meta name="twitter:image" content="https://finwiser.org/og-image.png">
+  <meta name="twitter:image:alt" content="Finwiser — Three minutes. Your full picture. SEBI Registered Investment Adviser INA000021331.">
+
+  <!-- ── Structured data ──────────────────────────────────────────────
+       WebPage + Article + FAQPage + BreadcrumbList. The app is referenced
+       by @id into the homepage's SoftwareApplication node — it is not
+       restated here. Every FAQ answer is the visible answer, verbatim.
+       ─────────────────────────────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://finwiser.org/account-aggregator.html#webpage",
+        "url": "https://finwiser.org/account-aggregator.html",
+        "name": "What is an Account Aggregator? Plain-English guide",
+        "description": "The Account Aggregator is India's RBI-licensed consent rail for your own financial data. What it is, who the three parties are, what flows, what never does, and how to revoke it.",
+        "inLanguage": "en-IN",
+        "isPartOf": { "@id": "https://finwiser.org/#organization" },
+        "publisher": { "@id": "https://finwiser.org/#organization" },
+        "about": { "@id": "https://finwiser.org/#app" },
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://finwiser.org/og-image.png",
+          "width": 1200,
+          "height": 630
+        },
+        "significantLink": [
+          "https://finwiser.org/surplus-calculator.html",
+          "https://finwiser.org/disclosures.html"
+        ]
+      },
+      {
+        "@type": "Article",
+        "@id": "https://finwiser.org/account-aggregator.html#article",
+        "headline": "What is an Account Aggregator, and why Finwiser never sees your password",
+        "description": "A plain-English explanation of India's Account Aggregator framework for a salaried reader: the three parties, the consent screen, what data moves, and how to switch it off.",
+        "inLanguage": "en-IN",
+        "mainEntityOfPage": { "@id": "https://finwiser.org/account-aggregator.html#webpage" },
+        "author": { "@id": "https://finwiser.org/#organization" },
+        "publisher": { "@id": "https://finwiser.org/#organization" },
+        "datePublished": "2026-08-23",
+        "dateModified": "2026-08-23",
+        "image": "https://finwiser.org/og-image.png"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://finwiser.org/account-aggregator.html#faq",
+        "isPartOf": { "@id": "https://finwiser.org/account-aggregator.html#webpage" },
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is the Account Aggregator safe?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Safer than every alternative India had before it, because of what it removes. There is no password to hand over, no screen-scraping, no PDF statement sitting in somebody's inbox, and no standing access. An Account Aggregator is licensed and regulated by the Reserve Bank of India as an NBFC-AA, it is not permitted to store or read the data it moves, and every transfer is tied to a consent you gave and can withdraw. What it cannot do is make a badly-behaved app well-behaved — so still check who you are granting consent to, and what for."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I revoke my consent later?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, at any time, and you do not need to ask Finwiser. Open the Account Aggregator app you used to approve the connection, find the consent, and withdraw it. Finwiser loses access immediately — the data simply stops arriving, because the rail will not carry it without a live consent. Your data is deleted from Finwiser's active systems within 72 hours."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What can Finwiser actually see?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Only the account types you ticked on the consent screen, and only for the period you agreed to. In practice that means balances and transaction records — the date, the amount, and the narration your bank already writes on your statement. Finwiser does not receive your net-banking credentials, your card PIN, your UPI PIN, or the contents of your SMS and email."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Finwiser see my bank password?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. It is never asked for and there is nowhere to type it. You are verified on the Account Aggregator's own screen, and the approval happens there — not inside Finwiser. If any app asks you for your net-banking password in order to show your accounts, that is not an Account Aggregator and you should not give it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which banks work with the Account Aggregator?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Most major Indian banks are live on the network, along with a growing set of mutual fund registrars, insurers, pension records and NBFCs. Coverage changes month to month, so rather than trust a list on a website, search for your bank inside the Account Aggregator app during the connection flow — it shows you exactly what is available to you today. If an account is not on the network yet, it simply will not appear."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Finwiser regulated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Finwiser is a SEBI Registered Investment Adviser — registration number INA000021331, held by Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser) — and is listed as a Financial Information User on Sahamati's public register. To be clear about what that does and does not mean: the Account Aggregator framework is licensed by the RBI, and Finwiser participates in it as a data recipient. The RBI does not endorse, certify or approve Finwiser."
+            }
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://finwiser.org/account-aggregator.html#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Finwiser", "item": "https://finwiser.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Account Aggregator" }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@1,500&display=swap" rel="stylesheet">
+
+  <!-- The design system. Every token, every type role, the grid, the two
+       buttons and the one card live here — and nowhere else on the site. -->
+  <link rel="stylesheet" href="brand.css">
+
+  <script>document.documentElement.classList.add('js');</script>
+
+  <style>
+    /* ============================================================ */
+    /* PAGE STYLES — layout, colour application, position, animation */
+    /* This block declares NO font, size, line-height, weight,       */
+    /* tracking or container width. Radius reads brand.css §5.       */
+    /* ============================================================ */
+
+    /* ---------- reset + base (from index.html) ---------- */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
+    body {
+      color: var(--text-on-light);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    picture { display: contents; }
+
+    /* ---------- a11y (from index.html) ---------- */
+    .visually-hidden {
+      position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    .skip-link {
+      position: absolute; top: -100px; left: 16px; padding: 12px 20px;
+      background: var(--mint); color: var(--navy-deep); text-decoration: none;
+      border-radius: var(--r-md); z-index: 1000;
+      transition: top var(--dur-ui) var(--ease-out);
+    }
+    .skip-link:focus { top: 16px; outline: 3px solid var(--navy-deep); outline-offset: 2px; }
+    :focus { outline: none; }
+
+    /* ============================================================ */
+    /* §1 — NAV  (page behaviour only; the bar itself is brand.css)  */
+    /* ============================================================ */
+    .fw-nav__logo-img--rev {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity var(--dur-ui) var(--ease-in-out);
+    }
+    .fw-nav.is-over-dark .fw-nav__logo-img--pos { opacity: 0; }
+    .fw-nav.is-over-dark .fw-nav__logo-img--rev { opacity: 1; }
+    .fw-nav__list { list-style: none; display: flex; align-items: center; }
+    .fw-nav__link {
+      color: var(--nav-fg, var(--navy-deep));
+      text-decoration: none; transition: color var(--dur-ui) var(--ease-out);
+      position: relative; padding: 6px 0;
+    }
+    .fw-nav__link::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+      background: currentColor; border-radius: var(--r-pill);
+      transform: scaleX(0); transform-origin: left center;
+      transition: transform var(--dur-ui) var(--ease-out);
+    }
+    .fw-nav__link:hover { color: var(--nav-fg-hover, var(--teal)); }
+    .fw-nav__link:hover::after, .fw-nav__link:focus-visible::after { transform: scaleX(1); }
+    .fw-nav__link:active { opacity: 0.7; transition-duration: var(--dur-tap); }
+    .fw-nav__cta:active { transform: scale(0.97); transition-duration: var(--dur-tap); }
+    .fw-nav__toggle { display: none; background: transparent; border: 0; width: 44px; height: 44px; cursor: pointer; padding: 0; }
+    .fw-nav__toggle-bar {
+      display: block; width: 22px; height: 2px; margin: 5px auto;
+      background: var(--nav-fg, var(--navy-deep));
+      transition: transform var(--dur-ui) var(--ease-out), opacity var(--dur-ui) var(--ease-out),
+                  background-color var(--dur-ui) var(--ease-in-out);
+    }
+    .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(2) { opacity: 0; }
+    .fw-nav__toggle[aria-expanded="true"] .fw-nav__toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .fw-nav__scrim {
+      position: fixed; inset: var(--nav-h) 0 0 0; z-index: 0;
+      background: var(--black-45); touch-action: none;
+      opacity: 0; visibility: hidden;
+      transition: opacity var(--dur-ui) var(--ease-in-out), visibility 0s var(--dur-ui);
+    }
+    .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__scrim {
+      opacity: 1; visibility: visible; transition-delay: 0s;
+    }
+    @media (max-width: 767px) {
+      .fw-nav__toggle { display: inline-block; }
+      .fw-nav__menu {
+        --nav-fg: var(--text-on-dark);
+        --nav-fg-hover: var(--mint);
+        position: fixed; inset: var(--nav-h) 0 0 auto; z-index: 1;
+        width: min(320px, 86vw); height: calc(100vh - var(--nav-h)); height: calc(100svh - var(--nav-h));
+        background: var(--navy-deep);
+        box-shadow: var(--shadow-2);
+        transform: translateX(100%); opacity: 1; visibility: hidden;
+        transition: transform var(--dur-ui) var(--ease-out), visibility 0s var(--dur-ui);
+        padding: 16px 24px;
+      }
+      .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__menu {
+        transform: translateX(0); visibility: visible; transition-delay: 0s;
+      }
+      .fw-nav__menu .fw-nav__list > li {
+        opacity: 0; transform: translateX(12px);
+        transition: opacity var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out);
+      }
+      .fw-nav__toggle[aria-expanded="true"] ~ .fw-nav__menu .fw-nav__list > li {
+        opacity: 1; transform: none;
+        transition-delay: calc(var(--dur-tap) + var(--li, 0) * var(--dur-tap));
+      }
+      .fw-nav__list { flex-direction: column; align-items: stretch; gap: 4px; }
+      .fw-nav__cta { margin-top: 12px; }
+    }
+    html.fw-nav-locked { overflow: hidden; overscroll-behavior: none; }
+
+    /* ============================================================ */
+    /* §2 — PAGE SECTIONS (all LIGHT — brand.css §7)                 */
+    /* ============================================================ */
+    .page-section { background: var(--ground); color: var(--fg); }
+    .crumb { color: var(--fg-muted); margin-bottom: var(--sp-5); }
+    .crumb a { color: inherit; }
+    .page-hero__eyebrow { color: var(--accent); }
+    .page-hero__title { max-width: 20ch; }
+    .page-hero__lead { color: var(--fg-muted); max-width: var(--measure-lead); }
+
+    .prose { color: var(--fg); max-width: var(--measure-body); }
+    .prose + .prose { margin-top: var(--sp-4); }
+    .prose--muted { color: var(--fg-muted); }
+    .prose a { color: var(--accent); }
+
+    /* ============================================================ */
+    /* §3 — THE THREE-STEP DIAGRAM                                   */
+    /* One column at 390 with the connector rotated a quarter turn;   */
+    /* three across from 900. No canvas, no image — the diagram is    */
+    /* the same cards and the same chip the rest of the site uses.    */
+    /* ============================================================ */
+    .flow {
+      display: grid; gap: var(--sp-3);
+      grid-template-columns: 1fr;
+      justify-items: stretch;
+    }
+    /* U5: a card in a grid sits on its content — it is never stretched to an
+       equal height with a hollow bottom. Centring the row is what still lets
+       the two arrows line up on the same optical axis. */
+    @media (min-width: 900px) {
+      .flow { grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: var(--sp-4); }
+    }
+    .flow__step { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-3); }
+    .flow__party { color: var(--accent); }
+    .flow__title { color: var(--fg); }
+    .flow__body { color: var(--fg-muted); }
+    .flow__link {
+      display: flex; align-items: center; justify-content: center;
+      color: var(--teal-ink); padding: var(--sp-1) 0;
+    }
+    .flow__link svg { width: 28px; height: 28px; display: block; transform: rotate(90deg); }
+    @media (min-width: 900px) {
+      .flow__link { padding: 0; }
+      .flow__link svg { transform: none; }
+    }
+    .flow__caption-line { color: var(--fg-muted); margin-top: var(--sp-5); }
+
+    /* ============================================================ */
+    /* §4 — GENERIC BLOCKS                                           */
+    /* ============================================================ */
+    .two-up { display: grid; gap: var(--gutter); align-items: start; }
+    @media (min-width: 700px) { .two-up { grid-template-columns: 1fr 1fr; } }
+    .three-up { display: grid; gap: var(--gutter); align-items: start; }
+    @media (min-width: 900px) { .three-up { grid-template-columns: repeat(3, 1fr); } }
+
+    .card__title { margin-bottom: var(--sp-3); }
+    .card__body { color: var(--fg-muted); }
+    .card__list { margin: var(--sp-3) 0 0; padding-left: var(--sp-5); color: var(--fg-muted); }
+    .card__list li + li { margin-top: var(--sp-2); }
+    .card__cta { margin-top: var(--sp-4); }
+
+    /* the yes / no pair */
+    .card--yes { border-color: var(--teal-16); background: var(--teal-08); }
+    .card--no  { border-color: var(--gold-32); background: var(--gold-08); }
+    .tick { color: var(--teal-ink); }
+    .cross { color: var(--fg-muted); }
+    .card--yes .card__body, .card--no .card__body { color: var(--text-on-light); }
+    .card__list--marked { list-style: none; padding-left: 0; color: var(--text-on-light); }
+    .card__list--marked li { display: flex; gap: var(--sp-3); align-items: flex-start; }
+    .card__list--marked li + li { margin-top: var(--sp-3); }
+
+    /* the numbered revoke steps */
+    .steps-list { list-style: none; counter-reset: step; padding: 0; }
+    .steps-list li { counter-increment: step; position: relative; padding-left: 44px; color: var(--fg-muted); }
+    .steps-list li + li { margin-top: var(--sp-4); }
+    .steps-list li::before {
+      content: counter(step);
+      position: absolute; left: 0; top: 0;
+      width: 32px; height: 32px; border-radius: var(--r-pill);
+      display: flex; align-items: center; justify-content: center;
+      background: var(--mint-08); border: var(--hairline) solid var(--mint-16);
+      color: var(--teal-ink);
+    }
+    .steps-list strong { color: var(--fg); }
+
+    /* the mascot figure */
+    .figure-row { display: flex; gap: var(--sp-5); align-items: flex-start; }
+    .figure-row__art { flex: 0 0 auto; width: 92px; }
+    @media (min-width: 700px) { .figure-row__art { width: 140px; } }
+    .figure-row__body { flex: 1 1 auto; min-width: 0; }
+
+
+    /* --- LINKS — brand.css §9.6 gives the site ONE in-copy treatment, but it
+       names the homepage's own selectors. This restates it for the classes on
+       this page, and pins the colour: <meta name="color-scheme"> lets the UA
+       paint an unstyled link in ITS palette, which lands at 2.39:1 on white
+       when the viewer's OS prefers dark. Buttons, the chevron link and the
+       crumb keep their own colour (higher specificity in brand.css). --- */
+    main a { color: var(--accent); }
+    .prose a, .card__body a, .card__list a, .steps-list a,
+    .fineprint a, .faq__answer a, .flow__body a, .insight__note a {
+      text-decoration: none;
+      border-bottom: var(--hairline) solid currentColor;
+      padding-bottom: 1px;
+    }
+
+
+    /* A standalone .textlink and the crumb are controls, not in-copy links: the
+       hit area grows to 44px with a pseudo-element so the underline stays put. */
+    .card__cta .textlink, .cta-card__links .textlink, .crumb a {
+      position: relative;
+    }
+    .card__cta .textlink::after, .cta-card__links .textlink::after, .crumb a::after {
+      content: ''; position: absolute; left: -6px; right: -6px;
+      top: 50%; height: 44px; transform: translateY(-50%);
+    }
+
+    /* ============================================================ */
+    /* §5 — FAQ                                                      */
+    /* ============================================================ */
+    .faq__list { border-top: var(--hairline) solid var(--line); }
+    .faq__item { border-bottom: var(--hairline) solid var(--line); }
+    .faq__item summary {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--sp-4); padding: var(--sp-4) 0; cursor: pointer;
+      color: var(--fg); list-style: none;
+    }
+    .faq__item summary::-webkit-details-marker { display: none; }
+    .faq__item summary::after {
+      content: '+'; color: var(--accent); flex: 0 0 auto;
+      transition: transform var(--dur-ui) var(--ease-out);
+    }
+    .faq__item[open] summary::after { transform: rotate(45deg); }
+    .faq__answer { color: var(--fg-muted); padding-bottom: var(--sp-4); }
+    .faq__answer p + p { margin-top: var(--sp-3); }
+
+    /* ============================================================ */
+    /* §6 — CTA                                                      */
+    /* ============================================================ */
+    .cta-card { text-align: center; }
+    .cta-card__title { margin-inline: auto; }
+    .cta-card__sub { color: var(--fg-muted); margin: var(--sp-4) auto 0; max-width: var(--measure-lead); }
+    .cta-card__actions {
+      display: flex; flex-wrap: wrap; gap: var(--sp-3);
+      justify-content: center; margin-top: var(--sp-6);
+    }
+    .cta-card__links { margin-top: var(--sp-5); display: flex; flex-wrap: wrap; gap: var(--sp-5); justify-content: center; }
+    .fineprint { color: var(--fg-muted); margin-top: var(--sp-7); max-width: var(--measure-body); }
+
+    /* ============================================================ */
+    /* §7 — FOOTER  (from index.html)                                */
+    /* ============================================================ */
+    .site-footer { background: var(--navy-deep); color: var(--white-56); }
+    .site-footer__top {
+      display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px;
+      padding-bottom: 32px; border-bottom: 1px solid var(--white-08);
+      margin-bottom: 24px;
+    }
+    .site-footer__brand h3 { color: var(--text-on-dark); margin-bottom: 10px; }
+    .site-footer__brand p { color: var(--white-56); }
+    .site-footer__col h3 { text-transform: uppercase; color: var(--text-on-dark); margin-bottom: 14px; }
+    .site-footer__col ul { list-style: none; }
+    .site-footer__col a {
+      display: block; color: var(--white-56); text-decoration: none; margin-bottom: 8px;
+      transition: color var(--dur-tap) var(--ease-out);
+    }
+    .site-footer__col a:hover { color: var(--text-on-dark); }
+    .site-footer__legal { color: var(--white-56); }
+    .site-footer__legal strong { color: var(--white-88); }
+    .site-footer__legal p + p { margin-top: 8px; }
+    .site-footer__legal a { color: var(--white-88); }
+    .site-footer__legal em { font-style: normal; }
+    .site-footer__copyright {
+      margin-top: 20px; padding-top: 20px;
+      border-top: 1px solid var(--white-08); color: var(--white-56);
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;
+    }
+    .site-footer__copyright a { color: var(--white-56); text-decoration: none; }
+    .site-footer__copyright a:hover { color: var(--text-on-dark); }
+    @media (max-width: 900px) {
+      .site-footer__top { grid-template-columns: 1fr; gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <!-- ============================================================ -->
+  <!-- §1 — NAV                                                      -->
+  <!-- ============================================================ -->
+  <header class="fw-nav" role="banner">
+    <div class="fw-nav__inner">
+      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
+           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
+           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
+             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
+                     lockup = 63% of a 390px viewport, over the 40% cap, so
+                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
+                     30px where the render is mud).
+             >=1024  nav logo 48px -> head 48px, the rule is met, and the
+                     247px lockup fits a 64px bar at 75%. Served as rasters,
+                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
+                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
+           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
+           two are drop-in swaps and nothing reflows at the breakpoint. -->
+      <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
+                          assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
+               src="assets/finwy-3d/finwiser-logo-flat.svg"
+               alt="Finwiser" width="330" height="64" decoding="async">
+        </picture>
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
+                          assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
+               src="assets/finwy-3d/finwiser-logo-flat-reversed.svg"
+               alt="" width="330" height="64" decoding="async" aria-hidden="true">
+        </picture>
+      </a>
+      <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+      </button>
+      <div class="fw-nav__scrim" aria-hidden="true"></div>
+      <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
+        <ul class="fw-nav__list">
+          <li style="--li:0"><a class="fw-nav__link" href="/#capabilities">What it does</a></li>
+          <li style="--li:1"><a class="fw-nav__link" href="/#how">How it works</a></li>
+          <li style="--li:2"><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
+          <li style="--li:3"><a class="fw-nav__link" href="/#team">Team</a></li>
+          <li style="--li:4"><a class="fw-nav__link" href="/#faq">Help</a></li>
+          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================ -->
+    <!-- §2 — HERO                                                     -->
+    <!-- ============================================================ -->
+    <section class="page-section section-y" data-theme="light" aria-labelledby="page-title">
+      <div class="container">
+        <p class="crumb caption"><a href="/">Finwiser</a> &rsaquo; Account Aggregator</p>
+        <p class="page-hero__eyebrow eyebrow rhythm-label">Account Aggregator</p>
+        <h1 id="page-title" class="page-hero__title display rhythm-title">What is an Account Aggregator?</h1>
+        <p class="page-hero__lead lead rhythm-title">It is the reason Finwiser can read your accounts without ever
+          asking for your bank password &mdash; a consent rail, licensed by the Reserve Bank of India, that moves
+          your own financial data to whoever you point it at, and stops the moment you say stop.</p>
+        <p class="prose prose--muted body">Written for a salaried reader who has been asked to &ldquo;connect via
+          AA&rdquo; and would like to know what that actually means before tapping approve.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §3 — THE SHORT ANSWER + DIAGRAM                               -->
+    <!-- ============================================================ -->
+    <section class="page-section section-y" data-theme="light" aria-labelledby="how-heading">
+      <div class="container">
+        <h2 id="how-heading" class="h1 rhythm-title">Three parties, one tap</h2>
+        <p class="prose prose--muted body rhythm-lead">Your bank holds the data. An Account Aggregator asks you
+          whether to move it. Finwiser receives it. Nobody in that chain ever sees a password.</p>
+
+        <div class="flow">
+          <article class="card flow__step">
+            <span class="chip">Step 1 &middot; FIP</span>
+            <h3 class="flow__party label">Financial Information Provider</h3>
+            <p class="flow__title h2">Your bank holds your data</p>
+            <p class="flow__body body">Your bank, your mutual fund registrar, your insurer, your pension record.
+              They already hold the statements. What they have never had is a safe way to hand you a copy that a
+              third party can read.</p>
+          </article>
+
+          <div class="flow__link" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12h14"></path><path d="M13 6l6 6-6 6"></path>
+            </svg>
+          </div>
+
+          <article class="card flow__step">
+            <span class="chip">Step 2 &middot; AA</span>
+            <h3 class="flow__party label">Account Aggregator &mdash; the consent manager</h3>
+            <p class="flow__title h2">You approve, on their screen</p>
+            <p class="flow__body body">An RBI-licensed entity &mdash; Finvu, for example &mdash; whose only job is to
+              carry consent. It shows you which accounts, which data, for how long, and for whom. You approve there,
+              on its own screen, not inside Finwiser. It is not allowed to read or keep what it moves.</p>
+          </article>
+
+          <div class="flow__link" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12h14"></path><path d="M13 6l6 6-6 6"></path>
+            </svg>
+          </div>
+
+          <article class="card flow__step">
+            <span class="chip">Step 3 &middot; FIU</span>
+            <h3 class="flow__party label">Financial Information User &mdash; Finwiser</h3>
+            <p class="flow__title h2">Finwiser receives, read-only</p>
+            <p class="flow__body body">Only what you ticked, only for the period you agreed. Finwiser can see
+              balances and transactions and give advice on them. It cannot place a trade, move a rupee, or change
+              anything in your accounts &mdash; the rail does not carry those instructions.</p>
+          </article>
+        </div>
+
+        <p class="flow__caption-line caption">FIP, AA and FIU are the framework&rsquo;s own words for the three
+          roles. You will see them on the consent screen, which is the only reason they are worth learning.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §4 — WHAT MOVES, WHAT NEVER DOES                              -->
+    <!-- ============================================================ -->
+    <section class="page-section section-y" data-theme="light" aria-labelledby="data-heading">
+      <div class="container">
+        <h2 id="data-heading" class="h1 rhythm-lead">What moves, and what never does</h2>
+        <div class="two-up">
+          <article class="card card--yes">
+            <h3 class="card__title h2">What Finwiser receives</h3>
+            <ul class="card__list card__list--marked body">
+              <li><span class="tick" aria-hidden="true">&#10003;</span><span>Balances on the accounts you ticked.</span></li>
+              <li><span class="tick" aria-hidden="true">&#10003;</span><span>Transaction records &mdash; date, amount, and the narration your bank already prints on your statement.</span></li>
+              <li><span class="tick" aria-hidden="true">&#10003;</span><span>Holdings and instalment schedules, where the account type has them.</span></li>
+              <li><span class="tick" aria-hidden="true">&#10003;</span><span>Only for the period you agreed to on the consent screen.</span></li>
+            </ul>
+          </article>
+          <article class="card card--no">
+            <h3 class="card__title h2">What never reaches Finwiser</h3>
+            <ul class="card__list card__list--marked body">
+              <li><span class="cross" aria-hidden="true">&#10007;</span><span>Your net-banking password or customer ID.</span></li>
+              <li><span class="cross" aria-hidden="true">&#10007;</span><span>Your card PIN, your UPI PIN, or any OTP for a payment.</span></li>
+              <li><span class="cross" aria-hidden="true">&#10007;</span><span>Your SMS inbox, your email, or your contacts.</span></li>
+              <li><span class="cross" aria-hidden="true">&#10007;</span><span>Any ability to move money. Read-only is a property of the rail, not a promise on a website.</span></li>
+            </ul>
+          </article>
+        </div>
+        <p class="fineprint caption">All data is encrypted with AES-256 at rest and TLS 1.3 in transit &mdash; the
+          same standards your bank uses for online banking. More detail on what is used, where it lives and for how
+          long: <a href="privacy-policy.html">read the Privacy Policy</a>.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §5 — THE PASSWORD POINT                                       -->
+    <!-- ============================================================ -->
+    <section class="page-section section-y" data-theme="light" aria-labelledby="password-heading">
+      <div class="container">
+        <h2 id="password-heading" class="h1 rhythm-lead">Why there is no password to give</h2>
+        <div class="figure-row">
+          <div class="figure-row__art">
+            <picture>
+              <source type="image/avif" sizes="(max-width: 699px) 92px, 140px"
+                      srcset="assets/finwy-3d/finwy3d-face-happy-96w.avif 96w,
+                              assets/finwy-3d/finwy3d-face-happy-192w.avif 192w,
+                              assets/finwy-3d/finwy3d-face-happy-288w.avif 288w">
+              <img src="assets/finwy-3d/finwy3d-face-happy-192w.webp"
+                   sizes="(max-width: 699px) 92px, 140px"
+                   srcset="assets/finwy-3d/finwy3d-face-happy-96w.webp 96w,
+                           assets/finwy-3d/finwy3d-face-happy-192w.webp 192w,
+                           assets/finwy-3d/finwy3d-face-happy-288w.webp 288w"
+                   width="288" height="321"
+                   alt="Finwy, the Finwiser mascot" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <div class="figure-row__body">
+            <p class="prose body">Before the Account Aggregator existed, an app that wanted to see your accounts had
+              two options: ask you to upload a PDF statement, or ask for your net-banking login and read the screen
+              on your behalf. The first is stale by the time you send it. The second hands over the keys.</p>
+            <p class="prose prose--muted body">The framework removes the choice. Finwiser has nowhere to type a
+              password because Finwiser is never in that part of the flow &mdash; you are verified on the Account
+              Aggregator&rsquo;s own app, and you approve there. What comes back to Finwiser is data, and only data.</p>
+            <p class="prose prose--muted body">Which gives you a rule worth keeping: <strong>if an app asks for your
+              net-banking password so it can show you your accounts, it is not using the Account Aggregator.</strong>
+              Do not give it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §6 — REVOKE                                                   -->
+    <!-- ============================================================ -->
+    <section class="page-section section-y" data-theme="light" aria-labelledby="revoke-heading">
+      <div class="container">
+        <h2 id="revoke-heading" class="h1 rhythm-title">How to switch it off</h2>
+        <p class="prose prose--muted body rhythm-lead">Consent is something you hold, not something you gave away.
+          You do not need to email Finwiser, and Finwiser cannot stop you.</p>
+        <ol class="steps-list body">
+          <li><strong>Open the Account Aggregator app</strong> you used to approve the connection &mdash; the one whose
+            screen you saw during setup, not the Finwiser app.</li>
+          <li><strong>Find the consent</strong> in its list of active consents. It will name Finwiser, the accounts,
+            and the period you agreed to.</li>
+          <li><strong>Withdraw it.</strong> Finwiser loses access immediately &mdash; the data simply stops arriving,
+            because the rail will not carry it without a live consent.</li>
+          <li><strong>Your data is deleted</strong> from Finwiser&rsquo;s active systems within 72 hours. To remove your
+            Finwiser account entirely, use <a href="delete-account.html">delete your account</a>.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §7 — WHAT FINWISER DOES WITH IT                               -->
+    <!-- ============================================================ -->
+    <section class="page-section section-y" data-theme="light" aria-labelledby="use-heading">
+      <div class="container">
+        <h2 id="use-heading" class="h1 rhythm-title">What Finwiser does with it</h2>
+        <p class="prose prose--muted body rhythm-lead">Connecting accounts is the boring half. The point is what the
+          arithmetic can do once every account is in one picture.</p>
+        <div class="three-up">
+          <article class="card">
+            <h3 class="card__title h2">Sorts every account</h3>
+            <p class="card__body body">Thirty-plus account types across seven buckets &mdash; banking, investments,
+              pensions, insurance, loans and cards, business, physical assets &mdash; sorted by a six-tier
+              classification. One picture instead of eleven apps.</p>
+          </article>
+          <article class="card">
+            <h3 class="card__title h2">Runs 13 ratios</h3>
+            <p class="card__body body">Savings rate, debt-to-income, retirement readiness, emergency-fund cover and
+              nine more &mdash; recomputed from what actually happened, and written in plain language rather than
+              finance-textbook English.</p>
+          </article>
+          <article class="card">
+            <h3 class="card__title h2">Finds the real surplus</h3>
+            <p class="card__body body">What is genuinely left each month once everything already spoken for has
+              gone &mdash; including the payments that only arrive once a year.</p>
+            <p class="card__body body card__cta"><a class="textlink" href="surplus-calculator.html">Try the surplus calculator &rsaquo;</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §8 — WHO REGULATES WHAT                                       -->
+    <!-- ============================================================ -->
+    <section class="page-section section-y" data-theme="light" aria-labelledby="reg-heading">
+      <div class="container">
+        <h2 id="reg-heading" class="h1 rhythm-lead">Who regulates what</h2>
+        <div class="two-up">
+          <article class="card">
+            <h3 class="card__title h2">The rail</h3>
+            <p class="card__body body">The Account Aggregator framework is licensed and supervised by the Reserve
+              Bank of India. An Account Aggregator holds an NBFC-AA licence, and is not permitted to store or read
+              the data it carries. Finwiser is listed as a Financial Information User on
+              <a href="https://sahamati.org.in" target="_blank" rel="noopener noreferrer">Sahamati&rsquo;s</a> public
+              register of participants.</p>
+            <p class="card__body body card__cta">To be exact about it: the RBI licenses the framework. It does not
+              endorse, certify or approve Finwiser, and neither does anyone else on this page.</p>
+          </article>
+          <article class="card">
+            <h3 class="card__title h2">The advice</h3>
+            <p class="card__body body">The advice Finwiser gives on top of that data is regulated separately, by
+              SEBI. Finwiser is a SEBI Registered Investment Adviser &mdash; registration number
+              <span class="mono">INA000021331</span>, held by Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser).
+              Fee-only: no commission is earned on any product recommended.</p>
+            <p class="card__body body card__cta"><a class="textlink" href="disclosures.html">Read the statutory disclosures &rsaquo;</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §9 — FAQ                                                      -->
+    <!-- ============================================================ -->
+    <section class="page-section section-y" data-theme="light" aria-labelledby="faq-heading">
+      <div class="container">
+        <h2 id="faq-heading" class="h1 rhythm-lead">Questions people actually ask</h2>
+        <div class="faq__list">
+          <details class="faq__item">
+            <summary>Is the Account Aggregator safe?</summary>
+            <div class="faq__answer body">
+              <p>Safer than every alternative India had before it, because of what it
+              removes. There is no password to hand over, no screen-scraping, no PDF statement sitting in
+              somebody&rsquo;s inbox, and no standing access. An Account Aggregator is licensed and regulated by the
+              Reserve Bank of India as an NBFC-AA, it is not permitted to store or read the data it moves, and every
+              transfer is tied to a consent you gave and can withdraw. What it cannot do is make a badly-behaved app
+              well-behaved &mdash; so still check who you are granting consent to, and what for.</p>
+            </div>
+          </details>
+          <details class="faq__item">
+            <summary>Can I revoke my consent later?</summary>
+            <div class="faq__answer body">
+              <p>Yes, at any time, and you do not need to ask Finwiser. Open the Account Aggregator app you used to
+              approve the connection, find the consent, and withdraw it. Finwiser loses access immediately &mdash; the
+              data simply stops arriving, because the rail will not carry it without a live consent. Your data is
+              deleted from Finwiser&rsquo;s active systems within 72 hours.</p>
+            </div>
+          </details>
+          <details class="faq__item">
+            <summary>What can Finwiser actually see?</summary>
+            <div class="faq__answer body">
+              <p>Only the account types you ticked on the consent screen, and only for the period you agreed to. In
+              practice that means balances and transaction records &mdash; the date, the amount, and the narration your
+              bank already writes on your statement. Finwiser does not receive your net-banking credentials, your card
+              PIN, your UPI PIN, or the contents of your SMS and email.</p>
+            </div>
+          </details>
+          <details class="faq__item">
+            <summary>Does Finwiser see my bank password?</summary>
+            <div class="faq__answer body">
+              <p>No. It is never asked for and there is nowhere to type it. You are verified on the Account
+              Aggregator&rsquo;s own screen, and the approval happens there &mdash; not inside Finwiser. If any app asks
+              you for your net-banking password in order to show your accounts, that is not an Account Aggregator and
+              you should not give it.</p>
+            </div>
+          </details>
+          <details class="faq__item">
+            <summary>Which banks work with the Account Aggregator?</summary>
+            <div class="faq__answer body">
+              <p>Most major Indian banks are live on the network, along with a growing set of mutual fund registrars,
+              insurers, pension records and NBFCs. Coverage changes month to month, so rather than trust a list on a
+              website, search for your bank inside the Account Aggregator app during the connection flow &mdash; it
+              shows you exactly what is available to you today. If an account is not on the network yet, it simply
+              will not appear.</p>
+            </div>
+          </details>
+          <details class="faq__item">
+            <summary>Is Finwiser regulated?</summary>
+            <div class="faq__answer body">
+              <p>Yes. Finwiser is a SEBI Registered Investment Adviser &mdash; registration number INA000021331, held
+              by Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser) &mdash; and is listed as a Financial Information
+              User on Sahamati&rsquo;s public register. To be clear about what that does and does not mean: the Account
+              Aggregator framework is licensed by the RBI, and Finwiser participates in it as a data recipient. The
+              RBI does not endorse, certify or approve Finwiser.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- §10 — CTA                                                     -->
+    <!-- ============================================================ -->
+    <section class="page-section section-y" data-theme="light" aria-labelledby="cta-heading">
+      <div class="container">
+        <div class="card cta-card">
+          <h2 id="cta-heading" class="cta-card__title h1">See it happen once</h2>
+          <p class="cta-card__sub lead">Connecting takes about three minutes, and you approve it on the Account
+            Aggregator&rsquo;s own screen. Nothing here needs your bank password.</p>
+          <div class="cta-card__actions">
+            <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a>
+          </div>
+          <p class="cta-platform caption">Android, on Google Play. Free during early access.</p>
+          <div class="cta-card__links">
+            <a class="textlink" href="surplus-calculator.html">Surplus calculator</a>
+            <a class="textlink" href="disclosures.html">Statutory disclosures</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- §11 — FOOTER                                                  -->
+  <!-- ============================================================ -->
+  <footer class="site-footer" role="contentinfo" data-theme="dark">
+    <div class="site-footer__inner">
+      <div class="site-footer__top">
+        <div class="site-footer__brand">
+          <h3>Finwiser</h3>
+          <p>An AI-powered, SEBI-regulated Financial Operating System for India&rsquo;s middle class. For the salaried Indians the industry forgot.</p>
+        </div>
+        <nav class="site-footer__col" aria-label="Footer &mdash; Product">
+          <h3>Product</h3>
+          <ul>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play</a></li>
+            <li><a href="/surplus-calculator.html">Surplus calculator</a></li>
+            <li><a href="/account-aggregator.html">Account Aggregator</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="/#how">How it works</a></li>
+            <li><a href="/#team">Team</a></li>
+            <li><a href="/#faq">Help</a></li>
+            <li><a href="/fw-deck-2026/">For investors &mdash; read the deck</a></li>
+          </ul>
+        </nav>
+        <nav class="site-footer__col" id="legal" aria-label="Footer &mdash; Compliance">
+          <h3>Compliance</h3>
+          <ul>
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="investor-charter.html">Investor Charter</a></li>
+            <li><a href="investment-advisory-agreement.html">Advisory Agreement</a></li>
+            <li><a href="disclosures.html">Disclosures</a></li>
+            <li><a href="complaints.html">Grievances</a></li>
+            <li><a href="accessibility.html">Accessibility</a></li>
+          </ul>
+        </nav>
+        <nav class="site-footer__col" aria-label="Footer &mdash; Account">
+          <h3>Account</h3>
+          <ul>
+            <li><a href="delete-account.html">Delete your account</a></li>
+            <li><a href="/#faq">Help</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="site-footer__legal">
+        <p><strong>Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser)</strong> &middot; SEBI Registered Investment Adviser &middot; Reg. No. INA000021331 &middot; BSE Enlistment 2408 &middot; NISM Reg. NISM-202500082015</p>
+        <p>Principal / Registered Office: H.No. 181, 14th Cross, Bluejay Atmosphere Phase II, Andhrahalli Main Road, Nagasandra Post, Bengaluru &ndash; 560073, Karnataka, India.</p>
+        <p>Grievance Redressal Officer: Chandrachuda Sarma Yemmanuru &middot; <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a> &middot; +91 88012 94657 &middot; Acknowledgement T+1 working day &middot; Resolution target T+7 &middot; Outer limit T+21 working days.</p>
+        <p><em>Investments in the securities market are subject to market risks. Read all the related documents carefully before investing. Registration granted by SEBI, enlistment as a member of BASL, and certification from NISM in no way guarantee performance of the intermediary or provide any assurance of returns to investors.</em></p>
+        <p>For grievances unresolved by the Adviser, escalate via SEBI SCORES at <a href="https://scores.sebi.gov.in" target="_blank" rel="noopener noreferrer">scores.sebi.gov.in</a> or the SmartODR platform at <a href="https://smartodr.in" target="_blank" rel="noopener noreferrer">smartodr.in</a>. SEBI Toll-Free: 1800 22 7575 / 1800 266 7575.</p>
+      </div>
+
+      <div class="site-footer__copyright">
+        <span>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ---- Nav: hamburger. Same contract as index.html — the page under the
+       drawer must not scroll, a tap off the panel or Escape dismisses it, and
+       focus moves in on open and back to the button on close. ---- */
+    (function () {
+      var toggle = document.querySelector('.fw-nav__toggle');
+      var menu = document.getElementById('fw-nav-menu');
+      var scrim = document.querySelector('.fw-nav__scrim');
+      if (!toggle || !menu) return;
+
+      function isMenuOpen() { return toggle.getAttribute('aria-expanded') === 'true'; }
+      function focusNoScroll(el) {
+        if (!el) return;
+        try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
+      }
+      function openMenu() {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+        document.documentElement.classList.add('fw-nav-locked');
+        focusNoScroll(menu.querySelector('a[href]'));
+      }
+      function closeMenu(returnFocus) {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+        document.documentElement.classList.remove('fw-nav-locked');
+        if (returnFocus) focusNoScroll(toggle);
+      }
+      toggle.addEventListener('click', function () {
+        if (isMenuOpen()) closeMenu(false); else openMenu();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && isMenuOpen()) closeMenu(true);
+      });
+      if (scrim) scrim.addEventListener('click', function () { closeMenu(true); });
+      menu.addEventListener('click', function (e) {
+        if (e.target.matches('a')) closeMenu(false);
+      });
+      addEventListener('resize', function () {
+        if (isMenuOpen() && window.innerWidth > 899) closeMenu(false);
+      });
+    })();
+
+    /* ---- Nav material: hairline after 8px, and the ground of the section
+       under the bar. Two IntersectionObservers, no scroll handler. ---- */
+    (function () {
+      var nav = document.querySelector('.fw-nav');
+      if (!nav || !('IntersectionObserver' in window)) return;
+
+      var sentinel = document.createElement('div');
+      sentinel.setAttribute('aria-hidden', 'true');
+      sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;';
+      document.body.insertBefore(sentinel, document.body.firstChild);
+      new IntersectionObserver(function (es) {
+        nav.classList.toggle('is-scrolled', !es[0].isIntersecting);
+      }, { threshold: 0 }).observe(sentinel);
+
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-theme]'));
+      if (!sections.length) return;
+      function navH() { return Math.round(nav.getBoundingClientRect().height) || 64; }
+      var lit = [];
+      function build() {
+        var h = navH();
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var i = lit.indexOf(e.target);
+            if (e.isIntersecting && i === -1) lit.push(e.target);
+            if (!e.isIntersecting && i !== -1) lit.splice(i, 1);
+          });
+          lit.sort(function (a, b) { return sections.indexOf(a) - sections.indexOf(b); });
+          if (!lit.length) return;
+          var el = lit[lit.length - 1];
+          nav.classList.toggle('is-over-dark', el.getAttribute('data-theme') === 'dark');
+        }, { rootMargin: -h + 'px 0px ' + (h - window.innerHeight + 1) + 'px 0px', threshold: 0 });
+        sections.forEach(function (s) { io.observe(s); });
+        return io;
+      }
+      var io = build();
+      addEventListener('resize', function () {
+        if (io) io.disconnect();
+        lit = [];
+        io = build();
+      });
+    })();
+  </script>
+</body>
+</html>

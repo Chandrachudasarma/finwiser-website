@@ -9,7 +9,7 @@
     <meta name="description" content="Monthly investor grievance data for Finwiser, SEBI Registered Investment Adviser INA000021331, published from November 2025 under SEBI's disclosure framework.">
 
     <!-- Icons & theme -->
-    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16">
@@ -40,7 +40,8 @@
     <title>Finwiser — Monthly Complaints Status</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:ital,wght@1,500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/brand.css">
   <link rel="stylesheet" href="/legal.css">
   <!-- Breadcrumb (SEO §8.5) -->
   <script type="application/ld+json">
@@ -69,14 +70,47 @@
   }
   </script>
 </head>
-<body>
+<body data-theme="light">
   <a href="#main" class="skip-link">Skip to main content</a>
 
-  <!-- Shared site header — mirrors index.html §1. Light ground. -->
+  <!-- ============================================================ -->
+  <!-- §1 — NAV  (markup mirrors index.html §1; asset and section    -->
+  <!--      links are absolute so the bar works from any depth)      -->
+  <!-- ============================================================ -->
   <header class="fw-nav" id="top" role="banner">
     <div class="fw-nav__inner">
+      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
+           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
+           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
+             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
+                     lockup = 63% of a 390px viewport, over the 40% cap, so
+                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
+                     30px where the render is mud).
+             >=1024  nav logo 48px -> head 48px, the rule is met, and the
+                     247px lockup fits a 64px bar at 75%. Served as rasters,
+                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
+                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
+           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
+           two are drop-in swaps and nothing reflows at the breakpoint. -->
       <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
-        <img class="fw-nav__logo-img" src="/finwiserlogo.svg" alt="Finwiser" width="274" height="54">
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
+               src="/assets/finwy-3d/finwiser-logo-flat.svg"
+               alt="Finwiser" width="330" height="64" decoding="async">
+        </picture>
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="/assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
+                          /assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
+               src="/assets/finwy-3d/finwiser-logo-flat-reversed.svg"
+               alt="" width="330" height="64" decoding="async" aria-hidden="true">
+        </picture>
       </a>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
@@ -86,18 +120,19 @@
       <div class="fw-nav__scrim" aria-hidden="true"></div>
       <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
         <ul class="fw-nav__list">
-          <li><a class="fw-nav__link" href="/#how">How it works</a></li>
-          <li><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
-          <li><a class="fw-nav__link" href="/#team">Team</a></li>
-          <li><a class="fw-nav__link" href="/#faq">Help</a></li>
-          <li><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+          <li style="--li:0"><a class="fw-nav__link" href="/#capabilities">What it does</a></li>
+          <li style="--li:1"><a class="fw-nav__link" href="/#how">How it works</a></li>
+          <li style="--li:2"><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
+          <li style="--li:3"><a class="fw-nav__link" href="/#team">Team</a></li>
+          <li style="--li:4"><a class="fw-nav__link" href="/#faq">Help</a></li>
+          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <nav class="legal-crumb" aria-label="Breadcrumb">
-    <div class="legal-crumb__inner">
+    <div class="legal-crumb__inner caption">
       <ol>
         <li><a href="/">Home</a></li>
         <li><span>Legal</span></li>
@@ -110,32 +145,32 @@
 
     <div class="legal-title">
       <div class="legal-title__inner">
-        <h1>Monthly Complaints Status</h1>
-        <p>Investor Grievance Disclosure &mdash; Finwiser (SEBI RIA: INA000021331)</p>
-        <p class="updated">Last Updated: 23 August 2026</p>
+        <h1 class="h1">Monthly Complaints Status</h1>
+        <p class="lead">Investor Grievance Disclosure &mdash; Finwiser (SEBI RIA: INA000021331)</p>
+        <p class="caption updated">Last Updated: 23 August 2026</p>
       </div>
     </div>
 
     <div class="container">
         <!-- Snapshot -->
-        <section>
-            <h2>At-a-Glance Snapshot</h2>
+        <section class="card">
+            <h2 class="h2">At-a-Glance Snapshot</h2>
             <div class="snapshot-grid">
-                <div class="snapshot-card">
-                    <div class="snapshot-label">Current Pending</div>
-                    <div class="snapshot-value">0</div>
+                <div class="card snapshot-card">
+                    <div class="label snapshot-label">Current Pending</div>
+                    <div class="data-lg snapshot-value">0</div>
                 </div>
-                <div class="snapshot-card">
-                    <div class="snapshot-label">Received (This Month)</div>
-                    <div class="snapshot-value">0</div>
+                <div class="card snapshot-card">
+                    <div class="label snapshot-label">Received (This Month)</div>
+                    <div class="data-lg snapshot-value">0</div>
                 </div>
-                <div class="snapshot-card">
-                    <div class="snapshot-label">Resolved (This Month)</div>
-                    <div class="snapshot-value">0</div>
+                <div class="card snapshot-card">
+                    <div class="label snapshot-label">Resolved (This Month)</div>
+                    <div class="data-lg snapshot-value">0</div>
                 </div>
-                <div class="snapshot-card">
-                    <div class="snapshot-label">Pending &gt; 3 months</div>
-                    <div class="snapshot-value">0</div>
+                <div class="card snapshot-card">
+                    <div class="label snapshot-label">Pending &gt; 3 months</div>
+                    <div class="data-lg snapshot-value">0</div>
                 </div>
             </div>
 
@@ -148,12 +183,12 @@
         </section>
 
         <!-- Monthly table -->
-        <section>
-            <h2>Monthly Complaints Status &mdash; FY 2025&ndash;26 (H2) &amp; FY 2026&ndash;27 (H1)</h2>
+        <section class="card">
+            <h2 class="h2">Monthly Complaints Status &mdash; FY 2025&ndash;26 (H2) &amp; FY 2026&ndash;27 (H1)</h2>
             <p>Data is presented from 04 November 2025 (date of SEBI registration) onwards. November 2025 is a partial month running from 04-Nov-2025 to 30-Nov-2025.</p>
 
             <div class="table-scroll">
-                <table>
+                <table class="caption">
                     <thead>
                         <tr>
                             <th rowspan="2">Sl.</th>
@@ -188,14 +223,14 @@
                 </table>
             </div>
 
-            <p style="margin-top: 15px; font-size: var(--fs-micro); color: var(--text-light);">Schema aligned with SEBI Master Circular for Intermediaries &mdash; age-bucketed disposal reporting. When non-zero, this table will also capture an Action Taken Report column per circular.</p>
+            <p class="caption" style="margin-top: var(--sp-4); color: var(--fg-muted);">Schema aligned with SEBI Master Circular for Intermediaries &mdash; age-bucketed disposal reporting. When non-zero, this table will also capture an Action Taken Report column per circular.</p>
         </section>
 
         <!-- Annual aggregate -->
-        <section>
-            <h2>Annual Aggregate &mdash; Financial Year Summary</h2>
+        <section class="card">
+            <h2 class="h2">Annual Aggregate &mdash; Financial Year Summary</h2>
             <div class="table-scroll">
-                <table>
+                <table class="caption">
                     <thead>
                         <tr>
                             <th>Financial Year</th>
@@ -217,8 +252,8 @@
         </section>
 
         <!-- How to complain -->
-        <section>
-            <h2>How to Lodge a Complaint</h2>
+        <section class="card">
+            <h2 class="h2">How to Lodge a Complaint</h2>
             <p>If you have a grievance regarding any advisory service provided by Finwiser, you may lodge it through any of the following channels. Full details are in the <a href="investor-charter.html#section-e">Investor Charter &mdash; Grievance Redressal</a> section.</p>
 
             <h3>Step 1: Contact Finwiser</h3>
@@ -244,8 +279,8 @@
         </section>
 
         <!-- Definitions & methodology -->
-        <section>
-            <h2>Definitions &amp; Methodology</h2>
+        <section class="card">
+            <h2 class="h2">Definitions &amp; Methodology</h2>
             <ul>
                 <li><strong>Complaint:</strong> Any written or verbal expression of dissatisfaction by a client (or prospective client) regarding any aspect of Finwiser's advisory services.</li>
                 <li><strong>Received:</strong> Complaints logged in the Grievance Register during the calendar month, regardless of channel.</li>
@@ -264,24 +299,29 @@
   <!-- Shared site footer — identical markup on all eight legal pages.
        Labels and grouping taken verbatim from index.html §15; duplicate
        labels for one destination ("Google Play", "Help") dropped. -->
-  <footer class="site-footer" role="contentinfo">
+  <!-- ============================================================ -->
+  <!-- §15 — FOOTER  (markup mirrors index.html §15)                 -->
+  <!-- ============================================================ -->
+  <footer class="site-footer" role="contentinfo" data-theme="dark">
     <div class="site-footer__inner">
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <h3>Finwiser</h3>
-          <p>The fee-only fiduciary your bank doesn&rsquo;t want you to have. For the eighty million salaried Indians the industry forgot.</p>
+          <p>An AI-powered, SEBI-regulated Financial Operating System for India&rsquo;s middle class. For the salaried Indians the industry forgot.</p>
         </div>
         <nav class="site-footer__col" aria-label="Footer &mdash; Product">
           <h3>Product</h3>
           <ul>
             <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=org.finwiser.app" target="_blank" rel="noopener noreferrer">Google Play</a></li>
             <li><a href="/#pricing">Pricing</a></li>
             <li><a href="/#how">How it works</a></li>
             <li><a href="/#team">Team</a></li>
-            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/#faq">Help</a></li>
+            <li><a href="/fw-deck-2026/">For investors &mdash; read the deck</a></li>
           </ul>
         </nav>
-        <nav class="site-footer__col" aria-label="Footer &mdash; Compliance">
+        <nav class="site-footer__col" id="legal" aria-label="Footer &mdash; Compliance">
           <h3>Compliance</h3>
           <ul>
             <li><a href="/terms.html">Terms &amp; Conditions</a></li>
@@ -297,7 +337,7 @@
           <h3>Account</h3>
           <ul>
             <li><a href="/delete-account.html">Delete your account</a></li>
-            <li><a href="mailto:helpdesk@finwiser.org">Email us</a></li>
+            <li><a href="/#faq">Help</a></li>
           </ul>
         </nav>
       </div>
@@ -312,7 +352,6 @@
 
       <div class="site-footer__copyright">
         <span>&copy; 2025&ndash;2026 Finwiser. All rights reserved.</span>
-        <span>For investors &rarr; <a href="/fw-deck-2026/">view the deck</a></span>
       </div>
     </div>
   </footer>
@@ -322,7 +361,9 @@
   </button>
 
   <script>
-    /* Two behaviours only: the header drawer and the back-to-top control.
+    /* Three behaviours: the header drawer, the back-to-top control, and
+       the nav material (is-scrolled / is-over-dark), so the bar behaves the
+       same here as on the homepage.
        Drawer contract copied from index.html — the page underneath must not
        scroll, a tap off the panel dismisses it, Escape dismisses it, and focus
        moves into the drawer on open and back to the button on close. */
@@ -363,7 +404,7 @@
           if (e.target.matches('a')) closeMenu(false);
         });
         addEventListener('resize', function () {
-          if (isMenuOpen() && window.innerWidth > 899) closeMenu(false);
+          if (isMenuOpen() && window.innerWidth > 767) closeMenu(false);
         });
       }
 
@@ -386,6 +427,67 @@
         });
         sync();
       }
+    })();
+    // ============================================================
+    // NAV — adaptive material (UI U6/§8.7, Motion M7).
+    // Two independent signals, both IntersectionObserver, no scroll handler:
+    //   1. is-scrolled  — a sentinel 8px tall at the very top of the document.
+    //   2. is-over-dark — a 1px-tall band immediately under the bar; whichever
+    //      [data-theme] section intersects it owns the bar's colour.
+    // ============================================================
+    (function () {
+      var nav = document.querySelector('.fw-nav');
+      if (!nav || !('IntersectionObserver' in window)) return;
+
+      // --- 1. hairline + shadow after 8px ---
+      var sentinel = document.createElement('div');
+      sentinel.setAttribute('aria-hidden', 'true');
+      sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;';
+      document.body.insertBefore(sentinel, document.body.firstChild);
+      new IntersectionObserver(function (es) {
+        nav.classList.toggle('is-scrolled', !es[0].isIntersecting);
+      }, { threshold: 0 }).observe(sentinel);
+
+      // --- 2. dark/light from the section under the bar ---
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-theme]'));
+      if (!sections.length) return;
+      var io = null;
+      var lit = [];   // sections currently in the band, in document order
+
+      function navH() {
+        return Math.round(nav.getBoundingClientRect().height) || 64;
+      }
+      function apply() {
+        // The band is 1px, so normally exactly one section is in it. If a section
+        // boundary sits exactly under the bar, take the LAST one — that is the one
+        // whose ground is about to fill the frame.
+        if (!lit.length) return;
+        var el = lit[lit.length - 1];
+        nav.classList.toggle('is-over-dark', el.getAttribute('data-theme') === 'dark');
+      }
+      function build() {
+        if (io) io.disconnect();
+        var h = navH();
+        var bottom = -(window.innerHeight - h - 1);
+        io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var i = lit.indexOf(e.target);
+            if (e.isIntersecting && i === -1) lit.push(e.target);
+            else if (!e.isIntersecting && i !== -1) lit.splice(i, 1);
+          });
+          lit.sort(function (a, b) {
+            return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+          });
+          apply();
+        }, { rootMargin: (-h) + 'px 0px ' + bottom + 'px 0px', threshold: 0 });
+        lit = [];
+        sections.forEach(function (el) { io.observe(el); });
+      }
+      build();
+      var rt;
+      addEventListener('resize', function () {
+        clearTimeout(rt); rt = setTimeout(build, 150);
+      }, { passive: true });
     })();
   </script>
 </body>
