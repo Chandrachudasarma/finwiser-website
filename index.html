@@ -1350,8 +1350,10 @@
     
     }
     .seen__composite-disclaimer { color: var(--white-56);
-      text-align: center; margin-top: 14px;
-    
+      /* Lives INSIDE the pinned stage, anchored to its bottom edge — outside
+         the figure it scrolled up through the pinned list (founder catch). */
+      position: absolute; left: 0; right: 0; bottom: -30px;
+      text-align: center; margin: 0;
     }
 
     /* === ANIMATIONS — only when JS is on AND motion is allowed === */
@@ -1814,7 +1816,7 @@
       0%, 100% { opacity: 1;  }
       50%      { opacity: 0.5;  }
     }
-    .connect-feed__count {
+    .connect-feed__count { white-space: nowrap;
       color: var(--mint);
       padding: 5px 9px; border-radius: var(--r-pill);
       background: var(--mint-08);
@@ -2041,7 +2043,7 @@
       padding: 14px 16px;
       transition: border-color var(--dur-ui) var(--ease-in-out), background var(--dur-ui) var(--ease-in-out), box-shadow var(--dur-ui) var(--ease-in-out);
     }
-    .connect-stat__label { text-transform: uppercase;
+    .connect-stat__label { text-transform: uppercase; white-space: nowrap;
       color: var(--text-on-dark-muted);
     
     }
@@ -5039,9 +5041,8 @@
               </div>
             </div>
           </div>
+          <figcaption class="seen__composite-disclaimer">Illustrative example &middot; Your numbers will be yours.</figcaption>
         </figure>
-
-        <p class="seen__composite-disclaimer">Illustrative example &middot; Your numbers will be yours.</p>
       </div>
     </section>
 
