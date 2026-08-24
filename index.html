@@ -3554,6 +3554,7 @@
     .ledger-row.is-flash .ledger-row__value { color: var(--mint);  }
     .ledger-row[data-row="variable"].is-flash .ledger-row__value { color: var(--gold);  }
     .ledger-row--surplus {
+      container-type: inline-size;
       flex-direction: column; align-items: center; text-align: center;
       gap: 8px; margin: auto -16px 0; padding: 18px 16px 20px;
       background: linear-gradient(135deg, var(--mint-08) 0%, rgba(53,214,198,0.00) 100%);
@@ -5136,7 +5137,7 @@
                       </div>
                       <div class="ledger-row ledger-row--surplus" id="s2-row-surplus">
                         <span class="ledger-row__label">Surplus</span>
-                        <span>
+                        <span style="white-space: nowrap">
                           <span class="ledger-row__value" id="s2-total-surplus">&#8377;&nbsp;&mdash;&mdash;&mdash;</span>
                           <span class="ledger-row__per">/ mo</span>
                         </span>

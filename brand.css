@@ -735,7 +735,10 @@ body {
 .insight__num,
 .ledger-row--surplus .ledger-row__value {
   font-family: var(--font-sans);
-  font-size: var(--fs-data-lg);
+  /* The page's one big number — but it must never wrap: the row is a size
+     container, and the figure yields below the role size only when the card
+     is genuinely too narrow (founder caught "₹ / 41,300 / mo" on 3 lines). */
+  font-size: min(var(--fs-data-lg), 17cqi);
   line-height: var(--lh-data-lg);
   font-weight: var(--fw-semi);
   letter-spacing: var(--tr-snug);
