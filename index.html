@@ -650,59 +650,83 @@
       filter: blur(2px);
     
     }
-    /* One soft ambient shadow. The four axis-aligned 1.5px mint drop-shadows
-       that faked a keyline are gone (Assets F4 / UI U8): they outlined every
-       internal edge of the bitmap, and they cost a full filter pass on the one
-       element that swaps 15 frames.
-       Wave 3: 360 CSS px desktop / 204 mobile, up from 260/204.
-       The registered canvas carries 1139 px of real opaque pixels — more than
-       the 888 px single render README §5 measured — so the honest ceilings are
-       2x-sharp to 565 CSS px and 3x-sharp to 377, and 360 is inside both with
-       the 408/520/612/780 tiers behind it. 444 (the README's older ceiling)
-       was rendered and rejected on composition, not sharpness: it pushes the
-       trust strip out of the 1440x900 fold and overpowers the headline.
-       Before/after: screenshots/tier2/home3-hero-size-ab.png.
-       --hero-aspect is the shared registration canvas; src/10-hero-action.py
-       prints it on every run and it changes only if a new keyframe extends the
-       union bbox. */
+    /* ---- HERO-CUT-BEST: the cast film -------------------------------------
+       The hero is now the shipped best-of cut (animreview/best/NOTES-BEST.md),
+       not a flipbook. Spine v04, two graded founder borrows (F10/F11 for the
+       spin, F16 for the Hi transient), 7600 ms, one rAF clock.
+
+       .hero__mascot IS the film's stage: 340 x 440 stage units, foot line at
+       y = 372, body centre at x = 170. Every drawing was exported into that
+       one registration (lib.norm_card: one body height, one foot line, one
+       centre) and then cropped to a SINGLE shared rect — stage x 4..336,
+       y 84..408 — so all eighteen images are interchangeable in place.
+
+       The stage is absolutely positioned inside .hero__visual, whose 1/1 box
+       is what the grid measures. Nothing here can shift layout: the box is
+       unchanged, so the flipbook's CLS budget is inherited at zero.
+
+       112% of the visual box on desktop keeps the character at ~264 CSS px —
+       the flipbook read ~311 and the film needs 41% of its stage as headroom
+       for a jump that clears 50 stage px. 100% on a phone lands the character
+       at 175 CSS px, which is what the 204px flipbook measured. */
     .hero__mascot {
-      --hero-aspect: 1242 / 1185;
-      position: relative; width: 100%; max-width: 360px; margin: 0 auto;
-      aspect-ratio: var(--hero-aspect);
-      filter: drop-shadow(0 24px 48px var(--black-32));
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      height: 112%; width: auto; aspect-ratio: 340 / 440;
+      /* 7 stage units of gaussian, in CSS px — set by the player on resize */
+      --hero-shadow-blur: 6px;
 
     }
     .hero__mascot picture { display: contents;  }
-    /* Keyframes CROSS-FADE, they do not cut (founder, Wave 3) — but the fade is
-       a SEAM, not the frame's whole life. --hero-fade is set by the one clock to
-       min(60ms, 0.4 x step). A fade equal to its step (what min(step, --dur-ui)
-       produced at eight frames) means no keyframe is ever alone at opacity 1,
-       and the wake-up smears instead of animating. With today's eight frames the
-       step is 143ms and the fade is 57ms — a soft cut. */
-    .hero__mascot img {
+    /* The contact shadow. engine2._shadow, stated in CSS: a 150 x 17 stage-unit
+       ellipse centred on (170, 368), rgb(0,12,26) at 0.4627 alpha, 7 stage
+       units of blur. The player scales it by k = max(0.25, 1 - max(0,-ty)/55)
+       and by the card's own sx, so it squeezes with the spin pinch and lets go
+       of the character on the jump. */
+    .hero__shadow {
+      position: absolute; left: 50%; top: 83.636364%;
+      width: 44.117647%; height: 3.863636%;
+      margin: 0; border-radius: 50%;
+      background: rgb(0, 12, 26);
+      filter: blur(var(--hero-shadow-blur));
+      transform: translate(-50%, -50%);
+      transform-origin: 50% 50%;
+      opacity: 0.4627;
+      will-change: transform, opacity;
+
+    }
+    /* The card is a CANVAS, and that is an LCP decision, not a graphics one.
+       Built first as eighteen stacked <img>s with the transform on their
+       wrapper, it worked and it was frame-accurate — but every cut painted a
+       NEW image element, and because the card is simultaneously scaling,
+       rotating and translating, each one's visual rect was a hair larger than
+       the last. Chrome therefore kept promoting the LCP: measured candidates at
+       1268, 1532, 1828, 1864, 1900, 2532 and finally 4772 ms on the winking Hi,
+       whose 3.8 deg tilt inflates the axis-aligned box by 13%. The old flipbook
+       never did this only because its frames were untransformed and all exactly
+       the same size, so no later frame was ever "larger".
+       A <canvas> is not an LCP candidate element at all, so the film cannot
+       nominate itself. The drawings stay in the DOM (below) purely as decoded
+       sources for drawImage and as the reduced-motion / no-JS still. */
+    .hero__canvas {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
-      object-fit: contain;
-      opacity: 0;
-      transition: opacity var(--hero-fade, var(--dur-ui)) var(--ease-in-out);
+      display: block;
 
     }
-    .hero__mascot img.is-active { opacity: 1;  }
-    /* The 3D settled pose cross-fades over the last flipbook frame at the
-       end of the wake-up and then owns the slot. One transition, one
-       direction — the double-chain that played frames backwards (M4) is
-       gone, and nothing here can run in reverse. */
-    .hero__mascot .hero__mascot-settled {
-      opacity: 0;
-      transition: opacity var(--dur-scene) var(--ease-out);
+    /* The image well. Every drawing occupies the same shared crop rect, so a
+       swap is a hard cut with nothing to re-register. Hidden here; the player
+       reads them with drawImage. Only reduced motion and no-JS reveal one. */
+    .hero__frames {
+      position: absolute; inset: 0;
+      visibility: hidden;
 
     }
-    .hero__mascot.is-settled .hero__mascot-settled { opacity: 1;  }
-    /* Symmetric: the last action frame leaves on the SAME clock the settled
-       pose arrives on, or the 240ms keyframe fade would empty the slot 460ms
-       before the settle filled it. */
-    .hero__mascot.is-settled img[data-frame] {
-      opacity: 0; transition: opacity var(--dur-scene) var(--ease-out);
+    .hero__frames img {
+      position: absolute;
+      left: 1.176471%; top: 19.090909%;
+      width: 97.647059%; height: 73.636364%;
+      opacity: 0; transition: none;
 
     }
     .hero__chip {
@@ -731,7 +755,7 @@
     @media (max-width: 700px) {
       .hero__inner { grid-template-columns: 1fr; gap: 20px;  }
       .hero__visual { max-width: 296px;  }
-      .hero__mascot { max-width: 204px;  }
+      .hero__mascot { height: 100%;  }
       .hero__sub { margin-bottom: 20px;  }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -740,12 +764,13 @@
         animation: none; opacity: 1; transform: none; clip-path: none;
 
     }
-      /* Settle frame only — no wake-up, and no 700ms fade into it either.
-         The JS already jumps straight to .is-settled; this makes the paint
-         match, so the first frame the reader sees is the final one. */
-      .hero__mascot img,
-      .hero__mascot .hero__mascot-settled,
-      .hero__mascot.is-settled img[data-frame] { transition: none;  }
+      /* The settled Hi, on the FIRST paint, with no clock ever started. This is
+         CSS, not JS, so it is true before the player boots and true if it never
+         does. The player reads the same query and returns without a rAF. */
+      .hero__canvas { display: none;  }
+      .hero__frames { visibility: visible;  }
+      .hero__frames img.hero__frame--settled { opacity: 1;  }
+      .hero__shadow { transform: translate(-50%, -50%); opacity: 0.4627;  }
     }
 
     /* ============================================================ */
@@ -4398,96 +4423,141 @@
         </div>
         <div class="hero__visual" aria-hidden="true">
           <div class="hero__halo"></div>
-          <div class="hero__mascot" id="hero-mascot" role="img" aria-label="Finwy waking up to say hi">
-            <!-- HERO-FRAMES:BEGIN — generated by src/13-hero-markup.py from
-                 assets/finwy-3d/hero/manifest.json. Do not hand-edit: run
-                 10-hero-action.py then 13-hero-markup.py.
+          <div class="hero__mascot" id="hero-mascot" role="img" aria-label="Finwy wakes up, spins, jumps, and waves hi">
+            <!-- HERO-CUT-BEST:BEGIN
+                 The shipped cast film. Casting, grade and keyframe table:
+                 website-audit-2026-08-23/screenshots/tier2/animreview/best/NOTES-BEST.md
+                 Method and the one-clock rule: animreview/ANIMATOR-NOTES.md
+                 Reference render: animreview/best/HERO-CUT-BEST.mp4
 
-                 The founder's storyboard is eight keyframes — asleep, lifting,
-                 arms-up grin, leaning wave, mid-spin, jump, landing, the winking
-                 "Hi". 8 of 8 exist right now and the build consumed exactly
-                 those; the rest fall back by simply not being in the list, and
-                 the run re-times itself around whatever count it has.
+                 Twelve drawings and six pre-rendered smear frames. Eleven of the
+                 thirteen casting slots are v04; the three borrows (F10, F11, F16)
+                 are the founder set GRADED onto v04 at sat x1.36, highlight
+                 rolloff 0.18 above 0.72, gain 0.98 - baked into the export, so
+                 nothing is corrected at runtime.
 
-                 Every frame is re-anchored on one shared 1242x1185 canvas (ground
-                 line + body axis) because each generation frames the character
-                 differently — played raw the character sank ~80px between
-                 keyframes. That shared canvas is also why the settled pose can
-                 cross-fade over the last action frame without a jump.
+                 The six smear frames carry the 198-degree shutter (0.55 of the
+                 frame interval, <=12 samples) AND their own card transform, which
+                 CSS cannot produce. The player sets the card transform to the
+                 camera scale alone while one is on screen.
 
-                 FALLBACK: if zero act-NN frames exist, 10-hero-action.py says so
-                 and the 15-frame deck flipbook (fw-deck-2026/slides/frame-N-409w.*)
-                 is what belongs here instead. It is not in the DOM while these are —
-                 15 dead <img> tags is 15 dead requests. -->
-            <picture>
-              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-01-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-01-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-01-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-01-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
-              <img src="assets/finwy-3d/hero/finwy3d-hero-act-01-408w.webp"
-                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-01-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-01-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-01-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-01-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
-                   class="is-active" data-frame="1" data-act="act-01" data-src-render="finwy3d-act-01-v01.png" alt=""
-                   width="1242" height="1185" loading="eager" fetchpriority="high" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-02-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-02-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-02-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-02-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
-              <img src="assets/finwy-3d/hero/finwy3d-hero-act-02-408w.webp"
-                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-02-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-02-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-02-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-02-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
-                   class="" data-frame="2" data-act="act-02" data-src-render="finwy3d-act-02-v01.png" alt=""
-                   width="1242" height="1185" loading="eager" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-03-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-03-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-03-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-03-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
-              <img src="assets/finwy-3d/hero/finwy3d-hero-act-03-408w.webp"
-                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-03-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-03-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-03-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-03-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
-                   class="" data-frame="3" data-act="act-03" data-src-render="finwy3d-act-03-v01.png" alt=""
-                   width="1242" height="1185" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-04-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-04-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-04-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-04-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
-              <img src="assets/finwy-3d/hero/finwy3d-hero-act-04-408w.webp"
-                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-04-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-04-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-04-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-04-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
-                   class="" data-frame="4" data-act="act-04" data-src-render="finwy3d-act-04-v02.png" alt=""
-                   width="1242" height="1185" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-05-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-05-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-05-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-05-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
-              <img src="assets/finwy-3d/hero/finwy3d-hero-act-05-408w.webp"
-                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-05-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-05-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-05-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-05-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
-                   class="" data-frame="5" data-act="act-05" data-src-render="finwy3d-act-05-v02.png" alt=""
-                   width="1242" height="1185" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-06-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-06-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-06-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-06-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
-              <img src="assets/finwy-3d/hero/finwy3d-hero-act-06-408w.webp"
-                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-06-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-06-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-06-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-06-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
-                   class="" data-frame="6" data-act="act-06" data-src-render="finwy3d-act-06-v01.png" alt=""
-                   width="1242" height="1185" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-07-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-07-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-07-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-07-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
-              <img src="assets/finwy-3d/hero/finwy3d-hero-act-07-408w.webp"
-                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-07-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-07-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-07-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-07-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
-                   class="" data-frame="7" data-act="act-07" data-src-render="finwy3d-act-07-v01.png" alt=""
-                   width="1242" height="1185" loading="lazy" decoding="async">
-            </picture>
-            <picture>
-              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-08-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-08-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-08-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
-              <img src="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp"
-                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-08-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-08-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-08-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
-                   class="" data-frame="8" data-act="act-08" data-src-render="finwy3d-act-08-v01.png" alt=""
-                   width="1242" height="1185" loading="lazy" decoding="async">
-            </picture>
-            <!-- The SETTLED pose — what the reader looks at for the 99% of the
-                 visit that is not the wake-up, so it is the frame that has to be
-                 the good one. Build preference: act-08 (the winking "Hi") >
-                 hero-wave-energetic > wave-v04. Currently finwy3d-act-08-v01.png. -->
-            <picture>
-              <source type="image/avif" srcset="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.avif 408w, assets/finwy-3d/hero/finwy3d-hero-act-08-520w.avif 520w, assets/finwy-3d/hero/finwy3d-hero-act-08-612w.avif 612w, assets/finwy-3d/hero/finwy3d-hero-act-08-780w.avif 780w" sizes="(max-width: 700px) 204px, 360px">
-              <img class="hero__mascot-settled" id="hero-mascot-settled"
-                   src="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp"
-                   srcset="assets/finwy-3d/hero/finwy3d-hero-act-08-408w.webp 408w, assets/finwy-3d/hero/finwy3d-hero-act-08-520w.webp 520w, assets/finwy-3d/hero/finwy3d-hero-act-08-612w.webp 612w, assets/finwy-3d/hero/finwy3d-hero-act-08-780w.webp 780w" sizes="(max-width: 700px) 204px, 360px"
-                   data-src-render="finwy3d-act-08-v01.png"
-                   width="1242" height="1185" alt="" loading="eager" decoding="async">
-            </picture>
-            <!-- HERO-FRAMES:END -->
+                 Only two images are fetched with the document: the sleep pose
+                 (the LCP frame) and the settled Hi (what reduced motion and a
+                 no-JS reader see, and what the film ends on). The other sixteen
+                 are promoted from data-srcset by the player as soon as the sleep
+                 pose has decoded, which is inside the 1180 ms sleep hold. -->
+            <div class="hero__shadow" id="hero-shadow"></div>
+            <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+            <div class="hero__frames" id="hero-frames">
+              <!-- v04-01 @ 0 ms - asleep, breathing -->
+              <picture>
+                <source type="image/avif" srcset="assets/finwy-3d/hero/finwy-hero-cut-v0401-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-v0401-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-v0401-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img src="assets/finwy-3d/hero/finwy-hero-cut-v0401-336w.webp" srcset="assets/finwy-3d/hero/finwy-hero-cut-v0401-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-v0401-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-v0401-672w.webp 672w" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="0" alt="" width="672" height="656"
+                     loading="eager" fetchpriority="high" decoding="async">
+              </picture>
+              <!-- v04-02 @ 1180 ms - first stir -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0402-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-v0402-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-v0402-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0402-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-v0402-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-v0402-672w.webp 672w" data-src="assets/finwy-3d/hero/finwy-hero-cut-v0402-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="1180" alt="" width="672" height="656" decoding="async">
+              </picture>
+              <!-- v04-03 @ 1440 ms - rises, eyes still shut -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0403-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-v0403-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-v0403-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0403-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-v0403-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-v0403-672w.webp 672w" data-src="assets/finwy-3d/hero/finwy-hero-cut-v0403-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="1440" alt="" width="672" height="656" decoding="async">
+              </picture>
+              <!-- smear @ 1740 ms - the wake, film frame 43 -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-wake-a-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-wake-a-448w.avif 448w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-wake-a-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-wake-a-448w.webp 448w" data-src="assets/finwy-3d/hero/finwy-hero-cut-smear-wake-a-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="1740" alt="" width="448" height="438" decoding="async">
+              </picture>
+              <!-- smear @ 1760 ms - the wake, film frame 44 -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-wake-b-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-wake-b-448w.avif 448w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-wake-b-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-wake-b-448w.webp 448w" data-src="assets/finwy-3d/hero/finwy-hero-cut-smear-wake-b-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="1760" alt="" width="448" height="438" decoding="async">
+              </picture>
+              <!-- v04-04 @ 1800 ms - the wake, rubs eye, &quot;o&quot; -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0404-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-v0404-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-v0404-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0404-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-v0404-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-v0404-672w.webp 672w" data-src="assets/finwy-3d/hero/finwy-hero-cut-v0404-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="1800" alt="" width="672" height="656" decoding="async">
+              </picture>
+              <!-- v04-09 @ 2440 ms - arms open, the ramp -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0409-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-v0409-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-v0409-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0409-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-v0409-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-v0409-672w.webp 672w" data-src="assets/finwy-3d/hero/finwy-hero-cut-v0409-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="2440" alt="" width="672" height="656" decoding="async">
+              </picture>
+              <!-- F11 (graded) @ 2820 ms - spin half-turn, with the hoop -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-f11-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-f11-448w.avif 448w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-f11-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-f11-448w.webp 448w" data-src="assets/finwy-3d/hero/finwy-hero-cut-f11-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="2820" alt="" width="448" height="438" decoding="async">
+              </picture>
+              <!-- F10 (graded) @ 2965 ms - spin half-turn, THE BACK VIEW -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-f10-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-f10-448w.avif 448w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-f10-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-f10-448w.webp 448w" data-src="assets/finwy-3d/hero/finwy-hero-cut-f10-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="2965" alt="" width="448" height="438" decoding="async">
+              </picture>
+              <!-- v04-13 @ 3600 ms - deep crouch -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0413-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-v0413-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-v0413-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0413-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-v0413-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-v0413-672w.webp 672w" data-src="assets/finwy-3d/hero/finwy-hero-cut-v0413-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="3600" alt="" width="672" height="656" decoding="async">
+              </picture>
+              <!-- smear @ 3900 ms - the launch, film frame 97 -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-launch-a-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-launch-a-448w.avif 448w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-launch-a-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-launch-a-448w.webp 448w" data-src="assets/finwy-3d/hero/finwy-hero-cut-smear-launch-a-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="3900" alt="" width="448" height="438" decoding="async">
+              </picture>
+              <!-- smear @ 3920 ms - the launch, film frame 98 -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-launch-b-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-launch-b-448w.avif 448w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-launch-b-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-launch-b-448w.webp 448w" data-src="assets/finwy-3d/hero/finwy-hero-cut-smear-launch-b-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="3920" alt="" width="448" height="438" decoding="async">
+              </picture>
+              <!-- v04-14 @ 3960 ms - airborne -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0414-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-v0414-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-v0414-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0414-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-v0414-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-v0414-672w.webp 672w" data-src="assets/finwy-3d/hero/finwy-hero-cut-v0414-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="3960" alt="" width="672" height="656" decoding="async">
+              </picture>
+              <!-- smear @ 4320 ms - the landing, film frame 108 -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-land-a-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-land-a-448w.avif 448w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-smear-land-a-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-smear-land-a-448w.webp 448w" data-src="assets/finwy-3d/hero/finwy-hero-cut-smear-land-a-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="4320" alt="" width="448" height="438" decoding="async">
+              </picture>
+              <!-- v04-15 @ 4360 ms - land, squash -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0415-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-v0415-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-v0415-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-v0415-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-v0415-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-v0415-672w.webp 672w" data-src="assets/finwy-3d/hero/finwy-hero-cut-v0415-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="4360" alt="" width="672" height="656" decoding="async">
+              </picture>
+              <!-- F16 (graded) @ 4680 ms - the Hi, pop transient -->
+              <picture>
+                <source type="image/avif" data-srcset="assets/finwy-3d/hero/finwy-hero-cut-f16-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-f16-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-f16-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img data-srcset="assets/finwy-3d/hero/finwy-hero-cut-f16-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-f16-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-f16-672w.webp 672w" data-src="assets/finwy-3d/hero/finwy-hero-cut-f16-336w.webp" sizes="(max-width: 700px) 223px, 338px"
+                     class="" data-cue="4680" alt="" width="672" height="656" decoding="async">
+              </picture>
+              <!-- v04-16 @ 4880 ms - the Hi, settle (held) -->
+              <picture>
+                <source type="image/avif" srcset="assets/finwy-3d/hero/finwy-hero-cut-v0416-336w.avif 336w, assets/finwy-3d/hero/finwy-hero-cut-v0416-448w.avif 448w, assets/finwy-3d/hero/finwy-hero-cut-v0416-672w.avif 672w" sizes="(max-width: 700px) 223px, 338px">
+                <img src="assets/finwy-3d/hero/finwy-hero-cut-v0416-336w.webp" srcset="assets/finwy-3d/hero/finwy-hero-cut-v0416-336w.webp 336w, assets/finwy-3d/hero/finwy-hero-cut-v0416-448w.webp 448w, assets/finwy-3d/hero/finwy-hero-cut-v0416-672w.webp 672w" sizes="(max-width: 700px) 223px, 338px"
+                     class="hero__frame--settled" data-cue="4880" alt="" width="672" height="656"
+                     loading="eager" decoding="async">
+              </picture>
+            </div>
+            <!-- No JS: the same rule reduced motion uses. The settled Hi is
+                 already in the document, so this costs nothing extra. -->
+            <noscript><style>.hero__canvas{display:none}.hero__frames{visibility:visible}.hero__frames img.hero__frame--settled{opacity:1}</style></noscript>
+            <!-- HERO-CUT-BEST:END -->
           </div>
           <div class="hero__chip hero__chip--bank">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10 12 4l9 6v2H3zM5 13h2v6H5zm4 0h2v6H9zm4 0h2v6h-2zm4 0h2v6h-2zM3 20h18v2H3z"/></svg>
@@ -6651,145 +6721,331 @@
       }
 
       // ============================================================
-      // Hero action storyboard: asleep → lifting → arms-up → wave → settle.
-      // The keyframes are pre-loaded as stacked <img>s inside #hero-mascot;
-      // we toggle .is-active to swap which one is visible, and CSS
-      // cross-fades between them (Wave 3 — they no longer hard-cut).
-      // Plays ONCE, FORWARD, and replays on return via SnapAnim.
+      // HERO-CUT-BEST — the cast film, on ONE rAF clock.
       //
-      // The step is DERIVED from however many keyframes exist, not fixed, so
-      // the run lands inside the founder's ~1.2-1.6s whether the storyboard
-      // is the four frames that exist today or the full eight. The fade is
-      // then clamped to the step so a keyframe is always actually seen.
+      // Source of truth: animreview/best/NOTES-BEST.md §6 (the keyframe table)
+      // and its generator animreview/best/tools/films2.py. The numbers below
+      // are that table transcribed, not re-derived. Reference render:
+      // animreview/best/HERO-CUT-BEST.mp4 — 7600 ms, 25 fps, 190/190 distinct
+      // frames.
+      //
+      // Two tracks share the clock, which is the whole point of doing this in
+      // rAF instead of CSS @keyframes: WHICH drawing is on screen, and what the
+      // card is doing while it is. CSS cannot swap an image on a keyframe, and
+      // two clocks would let the pose track and the transform track drift — the
+      // exact failure the scroll film was rebuilt to remove.
+      //
+      // Per frame the player writes exactly two things: one drawImage into the
+      // hero canvas, and a transform plus an opacity on the shadow div. It
+      // never reads layout in the loop, never listens to scroll, and is not on
+      // any input path — so a tap, a key or a scroll cannot perturb it.
       // ============================================================
-      var heroMascot       = document.getElementById('hero-mascot');
-      var heroFrames       = heroMascot ? heroMascot.querySelectorAll('img[data-frame]') : [];
-      var HERO_SLEEP_HOLD  = 300;   // ms of the asleep pose before it stirs. Was
-                                    // 1,400: 1.4s of sleeping mascot before the
-                                    // hero is usable is the wrong trade (Motion §8)
-      var HERO_PLAY_MS     = 1300;  // t0 → last action frame active
-      var HERO_FRAME_MS    = heroFrames.length > 1
-        ? Math.max(90, Math.round((HERO_PLAY_MS - HERO_SLEEP_HOLD) / (heroFrames.length - 1)))
-        : 0;
-      // The fade must be a SEAM between frames, not the frame's whole life. The
-      // old min(step, --dur-ui) evaluated to the step itself (143ms at eight
-      // frames), so every keyframe spent 100% of its time cross-faded with the
-      // next and the wake-up read as a permanent double exposure (re-audit
-      // Assets §4.2 / Motion M1). Cap it at the smaller of 60ms and 0.4x the
-      // step: a flipbook wants something close to a hard cut.
-      var HERO_FADE_MS     = Math.min(60, Math.round((HERO_FRAME_MS || 0) * 0.4));
-      if (heroMascot) heroMascot.style.setProperty('--hero-fade', HERO_FADE_MS + 'ms');
-      var heroRaf          = 0;
+      var heroMascot = document.getElementById('hero-mascot');
+      var heroCanvas = document.getElementById('hero-canvas');
+      var heroCtx    = heroCanvas && heroCanvas.getContext ? heroCanvas.getContext('2d') : null;
+      var heroShadow = document.getElementById('hero-shadow');
+      var heroWell   = document.getElementById('hero-frames');
+      var heroImgs   = heroWell ? heroWell.querySelectorAll('img[data-cue]') : [];
 
-      /* Both iPhone flight-recorder logs show the page's only >50ms frames
-         while parked idle on the hero (5 janks, 59-96ms, at 6-11s). Prime
-         suspect: only the active flipbook frame is visible, so iOS decodes
-         each PNG the first time its class flips mid-animation. Decode every
-         frame during the sleep hold instead, so swaps are paint-only. */
-      if (heroFrames.length && window.Image && 'decode' in Image.prototype) {
-        (function () {
-          /* v2 after the third device log: the idle-batch version fired all 12
-             decodes at once ~1s in, and the janks moved to exactly that window
-             (60ms, 65ms at 1.1-1.3s) instead of disappearing. Decode ONE frame
-             at a time in a chain, starting immediately — each link is small,
-             and the whole set is done inside the 1.4s sleep hold, before both
-             the flipbook and the user's first possible touch. */
-          var i = 0;
-          (function nextFrame() {
-            if (i >= heroFrames.length) return;
-            var img = heroFrames[i++];
-            try { img.decode().catch(function () {}).then(nextFrame, nextFrame); }
-            catch (e) { nextFrame(); }
-          })();
-        })();
+      var HERO_END = 7600;            // ms — the film's length
+      var HERO_SPIN = [2820, 2965, 3110, 3255, 3400, 3600];  // the six pinches
+      var HERO_PINCH = 0.22;          // narrowest card width at a half-turn
+      var HERO_PINCH_HW = 38;         // ms — pinch half-width
+
+      /* Pose track. NOTES-BEST §6, with each smear replaced by the reference
+         film's OWN 25 fps frames over that window — f43/f44 for the wake,
+         f97/f98 for the launch, f108 for the landing. A `true` third element
+         means the drawing already carries its card transform, baked with the
+         198-degree shutter, so the player must NOT apply the transform track
+         over it — only the camera.
+         The three cues that follow a smear therefore land on the film's frame
+         boundary rather than the smear's nominal end: v04-04 at 1800 not 1810,
+         v04-14 at 3960 not 3950, v04-15 at 4360 not 4370. Each is a quarter of
+         one 25 fps beat, and each matches the film frame for frame. */
+      var HERO_POSES = [
+        [0,    0],  [1180, 1],  [1440, 2],
+        [1740, 3, true], [1760, 4, true], [1800, 5],
+        [2440, 6],
+        [2820, 7],  [2965, 8],  [3110, 7],  [3255, 8],  [3400, 7],
+        [3600, 9],
+        [3900, 10, true], [3920, 11, true], [3960, 12],
+        [4320, 13, true], [4360, 14],
+        [4680, 15], [4880, 16]
+      ];
+
+      /* Transform track. t, easing INTO the next key, ty (stage px at a 440 px
+         stage; positive is down), rot in degrees, sx, sy. An unlisted channel
+         is REST, not "hold the last value" — that is engine2.Track.key(). */
+      var HERO_KEYS = [
+        [   0, 'inOut',     0,    0,   1,     1    ],
+        [1080, 'inQuad',    0,    0,   1,     1    ],
+        [1250, 'outQuad',   2.5,  0,   1.010, 0.988],  // the 1180 cut lands mid-move
+        [1330, 'inOut',     0,    0,   1,     1    ],
+        [1440, 'outCubic',  6,    0,   1.028, 0.965],  // rises to a crouch
+        [1620, 'inQuad',    2,    0,   1.008, 0.990],
+        [1740, 'outCubic',  9,    0,   1.045, 0.945],  // anticipation, deepest gather
+        [1930, 'inOut',   -11,    0,   0.972, 1.038],  // overshoot past standing
+        [2060, 'inOut',    -2,    0,   1.006, 0.995],
+        [2180, 'inOut',     0,    0,   1,     1    ],
+        [2360, 'outQuad',   3,    0,   1.030, 0.975],
+        [2440, 'inOut',    -4,    0,   0.980, 1.030],  // arms pop open
+        [2580, 'inOut',     1,    0,   1.005, 0.995],
+        [2680, 'inOut',     0,    0,   1,     1    ],
+        [2770, 'inOut',     0,    0,   1,     1    ],
+        [2960, 'inOut',    -4,    0,   1,     1    ],
+        [3110, 'inOut',    -7,    0,   1,     1    ],  // top of the spin
+        [3270, 'inOut',    -4,    0,   1,     1    ],
+        [3470, 'outQuad',   0,    0,   1,     1    ],
+        [3560, 'outQuad',   6,    0,   1.030, 0.970],  // untwists downward
+        [3840, 'outQuad',  17,    0,   1.080, 0.890],  // deep crouch
+        [3900, 'outQuad',  12,    0,   1.040, 0.940],
+        [4110, 'inOut',   -50,    0,   0.945, 1.065],  // launch, decelerating up
+        [4200, 'inQuad',  -48,    0,   1,     1    ],  // apex float, 90 ms
+        [4320, 'outQuad',   0,    0,   0.950, 1.060],  // falling, stretched
+        [4370, 'outBack',  11,    0,   1.120, 0.860],  // landing squash
+        [4520, 'inOut',    -5,    0,   0.975, 1.045],  // recoil
+        [4620, 'outQuad',   0,    0,   1,     1    ],
+        [4640, 'outQuad',   5,    0,   1.025, 0.975],  // dip before the Hi
+        [4800, 'outCubic',-13,   -3.8, 0.980, 1.045],  // the pop overshoots (on F16)
+        [4880, 'inOut',    -4,   -1.4, 0.994, 1.012],  // cut to v04-16, mid-descent
+        [5000, 'inOut',     2,    0.9, 1.007, 0.993],  // counter
+        [5140, 'inOut',     0,    0,   1,     1    ],  // settled
+        [7600, 'inOut',     0,    0,   1,     1    ]
+      ];
+
+      function heroEase(name, u) {
+        if (u < 0) u = 0; else if (u > 1) u = 1;
+        switch (name) {
+          case 'inQuad':   return u * u;
+          case 'outQuad':  return 1 - (1 - u) * (1 - u);
+          case 'outCubic': return 1 - Math.pow(1 - u, 3);
+          case 'outBack':  return 1 + 2.70158 * Math.pow(u - 1, 3)
+                                    + 1.70158 * Math.pow(u - 1, 2);
+          case 'inOut':    return u < 0.5 ? 4 * u * u * u
+                                          : 1 - Math.pow(-2 * u + 2, 3) / 2;
+          default:         return u;
+        }
+      }
+      function heroSmoothstep(u) {
+        if (u < 0) u = 0; else if (u > 1) u = 1;
+        return u * u * (3 - 2 * u);
       }
 
-      function heroClearTimers() {
+      // The value of the transform track alone, before the additive layers.
+      var heroKeyIdx = 0;
+      function heroTrackAt(t) {
+        var ks = HERO_KEYS, n = ks.length;
+        if (t <= ks[0][0])     return { ty: ks[0][2],     rot: ks[0][3],     sx: ks[0][4],     sy: ks[0][5]     };
+        if (t >= ks[n - 1][0]) return { ty: ks[n - 1][2], rot: ks[n - 1][3], sx: ks[n - 1][4], sy: ks[n - 1][5] };
+        // The clock only ever moves forward, so the search is a walk, not a scan.
+        if (t < ks[heroKeyIdx][0]) heroKeyIdx = 0;
+        while (heroKeyIdx < n - 2 && t >= ks[heroKeyIdx + 1][0]) heroKeyIdx++;
+        var a = ks[heroKeyIdx], b = ks[heroKeyIdx + 1];
+        var u = heroEase(a[1], (t - a[0]) / (b[0] - a[0]));
+        return {
+          ty:  a[2] + (b[2] - a[2]) * u,
+          rot: a[3] + (b[3] - a[3]) * u,
+          sx:  a[4] + (b[4] - a[4]) * u,
+          sy:  a[5] + (b[5] - a[5]) * u
+        };
+      }
+
+      /* The additive layers, NOTES-BEST §6. Scales multiply, ty and rot add.
+         Returns the camera factor separately because a baked smear frame needs
+         the camera and nothing else. */
+      function heroLayers(t, v) {
+        var s, taper, i, d;
+        if (t <= 1440) {                                   // sleep breath
+          s = Math.sin(2 * Math.PI * t / 1700);
+          taper = t < 1100 ? 1 : Math.max(0, 1 - (t - 1100) / 340);
+          v.ty += -2.4 * s * taper;
+          v.sy *= 1 + 0.018 * s * taper;
+          v.sx *= 1 - 0.006 * s * taper;
+        }
+        if (t >= 2180 && t <= 2360) {                      // micro-life
+          s = Math.sin(2 * Math.PI * (t - 2180) / 900);
+          v.ty += -0.5 * s;
+          v.sy *= 1 + 0.004 * s;
+        }
+        if (t >= 2770 && t <= 3660) {                      // the spin pinch + roll
+          var f = 1, idx = 0;
+          for (i = 0; i < HERO_SPIN.length; i++) {
+            d = Math.abs(t - HERO_SPIN[i]);
+            if (d < HERO_PINCH_HW) {
+              f = Math.min(f, HERO_PINCH + (1 - HERO_PINCH) * heroSmoothstep(d / HERO_PINCH_HW));
+            }
+            if (t >= HERO_SPIN[i]) idx++;
+          }
+          v.sx *= f;
+          v.rot += 3.2 * Math.sin(2 * Math.PI * (t - 2770) / 260) * (idx ? 1 : 0.6);
+        }
+        if (t >= 5140) {                                   // the Hi breath
+          var u = t - 5140;
+          s = Math.sin(2 * Math.PI * u / 1900);
+          var w = Math.min(1, u / 320);
+          /* DEVIATION from NOTES-BEST §6, deliberate. The reference is a GIF
+             that loops; the site holds the pose forever (ANIMATOR-NOTES §3:
+             "the GIF loops; the site should not"). Taper the breath out over
+             the last 340 ms so the clock can stop on a genuinely still frame
+             instead of leaving a permanent rAF running on the hero — which is
+             where every jank in the device logs came from. */
+          if (t > 7260) w *= Math.max(0, 1 - (t - 7260) / 340);
+          v.ty += -1.7 * s * w;
+          v.sy *= 1 + 0.010 * s * w;
+          v.rot += 0.55 * s * w;
+        }
+        var cam = 1 + 0.012 * Math.sin(Math.PI * Math.min(t, HERO_END) / HERO_END);
+        v.sx *= cam;
+        v.sy *= cam;
+        return cam;
+      }
+
+      /* Stage geometry, in stage units, and U = one stage unit in canvas px.
+         The canvas box is locked to 340 x 440 by aspect-ratio, so one U serves
+         both axes. Set by heroMeasure(), never read inside the loop. */
+      var HERO_U = 0;
+      var heroShown = -1;                       // last drawing actually drawn
+
+      /* Only the geometry that needs layout. Called once and on a real resize —
+         never per frame. */
+      function heroMeasure() {
+        if (!heroMascot || !heroCanvas) return;
+        var r = heroMascot.getBoundingClientRect();
+        if (r.height <= 0) return;
+        var d = Math.min(3, window.devicePixelRatio || 1);
+        var w = Math.round(r.width * d), h = Math.round(r.height * d);
+        if (heroCanvas.width !== w || heroCanvas.height !== h) {
+          heroCanvas.width = w; heroCanvas.height = h;
+          if (heroCtx) { heroCtx.imageSmoothingEnabled = true;
+                         heroCtx.imageSmoothingQuality = 'high'; }
+        }
+        HERO_U = h / 440;
+        // 7 stage units of gaussian, in CSS px
+        heroMascot.style.setProperty('--hero-shadow-blur', (r.height * 7 / 440).toFixed(2) + 'px');
+      }
+
+      var heroSegIdx = 0;
+      function heroFrame(t) {
+        var v = heroTrackAt(t);
+        var cam = heroLayers(t, v);
+
+        if (t < HERO_POSES[heroSegIdx][0]) heroSegIdx = 0;
+        while (heroSegIdx < HERO_POSES.length - 1 && t >= HERO_POSES[heroSegIdx + 1][0]) heroSegIdx++;
+        var seg = HERO_POSES[heroSegIdx];
+
+        // Never blank the stage: if a drawing has not arrived yet, the one
+        // already on screen keeps it. Never two — the canvas is cleared first,
+        // so exactly one drawing is composited per frame, by construction.
+        var img = heroImgs[seg[1]];
+        if (img && img.complete && img.naturalWidth) heroShown = seg[1];
+        img = heroImgs[heroShown];
+        if (!img || !img.complete || !img.naturalWidth) return;
+
+        var U = HERO_U, W = heroCanvas.width, H = heroCanvas.height;
+        heroCtx.setTransform(1, 0, 0, 1, 0, 0);
+        heroCtx.clearRect(0, 0, W, H);
+        heroCtx.save();
+        var px = 170 * U, py = 372 * U;          // the foot pivot
+        if (seg[2]) {
+          // A baked smear already carries its card transform and the 198-degree
+          // shutter; only the camera is still owed.
+          heroCtx.translate(px, py);
+          heroCtx.scale(cam, cam);
+          heroCtx.translate(-px, -py);
+        } else {
+          // engine2's T2 @ R @ Sc @ T1 about the foot pivot.
+          heroCtx.translate(px, py + v.ty * U);
+          heroCtx.rotate(v.rot * Math.PI / 180);
+          heroCtx.scale(v.sx, v.sy);
+          heroCtx.translate(-px, -py);
+        }
+        // the shared crop rect: stage x 4..336, y 84..408
+        heroCtx.drawImage(img, 4 * U, 84 * U, 332 * U, 324 * U);
+        heroCtx.restore();
+
+        // Contact shadow: k = max(0.25, 1 - max(0,-ty)/55), engine2._shadow.
+        var k = Math.max(0.25, 1 - Math.max(0, -v.ty) / 55);
+        heroShadow.style.transform = 'translate(-50%,-50%) scale(' +
+          (k * v.sx).toFixed(4) + ',' + Math.max(6 / 34, k).toFixed(4) + ')';
+        heroShadow.style.opacity = (0.4627 * k).toFixed(4);
+      }
+
+      /* The sixteen drawings that are not in the document's own fetch. They are
+         promoted the moment the sleep pose has decoded, so they load inside the
+         1180 ms sleep hold and never compete with the first paint. Each one
+         repaints the stage when it lands, so a drawing that arrives late still
+         reaches the screen even if the clock has already stopped. */
+      function heroPromoteFrames() {
+        for (var i = 0; i < heroImgs.length; i++) {
+          var img = heroImgs[i];
+          if (!img.dataset.srcset) continue;
+          img.addEventListener('load', function () {
+            if (!heroRaf) heroFrame(heroLastT);
+          }, { once: true });
+          var pic = img.parentNode;
+          var src = pic && pic.querySelector ? pic.querySelector('source[data-srcset]') : null;
+          if (src) { src.srcset = src.dataset.srcset; src.removeAttribute('data-srcset'); }
+          img.srcset = img.dataset.srcset;
+          img.src = img.dataset.src;
+          img.removeAttribute('data-srcset');
+          img.removeAttribute('data-src');
+        }
+      }
+
+      var heroRaf = 0, heroLastT = 0, heroDone = false;
+      function heroStop() {
         if (heroRaf) cancelAnimationFrame(heroRaf);
         heroRaf = 0;
       }
 
-      function heroShowFrame(n) {
-        for (var i = 0; i < heroFrames.length; i++) {
-          if (i === n) heroFrames[i].classList.add('is-active');
-          else         heroFrames[i].classList.remove('is-active');
-        }
-      }
+      if (heroMascot && heroCanvas && heroCtx && heroShadow && heroImgs.length) {
+        heroMeasure();
+        addEventListener('resize', function () {
+          heroMeasure();
+          // A resized canvas is a cleared canvas. Repaint the frame we are on.
+          if (heroDone || !heroRaf) heroFrame(heroLastT);
+        }, { passive: true });
 
-      function heroResetMascot() {
-        heroClearTimers();
-        if (heroMascot) heroMascot.classList.remove('is-settled');
-        heroShowFrame(0); // frame 1
-      }
-
-      /* Mascot §9.5. The wake-up ends on the 3D settled pose, not on raster
-         frame 15. One clock owns the whole hand-off: the same rAF loop that
-         walks the flipbook flips .is-settled on the frame it reaches the last
-         index, and CSS cross-fades over --dur-scene. Nothing schedules the
-         swap independently, so it cannot arrive out of order with the
-         flipbook the way the deleted second chain did (M4). */
-      function heroSettle() {
-        if (heroMascot) heroMascot.classList.add('is-settled');
-      }
-
-      function heroPlaySequence() {
-        if (!heroFrames.length) return Promise.resolve();
-        heroClearTimers();
         if (reduce) {
-          heroShowFrame(heroFrames.length - 1);
-          heroSettle();
-          return Promise.resolve();
-        }
-        heroMascot.classList.remove('is-settled');
-        // Make sure frame 1 is the active frame from the very start of the
-        // sequence — it's the "sleeping" pose and we want it clearly visible
-        // before the flipbook begins.
-        heroShowFrame(0);
-        /* ONE clock. The frame index is derived from elapsed time inside a
-           single rAF loop, so it is monotonic by construction — 15 independent
-           setTimeouts are not, and the second chain that used to run alongside
-           this one made the mascot jump backwards from frame 15 to a mid-jump
-           pose at ~1.9s (Motion M4). That second chain is deleted. */
-        var last = heroFrames.length - 1;
-        return new Promise(function (resolve) {
-          var t0 = performance.now(), shown = -1;
-          (function tick(now) {
-            var e = now - t0;
-            var idx = e < HERO_SLEEP_HOLD ? 0
-                    : Math.floor((e - HERO_SLEEP_HOLD) / HERO_FRAME_MS);
-            if (idx > last) idx = last;
-            if (idx !== shown) { shown = idx; heroShowFrame(idx); }
-            if (idx >= last) { heroRaf = 0; heroSettle(); resolve(); return; }
+          /* Reduced motion: the settled Hi, already painted by CSS before this
+             script ran, on a canvas that CSS has hidden. No clock is started. */
+          heroShown = heroImgs.length - 1;
+          heroDone = true;
+        } else {
+          var sleepImg = heroImgs[0];
+          var kick = function () { heroPromoteFrames(); };
+          if (sleepImg.decode) { sleepImg.decode().then(kick, kick); }
+          else if (sleepImg.complete) { kick(); }
+          else { sleepImg.addEventListener('load', kick, { once: true });
+                 sleepImg.addEventListener('error', kick, { once: true }); }
+
+          var heroT0 = null;   // null, not 0: a now of 0 is a legal first frame
+          heroRaf = requestAnimationFrame(function tick(now) {
+            if (heroT0 === null) heroT0 = now;
+            var t = now - heroT0;
+            if (t >= HERO_END) {
+              heroLastT = HERO_END; heroFrame(HERO_END);
+              heroRaf = 0; heroDone = true; return;
+            }
+            heroLastT = t;
+            heroFrame(t);
             heroRaf = requestAnimationFrame(tick);
-          })(performance.now());
-        });
-      }
+          });
+        }
 
-      // Track whether the hero already played in this session so SnapAnim's
-      // first activation doesn't double-fire alongside the immediate trigger.
-      var heroPlayedInSession = false;
-
-      if (heroMascot && heroFrames.length) {
+        /* The hero section still carries data-snap-anim, so SnapAnim still
+           counts it as a scene. The film plays once and settles permanently —
+           NOTES-BEST casts v04-16 precisely because it is "the only Hi that
+           survives a three-second hold" — so there is nothing to replay and
+           nothing to reset. Registering a no-op keeps SnapAnim's bookkeeping
+           identical to before rather than changing which scene it thinks is
+           on stage. */
         SnapAnim.register('hero-wakeup', {
-          play: function () {
-            if (heroPlayedInSession) return Promise.resolve();
-            heroPlayedInSession = true;
-            return heroPlaySequence();
-          },
-          reset: function () {
-            // Called when the user leaves hero. Mark unplayed so re-entry
-            // replays the sequence; reset frames back to frame 1.
-            heroPlayedInSession = false;
-            heroResetMascot();
-          },
-          stop: heroClearTimers,
+          play: function () { return Promise.resolve(); },
+          reset: function () {},
+          stop: heroStop,
           loop: false
         });
-
-        // Fire the sequence immediately so it starts on the same paint frame
-        // as the CSS text-reveal animations — no SnapAnim activation lag.
-        heroPlayedInSession = true;
-        heroPlaySequence();
       }
 
       // ---- Nav: hamburger ----
