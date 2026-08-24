@@ -1116,7 +1116,7 @@ strong, b,
 }
 /* Cards in a grid sit on their content — they are never stretched to an
    equal height with a hollow bottom (U5). */
-.caps__grid, .secure__grid { align-items: start; }
+.caps__grid { align-items: start; } /* .secure__grid stretches — unequal copy must not leave holes (2026-08-24) */
 
 /* THE TWO-UP CARD ON A FOUR-COLUMN FIELD.
    Below 600 px the grid is four columns wide and a card in a two-up row gets

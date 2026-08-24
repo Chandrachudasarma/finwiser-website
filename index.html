@@ -2956,8 +2956,13 @@
         row-gap: 4px;
     
     }
+      /* One column must read as two LISTS, not an interleaved zip: STOP and all
+         its rows, then START and all its rows (founder, 2026-08-24). */
+      .pricing__compare-head--stop { order: 0; }
+      .pricing__cell--stop { order: 1; }
+      .pricing__compare-head--start { order: 2; margin-top: 16px; }
+      .pricing__cell--start { order: 3; }
       .pricing__compare-head { padding-bottom: 4px; margin-bottom: 4px;  }
-      .pricing__compare-head--start { margin-top: 12px;  }
       .pricing__cell { padding: 4px 0;  }
     }
     .pricing__mark {
@@ -3114,7 +3119,13 @@
     .secure__grid {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
       max-width: 920px; margin: 0 auto;
-    
+      align-items: stretch; /* unequal copy must not leave holes in the grid */
+    }
+    /* Wide screens: one uniform row of four — the 2x2 read as "randomly
+       arranged" because card 2 is twice the height of its neighbours
+       (founder, 2026-08-24). */
+    @media (min-width: 1200px) {
+      .secure__grid { grid-template-columns: repeat(4, 1fr); max-width: none; }
     }
     .secure__card { text-align: left;  }
     .secure__icon {
@@ -3169,6 +3180,9 @@
     }
     .team__card {
       display: flex; align-items: center; gap: 20px; text-align: left;
+      /* A one-person card must not span the whole 12-col container at 1920 —
+         bound it and centre it (founder: "left aligned rather than center"). */
+      max-width: 760px; margin-left: auto; margin-right: auto;
     }
     .team__avatar {
       flex: 0 0 auto; width: 88px; height: 88px; border-radius: var(--r-lg);
@@ -3194,7 +3208,7 @@
     .team__linkedin svg { width: 15px; height: 15px; fill: currentColor;  }
     .team__entity {
       margin-top: 18px; color: var(--text-on-light-muted);
-    
+      max-width: 62ch; margin-left: auto; margin-right: auto; text-align: center;
     }
     .team__entity strong { color: var(--navy);  }
     @media (max-width: 600px) {
