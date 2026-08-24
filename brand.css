@@ -519,7 +519,9 @@ body {
 .testify__heading,
 .secure__heading,
 .faq__heading,
-.engine__intro-title { margin-inline: auto; }
+.engine__intro-title,
+.final-cta__heading,
+.engine-finale__heading { margin-inline: auto; }
 
 /* --- H2 / Title 2 — card and step headings --------------------------------- */
 .h2,
@@ -564,6 +566,7 @@ body {
 .engine__close-finwy,
 .testify__quote,
 .src-replace {
+  margin-inline: auto;
   font-family: var(--font-sans);
   font-size: var(--fs-lead);
   line-height: var(--lh-lead);
