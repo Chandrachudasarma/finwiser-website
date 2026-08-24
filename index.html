@@ -6370,7 +6370,7 @@
 
       function fwChapters(cfg) {
         var q = null, target = 0, raf = null, last = 0;
-        var playFrom = 0, playTick = 0;
+        var playFrom = 0, playTick = 0, playFast = false;
         function chapterFor(p) {
           var t = 0;
           for (var i = 0; i < cfg.thresholds.length; i++) if (p >= cfg.thresholds[i]) t = i + 1;
@@ -6380,14 +6380,25 @@
         function run(ts) {
           var dt = Math.min(0.05, (ts - last) / 1000); last = ts;
           var goal = cfg.poses[target];
-          // (b) input pre-empts — resolve to the stop this frame.
-          if (fwInputTick !== playTick) { land(goal); return; }
+          // (b) input pre-empts — but by FAST-FORWARD, not teleport: a
+          //     continuous scroller must still SEE the chapter (the seen
+          //     scan sweep died when this was a snap-land; founder catch,
+          //     2026-08-24). The play retires within CAP_FAST_MS, drawing
+          //     every intermediate frame, so control returns in ~3 frames
+          //     while the picture still travels through its states.
+          var CAP_FAST_MS = 180;
+          // "Interrupted" means the user demanded a NEW destination while a
+          // play was still running (retarget mid-play) — that fresh play
+          // catches up fast. Same-direction scrolling that merely re-affirms
+          // the current destination is NOT an interruption: the play IS the
+          // response, and it keeps its full CHAPTER_CAP_MS so the authored
+          // motion (the seen scan sweep) stays visible. (founder, 2026-08-24)
           var dist = Math.abs(goal - q);
           var speed = (cfg.speed || 0.16) * (dist > (cfg.fastDist || 0.24) ? 1.9 : 1);
           var natural = speed * dt * (0.3 + 0.7 * Math.min(1, dist / 0.1));
           // (a) time cap — a floor on rate that retires the whole traverse
-          //     within CHAPTER_CAP_MS even when the easing is crawling.
-          var floor = Math.abs(goal - playFrom) * dt * 1000 / CHAPTER_CAP_MS;
+          //     within CHAPTER_CAP_MS (CAP_FAST_MS once input arrives).
+          var floor = Math.abs(goal - playFrom) * dt * 1000 / (playFast ? CAP_FAST_MS : CHAPTER_CAP_MS);
           var step = Math.min(dist, Math.max(natural, floor));
           q += (goal > q ? 1 : -1) * step;
           cfg.render(q);
@@ -6404,6 +6415,7 @@
             // this chapter must not instantly pre-empt it).
             playFrom = q;
             playTick = fwInputTick;
+            playFast = (raf !== null);   /* retarget mid-play = catch up fast */
             if (!raf) { last = performance.now(); raf = requestAnimationFrame(run); }
           }
         });
