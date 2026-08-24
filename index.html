@@ -2119,13 +2119,18 @@
     }
     .engine__intro-title em { font-style: italic; color: var(--teal-text);  }
 
-    /* Sticky shared head — sits at top of engine while user scrolls cards */
+    /* Shared head — the eyebrow + headline are read once at scene entry,
+       then scroll away so the CARD owns the pinned frame (the Riya-vs-Aman
+       split inside it is what stays put). Static at every width: keeping it
+       sticky on desktop stole ~113px and left the ~700px card overflowing
+       the pinned frame below ~900px viewport height. engine-head-h is now 0
+       everywhere, so the card pins straight under the nav. */
     .engine__shared-head {
-      position: sticky; top: var(--nav-h); z-index: 5;
+      position: static;
       background: var(--white);
       padding: 18px 0 14px;
       border-bottom: 1px solid var(--border-on-light);
-    
+
     }
     .engine__shared-inner {
       max-width: 1180px; margin: 0 auto; padding: 0 32px;
@@ -2201,507 +2206,223 @@
     }
 
     /* ------------------------------------------------------------ */
-    /* THE ENGINE'S TRACK (M2). Six beats of scroll instead of 5.6
-       seconds of stillness. The card pins under the sticky shared head
-       on desktop; on a phone the card is 1,085px and cannot pin, so the
-       TRAIL pins and the two lanes travel under it — the six factors
-       stay on screen while the opposite verdicts arrive.
+    /* THE ENGINE'S TRACK. Six beats of scroll. The whole card pins under
+       the shared head at EVERY width now: the rebuilt card holds
+       Riya-vs-Aman, the six factor rows and both verdicts in one short
+       frame, so the payoff never falls below the fold on a phone (the
+       old scene's 1,085px card could not pin and stacked into a wall).
        --engine-head-h is written by the scene JS from the real measured
-       head height (119px at 1440, 157px at 390, and it re-wraps). */
+       head height (sticky on desktop, static and 0 below 900). */
     /* ------------------------------------------------------------ */
     @media (prefers-reduced-motion: no-preference) {
       .engine { --beats: 6;  }
-      .engine .trail {
-        position: sticky;
-        top: calc(var(--nav-h) + var(--engine-head-h, 132px) + 8px);
-        z-index: 4;
-        background: var(--white);
-
-    }
-    }
-    @media (min-width: 901px) and (min-height: 860px) and (prefers-reduced-motion: no-preference) {
-      /* The track has to be on __inner, not on .engine: a sticky child
-         travels inside its own parent, and putting min-height on the
-         section just parked 2,000px of white under the finale. */
       .engine__inner { min-height: calc(var(--beats) * var(--beat) + var(--stage-h));  }
-      .engine .trail { position: static; background: none;  }
       .engine .case-card {
         position: sticky;
-        top: calc(var(--nav-h) + var(--engine-head-h, 132px) + 8px);
-        max-height: calc(100svh - var(--nav-h) - var(--engine-head-h, 132px) - 16px);
+        top: calc(var(--nav-h) + var(--engine-head-h, 0px) + 8px);
+        max-height: calc(100svh - var(--nav-h) - var(--engine-head-h, 0px) - 16px);
 
     }
     }
 
     /* Pair card */
-    .case-card {
-      margin-bottom: 24px;
-      opacity: 0; transform: translateY(12px);
-      transition: opacity var(--dur-reveal) var(--ease-in-out),
-                  transform var(--dur-reveal) var(--ease-in-out);
-    }
-    .case-card.is-revealed { opacity: 1; transform: none;  }
+    .case-card { margin-bottom: 24px;  }
     .case-card:last-of-type { margin-bottom: 18px;  }
-    .case-card__head { text-align: center; margin-bottom: 14px;  }
-    .case-card__head h3 {
-      color: var(--navy);
-    
+    /* Card fade-in is gated on html.js so a no-JS load rests on the
+       fully-resolved card, never an invisible one. */
+    @media (prefers-reduced-motion: no-preference) {
+      html.js .engine .case-card {
+        opacity: 0; transform: translateY(12px);
+        transition: opacity var(--dur-reveal) var(--ease-in-out),
+                    transform var(--dur-reveal) var(--ease-in-out);
+
     }
-    .case-card__head-sub {
-      font-style: italic;
-      color: var(--text-on-light-muted);
-      margin-top: 4px;
-    
+      html.js .engine .case-card.is-revealed { opacity: 1; transform: none;  }
     }
 
-    /* Engine trail */
-    /* THE TRAIL IS THREE BANDS, not two. Finwy walks the TOP band, the
-       pills hold the middle, and the caption of whichever factor he is
-       standing on hangs below. He used to walk in the caption band, at
-       `top: 50% + 14px`, which meant the one factor whose readout was
-       showing was the one factor with a mascot printed across it — worst
-       at 390, visible at 1440. Moving him above the rail costs 36px of
-       trail height and removes the collision at every width. */
-    .trail {
-      position: relative;
-      padding: 52px 18px 38px;
-      margin-bottom: 12px;
-      overflow: visible;
+    /* Persistent Riya-vs-Aman split — always on screen, both columns side
+       by side down to 390px (never stacked); only the self-rating under
+       each name (the irony anchor). */
+    .seen-duo {
+      display: grid;
+      grid-template-columns: 1fr 56px 1fr;
+      align-items: stretch;
+      background: var(--white);
+      border: 1px solid var(--border-on-light);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-1);
+
     }
-    .trail__row {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
+    .seen-person {
+      padding: 12px 16px;
+      display: flex; flex-direction: column; gap: 2px;
+      min-width: 0;
+
+    }
+    .seen-person--right { text-align: right;  }
+    .seen-person__who {
+      font-weight: 700; color: var(--navy);
+      font-size: var(--fs-lead); line-height: 1.15;
+
+    }
+    .seen-person__meta {
+      text-transform: uppercase; letter-spacing: 0.04em;
+      font-size: var(--fs-label); color: var(--text-on-light-muted);
+
+    }
+    .seen-vs {
+      display: grid; place-items: center;
+      background: var(--surface-light);
+      border-left: 1px solid var(--border-on-light);
+      border-right: 1px solid var(--border-on-light);
+
+    }
+    .seen-vs span {
+      font-size: var(--fs-label); font-weight: 700;
+      letter-spacing: 0.06em; color: var(--text-on-light-muted);
+
+    }
+
+    /* Six factors as one shared table; rows reveal one at a time on q. */
+    .seen-factors {
+      margin-top: 12px;
+      border: 1px solid var(--border-on-light);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      background: var(--white);
+
+    }
+    .seen-row {
+      display: grid;
+      grid-template-columns: 1fr 180px 1fr;
       align-items: center;
       gap: 8px;
-      padding: 0 8px;
-    
-    }
-    .trail__row::before {
-      content: '';
-      position: absolute;
-      left: 36px; right: 36px;
-      top: 50%; height: 2px;
-      background: var(--navy-16);
-      transform: translateY(-50%);
-      z-index: 0;
-    
-    }
-    .factor {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      width: 46px; height: 46px;
-      background: var(--white);
-      border: 1.6px solid var(--navy-16);
-      border-radius: var(--r-pill);
-      box-shadow: var(--shadow-1);
-      flex-shrink: 0;
-      transition: background var(--dur-reveal) var(--ease-out),
-                  border-color var(--dur-reveal) var(--ease-out),
-                  box-shadow var(--dur-reveal) var(--ease-out),
-                  transform var(--dur-reveal) var(--ease-out);
-    
-    }
-    .factor svg {
-      width: 17px; height: 17px;
-      stroke: var(--text-on-light-muted);
-      fill: none; stroke-width: 1.8;
-      stroke-linecap: round; stroke-linejoin: round;
-      transition: stroke var(--dur-ui) var(--ease-in-out);
-    
-    }
-    .factor__label {
-      position: absolute;
-      top: calc(100% + 6px); left: 50%;
-      transform: translateX(-50%); text-transform: uppercase;
-      color: var(--text-on-light-muted);
-      white-space: nowrap;
-      transition: color var(--dur-ui) var(--ease-in-out);
-    
-    }
-    .factor__readout {
-      position: absolute;
-      top: calc(100% + 18px); left: 50%;
-      transform: translate(-50%, -4px);
-      color: var(--navy);
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-      opacity: 0;
-      transition: opacity var(--dur-ui) var(--ease-in-out),
-                  transform var(--dur-reveal) var(--ease-out);
-    
-    }
-    .factor.is-active {
-      background: var(--mint-08);
-      border-color: var(--mint);
-      box-shadow: none; outline: var(--ring-mint); outline-offset: 0;
-      transform: scale(1.18);
-    
-    }
-    .factor.is-active svg { stroke: var(--mint);  }
-    .factor.is-active .factor__label { color: var(--navy);  }
-    .factor.is-active .factor__readout { opacity: 1; transform: translate(-50%, 0);  }
-    .factor.is-considered { border-color: var(--mint-32);  }
-    .factor.is-considered svg { stroke: var(--mint);  }
-    .factor.is-considered .factor__readout { opacity: 1; transform: translate(-50%, 0);  }
-    .factor.is-considered::after {
-      content: '\2713';
-      position: absolute;
-      top: -5px; right: -5px;
-      width: 16px; height: 16px;
-      border-radius: var(--r-pill);
-      background: var(--mint); color: var(--white);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: var(--shadow-1);
-      animation: engineTickPop var(--dur-reveal) var(--ease-emph);
-    
-    }
-    @keyframes engineTickPop {
-      0%   { opacity: 0; transform: scale(0.4);  }
-      60%  { transform: scale(1.18);  }
-      100% { opacity: 1; transform: scale(1);  }
-    }
-    .factor.is-decisive-hold {
-      background: var(--mint-16);
-      border-color: var(--mint);
-      box-shadow: none; outline: var(--ring-mint); outline-offset: 0;
-      transform: scale(1.28);
-      transition: background var(--dur-reveal) var(--ease-out),
-                  border-color var(--dur-reveal) var(--ease-out),
-                  box-shadow var(--dur-reveal) var(--ease-out),
-                  transform var(--dur-reveal) var(--ease-out);
-    
-    }
-    .factor.is-decisive-hold svg { stroke: var(--mint);  }
-    .factor.is-decisive-hold .factor__readout {
-      opacity: 1; transform: translate(-50%, 0);
-    
-    }
-    .factor.is-decisive {
-      background: var(--mint);
-      border-color: var(--mint);
-      box-shadow: none; outline: var(--ring-mint); outline-offset: 0;
-      transform: scale(1.16);
-    
-    }
-    .factor.is-decisive svg { stroke: var(--white);  }
-    .factor.is-decisive .factor__label { color: var(--mint);  }
-    .factor.is-decisive .factor__readout { opacity: 1; transform: translate(-50%, 0);  }
-    .factor.is-decisive::after {
-      content: '\2605';
-      position: absolute;
-      top: -7px; right: -7px;
-      width: 18px; height: 18px;
-      border-radius: var(--r-pill);
-      background: var(--gold); color: var(--navy-deep);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: var(--shadow-1);
-      animation: engineTickPop var(--dur-reveal) var(--ease-emph);
-    
-    }
-    .factor.is-handing-off::before {
-      content: '';
-      position: absolute;
-      left: 50%; top: 100%;
-      width: 3px; height: 0;
-      background: linear-gradient(to bottom,
-        var(--mint) 0%, var(--mint-32) 50%, transparent 100%);
-      transform: translateX(-50%);
-      opacity: 0.85;
-      pointer-events: none;
-      animation: engineHandoffStream var(--dur-scene) var(--ease-out) forwards;
-    
-    }
-    @keyframes engineHandoffStream {
-      0%   { height: 0;   opacity: 0;  }
-      30%  { opacity: 1;  }
-      100% { height: 200px; opacity: 0;  }
-    }
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-on-light);
 
-    /* Mascot */
-    .trail__mascot {
-      position: absolute;
-      left: 0;
-      top: 2px;
-      width: 48px; height: 48px;
-      transition: transform var(--dur-reveal) var(--ease-out),
-                  opacity var(--dur-ui) var(--ease-in-out),
-                  width var(--dur-reveal) var(--ease-out),
-                  height var(--dur-reveal) var(--ease-out),
-                  top var(--dur-reveal) var(--ease-out);
-      opacity: 0;
-      z-index: 4;
-      pointer-events: none;
-      will-change: transform;
-    
     }
-    .trail__mascot img {
-      width: 100%; height: 100%; object-fit: contain;
-      filter: drop-shadow(0 5px 12px rgba(0,45,86,0.18));
-      transform-origin: bottom center;
-      animation: engineMascotBreathe calc(var(--dur-scene) * 4.5) var(--ease-in-out) infinite;
-    
-    }
-    @keyframes engineMascotBreathe {
-      0%, 100% { transform: scale(1);  }
-      50%      { transform: scale(1.018);  }
-    }
-    .case-card.is-revealed .trail__mascot { opacity: 1;  }
-    .trail__mascot.is-stepping img {
-      animation: engineMascotStep var(--dur-reveal) var(--ease-out),
-                 engineMascotBreathe calc(var(--dur-scene) * 4.5) var(--ease-in-out) infinite var(--dur-reveal);
-    
-    }
-    @keyframes engineMascotStep {
-      0%   { transform: translateY(0)    rotate(0deg)  scale(1);  }
-      24%  { transform: translateY(-3px) rotate(-2deg) scale(0.97);  }
-      48%  { transform: translateY(-8px) rotate(0deg)  scale(1.04);  }
-      72%  { transform: translateY(-3px) rotate(3deg)  scale(1.0);  }
-      100% { transform: translateY(0)    rotate(0deg)  scale(1);  }
-    }
-    .trail__mascot.is-leaning img {
-      animation: engineMascotLean var(--dur-scene) var(--ease-out) forwards;
-    
-    }
-    @keyframes engineMascotLean {
-      0%   { transform: rotate(0deg) translateY(0);  }
-      40%  { transform: rotate(5deg) translateY(-2px);  }
-      75%  { transform: rotate(2deg) translateY(0);  }
-      100% { transform: rotate(2deg) translateY(0);  }
-    }
-    .trail__mascot.is-docked {
-      width: 26px; height: 26px;
-      top: -14px;
-      right: 12px;
-      left: auto;
-      bottom: auto;
-    
-    }
-    .trail__mascot::after {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border-radius: var(--r-pill);
-      background: radial-gradient(circle, var(--mint-16) 0%, transparent 65%);
-      opacity: 0;
-      transition: opacity var(--dur-scene) var(--ease-out), inset var(--dur-scene) var(--ease-out);
-      pointer-events: none;
-    
-    }
-    .trail__mascot[data-loaded="1"]::after { opacity: 0.5;  }
-    .trail__mascot[data-loaded="2"]::after { opacity: 0.7;  }
-    .trail__mascot[data-loaded="3"]::after { opacity: 0.85; inset: -10px;  }
-    .trail__mascot[data-loaded="4"]::after { opacity: 1.0; inset: -12px;  }
-    .trail__mascot[data-loaded="5"]::after { opacity: 1.0; inset: -14px;
-      background: radial-gradient(circle, var(--mint-32) 0%, transparent 65%);
-    
-    }
-    .trail__mascot[data-loaded="6"]::after { opacity: 1.0; inset: -16px;
-      background: radial-gradient(circle, var(--mint-32) 0%, transparent 65%);
-    
-    }
-    .trail__mascot.is-docked::after { opacity: 0.4 !important; inset: -4px !important;  }
-    /* `.trail__caption { display: none }` used to sit here, styling an
-       element that does not exist in the markup. Deleted. The phone's
-       one-caption-at-a-time rule (§ mobile block) is what does that job. */
+    .seen-row:last-child { border-bottom: 0;  }
+    .seen-fv {
+      font-size: var(--fs-caption); font-weight: 600; color: var(--navy);
+      min-width: 0; overflow-wrap: anywhere;
 
-    /* Lanes */
-    .lane {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      overflow: hidden;
-      margin-bottom: 8px;
-      position: relative;
-      transition: box-shadow var(--dur-reveal) var(--ease-out);
     }
-    .lane:last-child { margin-bottom: 0;  }
-    .lane--mint { background: var(--mint-04); border-color: var(--mint-32);  }
-    .lane--teal { background: var(--teal-08); border-color: var(--teal-32);  }
-    .lane.is-receiving { box-shadow: none; outline: var(--ring-mint); outline-offset: 0;  }
-    .lane--teal.is-receiving { box-shadow: none; outline: var(--ring-teal); outline-offset: 0;  }
-    .lane__input {
-      padding: 11px 14px;
-      border-right: 1px solid;
-      display: flex; flex-direction: column; gap: 3px;
-    
-    }
-    .lane--mint .lane__input { border-right-color: var(--mint-32);  }
-    .lane--teal .lane__input { border-right-color: var(--teal-32);  }
-    .input__name { color: var(--navy);  }
-    .input__meta { color: var(--text-on-light-muted); margin-bottom: 4px;
-     }
-    .input-stats {
-      display: flex;
-      gap: 24px;
-      margin-top: 4px;
-      flex-wrap: wrap;
-    
-    }
-    .input-stat__num {
+    .seen-fv--right { text-align: right;  }
+    .seen-fv strong { font-weight: 700;  }
+    .seen-fv__sub { color: var(--text-on-light-muted); font-weight: 500;  }
+    .seen-fmid { text-align: center; min-width: 0;  }
+    .seen-flabel {
       display: block;
-      font-variant-numeric: tabular-nums;
-      /* was --mint: 1.77:1 on this white card (UI U8). The mint lane now reads
-         navy, the teal lane reads --teal-ink; the lanes stay distinguishable. */
-      color: var(--navy);
-    
-    }
-    .lane--teal .input-stat__num { color: var(--teal-ink);  }
-    .input-stat__num--loss { color: var(--rose) !important;  }
-    .input-stat__num small {
-      color: var(--navy);
-      vertical-align: 0.2em; margin-left: 0.04em;
-    
-    }
-    .input-stat__label {
-      color: var(--text-on-light);
-      margin-top: 4px;
-    
-    }
-    .input__rating { color: var(--text-on-light-muted); margin-top: 6px;
-     }
-    .lane--mint .input__rating-key { color: var(--navy);  }
-    .lane--teal .input__rating-key { color: var(--teal-ink);  }
-    .input__trigger { font-style: italic;
+      font-size: var(--fs-label); font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--text-on-light-muted);
-      margin-top: 8px;
-    
-    }
 
-    /* Verdict side */
-    .lane__verdict {
-      padding: 11px 14px;
-      display: flex; flex-direction: column; gap: 4px;
-      position: relative;
-    
     }
-    .lane--mint .lane__verdict { background: linear-gradient(180deg, transparent 0%, var(--mint-08) 100%);  }
-    .lane--teal .lane__verdict { background: linear-gradient(180deg, transparent 0%, var(--teal-08) 100%);  }
-    .verdict__attr {
-      display: inline-flex; align-items: center; gap: 8px; text-transform: uppercase;
-      color: var(--navy);
-      opacity: 0; transform: translateY(4px);
-      transition: opacity var(--dur-ui) var(--ease-in-out),
-                  transform var(--dur-ui) var(--ease-in-out);
-    
-    }
-    .verdict__avatar {
-      width: 20px; height: 20px;
-      border-radius: var(--r-pill);
-      background: var(--white);
-      border: 1.5px solid var(--mint);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--navy);
-    
-    }
-    .lane--teal .verdict__avatar { color: var(--teal-ink); border-color: var(--teal);  }
-    .verdict__verb {
-      color: var(--navy-deep);
-      margin: 2px 0 2px;
-      opacity: 0; transform: scale(0.94);
-      transition: opacity var(--dur-reveal) var(--ease-emph),
-                  transform var(--dur-scene) var(--ease-emph);
-    
-    }
-    .verdict__line {
-      color: var(--text-on-light);
-      opacity: 0; transform: translateY(6px);
-      transition: opacity var(--dur-reveal) var(--ease-in-out),
-                  transform var(--dur-reveal) var(--ease-in-out);
-    
-    }
-    .lane.is-revealed .verdict__attr { opacity: 1; transform: none; transition-delay: var(--dur-tap);  }
-    .lane.is-revealed .verdict__verb { opacity: 1; transform: scale(1);  }
-    .lane.is-revealed .verdict__line { opacity: 1; transform: none; transition-delay: var(--dur-ui);  }
-    .lane:not(.is-revealed) .lane__verdict::before {
-      content: '';
-      position: absolute;
-      inset: 11px 14px;
-      border: 1px dashed var(--navy-16);
-      border-radius: var(--r-sm);
-      opacity: 0.4;
-    
-    }
-
-    /* Allocation viz */
-    .allocation {
-      margin-top: 6px;
-      padding-top: 6px;
-      border-top: 1px dashed var(--border-on-light);
-    
-    }
-    .allocation__head { text-transform: uppercase;
-      color: var(--text-on-light-muted);
-      margin-bottom: 6px;
-      opacity: 0;
-      transition: opacity var(--dur-ui) var(--ease-in-out);
-    
-    }
-    /* The allocation is its OWN beat now (beat 6), not a 1.3-second tail
-       hanging off the verdict's reveal. M12's rule: a stagger longer than
-       400ms is not a stagger, it is a scene — so it gets scrubbed. */
-    .lane.is-allocated .allocation__head { opacity: 1;  }
-    .allocation__head strong { color: var(--navy);  }
-    .allocation__bar {
-      display: flex;
-      height: 7px;
-      border-radius: var(--r-sm);
-      overflow: hidden;
-      background: var(--border-on-light);
-      margin-bottom: 6px;
-    
-    }
-    .allocation__seg {
-      height: 100%;
-      width: 0;
-      transition: width var(--dur-scene) var(--ease-out);
-    
-    }
-    .lane.is-allocated .allocation__seg { width: var(--seg-w, 0);  }
-    .allocation__legend {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3px 14px;
-    
-    }
-    .allocation__row {
-      display: flex; align-items: baseline; gap: 6px;
-      opacity: 0; transform: translateY(3px);
-      transition: opacity var(--dur-ui) var(--ease-in-out),
-                  transform var(--dur-ui) var(--ease-in-out);
-    
-    }
-    .lane.is-allocated .allocation__row { opacity: 1; transform: none;  }
-    /* 0 / 120 / 240 / 360 — 360ms total, inside the 400ms cap of §9.3,
-       and every step is a token. It used to be 1,100 -> 1,340ms. */
-    .lane.is-allocated .allocation__row:nth-child(2) { transition-delay: var(--dur-tap);  }
-    .lane.is-allocated .allocation__row:nth-child(3) { transition-delay: calc(var(--dur-tap) * 2);  }
-    .lane.is-allocated .allocation__row:nth-child(4) { transition-delay: calc(var(--dur-tap) * 3);  }
-    .allocation__dot {
-      width: 7px; height: 7px;
-      border-radius: var(--r-pill);
-      flex-shrink: 0;
-    
-    }
-    .allocation__name {
-      flex: 1;
-      color: var(--text-on-light);
+    .seen-ftag {
+      display: inline-block; margin-top: 3px;
+      font-size: var(--fs-label); font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: var(--r-pill);
+      background: var(--surface-light); color: var(--text-on-light-muted);
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    
+
     }
-    .allocation__amount {
-      font-variant-numeric: tabular-nums;
-      color: var(--navy);
-      flex-shrink: 0;
-    
+    /* Tag copy: full phrasing on desktop (room in the widened centre column),
+       the short form only where the narrow phone column can't hold it. */
+    .seen-ftag__sm { display: none; }
+    @media (max-width: 900px) {
+      .engine .seen-ftag__lg { display: none; }
+      .engine .seen-ftag__sm { display: inline; }
     }
-    .a-mint  { background: var(--mint);  }
-    .a-teal  { background: var(--gold);  }
-    .a-gold  { background: var(--gold);  }
-    .a-rose  { background: var(--rose);  }
-    .a-slate { background: var(--text-on-light-muted);  }
+    /* First difference = teal; the decider = a gold-highlighted row with a
+       gold ★ tag (gold is a light token, so its text/star ride on navy). */
+    .seen-row--diff .seen-ftag { background: var(--teal-16); color: var(--teal-ink);  }
+    .seen-row--decide {
+      background: linear-gradient(90deg, var(--gold-16), transparent, var(--gold-16));
+
+    }
+    .seen-row--decide .seen-flabel { color: var(--navy-deep);  }
+    .seen-row--decide .seen-ftag { background: var(--gold); color: var(--navy-deep);  }
+    .seen-row--decide .seen-fv { font-weight: 700;  }
+    .seen-star { color: var(--gold);  }
+
+    /* Payoff line */
+    .seen-matched {
+      text-align: center; font-weight: 700;
+      font-size: var(--fs-body); color: var(--navy);
+      margin: 14px 0 10px;
+
+    }
+    .seen-matched em { font-style: normal; color: var(--teal-ink);  }
+
+    /* Mirror verdicts — opposite advice, two cards side by side (co-visible
+       on mobile too). Gold STOP / teal START. */
+    .seen-verdicts {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+
+    }
+    .seen-vcard {
+      border-radius: var(--r-md); padding: 14px 16px;
+      display: flex; flex-direction: column; gap: 4px;
+      min-width: 0;
+
+    }
+    .seen-vcard--stop { background: var(--gold-16); border: 1px solid var(--gold);  }
+    .seen-vcard--start { background: var(--teal-08); border: 1px solid var(--teal-32);  }
+    .seen-vcard__verb {
+      font-size: var(--fs-h2); font-weight: 800; letter-spacing: -0.01em;
+      color: var(--navy-deep);
+
+    }
+    .seen-vcard--start .seen-vcard__verb { color: var(--teal-ink);  }
+    .seen-vcard__who {
+      font-size: var(--fs-label); font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.04em; color: var(--text-on-light-muted);
+
+    }
+    .seen-vcard__line {
+      font-size: var(--fs-caption); line-height: 1.4; color: var(--text-on-light);
+
+    }
+
+    .seen-kicker {
+      text-align: center; font-style: italic;
+      font-size: var(--fs-body); color: var(--navy);
+      margin: 14px 0 2px;
+
+    }
+
+    /* Reveal states — gated on html.js + motion, so BOTH no-JS and
+       reduced-motion rest on the fully-resolved end pose. Reveal is
+       opacity/transform only (rows keep their box), so the pinned card's
+       height is constant: no CLS, and the terminal frame always fits. */
+    @media (prefers-reduced-motion: no-preference) {
+      html.js .engine .seen-row {
+        opacity: 0.28;
+        transition: opacity var(--dur-reveal) var(--ease-out),
+                    background var(--dur-reveal) var(--ease-out);
+
+    }
+      html.js .engine .seen-row.on { opacity: 1;  }
+      html.js .engine .seen-matched,
+      html.js .engine .seen-kicker {
+        opacity: 0;
+        transition: opacity var(--dur-reveal) var(--ease-in-out),
+                    transform var(--dur-reveal) var(--ease-in-out);
+
+    }
+      html.js .engine .seen-matched { transform: translateY(6px);  }
+      html.js .engine .seen-matched.in,
+      html.js .engine .seen-kicker.in { opacity: 1; transform: none;  }
+      html.js .engine .seen-vcard {
+        opacity: 0; transform: translateY(10px);
+        transition: opacity var(--dur-reveal) var(--ease-emph),
+                    transform var(--dur-reveal) var(--ease-emph);
+
+    }
+      html.js .engine .seen-vcard.in { opacity: 1; transform: none;  }
+    }
 
     /* Closer — lives inside .engine now. It used to be its own
        full-viewport section carrying a mascot, two lines and one button
@@ -2759,87 +2480,43 @@
     
     }
 
-    /* Mobile */
+    /* Mobile — the two columns STAY side by side (never stack); values
+       shrink and wrap inside their own cells. The whole card still fits
+       the pinned frame at the terminal pose, so the verdicts + kicker are
+       fully on screen and the next section stays below the fold. */
     @media (max-width: 900px) {
-      .engine .lane { grid-template-columns: 1fr;  }
-      .engine .lane__input { border-right: 0; border-bottom: 1px solid;  }
-      .engine .lane--mint .lane__input { border-bottom-color: var(--mint-32);  }
-      .engine .lane--teal .lane__input { border-bottom-color: var(--teal-32);  }
-      .engine .factor { width: 40px; height: 40px;  }
-      .engine .factor svg { width: 15px; height: 15px;  }
-      .engine .factor__readout { top: calc(100% + 16px);  }
-      /* ONE CAPTION AT A TIME. Desktop gives each factor 223px and can
-         hold all six captions open at once. The phone gives it 60px, and
-         "PORTFOLIO" alone is 55px wide — so with the scrub leaving every
-         considered factor's readout on (M2 made the whole trail a rest
-         state, where the stopwatch had only ever shown one for a moment)
-         all six labels and all six readouts printed on top of each other.
-         Here only the factor Finwy is standing on speaks, and after the
-         decision only the decisive one does. The others keep their tick,
-         which is the part that has to persist. Measured at 390: the
-         widest caption, "83% vs 0% equity" under RISK, ends 1px inside
-         the trail; "comparable" under PRIORITIES runs 20px past it and
-         lands inside the card's own 26px of padding. Nothing clips.
-         Under reduced motion there is no walk, so the settled trail shows
-         the ticks plus the DECISIVE factor's caption and nothing else —
-         a deliberate composition, not a dropped one: age, surplus, both
-         portfolios and both risk profiles are all printed in full in the
-         two lane cards directly below, and the whole chain of reasoning
-         is in the card's visually-hidden narration for a screen reader. */
-      .engine .factor__label { opacity: 0;
-        transition: color var(--dur-ui) var(--ease-in-out),
-                    opacity var(--dur-ui) var(--ease-in-out);
-
-    }
-      .engine .factor.is-considered .factor__readout { opacity: 0;  }
-      .engine .factor.is-active .factor__label,
-      .engine .factor.is-decisive .factor__label,
-      .engine .factor.is-decisive-hold .factor__label,
-      .engine .factor.is-active .factor__readout,
-      .engine .factor.is-decisive .factor__readout,
-      .engine .factor.is-decisive-hold .factor__readout { opacity: 1;  }
-      /* Once the decision lands, the decisive factor is the only one that
-         speaks. Without this the walk's last position (PRIORITIES) and
-         the verdict (RISK) hold the caption slot at the same time and
-         print through each other for the whole back half of the scene. */
-      .engine .trail__row:has(.is-decisive) .factor:not(.is-decisive) .factor__label,
-      .engine .trail__row:has(.is-decisive) .factor:not(.is-decisive) .factor__readout { opacity: 0;  }
-      /* The sixth pill's centre is 20px from the end of the row, so a
-         centred caption there runs past the card. Hang it off the right
-         edge instead — measured, not guessed: "comparable" is 103px and
-         the pill centre is at 268 of 288. */
-      .engine .factor:last-child .factor__label,
-      .engine .factor:last-child .factor__readout {
-        left: auto; right: 0; transform: none; text-align: right;
-
-    }
-      /* The head stops pinning below 880. At 390 the tagline wraps to
-         three lines and the sub to two: 300px, 36% of the screen, parked
-         permanently above a 90px trail. It is a title, it is read once,
-         and then the trail should own the top of the frame. */
       .engine__shared-head { position: static;  }
-      /* Three bands on the phone too: 44 for Finwy, 40 for the pills, 46
-         for the one caption. 130px of pinned reasoning strip on an 844px
-         screen, and nothing in it overlaps anything else in it. */
-      .engine .trail { padding: 44px 10px 46px;  }
-      .engine .trail__row { padding: 0; gap: 4px;  }
-      .engine .trail__row::before { left: 22px; right: 22px;  }
-      .engine .trail__mascot { width: 36px; height: 36px; top: 2px;  }
-      .engine .trail__mascot.is-docked { width: 24px; height: 24px; top: 2px;  }
-      .engine .input-stats { gap: 16px;  }
-      .engine .allocation__legend { grid-template-columns: 1fr;  }
+      .engine .seen-duo { grid-template-columns: 1fr 30px 1fr;  }
+      .engine .seen-person { padding: 8px 10px;  }
+      .engine .seen-person__who { font-size: var(--fs-body);  }
+      .engine .seen-person__meta { font-size: var(--fs-label);  }
+      .engine .seen-row { grid-template-columns: 1fr 90px 1fr; gap: 5px; padding: 6px 9px;  }
+      .engine .seen-fv { font-size: var(--fs-label);  }
+      .engine .seen-flabel { font-size: var(--fs-label);  }
+      .engine .seen-ftag { font-size: var(--fs-label); padding: 2px 5px;  }
+      .engine .seen-verdicts { gap: 8px;  }
+      .engine .seen-vcard { padding: 10px 10px;  }
+      .engine .seen-vcard__verb { font-size: var(--fs-lead);  }
+      .engine .seen-vcard__who { font-size: var(--fs-label);  }
+      .engine .seen-vcard__line { font-size: var(--fs-label);  }
+      .engine .seen-matched, .engine .seen-kicker { font-size: var(--fs-caption); margin: 8px 0 6px;  }
+    }
+    @media (max-width: 360px) {
+      .engine .seen-row { grid-template-columns: 1fr 82px 1fr;  }
+      .engine .seen-fv { font-size: var(--fs-label);  }
     }
 
+    /* Reduced motion — rest on the fully-resolved end pose. Together with
+       the html.js gate above (no-JS resolution), this scene is never blank:
+       all six rows with their tags, the payoff line and both verdicts + the
+       kicker are shown. */
     @media (prefers-reduced-motion: reduce) {
-      .engine .case-card, .engine .lane, .engine .factor, .engine .trail__mascot,
-      .engine .verdict__attr, .engine .verdict__verb, .engine .verdict__line,
-      .engine .allocation__head, .engine .allocation__seg, .engine .allocation__row,
-      .engine .engine__close-mascot {
+      .engine .case-card, .engine .seen-row, .engine .seen-matched,
+      .engine .seen-vcard, .engine .seen-kicker, .engine .engine__close-mascot {
         transition: none !important; animation: none !important;
         transform: none !important; opacity: 1 !important;
-    
+
     }
-      .engine .trail__mascot img { animation: none !important;  }
     }
 
     /* ============================================================ */
@@ -2853,29 +2530,112 @@
     .caps__heading { margin-bottom: 12px;
      }
     .caps__sub { color: var(--text-on-light-muted); max-width: 56ch; margin: 0 auto 56px;  }
+    /* ---- Horizontal phone-gallery rail (desktop + mobile) -------------------
+       A native overflow-x scroller with scroll-snap. The page's vertical wheel
+       is NEVER hijacked: this is real overflow scroll, so the browser itself
+       disambiguates a sideways drag (moves the rail) from a vertical drag
+       (scrolls the page). No pinning, no wheel handler, no touch drag. */
+    .caps-rail-wrap { position: relative;  }
+
+    /* The scroller */
     .caps__grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
-      list-style: none; padding: 0; margin: 0;
-    
+      display: flex; gap: var(--sp-5);
+      overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scroll-padding-inline: var(--sp-1);
+      /* top/bottom room so a hover lift isn't clipped by overflow */
+      padding: var(--sp-2) var(--sp-1) var(--sp-4);
+      margin: 0; list-style: none;
+      align-items: stretch;               /* consistent card height */
+      scrollbar-width: none;              /* Firefox */
+      -ms-overflow-style: none;           /* old Edge */
+      cursor: grab; overscroll-behavior-x: contain;
     }
-    /* Reveal is scrubbed now (fwSceneReveal / .fw-rv), not an
-       IntersectionObserver plus a --i x 120ms delay chain. */
-    .cap { text-align: left;  }
+    .caps__grid::-webkit-scrollbar { display: none; }   /* WebKit/Blink */
+    .caps__grid.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+    /* while a mouse-drag is settling, no accidental text selection */
+    .caps__grid.is-dragging, .caps__grid.is-dragging * { user-select: none; }
+
+    /* Each card = a phone. Desktop ≥900px: ~3 show + a partial 4th peeks. */
+    .cap {
+      flex: 0 0 clamp(260px, 30%, 340px);
+      scroll-snap-align: start;
+      text-align: left; display: flex; flex-direction: column;
+    }
     @media (hover: hover) {
-      .cap { transition: transform var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out); }
-      .cap:hover { transform: translateY(-2px); box-shadow: var(--shadow-2);  }
+      .cap { transition: transform var(--dur-ui) var(--ease-out); }
+      .cap:hover { transform: translateY(-2px);  }
     }
     .cap__heading { color: var(--text-on-light); margin-bottom: 6px;  }
     .cap__body { color: var(--text-on-light-muted);  }
     .cap__shot { margin-bottom: 16px;  }
-    /* Two columns all the way down to 360px (UX §8): six single-column cards
-       were ~1,900px of scroll on a phone for six sentences. */
+    /* tablet: ~2 cards + peek */
     @media (max-width: 900px) {
       .caps__sub { margin-bottom: 28px;  }
-      .caps__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; align-items: start;  }
+      .cap { flex-basis: 46%;  }
       .cap__shot { margin-bottom: 12px;  }
     }
-    @media (max-width: 359px) { .caps__grid { grid-template-columns: 1fr;  } }
+    /* mobile: one card, next peeks */
+    @media (max-width: 600px) {
+      .cap { flex-basis: 78vw;  }
+    }
+
+    /* Arrow buttons — real <button>s, disabled/dimmed at the ends. */
+    .caps-arrow {
+      position: absolute; top: 40%; transform: translateY(-50%);
+      z-index: 2; width: 44px; height: 44px; border-radius: var(--r-pill);
+      display: grid; place-items: center;
+      background: var(--white); color: var(--text-on-light);
+      border: var(--hairline) solid var(--border-on-light);
+      box-shadow: var(--shadow-2); cursor: pointer;
+      font-size: 1.5rem; line-height: 1; padding: 0;
+      transition: opacity var(--dur-ui) var(--ease-out),
+                  background var(--dur-ui) var(--ease-out);
+    }
+    .caps-arrow--prev { left: calc(-1 * var(--sp-2));  }
+    .caps-arrow--next { right: calc(-1 * var(--sp-2));  }
+    .caps-arrow:disabled { opacity: 0; pointer-events: none;  }
+    @media (hover: hover) { .caps-arrow:hover:not(:disabled) { background: var(--surface-light);  } }
+    /* swipe is primary on touch; hide arrows on phones */
+    @media (max-width: 600px) { .caps-arrow { display: none;  } }
+
+    /* Edge fades — hint there's more, hide at each end. */
+    .caps-rail-wrap::before, .caps-rail-wrap::after {
+      content: ""; position: absolute; top: 0; bottom: 0; width: var(--sp-7);
+      z-index: 1; pointer-events: none;
+      opacity: 1; transition: opacity var(--dur-ui) var(--ease-out);
+    }
+    .caps-rail-wrap::before {
+      left: 0; background: linear-gradient(to right, var(--white), transparent);
+    }
+    .caps-rail-wrap::after {
+      right: 0; background: linear-gradient(to left, var(--white), transparent);
+    }
+    .caps-rail-wrap.is-at-start::before { opacity: 0;  }
+    .caps-rail-wrap.is-at-end::after   { opacity: 0;  }
+
+    /* Progress dots — one button per card. */
+    .caps-dots {
+      display: flex; justify-content: center; gap: var(--sp-2);
+      margin: var(--sp-4) 0 0; padding: 0;
+    }
+    .caps-dot {
+      width: 8px; height: 8px; padding: 0; border: 0; cursor: pointer;
+      border-radius: var(--r-pill); background: var(--border-on-light);
+      transition: background var(--dur-ui) var(--ease-out),
+                  width var(--dur-ui) var(--ease-out);
+    }
+    .caps-dot.is-active { background: var(--gold); width: 22px;  }
+
+    /* First-run hint — a finite, reduced-motion-safe nudge of the next arrow. */
+    @keyframes caps-nudge { 0%, 100% { transform: translateY(-50%); } 50% { transform: translateY(-50%) translateX(4px); } }
+    .caps-rail-wrap.is-hint .caps-arrow--next:not(:disabled) {
+      animation: caps-nudge 900ms var(--ease-in-out) 2;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .caps-rail-wrap.is-hint .caps-arrow--next { animation: none;  }
+    }
 
     /* ============================================================ */
     /* APP SCREENS — ONE device frame, used identically everywhere.  */
@@ -3850,483 +3610,259 @@
     }
 
     /* ============================================================ */
-    /* §6.03 — Allocate concept (cascade with floating balance)     */
-    /* Sources collapse → top banner (Surplus + Balance) →          */
-    /* cascade table (Pri/Goal/Fund/Required/Allocated) → caption   */
+    /* §6.03 — Allocate concept (goal board with filling bars)      */
+    /* Beat ribbon -> board header (Surplus + Left to place) ->     */
+    /* goal rows as filling bars -> divider -> pushed ghost rows -> */
+    /* verdict. Scroll-driven by fwChapters render(q); the REST     */
+    /* state (no JS / reduced motion) is the fully-resolved board:  */
+    /* every funded bar full, LEFT TO PLACE zero, pushed ghosted,   */
+    /* verdict shown. No timer, no "—" cell anywhere.               */
     /* ============================================================ */
     .steps__concept--allocate {
       display: block; align-items: stretch;
-    
     }
 
-    /* ACT 1 — source strip */
-    .steps__concept--allocate .src-stage {
-      position: relative;
-      padding: 4px 0 18px;
-      border-bottom: 1px solid var(--white-08);
-      margin-bottom: 18px;
-      min-height: 60px;
-    
+    /* Beat ribbon — (1) Rank > (2) Place every rupee > (3) Verdict */
+    .steps__concept--allocate .alloc-ribbon {
+      display: flex; align-items: center; flex-wrap: wrap;
+      gap: 8px 10px; margin-bottom: 10px;
+      font-size: var(--fs-label);
     }
-    .steps__concept--allocate .src-row {
-      display: flex; align-items: center;
-      flex-wrap: wrap; gap: 8px 10px;
-      justify-content: flex-start;
-      transition: opacity var(--dur-reveal) var(--ease-in-out);
-    
-    }
-    .steps__concept--allocate .src-stage.is-replaced .src-row {
-      opacity: 0; pointer-events: none;
-    
-    }
-    .steps__concept--allocate .src-chip {
-      display: inline-flex; align-items: center;
-      padding: 6px 11px;
-      color: var(--white-56);
-      background: var(--white-04);
-      border: 1px solid var(--white-08);
-      border-radius: var(--r-pill);
-      white-space: nowrap;
-      opacity: 0; transform: translateY(4px);
-      transition: opacity var(--dur-ui) var(--ease-out),
-                  transform var(--dur-ui) var(--ease-out);
-    
-    }
-    .steps__concept--allocate .src-stage.is-act1-in .src-chip { opacity: 1; transform: none;  }
-    .steps__concept--allocate .src-stage.is-act1-in .src-chip:nth-child(1) { transition-delay: var(--dur-tap);  }
-    .steps__concept--allocate .src-stage.is-act1-in .src-chip:nth-child(2) { transition-delay: var(--dur-tap);  }
-    .steps__concept--allocate .src-stage.is-act1-in .src-chip:nth-child(3) { transition-delay: var(--dur-ui);  }
-    .steps__concept--allocate .src-stage.is-act1-in .src-chip:nth-child(4) { transition-delay: var(--dur-reveal);  }
-    .steps__concept--allocate .src-stage.is-act1-in .src-chip:nth-child(5) { transition-delay: var(--dur-reveal);  }
-    .steps__concept--allocate .src-arrow {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 22px; height: 22px;
-      color: var(--white-56);
-      opacity: 0; transition: opacity var(--dur-reveal) var(--ease-in-out) var(--dur-reveal);
-    
-    }
-    .steps__concept--allocate .src-stage.is-act1-in .src-arrow { opacity: 1;  }
-    .steps__concept--allocate .src-finwy {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px;
-      border-radius: var(--r-pill);
-      background: var(--mint-08);
-      border: 1px solid var(--mint-32);
-      box-shadow: none; outline: var(--ring-none); outline-offset: 0;
-      opacity: 0; transform: scale(0.85);
-      transition: opacity var(--dur-reveal) var(--ease-in-out) var(--dur-scene),
-                  transform var(--dur-reveal) var(--ease-out) var(--dur-scene),
-                  box-shadow var(--dur-ui) var(--ease-in-out);
-    
-    }
-    .steps__concept--allocate .src-stage.is-act1-in .src-finwy { opacity: 1; transform: scale(1);  }
-    .steps__concept--allocate .src-finwy.is-pulsing { box-shadow: none; outline: var(--ring-mint); outline-offset: 0;  }
-    .steps__concept--allocate .src-finwy svg { width: 22px; height: 22px;  }
-    .steps__concept--allocate .src-finwy svg path {
-      stroke: var(--mint); stroke-width: 1.6; fill: none;
-      stroke-linecap: round; stroke-linejoin: round;
-    
-    }
-    .steps__concept--allocate .src-stage.is-dissolving .src-chip {
-      animation: alloc-chip-dissolve var(--dur-scene) var(--ease-in-out) forwards;
-    
-    }
-    .steps__concept--allocate .src-stage.is-dissolving .src-chip:nth-child(1) { animation-delay: 0ms;  }
-    .steps__concept--allocate .src-stage.is-dissolving .src-chip:nth-child(2) { animation-delay: var(--dur-ui);  }
-    .steps__concept--allocate .src-stage.is-dissolving .src-chip:nth-child(3) { animation-delay: var(--dur-reveal);  }
-    .steps__concept--allocate .src-stage.is-dissolving .src-chip:nth-child(4) { animation-delay: var(--dur-scene);  }
-    .steps__concept--allocate .src-stage.is-dissolving .src-chip:nth-child(5) { animation-delay: var(--dur-scene);  }
-    @keyframes alloc-chip-dissolve {
-      0%   { opacity: 1; transform: translate(0, 0) scale(1);  }
-      100% { opacity: 0; transform: translate(40px, -2px) scale(0.78);  }
-    }
-    .steps__concept--allocate .src-replace {
-      position: absolute; left: 0; right: 0; top: 4px; bottom: 18px;
-      display: flex; align-items: center; justify-content: center;
-      gap: 10px; flex-wrap: wrap;
-      color: var(--text-on-dark-muted);
-      text-align: center;
-      opacity: 0; transform: translateY(4px);
-      transition: opacity var(--dur-reveal) var(--ease-out),
-                  transform var(--dur-reveal) var(--ease-out);
-      pointer-events: none;
-    
-    }
-    .steps__concept--allocate .src-replace b { color: var(--mint);  }
-    .steps__concept--allocate .src-replace em {
-      font-style: italic;
+    .steps__concept--allocate .alloc-beat {
+      display: inline-flex; align-items: center; gap: 7px;
       color: var(--text-on-dark);
-    
     }
-    .steps__concept--allocate .src-stage.is-replaced .src-replace { opacity: 1; transform: none;  }
+    .steps__concept--allocate .alloc-beat__n {
+      display: inline-grid; place-items: center;
+      width: 20px; height: 20px; border-radius: var(--r-pill);
+      background: var(--mint); border: 1px solid var(--mint);
+      color: var(--navy-deep); font-variant-numeric: tabular-nums;
+      transition: background var(--dur-ui) var(--ease-in-out),
+                  color var(--dur-ui) var(--ease-in-out),
+                  border-color var(--dur-ui) var(--ease-in-out);
+    }
+    .steps__concept--allocate .alloc-beat__sep { color: var(--white-32); }
+    /* JS arms the reveal: beats dim, then light per scroll q. Without
+       JS the default above already shows every beat lit (rest state). */
+    .steps__concept--allocate.alloc-js .alloc-beat { color: var(--white-32); }
+    .steps__concept--allocate.alloc-js .alloc-beat__n {
+      background: var(--white-08); border-color: var(--white-16); color: var(--white-56);
+    }
+    .steps__concept--allocate.alloc-js .alloc-beat.on { color: var(--text-on-dark); }
+    .steps__concept--allocate.alloc-js .alloc-beat.on .alloc-beat__n {
+      background: var(--mint); border-color: var(--mint); color: var(--navy-deep);
+    }
 
-    /* ACT 2 — top banner (Surplus + Balance) */
+    /* Board header — Surplus (static) + Left to place (counts to zero) */
     .steps__concept--allocate .topbanner {
       display: flex; align-items: flex-end; justify-content: space-between;
-      gap: 24px;
-      padding: 4px 14px 14px;
-      margin-bottom: 6px;
+      gap: 24px; padding: 4px 14px 9px; margin-bottom: 5px;
       border-bottom: 1px dashed var(--mint-16);
-      opacity: 0; transform: translateY(4px);
-      transition: opacity var(--dur-reveal) var(--ease-out),
-                  transform var(--dur-reveal) var(--ease-out);
-    
     }
-    .steps__concept--allocate.is-act2 .topbanner { opacity: 1; transform: none;  }
     .steps__concept--allocate .topbanner__cell {
       display: flex; flex-direction: column; gap: 4px; min-width: 0;
-    
     }
-    .steps__concept--allocate .topbanner__cell--surplus { align-items: flex-start;  }
-    .steps__concept--allocate .topbanner__cell--balance { align-items: flex-end; text-align: right;  }
-    .steps__concept--allocate .topbanner__label { text-transform: uppercase;
-      color: var(--white-56);
-    
+    .steps__concept--allocate .topbanner__cell--surplus { align-items: flex-start; }
+    .steps__concept--allocate .topbanner__cell--balance { align-items: flex-end; text-align: right; }
+    .steps__concept--allocate .topbanner__label {
+      text-transform: uppercase; letter-spacing: .12em;
+      font-size: var(--fs-caption); color: var(--white-56);
     }
     .steps__concept--allocate .topbanner__value {
-      color: var(--mint);
-      font-variant-numeric: tabular-nums;
+      font-size: var(--fs-data-sm); font-weight: 700;
+      color: var(--mint); font-variant-numeric: tabular-nums;
       text-shadow: 0 0 24px var(--mint-32);
       transition: transform var(--dur-ui) var(--ease-in-out);
-    
     }
     .steps__concept--allocate .topbanner__value small {
-      color: var(--white-56);
-      margin-left: 3px;
-      vertical-align: baseline;
-    
+      font-size: var(--fs-caption); color: var(--white-56);
+      margin-left: 3px; vertical-align: baseline; font-weight: 400;
     }
     .steps__concept--allocate .topbanner__cell--balance.is-zeroed .topbanner__value {
       animation: alloc-balance-zero-pulse var(--dur-reveal) var(--ease-in-out);
-    
     }
     @keyframes alloc-balance-zero-pulse {
-      0%   { transform: scale(1);    text-shadow: 0 0 0 rgba(53,214,198,0);  }
-      45%  { transform: scale(1.22); text-shadow: 0 0 22px var(--mint-56);  }
-      100% { transform: scale(1);    text-shadow: 0 0 24px var(--mint-32);  }
+      0%   { transform: scale(1);    text-shadow: 0 0 0 var(--mint-08); }
+      45%  { transform: scale(1.18); text-shadow: 0 0 22px var(--mint-56); }
+      100% { transform: scale(1);    text-shadow: 0 0 24px var(--mint-32); }
     }
 
-    /* Cascade table */
+    /* Goal rows */
     .steps__concept--allocate .cascade {
       list-style: none; padding: 0; margin: 0;
-      display: flex; flex-direction: column; gap: 4px;
-    
+      display: flex; flex-direction: column;
     }
-    .steps__concept--allocate .cascade__colheads {
-      display: grid;
-      grid-template-columns: 48px 1fr 130px 110px 130px;
-      column-gap: 12px;
-      padding: 0 14px 4px; text-transform: uppercase;
-      color: var(--white-56);
-    
-    }
-    .steps__concept--allocate .cascade__colheads span { text-align: right;  }
-    .steps__concept--allocate .cascade__colheads span:nth-child(1) { text-align: left;  }
-    .steps__concept--allocate .cascade__colheads span:nth-child(2) { text-align: left;  }
-    .steps__concept--allocate .cascade__colheads span:nth-child(3) { text-align: left;  }
     .steps__concept--allocate .cascade__row {
       display: grid;
-      grid-template-columns: 48px 1fr 130px 110px 130px;
-      column-gap: 12px;
-      align-items: center;
-      padding: 8px 14px;
-      background: var(--white-04);
-      border: 1px solid var(--white-08);
-      border-radius: var(--r-md);
-      /* NOT opacity 0. A row that has not been funded yet is still one of
-         YOUR goals — printing it grey from the first beat turns 744px of
-         empty box (the second half of M1) into the actual first line of the
-         scene: "here is everything you said mattered, none of it funded
-         yet." Only the money arrives on the scrub. */
-      opacity: 0.52; transform: translateY(6px);
-      transition: opacity var(--dur-reveal) var(--ease-out),
-                  transform var(--dur-reveal) var(--ease-out),
-                  border-color var(--dur-ui) var(--ease-in-out),
-                  border-style var(--dur-ui) var(--ease-in-out),
-                  background var(--dur-ui) var(--ease-in-out),
-                  box-shadow var(--dur-ui) var(--ease-in-out);
-    
+      grid-template-columns: 44px 1fr minmax(196px, 240px);
+      column-gap: 14px; align-items: center;
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--white-08);
     }
-    .steps__concept--allocate .cascade__row.is-revealed { opacity: 1; transform: none;  }
-    .steps__concept--allocate .cascade__pri { display: inline-flex; justify-content: flex-start;  }
+    .steps__concept--allocate .cascade__row--star {
+      background: linear-gradient(90deg, var(--gold-16), transparent 72%);
+      border-radius: var(--r-md); border-bottom-color: transparent;
+      padding: 9px 10px;
+    }
+    .steps__concept--allocate .cascade__pri { display: inline-flex; justify-content: flex-start; }
     .steps__concept--allocate .pri {
       display: inline-flex; align-items: center; justify-content: center;
-      min-width: 32px; height: 22px; padding: 0 9px; border-radius: var(--r-pill);
+      min-width: 34px; height: 22px; padding: 0 8px; border-radius: var(--r-sm);
+      font-size: var(--fs-label); font-weight: 700;
       font-variant-numeric: tabular-nums;
-    
     }
-    .steps__concept--allocate .pri--p0 { background: var(--mint); color: var(--navy-deep);  }
-    .steps__concept--allocate .pri--p1 { background: var(--gold); color: var(--navy-deep);  }
-    .steps__concept--allocate .pri--p2 { background: var(--mint-08); color: var(--mint); border: 1px solid var(--mint-32);  }
-    .steps__concept--allocate .pri--p3 { background: var(--white-04); color: var(--white-56); border: 1px solid var(--white-16);  }
-    .steps__concept--allocate .cascade__name {
-      display: flex; flex-direction: column; gap: 3px; min-width: 0;
-    
-    }
+    .steps__concept--allocate .pri--p0 { background: var(--mint); color: var(--navy-deep); }
+    .steps__concept--allocate .pri--p1 { background: var(--gold); color: var(--navy-deep); }
+    .steps__concept--allocate .pri--p2 { background: var(--mint-08); color: var(--mint); border: 1px solid var(--mint-32); }
+    .steps__concept--allocate .pri--p3 { background: var(--white-04); color: var(--white-56); border: 1px solid var(--white-16); }
+    .steps__concept--allocate .cascade__name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
     .steps__concept--allocate .name__title {
       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-      color: var(--text-on-dark);
-    
+      font-weight: 600; color: var(--text-on-dark);
     }
-    .steps__concept--allocate .name__star {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 18px; height: 18px;
-      color: var(--mint);
-      transition: transform var(--dur-ui) var(--ease-out);
-    
-    }
-    .steps__concept--allocate.is-starred .cascade__row--star .name__star {
-      transform: scale(1.15);
-      text-shadow: 0 0 12px var(--mint-56);
-    
-    }
+    .steps__concept--allocate .name__star { color: var(--gold); }
     .steps__concept--allocate .name__pill {
       display: inline-flex; align-items: center;
-      padding: 3px 9px; border-radius: var(--r-pill);
-      background: var(--mint-08);
-      border: 1px solid var(--mint-32);
-      color: var(--mint); text-transform: uppercase;
+      padding: 2px 7px; border-radius: var(--r-sm);
+      font-size: var(--fs-label); text-transform: uppercase; letter-spacing: .06em;
+      background: var(--gold-16); border: 1px solid var(--gold-32); color: var(--gold);
       white-space: nowrap;
-    
     }
-    .steps__concept--allocate .name__sub {
-      color: var(--white-56);
-    
+    .steps__concept--allocate .name__sub { font-size: var(--fs-caption); color: var(--white-56); }
+
+    /* The bar: track width proportional to need, fill = allocated / need */
+    .steps__concept--allocate .alloc { min-width: 0; }
+    .steps__concept--allocate .alloc-bar {
+      display: block; position: relative; width: 100%; height: 12px;
+      border-radius: var(--r-pill); background: var(--white-08); overflow: hidden;
     }
-    .steps__concept--allocate .name__fund-mobile { display: none;  }
-    .steps__concept--allocate .cascade__fund {
-      color: var(--white-88);
-    
+    .steps__concept--allocate .alloc-bar__fill {
+      position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+      border-radius: var(--r-pill); background: var(--mint);
+      transition: width var(--dur-reveal) var(--ease-out);
     }
-    .steps__concept--allocate .cascade__row--deferred .cascade__fund {
-      color: var(--white-56);
-      font-style: italic;
-    
+    /* Rest / no-JS end-state: funded bars full, pushed empty. JS sets
+       inline widths (0 at q=0) that override these while scrubbing. */
+    .steps__concept--allocate .cascade__row--funded .alloc-bar__fill { width: 100%; }
+    .steps__concept--allocate .cascade__row--star .alloc-bar__fill { background: var(--gold); }
+    .steps__concept--allocate .cascade__row--deferred .alloc-bar {
+      background: transparent; border: 1px dashed var(--white-32);
     }
-    .steps__concept--allocate .cascade__required,
-    .steps__concept--allocate .cascade__allocated {
-      color: var(--text-on-dark);
-      font-variant-numeric: tabular-nums;
-      text-align: right;
-      white-space: nowrap;
-      transition: color var(--dur-ui) var(--ease-in-out);
-    
+    .steps__concept--allocate .cascade__row--deferred .alloc-bar__fill { width: 0; }
+    .steps__concept--allocate .alloc-cap {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 8px; margin-top: 4px; font-size: var(--fs-caption);
     }
-    .steps__concept--allocate .cascade__required {
-      color: var(--white-56);
-    
+    .steps__concept--allocate .alloc-amt { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text-on-dark); }
+    .steps__concept--allocate .alloc-state { color: var(--mint); font-weight: 600; }
+    .steps__concept--allocate .cascade__row--deferred .name__title { color: var(--white-56); }
+    .steps__concept--allocate .cascade__row--deferred .alloc-amt { color: var(--white-56); font-weight: 600; }
+    .steps__concept--allocate .cascade__row--deferred .alloc-state { color: var(--gold); }
+
+    /* Divider — "surplus runs out here" (always present) */
+    .steps__concept--allocate .alloc-divider {
+      display: flex; align-items: center; gap: 12px;
+      padding: 7px 4px 7px;
+      text-transform: uppercase; letter-spacing: .12em;
+      font-size: var(--fs-label); color: var(--gold-50);
     }
-    .steps__concept--allocate.is-starred .cascade__row--star {
-      border-color: var(--mint-56);
-      background: var(--mint-08);
-      box-shadow: none; outline: var(--ring-mint); outline-offset: 0;
-    
+    .steps__concept--allocate .alloc-divider::before,
+    .steps__concept--allocate .alloc-divider::after {
+      content: ""; height: 1px; flex: 1;
+      background: repeating-linear-gradient(90deg, var(--white-32) 0 5px, transparent 5px 10px);
     }
-    .steps__concept--allocate .cascade__cutoff {
-      height: 1px; margin: 4px 8px;
-      background: var(--mint); opacity: 0.35;
-      transform: scaleX(0); transform-origin: left center;
-      transition: transform var(--dur-reveal) var(--ease-out),
-                  opacity var(--dur-ui) var(--ease-in-out);
-    
+
+    /* Verdict — reveals at the last chapter, then stays */
+    .steps__concept--allocate .alloc-verdict {
+      margin-top: 10px; padding: 12px 18px;
+      display: flex; gap: 14px; align-items: flex-start;
+      background: linear-gradient(90deg, var(--mint-16), var(--teal-08));
+      border: 1px solid var(--mint-32); border-radius: var(--r-md);
     }
-    .steps__concept--allocate .cascade__cutoff.is-drawn { transform: scaleX(1);  }
-    .steps__concept--allocate .cascade__row--deferred {
+    .steps__concept--allocate .alloc-verdict__k {
+      flex: 0 0 auto; padding-top: 2px;
+      font-size: var(--fs-label); font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--mint);
+    }
+    .steps__concept--allocate .alloc-verdict__t {
+      font-size: var(--fs-body); line-height: 1.4; color: var(--text-on-dark-muted);
+    }
+    .steps__concept--allocate .alloc-verdict__t b { color: var(--text-on-dark); }
+    /* JS arms the reveal; without JS the verdict is shown (rest state). */
+    .steps__concept--allocate.alloc-js .alloc-verdict {
+      opacity: 0; transform: translateY(12px);
       transition: opacity var(--dur-reveal) var(--ease-out),
-                  transform var(--dur-reveal) var(--ease-out),
-                  border-color var(--dur-ui) var(--ease-in-out),
-                  border-style var(--dur-ui) var(--ease-in-out),
-                  background var(--dur-ui) var(--ease-in-out);
-    
+                  transform var(--dur-reveal) var(--ease-out);
     }
-    .steps__concept--allocate .cascade__row--deferred.is-fallen {
-      opacity: 0.55;
-      transform: translateY(4px);
-      border: 1px dashed var(--white-16);
-      background: var(--white-04);
-    
-    }
-    .steps__concept--allocate .cascade__row--deferred.is-fallen .name__title {
-      color: var(--white-56);
-    
-    }
-    .steps__concept--allocate .cascade__allocated.is-status {
-      color: var(--gold);
-      white-space: normal;
-    
-    }
+    .steps__concept--allocate.alloc-js .alloc-verdict.is-shown { opacity: 1; transform: none; }
 
     /* Closing caption */
     .steps__concept--allocate .alloc__caption {
-      margin: 10px 4px 0;
-      padding: 14px 16px 4px;
-      border-top: 1px solid var(--white-08);
+      margin: 6px 4px 0; padding: 6px 16px 2px;
       text-align: center;
-      opacity: 0; transform: translateY(4px);
-      transition: opacity var(--dur-reveal) var(--ease-out),
-                  transform var(--dur-reveal) var(--ease-out);
-    
     }
-    .steps__concept--allocate.is-caption .alloc__caption { opacity: 1; transform: none;  }
     .steps__concept--allocate .alloc__caption-hero {
-      display: block;
-      color: var(--mint);
-      text-shadow: 0 0 28px var(--mint-16);
-    
+      display: block; font-size: var(--fs-caption);
+      color: var(--mint); text-shadow: 0 0 28px var(--mint-16);
     }
 
-    /* Mobile (≤720px) — drop Fund column, stack as subline; stack banner */
+    /* Mobile (<=767px) — one bar per row: [pri | name], bar spans full width */
     @media (max-width: 767px) {
-
-      .steps__concept--allocate .src-stage { min-height: 86px;  }
-      .steps__concept--allocate .src-row { gap: 6px 8px;  }
-      .steps__concept--allocate .src-chip { padding: 5px 9px;  }
-      .steps__concept--allocate .src-replace { position: static; transform: none; opacity: 0; padding-top: 6px; text-align: center; justify-content: center;  }
-      .steps__concept--allocate .src-stage.is-replaced .src-replace { opacity: 1;  }
-      .steps__concept--allocate .src-stage.is-replaced .src-row { display: none;  }
-      .steps__concept--allocate .topbanner {
-        flex-direction: column; align-items: stretch; gap: 8px;
-        padding: 4px 12px 12px;
-    
-    }
-      .steps__concept--allocate .topbanner__cell {
-        flex-direction: row; align-items: baseline; justify-content: space-between;
-        gap: 12px;
-    
-    }
-      .steps__concept--allocate .topbanner__cell--balance { text-align: left; align-items: baseline;  }
-      /* LEDGER LINES (founder's pick over cards). The old grid rendered
-         REQUIRED and ALLOCATED side by side — the same number twice, since
-         both are set from the same variable — leaving ~100px for the goal
-         name, which wrapped to four lines. One amount column; fund name on
-         its own line; hairline rows instead of boxes; labelled cutoff. */
-      .steps__concept--allocate .cascade__colheads {
-        grid-template-columns: 34px 1fr auto;
-        column-gap: 10px; padding: 0 4px 8px;
-    
-    }
-      .steps__concept--allocate .cascade__colheads span:nth-child(3),
-      .steps__concept--allocate .cascade__colheads span:nth-child(4) { display: none;  }
+      .steps__concept--allocate .alloc-ribbon { font-size: var(--fs-caption); margin-bottom: 6px; }
+      .steps__concept--allocate .topbanner { padding: 2px 4px 6px; margin-bottom: 3px; }
+      /* One bar per row: [pri | name], bar spans the full width below.
+         On a phone ONLY .steps__concept pins (at --stage-h), so the whole
+         board through the verdict must fit that box at the end pose — else
+         the verdict overflows the sticky frame and collides with the
+         Security section on release. To fit: drop the secondary fund
+         sub-line, shrink the bar, and tighten the row rhythm. */
       .steps__concept--allocate .cascade__row {
-        grid-template-columns: 34px 1fr auto;
-        column-gap: 10px; padding: 12px 4px;
-        background: none; border: none; border-radius: 0;
-        border-bottom: 1px solid var(--white-08);
-    
-    }
-      .steps__concept--allocate .cascade__row:last-child { border-bottom: none;  }
-      .steps__concept--allocate.is-starred .cascade__row--star {
-        background: none; border: none;
-        border-bottom: 1px solid var(--mint-32);
-    
-    }
-      .steps__concept--allocate .cascade__required { display: none;  }
-      .steps__concept--allocate .cascade__fund { display: none;  }
-      .steps__concept--allocate .cascade__cutoff {
-        position: relative; overflow: visible; margin: 14px 8px 10px;
-
-    }
-      .steps__concept--allocate .cascade__cutoff::after {
-        content: 'SURPLUS RUNS OUT HERE';
-        position: absolute; left: 50%; top: -6px; transform: translate(-50%, -100%);
-        color: var(--gold-50); white-space: nowrap;
-        opacity: 0; transition: opacity var(--dur-ui) var(--ease-in-out);
-    
-    }
-      .steps__concept--allocate .cascade__cutoff.is-drawn::after { opacity: 1;  }
-      .steps__concept--allocate .name__fund-mobile {
-        display: block;
-        color: var(--white-56);
-        margin-top: 2px;
-    
-    }
-      .steps__concept--allocate .cascade__row--deferred .name__fund-mobile {
-        color: var(--white-56);
-        font-style: italic;
-    
-    }
-      .steps__concept--allocate .name__title { gap: 6px; flex-wrap: wrap;  }
-      .steps__concept--allocate .name__pill { padding: 2px 7px;  }
-      .steps__concept--allocate .alloc__caption { padding: 8px 12px 2px; margin-top: 4px;  }
+        grid-template-columns: 30px 1fr; column-gap: 10px; row-gap: 4px;
+        padding: 6px 4px;
+      }
+      .steps__concept--allocate .cascade__row--star { padding: 6px 6px; }
+      .steps__concept--allocate .alloc { grid-column: 1 / -1; }
+      .steps__concept--allocate .name__title { gap: 6px; }
+      .steps__concept--allocate .name__sub { display: none; }
+      .steps__concept--allocate .alloc-bar { height: 10px; }
+      .steps__concept--allocate .alloc-cap { margin-top: 3px; }
+      .steps__concept--allocate .alloc-divider { padding: 5px 4px; }
+      .steps__concept--allocate .alloc-verdict {
+        flex-direction: column; gap: 3px; margin-top: 6px; padding: 10px 12px;
+      }
+      .steps__concept--allocate .alloc-verdict__t { font-size: var(--fs-caption); line-height: 1.4; }
+      /* the verdict IS the payoff line on a phone; the caption (kept on
+         desktop) is dropped so the verdict clears the pinned stage. */
+      .steps__concept--allocate .alloc__caption { display: none; }
     }
 
-    /* ------------------------------------------------------------ */
-    /* CASCADE-WHOLE (Motion M1). On a phone the stage is 760px and
-       the block was 975 — so the balance counter, ₹0 and both "Not
-       feasible" verdicts could not share a frame. 215px are taken
-       back here, none of them from information:
-         · the source strip HANDS OVER instead of stacking: once the
-           table exists (is-act2) the strip that argued for it
-           collapses out of flow — one out, one in.        -110
-         · the 8px column heads go: the ledger-lines layout labels
-           its own rows and the audit called those labels unreadable
-           at that size.                                    -25
-         · row rhythm 12px -> 7px, cutoff margins, caption pad. -80
-       Measured after: the whole table fits, and the end-of-scene
-       rest position shows every row plus ₹0 plus both verdicts.    */
-    /* ------------------------------------------------------------ */
-    @media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
-      .steps__concept--allocate .src-stage {
-        transition: opacity var(--dur-ui) var(--ease-in);
-
-    }
-      .steps__concept--allocate.is-act2 .src-stage {
-        height: 0; min-height: 0; padding: 0; margin: 0;
-        border: 0; overflow: hidden; opacity: 0;
-
-    }
-      .steps__concept--allocate .cascade__colheads { display: none;  }
-      .steps__concept--allocate .cascade__row { padding: 7px 4px;  }
-      /* 26 above the rule, not 12: the label hangs above its own line and
-         at the 7px row rhythm this block buys it was printing on top of
-         the Wedding row's fund name. The cutoff is the one line in this
-         table that must not be ambiguous about which side a goal is on,
-         so it is the one place the compression gives 14px back. */
-      .steps__concept--allocate .cascade__cutoff { margin: 26px 8px 8px;  }
-      .steps__concept--allocate .topbanner { padding: 4px 12px 8px;  }
-    }
-    /* CASCADE-WHOLE, the desktop half (M1). Same failure, different
-       arithmetic: the pinned stage is 822px (100svh - nav - 14) and the
-       card wanted 898, so `overflow: hidden` was eating the last 76 —
-       which is exactly the caption, "Fits your goals. Fits your
-       priorities." The scene's payoff line was clipped off the bottom of
-       its own stage at every desktop rest position.
-       84px come back, and NOT the way the phone gets them: on desktop
-       the source strip stays (there is room for the argument and its
-       answer), so every pixel here is whitespace. Nothing moves, no row
-       collapses mid-scene, no information is dropped, and no type
-       changes — Wave 1 owns the type. Scoped to #s3-row so step 01, the
-       founder's benchmark, is untouched.
-         card pad 32->22 (-20) · concept pad 24->16 (-16) · concept
-         margin-top 24->16 (-8) · tags margin-top 18->10 (-8) · h3
-         margin-bottom 10->6 (-4) · src-stage pad+margin 18->10 (-16) ·
-         caption margin+pad (-12).   898 - 84 = 814 <= 822. */
+    /* Desktop pin whitespace reclaim — scoped to #s3-row so step 01
+       (the founder's benchmark) is untouched. On desktop the WHOLE card
+       pins with overflow:hidden at (100svh - nav - 14); the board through
+       the verdict must fit that box so beat ③'s payoff is on-screen. */
     @media (min-width: 901px) and (min-height: 860px) and (prefers-reduced-motion: no-preference) {
-      #s3-row .steps__card { padding: 22px 32px;  }
-      #s3-row .steps__card > h3 { margin-bottom: 6px;  }
-      #s3-row .steps__tags { margin-top: 10px;  }
-      #s3-row .steps__concept { padding: 16px; margin-top: 16px;  }
-      #s3-row .steps__concept--allocate .src-stage { padding-bottom: 10px; margin-bottom: 10px;  }
-      #s3-row .steps__concept--allocate .alloc__caption { margin-top: 4px; padding-top: 8px;  }
+      #s3-row .steps__card { padding: 20px 32px; }
+      #s3-row .steps__card > h3 { margin-bottom: 4px; }
+      #s3-row .steps__card > p { margin-bottom: 8px; }
+      #s3-row .steps__tags { margin-top: 8px; margin-bottom: 0; }
+      #s3-row .steps__concept { padding: 14px; margin-top: 12px; }
+      #s3-row .steps__concept--allocate .alloc-ribbon { margin-bottom: 8px; }
+      #s3-row .steps__concept--allocate .cascade__row { padding: 6px 8px; }
+      #s3-row .steps__concept--allocate .cascade__row--star { padding: 8px 10px; }
+      #s3-row .steps__concept--allocate .alloc-divider { padding: 6px 4px; }
+      #s3-row .steps__concept--allocate .alloc-verdict { margin-top: 8px; padding: 11px 18px; }
+      #s3-row .steps__concept--allocate .alloc__caption { margin-top: 4px; padding: 4px 16px 0; }
     }
 
-    /* Reduced motion */
+    /* Reduced motion — resolved board, no transitions/animation */
     @media (prefers-reduced-motion: reduce) {
-      .steps__concept--allocate .src-chip,
-      .steps__concept--allocate .src-arrow,
-      .steps__concept--allocate .src-finwy,
-      .steps__concept--allocate .src-replace,
-      .steps__concept--allocate .topbanner,
-      .steps__concept--allocate .cascade__row,
-      .steps__concept--allocate .cascade__cutoff,
-      .steps__concept--allocate .alloc__caption {
-        animation: none !important;
-        transition: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-    
-    }
-      .steps__concept--allocate .src-stage.is-replaced .src-row { display: none;  }
+      .steps__concept--allocate .alloc-bar__fill,
+      .steps__concept--allocate .alloc-verdict,
+      .steps__concept--allocate .topbanner__value,
+      .steps__concept--allocate .alloc-beat__n {
+        animation: none !important; transition: none !important;
+      }
+      .steps__concept--allocate.alloc-js .alloc-verdict { opacity: 1 !important; transform: none !important; }
     }
   </style>
 </head>
@@ -4647,7 +4183,9 @@
       <div class="caps__inner">
         <h2 id="caps-heading" class="caps__heading">What Finwiser does.</h2>
         <p class="caps__sub">Six things the app does for you.</p>
-        <ul class="caps__grid" role="list">
+        <div class="caps-rail-wrap" role="group" aria-label="What Finwiser does — swipe through the app">
+          <button class="caps-arrow caps-arrow--prev" type="button" aria-label="Previous" aria-controls="caps-rail" disabled>&#8249;</button>
+        <ul class="caps__grid" id="caps-rail" role="list" tabindex="0">
           <li class="cap" style="--i:0">
             <div class="device cap__shot">
               <span class="device__screen">
@@ -4733,11 +4271,128 @@
             <p class="cap__body">Bonus, layoff, market drop, new EMI &mdash; the plan updates without you opening the app.</p>
           </li>
         </ul>
+          <button class="caps-arrow caps-arrow--next" type="button" aria-label="Next" aria-controls="caps-rail">&#8250;</button>
+        </div>
+        <div class="caps-dots" id="caps-dots"></div>
         <div class="section-cta">
           <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
         </div>
       </div>
     </section>
+
+    <!-- Capabilities rail controls. Native horizontal overflow scroller: no
+         scroll-jack, no wheel interception, custom drag is MOUSE-ONLY so touch
+         keeps native scroll (vertical page scroll past the section is never
+         swallowed). Scoped to #caps-rail; does not touch the shared engine. -->
+    <script>
+    (function () {
+      var rail = document.getElementById('caps-rail');
+      if (!rail) return;
+      var wrap    = rail.closest('.caps-rail-wrap');
+      var prevBtn = wrap.querySelector('.caps-arrow--prev');
+      var nextBtn = wrap.querySelector('.caps-arrow--next');
+      var dotsBox = document.getElementById('caps-dots');
+      var cards   = Array.prototype.slice.call(rail.querySelectorAll('.cap'));
+      if (!cards.length) return;
+
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var behavior = reduce ? 'auto' : 'smooth';
+
+      // Distance between two card starts (card width + gap).
+      function step() {
+        if (cards.length > 1) {
+          return cards[1].getBoundingClientRect().left - cards[0].getBoundingClientRect().left;
+        }
+        return cards[0].getBoundingClientRect().width;
+      }
+      function clamp(i) { return Math.max(0, Math.min(cards.length - 1, i)); }
+      function activeIndex() { return clamp(Math.round(rail.scrollLeft / step())); }
+      function scrollToIndex(i) { rail.scrollTo({ left: clamp(i) * step(), behavior: behavior }); }
+
+      // Progress dots.
+      var dots = cards.map(function (card, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'caps-dot';
+        b.setAttribute('aria-label', 'Go to screen ' + (i + 1));
+        b.addEventListener('click', function () { killHint(); scrollToIndex(i); });
+        dotsBox.appendChild(b);
+        return b;
+      });
+
+      function update() {
+        var i = activeIndex();
+        dots.forEach(function (d, j) {
+          if (j === i) { d.classList.add('is-active'); d.setAttribute('aria-current', 'true'); }
+          else { d.classList.remove('is-active'); d.removeAttribute('aria-current'); }
+        });
+        var atStart = rail.scrollLeft <= 1;
+        var atEnd   = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 1;
+        prevBtn.disabled = atStart;
+        nextBtn.disabled = atEnd;
+        wrap.classList.toggle('is-at-start', atStart);
+        wrap.classList.toggle('is-at-end', atEnd);
+      }
+
+      // Arrow buttons — one card per press.
+      prevBtn.addEventListener('click', function () { killHint(); rail.scrollBy({ left: -step(), behavior: behavior }); });
+      nextBtn.addEventListener('click', function () { killHint(); rail.scrollBy({ left:  step(), behavior: behavior }); });
+
+      // Keyboard — Left/Right move the rail when it (or a card) has focus.
+      rail.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); killHint(); rail.scrollBy({ left:  step(), behavior: behavior }); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); killHint(); rail.scrollBy({ left: -step(), behavior: behavior }); }
+      });
+
+      // Click-drag to pan — MOUSE ONLY. Touch falls through to native overflow
+      // scroll; we never attach a touch handler and never preventDefault a move.
+      var down = false, startX = 0, startScroll = 0, moved = false;
+      rail.addEventListener('pointerdown', function (e) {
+        if (e.pointerType !== 'mouse') return;      // mouse only
+        down = true; moved = false;
+        startX = e.clientX; startScroll = rail.scrollLeft;
+        rail.classList.add('is-dragging');
+        try { rail.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      rail.addEventListener('pointermove', function (e) {
+        if (!down || e.pointerType !== 'mouse') return;
+        var dx = e.clientX - startX;
+        if (Math.abs(dx) > 3) { moved = true; killHint(); }
+        rail.scrollLeft = startScroll - dx;         // no preventDefault
+      });
+      function endDrag(e) {
+        if (!down) return;
+        down = false;
+        rail.classList.remove('is-dragging');
+        try { if (e && e.pointerId != null) rail.releasePointerCapture(e.pointerId); } catch (err) {}
+        scrollToIndex(activeIndex());               // settle to nearest card
+      }
+      rail.addEventListener('pointerup', endDrag);
+      rail.addEventListener('pointercancel', endDrag);
+      // Suppress the click that fires after a mouse-drag.
+      rail.addEventListener('click', function (e) {
+        if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+      }, true);
+
+      // Keep dots/arrows/fades in sync with native scrolling (rAF-throttled).
+      var ticking = false;
+      rail.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () { update(); ticking = false; });
+      }, { passive: true });
+      window.addEventListener('resize', update);
+
+      // First-run hint — finite, reduced-motion-safe. Cleared on first input.
+      function killHint() { wrap.classList.remove('is-hint'); }
+      update();
+      if (!reduce) {
+        wrap.classList.add('is-hint');
+        rail.addEventListener('pointerdown', killHint, { once: true });
+        rail.addEventListener('scroll', killHint, { once: true, passive: true });
+      }
+    })();
+    </script>
 
     <!-- ============================================================ -->
     <!-- §5 — WHAT FINWY SEES                                          -->
@@ -5466,48 +5121,36 @@
         <div class="steps__row" data-step="3" id="s3-row" data-snap-anim="step-3-allocation">
           <div class="steps__num-col"><div class="steps__num">03</div></div>
           <div class="steps__card">
-            <h3>Tell Finwy your goals. Let math decide.</h3>
+            <h3>Tell Finwy your goals. Watch it decide.</h3>
             <p>You list what matters &mdash; emergency, retirement, the flat in 2031. Finwy ranks them, allocates every rupee, and says up front which ones fit. That is the Next Best Rupee: the one move that matters most this month.</p>
             <ul class="steps__tags" role="list">
-              <li>Next Best Rupee&trade;</li><li>Reads your portfolio</li><li>Tells you which goals fit</li>
+              <li>Next Best Rupee&trade;</li><li>Ranks every goal</li><li>Says what waits</li>
             </ul>
 
             <div class="steps__concept steps__concept--allocate" id="s3-allocate" aria-hidden="true">
 
-              <!-- ACT 1 — sources collapse, replacement line emerges -->
-              <div class="src-stage" id="s3-srcStage">
-                <div class="src-row">
-                  <span class="src-chip">Random YouTubers</span>
-                  <span class="src-chip">Random influencers</span>
-                  <span class="src-chip">Cousin&rsquo;s WhatsApp</span>
-                  <span class="src-chip">Office hot tips</span>
-                  <span class="src-chip">Bank RM (commission-driven)</span>
-                  <span class="src-arrow" aria-hidden="true">&rarr;</span>
-                  <span class="src-finwy" id="s3-srcFinwy" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M5 18 L9 8 L13 14 L17 6 L19 11"/></svg>
-                  </span>
-                </div>
-                <p class="src-replace">
-                  <b>No</b> random tips. <b>No</b> influencer noise. <b>No</b> commission-driven advice.
-                </p>
+              <!-- Beat ribbon — each beat lights as scroll q reaches its chapter -->
+              <div class="alloc-ribbon" id="s3-ribbon">
+                <span class="alloc-beat" data-beat="1"><span class="alloc-beat__n">1</span>Rank</span>
+                <span class="alloc-beat__sep">&rsaquo;</span>
+                <span class="alloc-beat" data-beat="2"><span class="alloc-beat__n">2</span>Place every rupee</span>
+                <span class="alloc-beat__sep">&rsaquo;</span>
+                <span class="alloc-beat" data-beat="3"><span class="alloc-beat__n">3</span>Verdict</span>
               </div>
 
-              <!-- ACT 2 — top banner (Surplus + Balance) + cascade table + caption -->
-              <div class="topbanner" aria-hidden="true">
+              <!-- Board header: Surplus (static) + Left to place (counts 41,300 -> 0) -->
+              <div class="topbanner">
                 <div class="topbanner__cell topbanner__cell--surplus">
                   <span class="topbanner__label">Surplus</span>
                   <span class="topbanner__value">&#8377;41,300<small>/mo</small></span>
                 </div>
                 <div class="topbanner__cell topbanner__cell--balance" id="s3-balanceCell">
-                  <span class="topbanner__label">Balance</span>
-                  <span class="topbanner__value" id="s3-balanceCounter">&#8377;41,300</span>
+                  <span class="topbanner__label">Left to place</span>
+                  <span class="topbanner__value" id="s3-balanceCounter">&#8377;0</span>
                 </div>
               </div>
 
-              <div class="cascade__colheads" aria-hidden="true">
-                <span>Pri</span><span>Goal</span><span>Fund</span><span>Required</span><span>Allocated</span>
-              </div>
-
+              <!-- Goal rows = filling bars (track = need, fill = allocated) -->
               <ul class="cascade" id="s3-cascade" role="list">
                 <li class="cascade__row cascade__row--funded cascade__row--star" data-id="retirement" data-required="15000">
                   <span class="cascade__pri"><span class="pri pri--p0">P0</span></span>
@@ -5517,65 +5160,78 @@
                       Retirement
                       <span class="name__pill">Next Best Rupee&trade;</span>
                     </span>
-                    <span class="name__sub">&#8377;30L PPF, &#8377;0 equity</span>
-                    <span class="name__fund-mobile" aria-hidden="true">Equity index fund</span>
+                    <span class="name__sub">&#8377;30L PPF, &#8377;0 equity &middot; Equity index fund</span>
                   </span>
-                  <span class="cascade__fund">Equity index fund</span>
-                  <span class="cascade__required">&mdash;</span>
-                  <span class="cascade__allocated">&mdash;</span>
+                  <span class="alloc">
+                    <span class="alloc-bar" style="width:93.75%"><span class="alloc-bar__fill"></span></span>
+                    <span class="alloc-cap"><span class="alloc-amt">&#8377;15,000</span><span class="alloc-state">&#10003; funded</span></span>
+                  </span>
                 </li>
                 <li class="cascade__row cascade__row--funded" data-id="emergency" data-required="2000">
                   <span class="cascade__pri"><span class="pri pri--p0">P0</span></span>
                   <span class="cascade__name">
                     <span class="name__title">Emergency fund</span>
-                    <span class="name__fund-mobile" aria-hidden="true">Liquid debt fund</span>
+                    <span class="name__sub">Liquid debt fund</span>
                   </span>
-                  <span class="cascade__fund">Liquid debt fund</span>
-                  <span class="cascade__required">&mdash;</span>
-                  <span class="cascade__allocated">&mdash;</span>
+                  <span class="alloc">
+                    <span class="alloc-bar" style="width:12.5%"><span class="alloc-bar__fill"></span></span>
+                    <span class="alloc-cap"><span class="alloc-amt">&#8377;2,000</span><span class="alloc-state">&#10003; funded</span></span>
+                  </span>
                 </li>
                 <li class="cascade__row cascade__row--funded" data-id="flat" data-required="16000">
                   <span class="cascade__pri"><span class="pri pri--p1">P1</span></span>
                   <span class="cascade__name">
                     <span class="name__title">First flat (2031)</span>
-                    <span class="name__fund-mobile" aria-hidden="true">Balanced advantage fund</span>
+                    <span class="name__sub">Balanced advantage fund</span>
                   </span>
-                  <span class="cascade__fund">Balanced advantage fund</span>
-                  <span class="cascade__required">&mdash;</span>
-                  <span class="cascade__allocated">&mdash;</span>
+                  <span class="alloc">
+                    <span class="alloc-bar" style="width:100%"><span class="alloc-bar__fill"></span></span>
+                    <span class="alloc-cap"><span class="alloc-amt">&#8377;16,000</span><span class="alloc-state">&#10003; funded</span></span>
+                  </span>
                 </li>
-                <li class="cascade__row cascade__row--funded cascade__row--cutoff" data-id="wedding" data-required="8300">
+                <li class="cascade__row cascade__row--funded" data-id="wedding" data-required="8300">
                   <span class="cascade__pri"><span class="pri pri--p2">P2</span></span>
                   <span class="cascade__name">
                     <span class="name__title">Wedding (2029)</span>
-                    <span class="name__fund-mobile" aria-hidden="true">Short-duration debt</span>
+                    <span class="name__sub">Short-duration debt</span>
                   </span>
-                  <span class="cascade__fund">Short-duration debt</span>
-                  <span class="cascade__required">&mdash;</span>
-                  <span class="cascade__allocated">&mdash;</span>
+                  <span class="alloc">
+                    <span class="alloc-bar" style="width:51.875%"><span class="alloc-bar__fill"></span></span>
+                    <span class="alloc-cap"><span class="alloc-amt">&#8377;8,300</span><span class="alloc-state">&#10003; funded</span></span>
+                  </span>
                 </li>
-                <li class="cascade__cutoff" id="s3-cutoffLine" aria-hidden="true"></li>
-                <li class="cascade__row cascade__row--deferred" data-id="bike" data-required="6000" data-status="Not feasible">
+
+                <li class="alloc-divider" id="s3-cutoffLine" aria-hidden="true">surplus runs out here</li>
+
+                <li class="cascade__row cascade__row--deferred" data-id="bike" data-required="6000">
                   <span class="cascade__pri"><span class="pri pri--p3">P3</span></span>
                   <span class="cascade__name">
                     <span class="name__title">Bike (this year)</span>
-                    <span class="name__fund-mobile" aria-hidden="true">Push 18 months</span>
+                    <span class="name__sub">Waits for a bigger month</span>
                   </span>
-                  <span class="cascade__fund">Push 18 months</span>
-                  <span class="cascade__required">&mdash;</span>
-                  <span class="cascade__allocated">&mdash;</span>
+                  <span class="alloc">
+                    <span class="alloc-bar" style="width:37.5%"><span class="alloc-bar__fill"></span></span>
+                    <span class="alloc-cap"><span class="alloc-amt">needs &#8377;6,000</span><span class="alloc-state">Push 18 months</span></span>
+                  </span>
                 </li>
-                <li class="cascade__row cascade__row--deferred" data-id="foreign" data-required="8000" data-status="Not feasible">
+                <li class="cascade__row cascade__row--deferred" data-id="foreign" data-required="8000">
                   <span class="cascade__pri"><span class="pri pri--p3">P3</span></span>
                   <span class="cascade__name">
                     <span class="name__title">Foreign trip (2027)</span>
-                    <span class="name__fund-mobile" aria-hidden="true">Push 3 years</span>
+                    <span class="name__sub">Waits for a bigger month</span>
                   </span>
-                  <span class="cascade__fund">Push 3 years</span>
-                  <span class="cascade__required">&mdash;</span>
-                  <span class="cascade__allocated">&mdash;</span>
+                  <span class="alloc">
+                    <span class="alloc-bar" style="width:50%"><span class="alloc-bar__fill"></span></span>
+                    <span class="alloc-cap"><span class="alloc-amt">needs &#8377;8,000</span><span class="alloc-state">Push 3 years</span></span>
+                  </span>
                 </li>
               </ul>
+
+              <!-- Verdict — reveals at the last chapter and stays -->
+              <div class="alloc-verdict" id="s3-verdict">
+                <span class="alloc-verdict__k">Verdict</span>
+                <span class="alloc-verdict__t"><b>4 goals funded this month. 2 wait.</b> Next best rupee &rarr; <b>&#8377;15,000 to retirement</b> &mdash; the one move that compounds longest.</span>
+              </div>
 
               <div class="alloc__caption">
                 <span class="alloc__caption-hero">Fits your goals. Fits your priorities.</span>
@@ -5642,119 +5298,80 @@
       <div class="engine__shared-head">
         <div class="engine__shared-inner">
           <p class="engine__intro-eyebrow">Watch how Finwy reasons</p>
-          <h3 class="engine__case-tagline" id="engine-case-tagline" data-flap-text>Two people. Same money. Opposite advice.</h3>
-          <p class="engine__case-sub" id="engine-case-sub" data-flap-text>Both 35. Both with &#8377;52,000 left over every month.</p>
+          <h3 class="engine__case-tagline" id="engine-case-tagline">Two people. Same money. Opposite advice.</h3>
+          <p class="engine__case-sub" id="engine-case-sub">Both 35. Both with &#8377;52,000 left over every month.</p>
         </div>
       </div>
       <div class="engine__inner">
 
         <!-- 1 — Same surplus. Opposite portfolios. -->
-        <article class="case-card" id="pair-portfolios" data-pair="portfolios" data-decisive="4" data-snap-anim="engine-portfolios" data-tagline="Two people. Same money. Opposite advice." data-sub="Both 35. Both with &#8377;52,000 left over every month." aria-labelledby="engine-case-tagline">
-          <p class="visually-hidden">Both 35, both with 52,000 rupees left over every month. Riya has 83 percent in equity in a 46-lakh portfolio. Aman has zero, with 6 lakh sitting in fixed deposit. Risk is the decisive factor. Riya is told to stop adding equity and rebalance. Aman to start equity.</p>
+        <article class="case-card" id="pair-portfolios" data-pair="portfolios" data-snap-anim="engine-portfolios" aria-labelledby="engine-case-tagline">
+          <p class="visually-hidden">Both 35, both with 52,000 rupees left over every month. Four things match: their age, their goals, their monthly surplus and their priorities. One thing differs. Riya holds 83 percent equity in a 46-lakh portfolio; Aman holds no equity, with 6 lakh sitting in a fixed deposit. Risk is the factor that decides it. Riya, who self-rates conservative, is told to stop adding equity because she is already over-exposed. Aman, who self-rates aggressive, is told to start equity today because cash is his real risk. For Riya, equity is the danger. For Aman, cash is.</p>
 
-          <div class="trail" role="img" aria-label="Finwy considers six factors and decides on Risk">
-            <div class="trail__row" aria-hidden="true">
-              <div class="factor" data-pos="0">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-                <span class="factor__label">Age</span>
-                <span class="factor__readout">35 yrs</span>
-              </div>
-              <div class="factor" data-pos="1">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
-                <span class="factor__label">Goals</span>
-                <span class="factor__readout">retirement &middot; 25y</span>
-              </div>
-              <div class="factor" data-pos="2">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9 13c1 1 2 1.5 3 1.5s2-.5 3-1.5M10 9h.01M14 9h.01"/></svg>
-                <span class="factor__label">Surplus</span>
-                <span class="factor__readout">&#8377;52K/mo</span>
-              </div>
-              <div class="factor" data-pos="3">
-                <svg viewBox="0 0 24 24"><path d="M3 18l5-5 4 4 9-9"/><path d="M14 8h6v6"/></svg>
-                <span class="factor__label">Portfolio</span>
-                <span class="factor__readout">&#8377;46L vs &#8377;6L</span>
-              </div>
-              <div class="factor" data-pos="4">
-                <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.4 8.5-8 9.5-4.6-1-8-5-8-9.5V7l8-4z"/></svg>
-                <span class="factor__label">Risk</span>
-                <span class="factor__readout">83% vs 0% equity</span>
-              </div>
-              <div class="factor" data-pos="5">
-                <svg viewBox="0 0 24 24"><polygon points="12,3 14.4,9.5 21,9.5 15.5,13.6 17.7,20.5 12,16.3 6.3,20.5 8.5,13.6 3,9.5 9.6,9.5"/></svg>
-                <span class="factor__label">Priorities</span>
-                <span class="factor__readout">comparable</span>
-              </div>
+          <!-- Persistent split — Riya vs Aman stay co-visible at every width. -->
+          <div class="seen-duo" aria-hidden="true">
+            <div class="seen-person">
+              <span class="seen-person__who">Riya M.</span>
+              <span class="seen-person__meta">35 &middot; self-rated Conservative</span>
             </div>
-            <div class="trail__mascot" aria-hidden="true">
-              <img src="fw-deck-2026/slides/finwy-3d-small.webp" width="126" height="189" alt="" loading="lazy" decoding="async" />
+            <div class="seen-vs"><span>vs</span></div>
+            <div class="seen-person seen-person--right">
+              <span class="seen-person__who">Aman K.</span>
+              <span class="seen-person__meta">35 &middot; self-rated Aggressive</span>
             </div>
           </div>
 
-          <div class="lane lane--mint" data-i="0">
-            <div class="lane__input">
-              <p class="input__name">Riya M.</p>
-              <p class="input__meta">35 &middot; BENGALURU &middot; SOFTWARE ENG.</p>
-              <div class="input-stats">
-                <div class="input-stat"><span class="input-stat__num">83<small>%</small></span><span class="input-stat__label">in equity</span></div>
-                <div class="input-stat"><span class="input-stat__num">&#8377;46L</span><span class="input-stat__label">portfolio</span></div>
-              </div>
-              <p class="input__rating">Self-rated <span class="input__rating-key">Conservative</span></p>
-              <p class="input__trigger">Opened Finwiser after a colleague&rsquo;s heart attack at 38.</p>
+          <!-- Six factors as one shared table; rows reveal one at a time on q. -->
+          <div class="seen-factors" aria-hidden="true">
+            <div class="seen-row seen-row--same">
+              <span class="seen-fv">35</span>
+              <span class="seen-fmid"><span class="seen-flabel">Age</span><span class="seen-ftag">Same</span></span>
+              <span class="seen-fv seen-fv--right">35</span>
             </div>
-            <div class="lane__verdict">
-              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">R</span> Riya</p>
-              <p class="verdict__verb">STOP</p>
-              <p class="verdict__line">Stop adding equity. Buy term. Build liquidity.</p>
-              <div class="allocation">
-                <p class="allocation__head"><strong>&#8377;52K/mo</strong> &middot; allocated</p>
-                <div class="allocation__bar">
-                  <span class="allocation__seg a-rose"  style="--seg-w: 6%;"></span>
-                  <span class="allocation__seg a-gold"  style="--seg-w: 29%;"></span>
-                  <span class="allocation__seg a-slate" style="--seg-w: 38%;"></span>
-                  <span class="allocation__seg a-mint"  style="--seg-w: 27%;"></span>
-                </div>
-                <div class="allocation__legend">
-                  <div class="allocation__row"><span class="allocation__dot a-rose"></span><span class="allocation__name">Term insurance</span><span class="allocation__amount">&#8377;3K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;15K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt funds</span><span class="allocation__amount">&#8377;20K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity (reduced)</span><span class="allocation__amount">&#8377;14K</span></div>
-                </div>
-              </div>
+            <div class="seen-row seen-row--same">
+              <span class="seen-fv">Retire &middot; home &middot; safety</span>
+              <span class="seen-fmid"><span class="seen-flabel">Goals</span><span class="seen-ftag">Same</span></span>
+              <span class="seen-fv seen-fv--right">Retire &middot; home &middot; safety</span>
+            </div>
+            <div class="seen-row seen-row--same">
+              <span class="seen-fv">&#8377;52,000/mo</span>
+              <span class="seen-fmid"><span class="seen-flabel">Surplus</span><span class="seen-ftag">Same</span></span>
+              <span class="seen-fv seen-fv--right">&#8377;52,000/mo</span>
+            </div>
+            <div class="seen-row seen-row--diff">
+              <span class="seen-fv">83% equity &middot; &#8377;46L</span>
+              <span class="seen-fmid"><span class="seen-flabel">Portfolio</span><span class="seen-ftag"><span class="seen-ftag__lg">First difference</span><span class="seen-ftag__sm">Differs</span></span></span>
+              <span class="seen-fv seen-fv--right">0% equity &middot; &#8377;6L FD</span>
+            </div>
+            <div class="seen-row seen-row--decide">
+              <span class="seen-fv"><strong>&ldquo;Conservative&rdquo;</strong> <span class="seen-fv__sub">&rarr; 83% in equity</span></span>
+              <span class="seen-fmid"><span class="seen-flabel"><span class="seen-star">&#9733;</span> Risk</span><span class="seen-ftag"><span class="seen-ftag__lg">This decides it</span><span class="seen-ftag__sm">Decides</span></span></span>
+              <span class="seen-fv seen-fv--right"><strong>&ldquo;Aggressive&rdquo;</strong> <span class="seen-fv__sub">&rarr; all in cash</span></span>
+            </div>
+            <div class="seen-row seen-row--same">
+              <span class="seen-fv">Priorities set</span>
+              <span class="seen-fmid"><span class="seen-flabel">Priorities</span><span class="seen-ftag">Same</span></span>
+              <span class="seen-fv seen-fv--right">Priorities set</span>
             </div>
           </div>
 
-          <div class="lane lane--teal" data-i="1">
-            <div class="lane__input">
-              <p class="input__name">Aman K.</p>
-              <p class="input__meta">35 &middot; PUNE &middot; SALES LEAD</p>
-              <div class="input-stats">
-                <div class="input-stat"><span class="input-stat__num">0<small>%</small></span><span class="input-stat__label">in equity</span></div>
-                <div class="input-stat"><span class="input-stat__num">&#8377;6L</span><span class="input-stat__label">all in FD</span></div>
-              </div>
-              <p class="input__rating">Self-rated <span class="input__rating-key">Aggressive</span></p>
-              <p class="input__trigger">Opened Finwiser after his crypto-friend&rsquo;s third disaster.</p>
+          <p class="seen-matched" aria-hidden="true">Four things matched. <em>One didn&rsquo;t.</em></p>
+
+          <!-- Mirror verdicts — opposite advice, co-visible on mobile too. -->
+          <div class="seen-verdicts" aria-hidden="true">
+            <div class="seen-vcard seen-vcard--stop">
+              <span class="seen-vcard__verb">STOP</span>
+              <span class="seen-vcard__who">Riya &middot; Conservative</span>
+              <span class="seen-vcard__line">Stop adding equity &mdash; you&rsquo;re already over-exposed.</span>
             </div>
-            <div class="lane__verdict">
-              <p class="verdict__attr"><span class="verdict__avatar" aria-hidden="true">A</span> Aman</p>
-              <p class="verdict__verb">START</p>
-              <p class="verdict__line">Start equity. Today. Skip the side bets.</p>
-              <div class="allocation">
-                <p class="allocation__head"><strong>&#8377;52K/mo</strong> &middot; allocated</p>
-                <div class="allocation__bar">
-                  <span class="allocation__seg a-rose"  style="--seg-w: 6%;"></span>
-                  <span class="allocation__seg a-gold"  style="--seg-w: 19%;"></span>
-                  <span class="allocation__seg a-slate" style="--seg-w: 8%;"></span>
-                  <span class="allocation__seg a-mint"  style="--seg-w: 67%;"></span>
-                </div>
-                <div class="allocation__legend">
-                  <div class="allocation__row"><span class="allocation__dot a-rose"></span><span class="allocation__name">Term insurance</span><span class="allocation__amount">&#8377;3K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-gold"></span><span class="allocation__name">Emergency</span><span class="allocation__amount">&#8377;10K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-slate"></span><span class="allocation__name">Debt funds</span><span class="allocation__amount">&#8377;4K</span></div>
-                  <div class="allocation__row"><span class="allocation__dot a-mint"></span><span class="allocation__name">Equity SIP</span><span class="allocation__amount">&#8377;35K</span></div>
-                </div>
-              </div>
+            <div class="seen-vcard seen-vcard--start">
+              <span class="seen-vcard__verb">START</span>
+              <span class="seen-vcard__who">Aman &middot; Aggressive</span>
+              <span class="seen-vcard__line">Start equity today &mdash; cash is your real risk.</span>
             </div>
           </div>
+
+          <p class="seen-kicker" aria-hidden="true">For Riya, equity is the danger. For Aman, cash is.</p>
         </article>
 
         <!-- 2 — Same portfolio. Different goals. -->
@@ -8111,222 +7728,56 @@
         }
       }
 
-      // ---- §6.03 Allocate concept: cascade with floating balance ----
+      // ---- §6.03 Allocate concept: goal board with filling bars ----
+      /* Scroll-driven through the shared fwChapters render(q): ONE rAF
+         clock, no setTimeout/setInterval/autoplay, no IntersectionObserver
+         play. The reveal is a pure function of scroll q, scrubbable both
+         ways. REST STATE (no JS / reduced motion / q at either end) is the
+         fully-resolved board: every funded bar full, LEFT TO PLACE ₹0,
+         pushed rows ghosted, verdict shown. No "—" is ever rendered. */
       var allocStep  = document.getElementById('s3-row');
       var allocBlock = document.getElementById('s3-allocate');
       if (allocStep && allocBlock) {
-        var allocSrcStage    = document.getElementById('s3-srcStage');
-        var allocSrcFinwy    = document.getElementById('s3-srcFinwy');
-        var allocCutoff      = document.getElementById('s3-cutoffLine');
         var allocBalanceCell = document.getElementById('s3-balanceCell');
         var allocBalanceCtr  = document.getElementById('s3-balanceCounter');
+        var allocVerdict     = document.getElementById('s3-verdict');
+        var allocBeats       = allocBlock.querySelectorAll('.alloc-beat');
 
         var ALLOC_INITIAL = 41300;
         var allocCurrent  = ALLOC_INITIAL;
-
-        var allocTimers = [];
-        var allocRafs   = [];
-        function allocClearAll() {
-          allocTimers.forEach(clearTimeout); allocTimers = [];
-          allocRafs.forEach(cancelAnimationFrame); allocRafs = [];
-        }
-        function allocLater(fn, ms) { allocTimers.push(setTimeout(fn, ms)); }
 
         function allocFmtINR(v) {
           return '₹' + Math.round(v).toLocaleString('en-IN');
         }
 
-        function allocAnimateCount(el, from, to, duration) {
-          if (reduce) { el.textContent = allocFmtINR(to); return; }
-          var start = performance.now();
-          function step(now) {
-            var t = Math.min(1, (now - start) / duration);
-            var eased = 1 - Math.pow(1 - t, 3);
-            var v = from + (to - from) * eased;
-            el.textContent = allocFmtINR(v);
-            if (t < 1) allocRafs.push(requestAnimationFrame(step));
-          }
-          allocRafs.push(requestAnimationFrame(step));
-        }
-
-        function allocDeductBalance(amount, duration) {
-          var from = allocCurrent;
-          var to = Math.max(0, from - amount);
-          allocCurrent = to;
-          allocAnimateCount(allocBalanceCtr, from, to, duration);
-          if (to === 0 && from > 0) {
-            allocLater(function () {
-              allocBalanceCell.classList.add('is-zeroed');
-              if (allocCutoff) allocCutoff.classList.add('is-drawn');
-            }, duration + 40);
-          }
-        }
-
-        function allocResetBalance() {
-          allocCurrent = ALLOC_INITIAL;
-          allocBalanceCtr.textContent = allocFmtINR(ALLOC_INITIAL);
-          allocBalanceCell.classList.remove('is-zeroed');
-        }
-
-        function allocResetRows() {
-          var rows = allocBlock.querySelectorAll('.cascade__row');
-          rows.forEach(function (row) {
-            row.classList.remove('is-revealed', 'is-fallen');
-            var req = row.querySelector('.cascade__required');
-            var alc = row.querySelector('.cascade__allocated');
-            if (req) req.textContent = '—';
-            if (alc) {
-              alc.textContent = '—';
-              alc.classList.remove('is-status');
-              alc.style.color = '';
-            }
+        /* Funded rows in DOM (priority) order carry the drain:
+           15,000 → +2,000 → +16,000 → +8,300 = 41,300 spent, ₹0 left. */
+        var alRows = Array.prototype.slice.call(allocBlock.querySelectorAll('.cascade__row'))
+          .map(function (row) {
+            return { funded:   row.classList.contains('cascade__row--funded'),
+                     required: parseInt(row.dataset.required, 10) || 0,
+                     fill:     row.querySelector('.alloc-bar__fill') };
           });
-          if (allocCutoff) allocCutoff.classList.remove('is-drawn');
-        }
+        var alFundedCount = alRows.filter(function (r) { return r.funded; }).length;
 
-        function allocReset() {
-          allocClearAll();
-          allocSrcStage.classList.remove('is-act1-in', 'is-dissolving', 'is-replaced');
-          allocSrcFinwy.classList.remove('is-pulsing');
-          allocBlock.classList.remove('is-act2', 'is-starred', 'is-caption');
-          allocResetRows();
-          allocResetBalance();
-        }
+        function allocSetBeat(i, on) { if (allocBeats[i]) allocBeats[i].classList.toggle('on', on); }
 
-        function allocPulseFinwy() {
-          allocSrcFinwy.classList.add('is-pulsing');
-          allocLater(function () { allocSrcFinwy.classList.remove('is-pulsing'); }, 240);
-        }
-
-        function allocRevealFunded(row) {
-          row.classList.add('is-revealed');
-          var required = parseInt(row.dataset.required, 10);
-          var reqEl = row.querySelector('.cascade__required');
-          var alcEl = row.querySelector('.cascade__allocated');
-          reqEl.textContent = allocFmtINR(required);
-          allocLater(function () {
-            allocAnimateCount(alcEl, 0, required, 420);
-            allocDeductBalance(required, 420);
-          }, 80);
-        }
-
-        function allocRevealDeferred(row) {
-          row.classList.add('is-revealed');
-          var required = parseInt(row.dataset.required, 10);
-          var status = row.dataset.status;
-          var reqEl = row.querySelector('.cascade__required');
-          var alcEl = row.querySelector('.cascade__allocated');
-          reqEl.textContent = allocFmtINR(required);
-          alcEl.textContent = allocFmtINR(0);
-          alcEl.style.color = 'var(--white-32)';
-          allocLater(function () {
-            alcEl.classList.add('is-status');
-            alcEl.style.color = '';
-            alcEl.innerHTML = status;
-          }, 280);
-          allocLater(function () { row.classList.add('is-fallen'); }, 240);
-        }
-
+        /* The resolved board — used for reduced-motion / no-IntersectionObserver. */
         function allocSettleFinal() {
-          allocSrcStage.classList.add('is-act1-in', 'is-dissolving', 'is-replaced');
-          allocBlock.classList.add('is-act2', 'is-starred', 'is-caption');
           allocCurrent = 0;
           allocBalanceCtr.textContent = allocFmtINR(0);
           allocBalanceCell.classList.add('is-zeroed');
-          var rows = allocBlock.querySelectorAll('.cascade__row');
-          rows.forEach(function (row) {
-            row.classList.add('is-revealed');
-            if (row.classList.contains('cascade__row--funded')) {
-              var required = parseInt(row.dataset.required, 10);
-              row.querySelector('.cascade__required').textContent = allocFmtINR(required);
-              row.querySelector('.cascade__allocated').textContent = allocFmtINR(required);
-            } else if (row.classList.contains('cascade__row--deferred')) {
-              var required = parseInt(row.dataset.required, 10);
-              var status = row.dataset.status;
-              row.querySelector('.cascade__required').textContent = allocFmtINR(required);
-              var alcEl = row.querySelector('.cascade__allocated');
-              alcEl.classList.add('is-status');
-              alcEl.innerHTML = status;
-              row.classList.add('is-fallen');
-            }
-          });
-          if (allocCutoff) allocCutoff.classList.add('is-drawn');
-        }
-
-        function allocRun() {
-          return new Promise(function (resolve) {
-            allocReset();
-            if (reduce) { allocSettleFinal(); resolve(); return; }
-
-            // ACT 1
-            allocLater(function () { allocSrcStage.classList.add('is-act1-in'); }, 60);
-            allocLater(function () { allocSrcStage.classList.add('is-dissolving'); }, 1100);
-            [1100, 1320, 1540, 1760, 1980].forEach(function (t) {
-              allocLater(allocPulseFinwy, t + 480);
-            });
-            allocLater(function () { allocSrcStage.classList.add('is-replaced'); }, 2500);
-
-            // ACT 2 — top banner reveals
-            allocLater(function () { allocBlock.classList.add('is-act2'); }, 3000);
-
-            var rows = allocBlock.querySelectorAll('.cascade__row');
-            var t0 = 3300;
-            var stagger = 720;
-
-            allocLater(function () { allocRevealFunded(rows[0]); }, t0);
-            allocLater(function () { allocRevealFunded(rows[1]); }, t0 + stagger * 1);
-            allocLater(function () { allocRevealFunded(rows[2]); }, t0 + stagger * 2);
-            allocLater(function () { allocRevealFunded(rows[3]); }, t0 + stagger * 3);
-            allocLater(function () { allocRevealDeferred(rows[4]); }, t0 + stagger * 4);
-            allocLater(function () { allocRevealDeferred(rows[5]); }, t0 + stagger * 5);
-
-            var afterRows = t0 + stagger * 5 + 600;
-            allocLater(function () { allocBlock.classList.add('is-starred'); }, afterRows);
-            allocLater(function () {
-              allocBlock.classList.add('is-caption');
-              resolve();
-            }, afterRows + 720);
-          });
+          alRows.forEach(function (r) { if (r.fill) r.fill.style.width = r.funded ? '100%' : '0'; });
+          for (var i = 0; i < allocBeats.length; i++) allocSetBeat(i, true);
+          if (allocVerdict) allocVerdict.classList.add('is-shown');
         }
 
         if (reduce || !('IntersectionObserver' in window)) {
           allocSettleFinal();
         } else {
-          /* Scroll-driven (step-2 model). Act 1 (sources dissolve) runs in
-             the first quarter of the pass, the cascade reveals row by row
-             through the middle, star + caption close it out. The balance is
-             recomputed as 41,300 minus the funded rows revealed so far —
-             never decremented — so scrubbing backwards is exact. */
-          var alRows = Array.prototype.slice.call(allocBlock.querySelectorAll('.cascade__row'))
-            .map(function (row) {
-              return { el: row,
-                       funded:   row.classList.contains('cascade__row--funded'),
-                       required: parseInt(row.dataset.required, 10) || 0,
-                       status:   row.dataset.status || '',
-                       req: row.querySelector('.cascade__required'),
-                       alc: row.querySelector('.cascade__allocated') };
-            });
-          var alLastCount = -1, alLastPhase = '';
+          allocBlock.classList.add('alloc-js');   /* arm the scroll-driven reveal */
 
-          /* THE WATERFALL, chaptered (founder: "the whole logic of priority
-             goals getting allocation is gone" — the drain played off-screen).
-             STOP 1: banner up, BALANCE ₹41,300, table empty.
-             STOP 2: goals land one by one, each visibly deducting
-                     41,300 -> 26,300 -> 24,300 -> 8,300 -> 0, cutoff, P3s fall.
-             STOP 3: star + verdict.
-             Triggers: row progress under the desktop pin; the concept block's
-             own pass on mobile — so the drain can only play ON SCREEN. */
-          /* SIX BEATS (Motion §9.2), one nameable event each:
-               1  the sources are on the table
-               2  they dissolve — no tips, no influencers, no commission
-               3  the banner lands: ₹41,300 surplus, ₹41,300 balance, empty table
-               4  the first three goals take their money   41,300 -> 8,300
-               5  the rest land, the surplus runs out, the two P3s fall
-               6  the star and the verdict
-             The trigger is one map now, not two: fwPinP runs the beats
-             across the pinned stage's own travel, on BOTH devices, which
-             is what puts beat 6 in the same frame as beat 3. */
-          var allocConcept = document.querySelector('.steps__concept--allocate') || allocBlock;
+          var allocConcept = allocBlock;
           var allocPinMQ = matchMedia('(min-width: 901px) and (min-height: 860px)');
           var allocCard  = allocStep.querySelector('.steps__card') || allocStep;
           var allocGetP  = fwPinP(allocPinMQ.matches ? allocCard : allocConcept,
@@ -8335,56 +7786,47 @@
             allocGetP = fwPinP(allocPinMQ.matches ? allocCard : allocConcept,
                                allocPinMQ.matches ? allocStep : allocCard);
           });
+
+          var alLastCount = -1, alLastPhase = '';
+
+          /* Six chapters, three beats:
+               Rank        — rows present in priority order (q > 0.03)
+               Place rupee — LEFT TO PLACE drains, bars fill top-down (q > 0.30)
+               Verdict     — the verdict bar locks in (q > 0.84)
+             poses are the resting q values; render maps q -> visuals so a
+             scrub back reverses the fills and the counter exactly. */
           fwChapters({ el: allocStep,
-            poses: [0.02, 0.16, 0.29, 0.52, 0.76, 1.0],
-            thresholds: [0.12, 0.28, 0.44, 0.62, 0.80],
-            /* speed 0.13 meant a single chapter of the drain took 1.85s of
-               stillness — the same stopwatch defect as M2, one scene over.
-               0.42 plays a chapter in ~0.6s; fastDist stays high so a fling
-               does not rush the waterfall. */
+            poses: [0.04, 0.22, 0.44, 0.64, 0.82, 1.0],
+            thresholds: [0.13, 0.32, 0.52, 0.72, 0.90],
             speed: 0.42, fastDist: 0.5,
             getP: function () { return allocGetP(); },
             render: allocRenderQ });
 
           function allocRenderQ(p) {
-            var phase = (p > 0.84 ? 'caption' : p > 0.78 ? 'star' :
-                         p > 0.26 ? 'act2' : p > 0.2 ? 'replaced' :
-                         p > 0.1 ? 'dissolve' : p > 0.03 ? 'act1' : 'idle');
+            var phase = (p > 0.84 ? 'verdict' : p > 0.30 ? 'place' : p > 0.03 ? 'rank' : 'idle');
             if (phase !== alLastPhase) {
-              allocSrcStage.classList.toggle('is-act1-in',   p > 0.03);
-              allocSrcStage.classList.toggle('is-dissolving', p > 0.1);
-              allocSrcStage.classList.toggle('is-replaced',   p > 0.2);
-              allocBlock.classList.toggle('is-act2',    p > 0.26);
-              allocBlock.classList.toggle('is-starred', p > 0.78);
-              allocBlock.classList.toggle('is-caption', p > 0.84);
+              allocSetBeat(0, p > 0.03);
+              allocSetBeat(1, p > 0.30);
+              allocSetBeat(2, p > 0.84);
+              if (allocVerdict) allocVerdict.classList.toggle('is-shown', p > 0.84);
               alLastPhase = phase;
             }
 
-            var count = Math.min(alRows.length, Math.floor(fwTrack(p, 0.3, 0.74) * alRows.length + 0.0001));
+            /* funded bars fill one at a time as the surplus drains */
+            var count = Math.min(alFundedCount,
+                                 Math.floor(fwTrack(p, 0.30, 0.70) * alFundedCount + 0.0001));
             if (count !== alLastCount) {
-              var spent = 0, anyDeferred = false;
+              var spent = 0, seen = 0;
               for (var i = 0; i < alRows.length; i++) {
-                var r = alRows[i], on = i < count;
-                r.el.classList.toggle('is-revealed', on);
-                if (r.funded) {
-                  if (on) spent += r.required;
-                  if (r.req) r.req.textContent = on ? allocFmtINR(r.required) : '—';
-                  if (r.alc) r.alc.textContent = on ? allocFmtINR(r.required) : '—';
-                } else {
-                  r.el.classList.toggle('is-fallen', on);
-                  if (on) anyDeferred = true;
-                  if (r.req) r.req.textContent = on ? allocFmtINR(r.required) : '—';
-                  if (r.alc) {
-                    r.alc.classList.toggle('is-status', on);
-                    if (on) r.alc.innerHTML = r.status;
-                    else { r.alc.textContent = '—'; r.alc.style.color = ''; }
-                  }
-                }
+                var r = alRows[i];
+                if (!r.funded) continue;
+                var on = seen < count; seen++;
+                if (r.fill) r.fill.style.width = on ? '100%' : '0';
+                if (on) spent += r.required;
               }
               allocCurrent = ALLOC_INITIAL - spent;
               allocBalanceCtr.textContent = allocFmtINR(allocCurrent);
               allocBalanceCell.classList.toggle('is-zeroed', allocCurrent === 0);
-              if (allocCutoff) allocCutoff.classList.toggle('is-drawn', anyDeferred);
               alLastCount = count;
             }
           }
@@ -8402,8 +7844,9 @@
          the first flap writes into an element that is then rebuilt blank,
          and the flag that says "already flapped" is stuck true: the head
          read "" for the entire scene. Cells first, scene second. */
-      flapInit(document.getElementById('engine-case-tagline'), true);
-      flapInit(document.getElementById('engine-case-sub'),     true);
+      /* The engine head is static plain text now (one case, no multi-case
+         split-flap cycle), so the flapInit / flapMorph pair the cycler
+         needed has been removed from this scene. */
 
       // ---- §7 The Engine (Two of you. Two answers.) ----
       /* ============================================================
@@ -8436,13 +7879,13 @@
          Position drives WHICH pose; the clock only draws the tween
          between two poses. Nothing in this scene is on wall time.
 
-         Six beats, one nameable event each:
-           1  Finwy walks the first half of the trail  (Age, Goals, Surplus)
-           2  and the second half            (Portfolio, Risk, Priorities)
-           3  Risk locks — the decisive factor, and it hands off
-           4  Riya: STOP. Stop adding equity.
-           5  Aman: START. Start equity, today.
-           6  the money lands — both allocations fill
+         The scene's whole state is a pure function of q: six factor rows
+         reveal one at a time (Age, Goals, Surplus as SAME, then Portfolio
+         as the first difference, then Risk as the decider, then
+         Priorities), lingering on Portfolio and Risk; then the payoff
+         line, then the two verdicts, then the kicker resolve. That last
+         frame is the terminal, resting pose. Position drives WHICH pose;
+         the clock only tweens between two poses. Nothing is on wall time.
          ============================================================ */
       (function () {
         var engineReduce = reduce; // inherited from parent IIFE
@@ -8450,37 +7893,16 @@
         var engineCards   = document.querySelectorAll('.engine .case-card');
         if (!engineSection || !engineCards.length) return;
 
-        function trailMascot(card) { return card.querySelector('.trail__mascot'); }
-
-        /* Continuous walk: the mascot's x is interpolated between the
-           measured centres of the six factors, so he is literally under
-           the finger rather than hopping on a timer. Centres are read
-           once per resize — never inside the render. */
-        function measureCentres(card) {
-          var trail = card.querySelector('.trail');
-          var factors = card.querySelectorAll('.factor');
-          if (!trail || !factors.length) return [];
-          var tr = trail.getBoundingClientRect();
-          var mw = (trailMascot(card) || {}).offsetWidth || 48;
-          return Array.prototype.map.call(factors, function (f) {
-            var r = f.getBoundingClientRect();
-            return r.left + r.width / 2 - tr.left - mw / 2;
-          });
-        }
+        /* The reveal thresholds on q. Portfolio (row 4) and Risk (row 5)
+           get extra room so the eye lingers on the first difference and
+           on the factor that decides it. */
+        var rowT = [0.06, 0.14, 0.22, 0.32, 0.46, 0.60];
 
         function settleFinalState(card) {
-          var decisive = parseInt(card.dataset.decisive, 10);
-          card.querySelectorAll('.factor').forEach(function (f, i) {
-            f.classList.remove('is-active', 'is-decisive-hold', 'is-handing-off');
-            f.classList.toggle('is-decisive',   i === decisive);
-            f.classList.toggle('is-considered', i !== decisive);
-          });
-          card.querySelectorAll('.lane').forEach(function (l) {
-            l.classList.add('is-revealed', 'is-allocated');
-            l.classList.remove('is-receiving');
-          });
-          var m = trailMascot(card);
-          if (m) { m.dataset.loaded = '6'; m.classList.add('is-docked'); m.style.transform = ''; }
+          card.querySelectorAll('.seen-row').forEach(function (r) { r.classList.add('on'); });
+          var m = card.querySelector('.seen-matched'); if (m) m.classList.add('in');
+          card.querySelectorAll('.seen-vcard').forEach(function (v) { v.classList.add('in'); });
+          var k = card.querySelector('.seen-kicker'); if (k) k.classList.add('in');
           card.classList.add('is-revealed');
         }
 
@@ -8489,174 +7911,64 @@
           return;
         }
 
-        /* The shared head is itself sticky at the nav, so the card has to
-           pin under it. Measured, not guessed — the head is 119px at
-           1440 and 157px at 390 and it re-wraps between. */
+        /* The shared head is sticky at the nav on desktop, so the card pins
+           under it; below 900 the head is static (scrolls away) and the
+           card pins straight under the nav. Measured, not guessed. */
         function syncHeadOffset() {
           var head = document.querySelector('.engine__shared-head');
-          /* Only a head that actually pins steals room from the stage
-             below it. Below 880 the head is static and scrolls away, so
-             the trail pins straight under the nav — reserving the head's
-             height there would push the trail 300px down a 844px screen
-             for no reason. */
           var pinned = head && getComputedStyle(head).position === 'sticky';
           engineSection.style.setProperty('--engine-head-h', (pinned ? head.offsetHeight : 0) + 'px');
         }
         syncHeadOffset();
         addEventListener('resize', syncHeadOffset, { passive: true });
 
-        var taglineEl = document.getElementById('engine-case-tagline');
-        var subEl     = document.getElementById('engine-case-sub');
-
         engineCards.forEach(function (card) {
-          var decisive = parseInt(card.dataset.decisive, 10);
-          var factors  = Array.prototype.slice.call(card.querySelectorAll('.factor'));
-          var lanes    = Array.prototype.slice.call(card.querySelectorAll('.lane'));
-          var mascot   = trailMascot(card);
-          var centres  = measureCentres(card);
-          var flapped  = false;
+          var rows     = Array.prototype.slice.call(card.querySelectorAll('.seen-row'));
+          var matched  = card.querySelector('.seen-matched');
+          var verdicts = Array.prototype.slice.call(card.querySelectorAll('.seen-vcard'));
+          var kicker   = card.querySelector('.seen-kicker');
 
-          addEventListener('resize', function () { centres = measureCentres(card); }, { passive: true });
-
-          /* Change-gated: every write below is guarded by a "did the
-             rendered value actually change" test, so a 60fps scroll costs
-             at most a handful of class toggles a second (§9.7). */
-          var lastWalk = -1, lastPhase = '', lastLoaded = -1, lastDocked = null;
+          /* Change-gated: a 60fps scroll costs at most a couple of class
+             toggles per second (§9.7). */
+          var lastRows = -1, lastPhase = -1;
 
           function engineRender(q) {
             if (!card.classList.contains('is-revealed')) card.classList.add('is-revealed');
-            if (!flapped && q > 0.02) {
-              flapped = true;
-              flapMorph(taglineEl, card.dataset.tagline || '');
-              flapMorph(subEl,     card.dataset.sub     || '');
+
+            var n = 0;
+            for (var i = 0; i < rowT.length; i++) { if (q >= rowT[i]) n++; }
+            if (n !== lastRows) {
+              lastRows = n;
+              for (var j = 0; j < rows.length; j++) { rows[j].classList.toggle('on', j < n); }
             }
 
-            /* 0.06 -> 0.40 of choreography space is the walk: position 0..5 */
-            var walk = fwTrack(q, 0.06, 0.40) * (factors.length - 1);
-            var wq = Math.round(walk * 40) / 40;
-            if (wq !== lastWalk) {
-              lastWalk = wq;
-              if (mascot && centres.length) {
-                var i0 = Math.min(centres.length - 1, Math.floor(wq));
-                var i1 = Math.min(centres.length - 1, i0 + 1);
-                var f  = wq - i0;
-                mascot.style.transform = 'translateX(' + (centres[i0] + (centres[i1] - centres[i0]) * f) + 'px)';
-              }
-              for (var i = 0; i < factors.length; i++) {
-                /* min(): the walk ENDS at position 5, so the sixth factor
-                   could never satisfy `wq >= 5.45` and was the one pill that
-                   never got its "considered" tick. Under the stopwatch that
-                   was invisible — the scene left the screen a beat later.
-                   As a rest state it read as "Finwy skipped Priorities". */
-                var passed = wq >= Math.min(i + 0.45, factors.length - 1);
-                var under  = Math.abs(wq - i) < 0.45;
-                /* Nothing is `active` once the decision has landed: Finwy has
-                   stopped walking, and a second pill still wearing the walk's
-                   mint ring competes with the verdict for the same meaning. */
-                factors[i].classList.toggle('is-active', under && q <= 0.46);
-                factors[i].classList.toggle('is-considered', passed && i !== decisive);
-              }
-              var loaded = Math.min(6, Math.round(wq + 0.5));
-              if (mascot && loaded !== lastLoaded) { mascot.dataset.loaded = String(loaded); lastLoaded = loaded; }
-            }
-
-            var phase = (q > 0.86 ? 'alloc' : q > 0.72 ? 'laneB' :
-                         q > 0.58 ? 'laneA' : q > 0.46 ? 'decide' : 'walk');
+            /* 0.68 payoff line -> 0.78 both verdicts -> 0.90 kicker (terminal). */
+            var phase = q >= 0.90 ? 3 : q >= 0.78 ? 2 : q >= 0.68 ? 1 : 0;
             if (phase !== lastPhase) {
               lastPhase = phase;
-              var isDecided = q > 0.46;
-              factors[decisive].classList.toggle('is-decisive', isDecided);
-              factors[decisive].classList.toggle('is-handing-off', isDecided && q < 0.72);
-              if (isDecided) factors[decisive].classList.remove('is-considered', 'is-active');
-              /* The walk block is gated on wq, and wq has stopped changing by
-                 the time q crosses 0.46 — so the decision edge has to clear
-                 the walk's ring itself, in both directions. */
-              if (isDecided) { for (var k = 0; k < factors.length; k++) factors[k].classList.remove('is-active'); }
-              else           { lastWalk = -1; }
-              lanes[0].classList.toggle('is-revealed', q > 0.58);
-              lanes[1].classList.toggle('is-revealed', q > 0.72);
-              lanes[0].classList.toggle('is-receiving', q > 0.58 && q < 0.72);
-              lanes[1].classList.toggle('is-receiving', q > 0.72 && q < 0.86);
-              lanes.forEach(function (l) { l.classList.toggle('is-allocated', q > 0.86); });
-            }
-
-            /* Docking gets its own change gate. It used to live inside the
-               phase block, and 0.9 is not a phase boundary — a scrub that
-               enters `alloc` at 0.87 and stops at 0.95 never re-ran the
-               block, so Finwy stayed parked on the last factor with the
-               caption printing through him. Its own gate, its own edge. */
-            var docked = q > 0.9;
-            if (mascot && docked !== lastDocked) {
-              lastDocked = docked;
-              mascot.classList.toggle('is-docked', docked);
-              if (docked) mascot.style.transform = '';
-              else lastWalk = -1;   // force the walk to re-place him
+              if (matched) matched.classList.toggle('in', phase >= 1);
+              verdicts.forEach(function (v) { v.classList.toggle('in', phase >= 2); });
+              if (kicker) kicker.classList.toggle('in', phase >= 3);
             }
           }
 
-          /* ============================================================
-             fwLaneP — the phone's progress source.
+          /* The card is the pinned stage at every width; the scene's beats
+             run from the frame it locks to the frame it releases (fwPinP),
+             so Riya-vs-Aman is still on screen when the verdicts land. */
+          var host = engineSection.querySelector('.engine__inner') || engineSection;
+          var getP = fwPinP(card, host);
 
-             fwPinP measures a sticky stage against its host, which is
-             right when the host IS the scene. Here it is not: on a phone
-             the pinned stage is the 90px trail and the host is a 1,085px
-             card inside an 844px screen, so fwPinP's travel is 995px —
-             but the card has entirely left the screen after 402 of them.
-             Mapped that way the last two beats (Aman's START, the money
-             landing) played to a pinned trail with nothing under it.
-
-             This measures the thing the beat is actually about: progress
-             runs from the frame the trail pins to the frame the LAST LANE
-             is centred in the space below the pinned trail. p=1 is a
-             composition, not an edge of a box.
-             ============================================================ */
-          function fwLaneP(stage, host) {
-            var top = 0;
-            function readTop() { var t = parseFloat(getComputedStyle(stage).top); top = isNaN(t) ? 0 : t; }
-            readTop();
-            addEventListener('resize', readTop, { passive: true });
-            return function () {
-              var vh = window.__fwStableVH ? window.__fwStableVH() : window.innerHeight;
-              var ls = host.querySelectorAll('.lane');
-              var hr = host.getBoundingClientRect();
-              if (!ls.length) return fwClamp01((top - hr.top) / Math.max(1, hr.height - stage.offsetHeight));
-              var lr = ls[ls.length - 1].getBoundingClientRect();
-              var laneMid = (lr.top - hr.top) + lr.height / 2;         // host-relative
-              var below   = top + stage.offsetHeight;                   // first free pixel
-              var target  = below + (vh - below) / 2;                   // centre of the free space
-              var travel  = Math.max(1, top + laneMid - target);
-              return fwClamp01((top - hr.top) / travel);
-            };
-          }
-
-          var pinMQ = matchMedia('(min-width: 901px) and (min-height: 860px)');
-          function stageFor() {
-            /* Desktop pins the whole card — 608px at 1440, so the six
-               factors and both verdicts share one frame. The phone card is
-               1,085px and cannot; there the TRAIL pins and the two lanes
-               travel under it, which keeps the reasoning on screen while
-               the opposite answers arrive. */
-            return pinMQ.matches
-              ? { stage: card, host: engineSection.querySelector('.engine__inner') || engineSection }
-              : { stage: card.querySelector('.trail'), host: card };
-          }
-          function makeP(c) {
-            return pinMQ.matches ? fwPinP(c.stage, c.host) : fwLaneP(c.stage, c.host);
-          }
-          var getP = makeP(stageFor());
-          pinMQ.addEventListener('change', function () {
-            getP = makeP(stageFor());
-            centres = measureCentres(card);
-          });
-
+          /* Thresholds map scroll (getP) -> chapter. They finish EARLY —
+             the terminal chapter (pose 1.0: all rows + matched + verdicts +
+             kicker) is reached by getP≈0.58, then HELD for the rest of the
+             pin (getP 0.58 -> 1.0). Without the early finish the payoff only
+             resolved in the last sliver of getP, cresting exactly as the card
+             released, so a scroller never saw it land on-screen. Now it lands
+             mid-pin and holds while the card is still pinned. */
           fwChapters({
             el: engineSection,
-            poses:      [0.03, 0.22, 0.40, 0.52, 0.66, 0.80, 1.0],
-            thresholds: [0.10, 0.26, 0.42, 0.58, 0.74, 0.88],
-            /* 0.5/s plays one beat in roughly half a second; fastDist is
-               low because, unlike the goal waterfall, nothing here is
-               arithmetic the reader has to follow row by row — a fling
-               should catch up fast. */
+            poses:      [0.03, 0.28, 0.40, 0.56, 0.72, 0.84, 1.0],
+            thresholds: [0.08, 0.18, 0.28, 0.38, 0.48, 0.58],
             speed: 0.5, fastDist: 0.22,
             getP: function () { return getP(); },
             render: engineRender
