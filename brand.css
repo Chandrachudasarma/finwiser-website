@@ -992,6 +992,25 @@ strong, b,
   position: relative; padding: var(--sp-2) 0;
   transition: color var(--dur-ui) var(--ease-in-out);
 }
+/* Drawer tap targets. `padding: var(--sp-2) 0` is right for a horizontal bar
+   and wrong for a vertical panel: it gave 31px-tall boxes with NO horizontal
+   padding, so the hit area was the width of the word ("Help" was 33 x 31) and
+   consecutive boxes overlapped by 1-2px — a thumb aiming at Pricing landed on
+   Team. WCAG 2.2 and the HIG both floor at 44 (re-audit UX U2, IA F11).
+   This lives in brand.css rather than in a page's own <style> because the
+   drawer is the ONLY navigation a phone user has on every page of the site,
+   and the legal pages carry the same markup. min-height rather than padding
+   arithmetic so the floor holds whatever the label does. */
+@media (max-width: 767px) {
+  .fw-nav__menu .fw-nav__link {
+    display: flex; align-items: center;
+    min-height: 44px; padding: 10px 16px;
+  }
+  /* The underline follows the text, not the padding box. */
+  .fw-nav__menu .fw-nav__link::after { left: 16px; right: 16px; bottom: 8px; }
+  /* The bar's CTA is 40px; in a panel there is no bar height to blame. */
+  .fw-nav__menu .fw-nav__cta { min-height: 44px; }
+}
 /* Between 768 and 1023 the full nav has to fit 704 px of rail: the gap steps
    down one, the CTA's padding steps down one. Nothing else changes. */
 .fw-nav__list { gap: var(--sp-5); }

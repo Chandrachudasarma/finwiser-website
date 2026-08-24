@@ -131,7 +131,7 @@
       "name": "What does fee-only mean? (and why does it matter?)",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Once paid plans begin, you pay Finwiser ₹199 a month — and that’s the only money Finwiser ever earns from you. We don’t get a commission for recommending a mutual fund, an insurance policy, or any other product. So when Finwy says “buy this debt fund,” it’s because the math says so — not because someone paid us. That’s it. That’s fee-only. (Most “advisers” you’ve met earn a commission when you buy something — Finwiser doesn’t.)"
+        "text": "Once paid plans begin, you pay Finwiser two things and nothing else: a one-time ₹49 to unlock your first full report, and ₹199 a month after that — and that’s the only money Finwiser ever earns from you. We don’t get a commission for recommending a mutual fund, an insurance policy, or any other product. So when Finwy says “buy this debt fund,” it’s because the math says so — not because someone paid us. That’s it. That’s fee-only. (Most “advisers” you’ve met earn a commission when you buy something — Finwiser doesn’t.)"
       }
     },
     {
@@ -279,10 +279,14 @@
     /* RESET + BASE                                                  */
     /* ============================================================ */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box;  }
-    /* scroll-padding-top applies at EVERY viewport: --nav-h is 68px on
+    /* scroll-padding-top applies at EVERY viewport: --nav-h is 64px on
        desktop and 56px under 900px, so an in-page anchor always clears the
-       sticky nav instead of landing behind it. */
-    html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h);  }
+       sticky nav instead of landing behind it. The +16 is not decoration: at
+       exactly --nav-h the target lands FLUSH with the bar and sub-pixel
+       rounding tipped three of the five mobile destinations 0-1px UNDER it,
+       so "₹199 / month" and "What Finwiser does." arrived with their top edge
+       sliced off (re-audit IA F5, UX U7). 16px is the breathing room. */
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px);  }
     body {
       color: var(--text-on-light);
       background: var(--white);
@@ -482,6 +486,18 @@
     .fw-nav__link:hover { color: var(--nav-fg-hover, var(--teal));  }
     .fw-nav__link:hover::after, .fw-nav__link:focus-visible::after { transform: scaleX(1);  }
     .fw-nav__link:active { opacity: 0.7; transition-duration: var(--dur-tap);  }
+    /* The two page destinations are in BOTH the bar and the drawer (D4) —
+       except in the 768-899 band, which is the one width that can hold
+       neither. Below 768 they are drawer items with room to spare; at 900+
+       the bar has the rail for seven links and the pill. Between the two the
+       bar is already the "768 squeeze" the UI audit flagged, and adding these
+       two overflowed the page by 98px. That band keeps exactly what it has
+       today — five anchors and the CTA — rather than gaining a horizontal
+       scrollbar. (Widening the drawer breakpoint would fix it properly, but
+       the breakpoint is shared with legal.css and every legal page's nav.) */
+    @media (min-width: 768px) and (max-width: 899px) {
+      .fw-nav__item--page { display: none;  }
+    }
     .fw-nav__cta:active { transform: scale(0.97); transition-duration: var(--dur-tap);  }
     /* 44x44 is the tap target; the three bars stay 22px wide, so the button
        grows in hit area only. */
@@ -544,7 +560,14 @@
     
     }
       .fw-nav__list { flex-direction: column; align-items: stretch; gap: 4px;  }
-      .fw-nav__cta { margin-top: 12px;  }
+      /* The 44px tap-target floor for these links is in brand.css — the drawer
+         is the only navigation a phone has on EVERY page, so the rule belongs
+         with the shared nav, not in the homepage's <style>. What is local is
+         the panel's own side padding: it drops 24 -> 8 so the link's 16px
+         keeps the label on its original 24px margin while the hit area runs
+         nearly the full width of the panel. */
+      .fw-nav__menu { padding: 16px 8px;  }
+      .fw-nav__cta { margin: 12px 16px 0;  }
     }
     /* Page scroll lock while the drawer is open. The root ALONE — adding
        `body { overflow: hidden;  }` as well makes <body> the scroll container,
@@ -650,12 +673,12 @@
 
     }
     .hero__mascot picture { display: contents;  }
-    /* Keyframes CROSS-FADE, they do not cut (founder, Wave 3). --hero-fade is
-       set by the one clock to min(step, --dur-ui): at --dur-ui the fade would
-       outlast the step once the storyboard is eight frames long inside the
-       same ~1.3s, and a fade longer than its step turns the sequence to mush.
-       With the frames that exist today the step is 333ms and the fade is
-       exactly --dur-ui. */
+    /* Keyframes CROSS-FADE, they do not cut (founder, Wave 3) — but the fade is
+       a SEAM, not the frame's whole life. --hero-fade is set by the one clock to
+       min(60ms, 0.4 x step). A fade equal to its step (what min(step, --dur-ui)
+       produced at eight frames) means no keyframe is ever alone at opacity 1,
+       and the wake-up smears instead of animating. With today's eight frames the
+       step is 143ms and the fade is 57ms — a soft cut. */
     .hero__mascot img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
@@ -1410,13 +1433,20 @@
       }
     }
 
-    /* Mobile fallback — single-column stack */
+    /* Mobile fallback — single-column stack.
+       The stack used to run 923px tall inside an 844px viewport, so the scene
+       could never be fully on screen at ANY scroll position: the seven account
+       rows had left the frame by the time the composite arrived, and a scene
+       called "Watch your money come together" never showed the two halves
+       together on a phone (re-audit Motion M3). Everything below is the diet
+       that gets the stage under --seen-stage-h so it can be PINNED (below).
+       Nothing is removed — seven rows, four panes, all four counters. */
     @media (max-width: 900px) {
       .seen__stage {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 12px;
         min-height: 0;
-    
+
     }
       .seen__threads--bg, .seen__threads--fg { display: none;  }
       /* the flow metaphor survives on phones as a vertical spine:
@@ -1426,9 +1456,29 @@
       .seen__band { order: 1; }
       .seen__composite-wrap { order: 3;  }
       .seen__mascot { width: 130px;  }
+      /* Seven rows at 51px was 436px of the stage on its own. */
+      .seen__band { gap: 5px; padding: 10px 12px;  }
+      .seen__cluster { padding: 3px 10px; gap: 4px;  }
+      /* The composite goes 2x2 rather than 4x1: four panes stacked was 350px,
+         which is where most of the overflow lived. Two by two reads as one
+         object — which is the point of the scene — and every counter keeps
+         its own line. */
+      .seen__composite {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 10px 12px;
+
+    }
+      /* At half width the eyebrow and the number no longer fit on one line. */
+      .seen__pane-row {
+        display: block;
+
+    }
+      .seen__pane-num { margin-top: 1px;  }
+      .seen__pane { padding: 12px;  }
     }
     @media (max-width: 600px) {
-      .seen__mascot { width: 96px;  }
+      .seen__mascot { width: 80px;  }
     }
 
     /* ============================================================ */
@@ -1597,11 +1647,43 @@
         max-height: var(--stage-h);
 
     }
+      /* ...and `seen` pins for exactly the reason step 03 does, which the
+         old "steps 01/02 pass through" rationale does not cover: steps 01
+         and 02 are SINGLE-OBJECT scenes, so scrolling past them loses
+         nothing. `seen` is a CONVERGENCE scene — its whole argument is that
+         seven account rows become one composite — and unpinned at 390 the
+         two halves were never in the same frame (re-audit Motion M3). The
+         stage is now 629px (the diet above), so pinned at --stage-top it
+         sits 64+629 = 693 of 844 with room to spare.
+
+         The track goes on __inner, not on .seen: a sticky child travels
+         inside its own parent, and min-height on the section would just
+         park empty navy under the disclaimer — the same lesson the engine
+         block records at line ~2139. Its own --seen-stage-h rather than the
+         shared --stage-h (760px): reserving 760 for a 629px stage would buy
+         131px of dead tail at the end of the scene. */
+      .seen { --seen-stage-h: min(76svh, 640px);  }
+      .seen__inner {
+        min-height: calc(var(--beats) * var(--beat) + var(--seen-stage-h));
+
     }
-    /* §6b — the second half of the stepper, after Security & data. Same
-       section, no second top pad (Security already supplied the air) and
-       no trailing gap before the engine. */
-    .steps--tail { padding-top: clamp(48px, 6vw, 72px);  }
+      .seen__stage {
+        position: sticky;
+        top: var(--stage-top);
+        /* The cap is "whatever fits under the nav", not the track's reservation
+           term. A flat max-height of --seen-stage-h read fine at 390 (629 of
+           640) but CLIPPED at 768, where the wider column makes the stage 669:
+           the last 29px of the composite hung out of its own sticky box. This
+           expression can never clip a stage the diet has already made fit, and
+           still guarantees a pinned stage never exceeds the screen. */
+        max-height: calc(100svh - var(--stage-top) - 8px);
+
+    }
+    }
+    /* `.steps--tail` lived here: the second half of the stepper needed its
+       own top pad because Security split it off into a separate section.
+       Security now sits AFTER step 03 (founder + re-audit IA F3), the three
+       steps are one section again, and the tail rule went with it. */
     .steps__num-col {
       position: sticky; top: 30vh; height: max-content; padding-top: 12px;
     
@@ -2034,6 +2116,17 @@
       font-style: italic;
       color: var(--text-on-light-muted);
     
+    }
+    /* Split-flap WORD. Every cell is an inline-block, and the browser takes a
+       break opportunity between any two of them — which rendered the engine
+       tagline as "Op / posite advice." (re-audit Motion M6, Brand, UX). Each
+       word (plus the space that follows it) rides inside one nowrap wrapper, so
+       the only break opportunities left are the real word boundaries. The flap
+       animation is untouched: it still runs per character, inside here. */
+    .flap-word {
+      display: inline-block;
+      white-space: nowrap;
+
     }
     /* Split-flap cell — top half rotates around the split line. */
     .flap-cell {
@@ -2595,8 +2688,11 @@
       display: flex; flex-direction: column; gap: 10px; align-items: center;
     
     }
+    /* No fixed height. `width:140px; height:140px` against a non-square source
+       fell back to object-fit's default of `fill` and stretched the mascot 11%
+       wide (re-audit Assets §4.4); the aspect now comes from the file. */
     .engine__close-mascot {
-      width: 140px; height: 140px;
+      width: 140px; height: auto;
       filter: drop-shadow(0 10px 24px rgba(0,45,86,0.16));
       transform-origin: bottom center;
       margin-bottom: 8px;
@@ -4262,7 +4358,17 @@
           <li style="--li:2"><a class="fw-nav__link" href="#pricing">Pricing</a></li>
           <li style="--li:3"><a class="fw-nav__link" href="#team">Team</a></li>
           <li style="--li:4"><a class="fw-nav__link" href="#faq">Help</a></li>
-          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+          <!-- The two real DESTINATIONS (founder decision D4, "mixed nav"): the
+               one-page film keeps its five anchors, and the two pages that
+               actually convert a sceptic — a calculator that needs no signup,
+               and the plain-English answer to "why do you want my bank data" —
+               stop being 24 screens down in the footer (re-audit IA F1/F8, UX
+               U6). `--page` marks them as pages rather than anchors: they are
+               not scroll positions, so no future scrollspy may ever mark them
+               current. (There is no scrollspy on this nav today.) -->
+          <li style="--li:5" class="fw-nav__item--page"><a class="fw-nav__link fw-nav__link--page" href="/surplus-calculator.html">Calculator</a></li>
+          <li style="--li:6" class="fw-nav__item--page"><a class="fw-nav__link fw-nav__link--page" href="/account-aggregator.html">Account Aggregator</a></li>
+          <li style="--li:7"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
         </ul>
       </nav>
     </div>
@@ -4870,11 +4976,20 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- §6 — HOW IT WORKS, part 1 (steps 01 & 02)                     -->
+    <!-- §6 — HOW IT WORKS (steps 01, 02 and 03)                       -->
     <!-- The standalone "Three minutes. Three steps." title screen was  -->
-    <!-- deleted; its heading now opens step 01's panel. Step 03 lives  -->
-    <!-- in §6b, after Security & data — the objection that decides the -->
-    <!-- install has to be answered before the third ask.               -->
+    <!-- deleted; its heading now opens step 01's panel.                -->
+    <!--                                                                -->
+    <!-- Security & data used to sit BETWEEN step 02 and step 03, on    -->
+    <!-- the theory that the objection deciding the install had to be   -->
+    <!-- answered before the third ask. It cost more than it bought: a  -->
+    <!-- numbered process is the one content type where order IS the    -->
+    <!-- meaning, and four screens of security essay broke it — step 03 -->
+    <!-- read as a child of the Security heading to every outline       -->
+    <!-- reader, screen-reader rotor and crawler, and was left as an    -->
+    <!-- H3 with no H2 of its own. One section, one rail, 01 → 02 → 03; -->
+    <!-- Security follows immediately, still ahead of the engine        -->
+    <!-- (founder + re-audit IA F3).                                    -->
     <!-- ============================================================ -->
     <section class="steps" id="how" aria-labelledby="steps-heading" data-theme="dark">
       <div class="steps__rail">
@@ -5270,61 +5385,9 @@
           </div>
         </div>
 
-      </div>
-    </section>
 
-    <!-- ============================================================ -->
-    <!-- §12 — SECURITY & DATA                                         -->
-    <!-- ============================================================ -->
-    <section class="secure" aria-labelledby="secure-heading" data-reveal data-theme="dark">
-      <div class="secure__inner">
-        <h2 id="secure-heading" class="secure__heading">We never see your password. We never sell your data.</h2>
-        <div class="finwy-say finwy-say--secure">
-          <picture>
-            <source type="image/avif" srcset="assets/finwy-3d/finwy3d-face-happy-96w.avif 96w, assets/finwy-3d/finwy3d-face-happy-192w.avif 192w, assets/finwy-3d/finwy3d-face-happy-288w.avif 288w" sizes="(max-width: 700px) 64px, 88px">
-            <img class="finwy-say__face" src="assets/finwy-3d/finwy3d-face-happy-96w.webp"
-                 srcset="assets/finwy-3d/finwy3d-face-happy-96w.webp 96w, assets/finwy-3d/finwy3d-face-happy-192w.webp 192w, assets/finwy-3d/finwy3d-face-happy-288w.webp 288w"
-                 sizes="(max-width: 700px) 64px, 88px" width="288" height="321" alt="" loading="lazy" decoding="async">
-          </picture>
-          <p class="secure__sub">Your data is yours. Here&rsquo;s the plumbing &mdash; in plain language.</p>
-        </div>
-        <div class="secure__grid" role="list">
-          <article class="secure__card" role="listitem" style="--i:0">
-            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M16 4 L26 7 V14 c0 7-4 12-10 14 c-6-2-10-7-10-14 V7 Z"/><rect x="13" y="15" width="6" height="6" rx="1"/><path d="M14 15 V13 a2 2 0 0 1 4 0 V15"/></svg>
-            <h3 class="secure__heading-card">Bank-grade encryption.</h3>
-            <p class="secure__body">All data &mdash; at rest and in transit &mdash; encrypted with AES-256 and TLS 1.3. The same standards your bank uses for online banking.</p>
-          </article>
-          <article class="secure__card" role="listitem" style="--i:1">
-            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><rect x="4" y="6" width="24" height="20" rx="2"/><path d="M4 12h24"/><path d="M9 18l4 4 8-8"/></svg>
-            <h3 class="secure__heading-card">Account Aggregator only &mdash; the RBI-regulated rail.</h3>
-            <p class="secure__body">Finwiser never asks for your bank password. We use Account Aggregator &mdash; the consent-based, RBI-regulated rail that every major Indian bank already supports. Finwiser is listed as a Financial Information User on Sahamati&rsquo;s public register.</p>
-            <p class="secure__body secure__body--aside"><strong>What&rsquo;s an Account Aggregator?</strong> An RBI-licensed entity that hands your bank data to Finwiser only after you explicitly consent &mdash; and only what you consent to.</p>
-          </article>
-          <article class="secure__card" role="listitem" style="--i:2">
-            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M4 16s4-8 12-8 12 8 12 8-4 8-12 8-12-8-12-8z"/><circle cx="16" cy="16" r="3.5"/><path d="M6 6 26 26"/></svg>
-            <h3 class="secure__heading-card">Read-only access. Always.</h3>
-            <p class="secure__body">Finwiser can see your accounts. It cannot move money, place trades, or change anything. Even if Finwiser wanted to, the rails don&rsquo;t allow it.</p>
-          </article>
-          <article class="secure__card" role="listitem" style="--i:3">
-            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M28 16a12 12 0 11-3.5-8.5"/><path d="M28 4v8h-8"/><path d="M11 11l10 10M21 11l-10 10"/></svg>
-            <h3 class="secure__heading-card">Revoke at any time.</h3>
-            <p class="secure__body">Withdraw consent in your Account Aggregator app. Finwiser loses access immediately. Your data is deleted from active systems within 72 hours.</p>
-          </article>
-        </div>
-        <p class="secure__footnote">More detail on what data we use, where it lives, and how long: <a href="privacy-policy.html">read the Privacy Policy</a>.</p>
-        <div class="section-cta">
-          <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- §6b — HOW IT WORKS, part 2 (step 03 — the goal cascade)       -->
-    <!-- ============================================================ -->
-    <section class="steps steps--tail" aria-label="Step 03 — where your surplus goes" data-theme="dark">
-      <div class="steps__rail">
-
-        <div class="steps__line" aria-hidden="true"><div class="steps__line-fill"></div></div>
+        <!-- Step 03 — the goal cascade. Was §6b, its own <section> with its
+             own rail, because Security sat in between. Same rail now. -->
         <div class="steps__bridge" aria-hidden="true">
           <p>That surplus you just saw? <em>Here&rsquo;s where it should go first.</em></p>
         </div>
@@ -5452,6 +5515,54 @@
         </div>
       </div>
     </section>
+
+    <!-- ============================================================ -->
+    <!-- §12 — SECURITY & DATA                                         -->
+    <!-- Moved here from between steps 02 and 03. It is a trust section: -->
+    <!-- its home is immediately after the process it protects.          -->
+    <!-- ============================================================ -->
+    <section class="secure" aria-labelledby="secure-heading" data-reveal data-theme="dark">
+      <div class="secure__inner">
+        <h2 id="secure-heading" class="secure__heading">We never see your password. We never sell your data.</h2>
+        <div class="finwy-say finwy-say--secure">
+          <picture>
+            <source type="image/avif" srcset="assets/finwy-3d/finwy3d-face-happy-96w.avif 96w, assets/finwy-3d/finwy3d-face-happy-192w.avif 192w, assets/finwy-3d/finwy3d-face-happy-288w.avif 288w" sizes="(max-width: 700px) 64px, 88px">
+            <img class="finwy-say__face" src="assets/finwy-3d/finwy3d-face-happy-96w.webp"
+                 srcset="assets/finwy-3d/finwy3d-face-happy-96w.webp 96w, assets/finwy-3d/finwy3d-face-happy-192w.webp 192w, assets/finwy-3d/finwy3d-face-happy-288w.webp 288w"
+                 sizes="(max-width: 700px) 64px, 88px" width="288" height="321" alt="" loading="lazy" decoding="async">
+          </picture>
+          <p class="secure__sub">Your data is yours. Here&rsquo;s the plumbing &mdash; in plain language.</p>
+        </div>
+        <div class="secure__grid" role="list">
+          <article class="secure__card" role="listitem" style="--i:0">
+            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M16 4 L26 7 V14 c0 7-4 12-10 14 c-6-2-10-7-10-14 V7 Z"/><rect x="13" y="15" width="6" height="6" rx="1"/><path d="M14 15 V13 a2 2 0 0 1 4 0 V15"/></svg>
+            <h3 class="secure__heading-card">Bank-grade encryption.</h3>
+            <p class="secure__body">All data &mdash; at rest and in transit &mdash; encrypted with AES-256 and TLS 1.3. The same standards your bank uses for online banking.</p>
+          </article>
+          <article class="secure__card" role="listitem" style="--i:1">
+            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><rect x="4" y="6" width="24" height="20" rx="2"/><path d="M4 12h24"/><path d="M9 18l4 4 8-8"/></svg>
+            <h3 class="secure__heading-card">Account Aggregator only &mdash; the RBI-regulated rail.</h3>
+            <p class="secure__body">Finwiser never asks for your bank password. We use Account Aggregator &mdash; the consent-based, RBI-regulated rail that every major Indian bank already supports. Finwiser is listed as a Financial Information User on Sahamati&rsquo;s public register.</p>
+            <p class="secure__body secure__body--aside"><strong>What&rsquo;s an Account Aggregator?</strong> An RBI-licensed entity that hands your bank data to Finwiser only after you explicitly consent &mdash; and only what you consent to.</p>
+          </article>
+          <article class="secure__card" role="listitem" style="--i:2">
+            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M4 16s4-8 12-8 12 8 12 8-4 8-12 8-12-8-12-8z"/><circle cx="16" cy="16" r="3.5"/><path d="M6 6 26 26"/></svg>
+            <h3 class="secure__heading-card">Read-only access. Always.</h3>
+            <p class="secure__body">Finwiser can see your accounts. It cannot move money, place trades, or change anything. Even if Finwiser wanted to, the rails don&rsquo;t allow it.</p>
+          </article>
+          <article class="secure__card" role="listitem" style="--i:3">
+            <svg class="secure__icon" viewBox="0 0 32 32" fill="none"><path d="M28 16a12 12 0 11-3.5-8.5"/><path d="M28 4v8h-8"/><path d="M11 11l10 10M21 11l-10 10"/></svg>
+            <h3 class="secure__heading-card">Revoke at any time.</h3>
+            <p class="secure__body">Withdraw consent in your Account Aggregator app. Finwiser loses access immediately. Your data is deleted from active systems within 72 hours.</p>
+          </article>
+        </div>
+        <p class="secure__footnote">More detail on what data we use, where it lives, and how long: <a href="privacy-policy.html">read the Privacy Policy</a>.</p>
+        <div class="section-cta">
+          <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app &rarr;</a>
+        </div>
+      </div>
+    </section>
+
 
     <!-- ============================================================ -->
     <!-- §7 — THE ENGINE (Two of you. Two answers.)                   -->
@@ -5586,9 +5697,13 @@
            scene it closes; every word and the CTA are unchanged in kind. -->
       <div class="engine-finale__inner">
         <div class="engine__close">
+          <!-- The 3D Finwy, not the pitch-deck cartoon. `frame-5` here was a
+               different character: pupils, cel shading, a white matte fringe
+               and a banknote with no ₹ on it (re-audit Brand, Assets §4.4). -->
           <picture>
-              <source type="image/avif" srcset="fw-deck-2026/slides/frame-5-409w.avif">
-              <img class="engine__close-mascot" id="engine-closer-mascot" src="fw-deck-2026/slides/frame-5-409w.webp" width="409" height="455" alt="" loading="lazy" decoding="async" />
+              <source type="image/avif" srcset="assets/finwy-3d/finwy3d-wave-energetic-140w.avif 1x, assets/finwy-3d/finwy3d-wave-energetic-280w.avif 2x, assets/finwy-3d/finwy3d-wave-energetic-420w.avif 3x">
+              <source type="image/webp" srcset="assets/finwy-3d/finwy3d-wave-energetic-140w.webp 1x, assets/finwy-3d/finwy3d-wave-energetic-280w.webp 2x, assets/finwy-3d/finwy3d-wave-energetic-420w.webp 3x">
+              <img class="engine__close-mascot" id="engine-closer-mascot" src="assets/finwy-3d/finwy3d-wave-energetic-140w.webp" width="140" height="165" alt="Finwy waving, holding a fan of ₹ notes." loading="lazy" decoding="async" />
             </picture>
           <p class="engine__close-line">Risk decided it. And risk keeps changing.</p>
           <p class="engine__close-finwy">Finwy keeps your goals on track.</p>
@@ -5801,9 +5916,11 @@
     <!-- ============================================================ -->
     <section class="final-cta" aria-labelledby="cta-heading" data-reveal data-theme="light">
       <div class="final-cta__inner">
+        <!-- Same swap as the engine close: the 3D Finwy, on-model, ₹ correct. -->
         <picture>
-          <source type="image/avif" srcset="fw-deck-2026/slides/frame-5-409w.avif">
-          <img class="final-cta__mascot" src="fw-deck-2026/slides/frame-5-409w.webp" width="409" height="455" alt="" loading="lazy" decoding="async">
+          <source type="image/avif" srcset="assets/finwy-3d/finwy3d-wave-energetic-140w.avif 1x, assets/finwy-3d/finwy3d-wave-energetic-280w.avif 2x, assets/finwy-3d/finwy3d-wave-energetic-420w.avif 3x">
+          <source type="image/webp" srcset="assets/finwy-3d/finwy3d-wave-energetic-140w.webp 1x, assets/finwy-3d/finwy3d-wave-energetic-280w.webp 2x, assets/finwy-3d/finwy3d-wave-energetic-420w.webp 3x">
+          <img class="final-cta__mascot" src="assets/finwy-3d/finwy3d-wave-energetic-140w.webp" width="140" height="165" alt="Finwy waving, holding a fan of ₹ notes." loading="lazy" decoding="async">
         </picture>
         <h2 id="cta-heading" class="final-cta__heading">Your money, finally in one place.</h2>
         <p class="final-cta__sub">Connect your accounts and see your own numbers.</p>
@@ -5834,7 +5951,7 @@
           <p class="faq__sub">Asked by real users. And, honestly, the founder&rsquo;s family.</p>
         </div>
 
-        <details class="faq__item"><summary>What does fee-only mean? (and why does it matter?)</summary><div class="faq__answer">Once paid plans begin, you pay Finwiser &#8377;199 a month &mdash; and that&rsquo;s the only money Finwiser ever earns from you. We don&rsquo;t get a commission for recommending a mutual fund, an insurance policy, or any other product. So when Finwy says &ldquo;buy this debt fund,&rdquo; it&rsquo;s because the math says so &mdash; not because someone paid us.<br><br>That&rsquo;s it. That&rsquo;s fee-only. (Most &ldquo;advisers&rdquo; you&rsquo;ve met earn a commission when you buy something &mdash; Finwiser doesn&rsquo;t.)</div></details>
+        <details class="faq__item"><summary>What does fee-only mean? (and why does it matter?)</summary><div class="faq__answer">Once paid plans begin, you pay Finwiser two things and nothing else: a one-time &#8377;49 to unlock your first full report, and &#8377;199 a month after that &mdash; and that&rsquo;s the only money Finwiser ever earns from you. We don&rsquo;t get a commission for recommending a mutual fund, an insurance policy, or any other product. So when Finwy says &ldquo;buy this debt fund,&rdquo; it&rsquo;s because the math says so &mdash; not because someone paid us.<br><br>That&rsquo;s it. That&rsquo;s fee-only. (Most &ldquo;advisers&rdquo; you&rsquo;ve met earn a commission when you buy something &mdash; Finwiser doesn&rsquo;t.)</div></details>
         <details class="faq__item"><summary>How does Finwiser see my accounts without my password?</summary><div class="faq__answer">Through Account Aggregator &mdash; an RBI-regulated rail where you grant consent through your AA app, and Finwiser receives read-only data. Finwiser never sees, asks for, or stores your bank password.</div></details>
         <details class="faq__item"><summary>Can Finwiser move my money?</summary><div class="faq__answer">No. Read-only access only. Finwiser can see balances and transactions, and give advice. It cannot place trades, transfer funds, or change anything in your accounts.</div></details>
         <details class="faq__item"><summary>What if I want to cancel?</summary><div class="faq__answer">One tap in the app. Once paid plans begin, your subscription will stop at the end of the current month. We won&rsquo;t ask why, we won&rsquo;t try to &ldquo;save&rdquo; you, and we don&rsquo;t keep your data &mdash; see the refund question below.</div></details>
@@ -6132,33 +6249,91 @@
       // ============================================================
       function fwClamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
       function fwTrack(p, a, b) { return fwClamp01((p - a) / (b - a)); }
-      /* fwChapters — the founder's three-stop model, shared by scenes.
-         Scroll picks the target stop (via getP + thresholds); the chapter
-         plays itself on the time clock toward that stop's pose and halts.
-         Big jumps play through fast (~1.9x); backwards reverse-plays. */
+      /* ============================================================
+         THE CHAPTER CONTRACT (founder decision D3, 2026-08-24).
+
+         The doctrine is kept: scroll picks the chapter, time plays the
+         chapter, and the scene may only ever REST at a designated stop.
+         What the blind Motion audit caught is not the doctrine, it is two
+         missing limits — "11 of 22 stop-probes showed motion with zero
+         input", and the `seen` payoff parked for ~2.8s. A play the reader
+         cannot affect for nearly three seconds is a cutscene, not a
+         chapter. So two clauses now bound it:
+
+           (a) TIME CAP — whatever the easing wants, a stop-to-stop play
+               lands inside CHAPTER_CAP_MS. The old integrator had no
+               notion of duration: `speed` was a rate, and the (0.3 + 0.7 *
+               dist/0.1) term deliberately crawls over the last tenth, so a
+               0.218-wide chapter at speed 0.16 took ~2.8s of it. The cap
+               is a floor on RATE derived from the distance still to cover,
+               so short chapters keep their natural ease and only the long
+               ones get pulled in.
+
+           (b) INPUT PRE-EMPTS — a wheel, touch or key must be felt within
+               one frame. The play fast-forwards to its stop immediately
+               (never to some in-between pose: stops stay inviolate), and
+               the new scroll position then picks the next chapter, which
+               plays from there. A single flick therefore still gets its
+               animation; only a reader who is actively, continuously
+               driving gets instant resolution — which is correct, they are
+               reading, not watching.
+
+         Reduced motion is untouched: these scenes are not registered at
+         all under `prefers-reduced-motion: reduce`.
+         ============================================================ */
+      /* 600, not the headline 1000, because the bar is on what the READER
+         sees stop, not on the integrator. A chapter's beats flip classes
+         whose CSS reveals (--dur-reveal, 400ms) run on AFTER q has landed:
+         measured, the last cluster row lights ~0.9 of the way through the
+         play, so residual motion = 0.9 x cap + 400ms. At cap 1000 that was
+         1,295ms and at 700 it was 1,104ms — both over the second. 600 puts
+         the last transition's end at ~940ms with the play itself still
+         reading as a play. Anything shorter is a cut, not a chapter. */
+      var CHAPTER_CAP_MS = 600;
+      /* One counter for the whole page. Capture + passive so it ticks
+         before any scroll handler and never blocks the gesture. */
+      var fwInputTick = 0;
+      ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (ev) {
+        addEventListener(ev, function () { fwInputTick++; },
+                         { passive: true, capture: true });
+      });
+
       function fwChapters(cfg) {
         var q = null, target = 0, raf = null, last = 0;
+        var playFrom = 0, playTick = 0;
         function chapterFor(p) {
           var t = 0;
           for (var i = 0; i < cfg.thresholds.length; i++) if (p >= cfg.thresholds[i]) t = i + 1;
           return t;
         }
+        function land(goal) { q = goal; cfg.render(q); raf = null; }
         function run(ts) {
           var dt = Math.min(0.05, (ts - last) / 1000); last = ts;
           var goal = cfg.poses[target];
+          // (b) input pre-empts — resolve to the stop this frame.
+          if (fwInputTick !== playTick) { land(goal); return; }
           var dist = Math.abs(goal - q);
           var speed = (cfg.speed || 0.16) * (dist > (cfg.fastDist || 0.24) ? 1.9 : 1);
-          var step = Math.min(dist, speed * dt * (0.3 + 0.7 * Math.min(1, dist / 0.1)));
+          var natural = speed * dt * (0.3 + 0.7 * Math.min(1, dist / 0.1));
+          // (a) time cap — a floor on rate that retires the whole traverse
+          //     within CHAPTER_CAP_MS even when the easing is crawling.
+          var floor = Math.abs(goal - playFrom) * dt * 1000 / CHAPTER_CAP_MS;
+          var step = Math.min(dist, Math.max(natural, floor));
           q += (goal > q ? 1 : -1) * step;
           cfg.render(q);
           if (Math.abs(goal - q) > 0.0006) { raf = requestAnimationFrame(run); }
-          else { q = goal; cfg.render(q); raf = null; }
+          else land(goal);
         }
         fwScrub(cfg.el, function (p) {
           var t = chapterFor(cfg.getP ? cfg.getP(p) : p);
           if (q === null) { q = cfg.poses[t]; target = t; cfg.render(q); return; }
           if (t !== target) {
             target = t;
+            // Every retarget is a fresh play: its own origin, its own
+            // budget, and its own input baseline (the gesture that CAUSED
+            // this chapter must not instantly pre-empt it).
+            playFrom = q;
+            playTick = fwInputTick;
             if (!raf) { last = performance.now(); raf = requestAnimationFrame(run); }
           }
         });
@@ -6312,15 +6487,36 @@
         return cell;
       }
 
+      // Re-parent the flat cell list into one nowrap wrapper per WORD, so the
+      // line can only break at word boundaries (see .flap-word). The space
+      // rides inside the word that precedes it, which puts the break after the
+      // space rather than before it. Called on init and at the top of every
+      // morph — the wrappers always match the text currently on screen, and
+      // nothing has started animating yet at that point, so the DOM move is free.
+      function flapRegroup(el, text, cells) {
+        el.textContent = '';
+        var word = null;
+        for (var i = 0; i < cells.length; i++) {
+          if (!word) {
+            word = document.createElement('span');
+            word.className = 'flap-word';
+            el.appendChild(word);
+          }
+          word.appendChild(cells[i]);
+          if (text[i] === ' ') word = null;
+        }
+      }
+
       function flapInit(el, blankInitial) {
         if (!el) return;
         var text = el.textContent || '';
         el.setAttribute('aria-label', text);
-        el.textContent = '';
         el.dataset.flapCurrent = blankInitial ? '' : text;
+        var cells = [];
         for (var i = 0; i < text.length; i++) {
-          el.appendChild(makeFlapCell(text[i], !!blankInitial));
+          cells.push(makeFlapCell(text[i], !!blankInitial));
         }
+        flapRegroup(el, text, cells);
       }
 
       // Restore an already-initialised flap element to the blank-initial state
@@ -6418,12 +6614,15 @@
         if (oldText === newText) return;
         el.dataset.flapCurrent = newText;
 
-        // Grow cell list to cover the longer of old/new lengths.
-        var cells = el.querySelectorAll('.flap-cell');
+        // Grow cell list to cover the longer of old/new lengths, then re-wrap
+        // for the INCOMING text's word boundaries. Appending the growth cells
+        // straight onto `el` would leave them outside every .flap-word wrapper
+        // and reopen the mid-word break this fixes.
+        var cells = Array.prototype.slice.call(el.querySelectorAll('.flap-cell'));
         while (cells.length < newText.length) {
-          el.appendChild(makeFlapCell(' ', true));
-          cells = el.querySelectorAll('.flap-cell');
+          cells.push(makeFlapCell(' ', true));
         }
+        flapRegroup(el, newText, cells);
 
         var flipIndex = 0;
         var maxLen = Math.max(oldText.length, newText.length);
@@ -6472,7 +6671,13 @@
       var HERO_FRAME_MS    = heroFrames.length > 1
         ? Math.max(90, Math.round((HERO_PLAY_MS - HERO_SLEEP_HOLD) / (heroFrames.length - 1)))
         : 0;
-      var HERO_FADE_MS     = Math.min(HERO_FRAME_MS || 240, 240); // 240 = --dur-ui
+      // The fade must be a SEAM between frames, not the frame's whole life. The
+      // old min(step, --dur-ui) evaluated to the step itself (143ms at eight
+      // frames), so every keyframe spent 100% of its time cross-faded with the
+      // next and the wake-up read as a permanent double exposure (re-audit
+      // Assets §4.2 / Motion M1). Cap it at the smaller of 60ms and 0.4x the
+      // step: a flipbook wants something close to a hard cut.
+      var HERO_FADE_MS     = Math.min(60, Math.round((HERO_FRAME_MS || 0) * 0.4));
       if (heroMascot) heroMascot.style.setProperty('--hero-fade', HERO_FADE_MS + 'ms');
       var heroRaf          = 0;
 
@@ -6622,12 +6827,34 @@
         document.documentElement.classList.remove('fw-nav-locked');
         if (returnFocus) focusNoScroll(toggle);
       }
+      /* Focus trap. Tabbing past the last drawer item used to walk straight
+         out of the panel and into the page content behind the scrim, so a
+         keyboard or switch-control user ends up driving a surface they cannot
+         see (re-audit UX U9). The cycle is the hamburger — which IS the close
+         button while the drawer is open — plus the drawer's own links.
+         getClientRects() rather than offsetParent: the panel is position:fixed
+         and offsetParent lies about anything inside it. */
+      function trapFocus(e) {
+        var items = [toggle].concat(
+          Array.prototype.slice.call(menu.querySelectorAll('a[href]'))
+        ).filter(function (el) { return el && el.getClientRects().length > 0; });
+        if (!items.length) return;
+        var i = items.indexOf(document.activeElement);
+        if (e.shiftKey) {
+          // Backwards off the front — or from somewhere outside — lands on the last.
+          if (i <= 0) { e.preventDefault(); focusNoScroll(items[items.length - 1]); }
+        } else if (i === -1 || i === items.length - 1) {
+          e.preventDefault(); focusNoScroll(items[0]);
+        }
+      }
       if (toggle && menu) {
         toggle.addEventListener('click', function () {
           if (isMenuOpen()) closeMenu(false); else openMenu();
         });
         document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && isMenuOpen()) closeMenu(true);
+          if (!isMenuOpen()) return;
+          if (e.key === 'Escape') closeMenu(true);
+          else if (e.key === 'Tab') trapFocus(e);
         });
         if (scrim) {
           scrim.addEventListener('click', function () { closeMenu(true); });
@@ -7019,8 +7246,10 @@
           steps.forEach(function (s) { stepIO.observe(s); });
         }
         // Fallback line fill if scroll-timeline isn't supported.
-        // There are two rails now — steps 01/02, then step 03 after the
-        // Security section — so each rail drives its own fill from its own
+        // Back to ONE rail now that Security no longer splits the steps —
+        // but the loop stays per-rail rather than reverting to a single
+        // getElementById: it is the same code either way and it is what
+        // survived the split. Each rail drives its own fill from its own
         // rect. The @supports path (animation-timeline: view()) is already
         // per-element and needed no change.
         var supportsTimeline = CSS.supports('animation-timeline: scroll()');
