@@ -219,6 +219,15 @@
     .fw-nav__link:hover::after, .fw-nav__link:focus-visible::after { transform: scaleX(1); }
     .fw-nav__link:active { opacity: 0.7; transition-duration: var(--dur-tap); }
     .fw-nav__cta:active { transform: scale(0.97); transition-duration: var(--dur-tap); }
+    /* The two page destinations are in BOTH the bar and the drawer, except in
+       the 768-899 band, which is the one width that can hold neither: below 768
+       they are drawer items, at 900+ the bar holds seven links and the pill,
+       and between the two adding them overflows the bar. That band keeps its
+       five anchors + CTA rather than gaining a horizontal scrollbar. Matches
+       index.html. */
+    @media (min-width: 768px) and (max-width: 899px) {
+      .fw-nav__item--page { display: none; }
+    }
     .fw-nav__toggle { display: none; background: transparent; border: 0; width: 44px; height: 44px; cursor: pointer; padding: 0; }
     .fw-nav__toggle-bar {
       display: block; width: 22px; height: 2px; margin: 5px auto;
@@ -506,7 +515,9 @@
           <li style="--li:2"><a class="fw-nav__link" href="/#pricing">Pricing</a></li>
           <li style="--li:3"><a class="fw-nav__link" href="/#team">Team</a></li>
           <li style="--li:4"><a class="fw-nav__link" href="/#faq">Help</a></li>
-          <li style="--li:5"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+          <li style="--li:5" class="fw-nav__item--page"><a class="fw-nav__link fw-nav__link--page" href="/surplus-calculator.html">Calculator</a></li>
+          <li style="--li:6" class="fw-nav__item--page"><a class="fw-nav__link fw-nav__link--page" href="/account-aggregator.html" aria-current="page">Account Aggregator</a></li>
+          <li style="--li:7"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
         </ul>
       </nav>
     </div>
