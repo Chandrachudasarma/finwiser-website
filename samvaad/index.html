@@ -126,7 +126,7 @@
           <p>Priya, 34, freelance designer. She files ITR and invoices under a GSTIN, but neither reaches an adviser. Her income is inferred from bank credits, so the engine's income-quality component can only reach about 0.30 — against 0.70–0.95 for a salaried user — and her surplus is a hedged range, not a number she can commit to.</p>
         </div>
       </div>
-      <div class="callout"><p>Legible to the tax system, invisible to the advice market: about 1.53 crore active GST taxpayers and the non-salaried ITR filers — plus every salaried saver whose EPF no adviser can see.</p></div>
+      <div class="callout"><p><strong>Today:</strong> India's salaried middle class — the EPFO link is theirs. <strong>Next:</strong> the documented self-employed — about 1.53 crore active GST registrations and the non-salaried ITR filers, legible to the tax system, invisible to the advice market — a cohort the app does not serve yet.</p></div>
     </section>
 
     <section>
@@ -163,7 +163,7 @@
     <section>
       <h2>Demonstrator B — declared income lets her commit more, first</h2>
       <div class="demo">
-        <span class="tag">A design demonstrator · design mock, not a screenshot</span>
+        <span class="tag">A design demonstrator · design mock, not a screenshot · next cohort, not served today</span>
         <div class="bignum">₹67K <span class="arrow">→</span> ₹88K</div>
         <div class="bigcap">what Priya can safely lock in for her plan each month — savings first, expenses after</div>
         <p>Finwiser asks users to <strong>commit their surplus first</strong> — "Lock in ₹X for my plan" — so saving happens before spending and expenses adapt to what's left. With inferred income, a freelancer can only safely commit the conservative end of her estimate. Declared income lifts the ceiling on the engine's income-quality component, narrows the estimated band from ±27% to ±7%, and lets her commit <strong>₹21K a month more, first</strong>.</p>
@@ -180,7 +180,7 @@
       <div class="tablewrap"><table class="ready">
         <thead><tr><th>Rail</th><th>What exists</th><th>What's left</th></tr></thead>
         <tbody>
-          <tr><td>GSTN · near-term</td><td>GSTR-1/3B is already a requestable FI type; our GST consent group carries it (configured, not yet exercised).</td><td>A parser and an income signal. ITR is annual and up to fifteen months stale — it establishes income level; GSTR-3B is monthly — it supplies recency. Both are needed.</td></tr>
+          <tr><td>GSTN · near-term</td><td>GSTR-1/3B is already a requestable FI type; our GST consent group carries it (configured, not yet exercised).</td><td>A parser and an income signal. GST returns carry turnover, not income — a business owner's personal income is derived from turnover, bank expense patterns and ITR-declared income. ITR is annual and up to fifteen months stale (income level); GSTR-3B is monthly (recency). Both are needed.</td></tr>
           <tr><td>EPFO · further out</td><td>ReBIT publishes an EPF FI schema; our pension parser already targets it. Parsing, storage and goal-linking are done and tested.</td><td>EPF is not yet a requestable FI type in AA 2.1.0: a spec revision, EPFO onboarding and FIU re-certification for the type.</td></tr>
           <tr><td>CBDT · speculative</td><td>Neither a schema nor a FIP today.</td><td>Everything — we flag this as speculative, not proposed.</td></tr>
         </tbody>
