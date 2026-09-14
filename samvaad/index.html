@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finwiser — SamvAAd 2026 · Financial Services Innovation Challenge · Theme 3: The Next Data Layer</title>
+  <meta name="description" content="Same money, one missing rail. Finwiser's entry to Sahamati's Financial Services Innovation Challenge 2026 — what changes for regulated advice when EPFO and GSTN data join the Account Aggregator rails.">
+  <link rel="canonical" href="https://finwiser.org/samvaad/">
+  <meta property="og:title" content="Finwiser — SamvAAd 2026 · The Next Data Layer">
+  <meta property="og:description" content="A certified AA FIU running SEBI-regulated advice today — and what flips when EPFO and GSTN join the rails.">
+  <meta property="og:url" content="https://finwiser.org/samvaad/">
+  <meta property="og:type" content="website">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --navy: #0f2557; --navy-deep: #0a1a3f; --ink: #1a1a2e; --slate: #475569; --muted: #55657a;
+      --line: #e4e8f0; --bg: #f4f6fb; --blue: #1d4ed8; --amber: #f59e0b; --green: #0f9d6b; --green-bg: #e9f7f1;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif; color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    .accent { height: 4px; background: linear-gradient(90deg, var(--blue), var(--amber)); }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+    .topbar { background: #fff; padding: 14px 0; display: flex; }
+    .topbar a { display: inline-block; line-height: 0; }
+    .topbar .logo { height: 38px; width: auto; display: block; }
+    header.hero { background: var(--navy); color: #fff; padding: 44px 0 40px; }
+    .hero .kicker { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
+    .hero h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; margin: 12px 0 10px; letter-spacing: -0.02em; }
+    .hero p { font-size: 1.08rem; color: #d4ddf0; max-width: 680px; }
+    .hero p strong { color: #fff; }
+    .live { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .live a { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; font-size: 0.95rem; padding: 11px 18px; border-radius: 999px; }
+    .live a.primary { background: var(--green); color: #fff; }
+    .live a.primary:hover { background: #0c855a; }
+    .live a.ghost { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+    .live a.ghost:hover { background: rgba(255,255,255,0.16); }
+    main { padding: 38px 0 60px; }
+    section { margin-bottom: 40px; }
+    h2 { font-size: 1.32rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; letter-spacing: -0.01em; }
+    h2::before { content: ""; display: inline-block; width: 22px; height: 3px; background: linear-gradient(90deg, var(--blue), var(--amber)); border-radius: 3px; vertical-align: middle; margin-right: 10px; }
+    p { margin-bottom: 12px; color: var(--slate); }
+    strong { color: var(--ink); }
+    .bignum { font-size: clamp(2.2rem, 6vw, 3.2rem); font-weight: 800; color: var(--navy); letter-spacing: -0.03em; line-height: 1.1; white-space: nowrap; }
+    .bignum .arrow { color: var(--amber); }
+    .bigcap { font-size: 0.92rem; color: var(--muted); font-weight: 600; margin: 4px 0 14px; }
+    .video { background: #000; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+    .video video { display: block; width: 100%; max-height: 520px; background: #000; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 680px) { .two { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+    .card h3 { font-size: 1.02rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+    .card p { font-size: 0.94rem; margin: 0 0 8px; }
+    .card .q { font-size: 1.08rem; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
+    .flow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 8px 0 6px; }
+    .flow .step { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .flow .step h3 { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--blue); font-weight: 800; margin-bottom: 6px; }
+    .flow .step p { font-size: 0.92rem; margin: 0; }
+    @media (max-width: 640px) { .flow { grid-template-columns: 1fr; } }
+    .demo { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+    .demo .tag { display: inline-block; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: var(--navy); border-radius: 6px; padding: 3px 8px; margin-bottom: 8px; }
+    .demo h3 { font-size: 1.12rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+    .demo img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); display: block; }
+    .demo .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+    @media (max-width: 640px) { .demo .grid { grid-template-columns: 1fr; } }
+    .demo .cap { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
+    .callout { background: var(--green-bg); border-left: 4px solid var(--green); border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .callout p { margin: 0; color: var(--ink); font-weight: 600; }
+    .honest { background: #fff8e6; border-left: 4px solid var(--amber); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 0.9rem; color: var(--ink); }
+    table.ready { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font-size: 0.93rem; }
+    table.ready th, table.ready td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    table.ready th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); background: #fafbfe; }
+    .tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table.ready td:first-child { font-weight: 800; color: var(--navy); white-space: nowrap; }
+    @media (max-width: 700px) { table.ready { min-width: 640px; } }
+    .stage { display: inline-block; margin-top: 14px; font-size: 0.86rem; color: #d4ddf0; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 6px 12px; }
+    .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .facts div { background: #fff; padding: 13px 16px; }
+    .facts dt { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 700; }
+    .facts dd { font-size: 0.98rem; color: var(--ink); font-weight: 600; margin-top: 2px; }
+    @media (max-width: 560px) { .facts { grid-template-columns: 1fr; } }
+    .links a { display: inline-block; background: var(--navy); color: #fff; text-decoration: none; font-weight: 700; padding: 11px 18px; border-radius: 999px; margin: 6px 8px 6px 0; font-size: 0.95rem; }
+    .links a:hover { background: var(--navy-deep); }
+    .note { font-size: 0.86rem; color: var(--muted); margin-top: 10px; }
+    .disclosure { font-size: 0.84rem; color: var(--slate); background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; margin-top: 12px; }
+    footer { border-top: 1px solid var(--line); padding: 24px 0; color: var(--muted); font-size: 0.88rem; }
+    footer a { color: var(--blue); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap"><a href="https://finwiser.org" aria-label="Finwiser home"><img class="logo" src="finwiserlogo.svg?v=1" alt="Finwiser"></a></div>
+  </header>
+  <div class="accent"></div>
+  <header class="hero">
+    <div class="wrap">
+      <div class="kicker">SamvAAd 2026 · Financial Services Innovation Challenge · Theme 3 · Stage: MVP</div>
+      <h1>Same money. One missing rail.</h1>
+      <p>Finwiser already runs <strong>SEBI-regulated advice</strong> on a consented balance sheet, as a certified Account Aggregator FIU. Put <strong>EPFO and GSTN</strong> on the rail and the same household gets a different answer — not a new feature.</p>
+      <div class="live">
+        <a class="primary" href="#video">▶ Watch the entry video</a>
+        <a class="ghost" href="Finwiser-SamvAAd-2026-TechOverview.pdf" target="_blank">Technology overview (PDF)</a>
+        <a class="ghost" href="https://play.google.com/store/apps/details?id=org.finwiser.app" rel="noopener" target="_blank">The app · Google Play (open testing)</a>
+      </div>
+      <span class="stage">MVP stage · the app is in open testing with no live users · both demonstrators use synthetic or illustrative figures, labelled where they appear</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="video">
+      <h2>What one missing rail costs — in 90 seconds</h2>
+      <div class="video"><video controls playsinline preload="metadata" src="finwiser-samvaad-2026.mp4"></video></div>
+      <p class="note">The live product on today's rails, then the two demonstrators below. <a href="finwiser-samvaad-2026.mp4">Direct link to the file</a>.</p>
+    </section>
+
+    <section>
+      <h2>Two questions, answered on half a balance sheet</h2>
+      <div class="two">
+        <div class="card">
+          <div class="q">"Am I on track for retirement?"</div>
+          <p>Rahul, 32, salaried. We answer without his <strong>EPF</strong> — his largest retirement asset — because EPFO is not on the Account Aggregator rail. So the engine asks him for a catch-up contribution worth <strong>55% of his monthly surplus</strong>. He refuses. With EPF on the rail, the ask is <strong>34%</strong>. He acts.</p>
+        </div>
+        <div class="card">
+          <div class="q">"How much can I safely put away each month?"</div>
+          <p>Priya, 34, freelance designer. She files ITR and invoices under a GSTIN, but neither reaches an adviser. Her income is inferred from bank credits, so the engine's income-quality component can only reach about 0.30 — against 0.70–0.95 for a salaried user — and her surplus is a hedged range, not a number she can commit to.</p>
+        </div>
+      </div>
+      <div class="callout"><p>Legible to the tax system, invisible to the advice market: about 1.53 crore active GST taxpayers and the non-salaried ITR filers — plus every salaried saver whose EPF no adviser can see.</p></div>
+    </section>
+
+    <section>
+      <h2>Three rails, one advice engine</h2>
+      <div class="flow">
+        <div class="step"><h3>Account Aggregator · Finvu</h3><p>Deposits, term &amp; recurring deposits, mutual funds, SIPs, equities via the depositories, NPS. Insurance and other securities opt-in.</p></div>
+        <div class="step"><h3>Experian bureau</h3><p>Score, tradelines, EMIs and up to 24 months of repayment history — the liability side of the balance sheet.</p></div>
+        <div class="step"><h3>Email statements</h3><p>Credit-card statements and transaction alerts — what no rail carries yet.</p></div>
+      </div>
+      <p>Three rails converge on one advice engine and one data model. Transactions become a monthly surplus; holdings a bucketed net worth; 42 SEBI mutual-fund categories are scored against seven goal types; the whole picture yields <strong>one ranked next action with its rule shown</strong> — the "Next Best Rupee", a suitability-based priority ranking, not a "best product" claim.</p>
+    </section>
+
+    <section>
+      <h2>Demonstrator A — EPFO on the rail</h2>
+      <div class="demo">
+        <span class="tag">A simulation · real parser, real engine, simulated feed</span>
+        <div class="bignum">55% <span class="arrow">→</span> 34%</div>
+        <div class="bigcap">of monthly surplus — the retirement catch-up the engine asks for, before and after EPF is visible</div>
+        <p>We fed a simulated EPFO payload — written as ReBIT XML and validated against the published EPF schema — through the real parser, ingestion processor, net-worth engine, goal auto-linking (a real database transaction) and feasibility check, on a synthetic user.</p>
+        <div class="grid">
+          <div class="card"><h3>Before — today's rails</h3>
+            <p>Net worth ₹31.5L · retirement bucket ₹3.4L (10.8%)</p>
+            <p>Feasibility catch-up SIP <strong>₹23,123/month — 55% of surplus</strong></p></div>
+          <div class="card"><h3>After — with EPFO</h3>
+            <p>Net worth ₹41.3L (+₹9.8L on the same money) · retirement bucket ₹13.2L (32%)</p>
+            <p>EPF auto-linked to Retirement and <em>refused</em> to the education goal (lock-in rule)</p>
+            <p>Feasibility catch-up SIP <strong>₹14,444/month — 34% of surplus</strong></p>
+            <p>72 contribution rows reveal <strong>₹21,600/month</strong> of forced saving no bank statement shows</p></div>
+        </div>
+        <div class="honest">Real: the EPF parser, the ingestion processor, the net-worth engine, goal auto-linking, feasibility, Next Best Rupee. Simulated: the EPFO feed and the baseline accounts, on a synthetic user in a local test database — no production or personal data; no EPFO data has been accessed. The run also surfaced a value-mapping defect for EPF in our net-worth calculator, fixed in the product afterwards with tests. Projections based on stated assumptions; not guaranteed.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Demonstrator B — declared income lets her commit more, first</h2>
+      <div class="demo">
+        <span class="tag">A design demonstrator · design mock, not a screenshot</span>
+        <div class="bignum">₹67K <span class="arrow">→</span> ₹88K</div>
+        <div class="bigcap">what Priya can safely lock in for her plan each month — savings first, expenses after</div>
+        <p>Finwiser asks users to <strong>commit their surplus first</strong> — "Lock in ₹X for my plan" — so saving happens before spending and expenses adapt to what's left. With inferred income, a freelancer can only safely commit the conservative end of her estimate. Declared income lifts the ceiling on the engine's income-quality component, narrows the estimated band from ±27% to ±7%, and lets her commit <strong>₹21K a month more, first</strong>.</p>
+        <div class="grid">
+          <div><img src="demoB-before.png" alt="Planning surplus card today — inferred income"><div class="cap"><strong>Today · AA rails only.</strong> The app estimates ₹93K/month, but with inferred income the band is ₹67K–₹1.18L — so the amount Priya can safely lock in is the conservative end, ₹67K.</div></div>
+          <div><img src="demoB-after.png" alt="Planning surplus card with declared income"><div class="cap"><strong>With ITR + GST on the rail.</strong> Estimate ₹96K/month, band ₹88K–₹1.02L — the conservative end she can safely lock in rises to ₹88K.</div></div>
+        </div>
+        <div class="honest">Illustrative only. CBDT and GSTN income data are not available to this product on the Account Aggregator network today; no ITR or GSTN data has been accessed. The confidence mechanism is real and shipped; the rupee figures on the mock are not. Declared income would corroborate the user's own figure for their own plan, under a separately worded consent — it is not an income-verification service for lenders or third parties.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Readiness — near-term, further out</h2>
+      <div class="tablewrap"><table class="ready">
+        <thead><tr><th>Rail</th><th>What exists</th><th>What's left</th></tr></thead>
+        <tbody>
+          <tr><td>GSTN · near-term</td><td>GSTR-1/3B is already a requestable FI type; our GST consent group carries it (configured, not yet exercised).</td><td>A parser and an income signal. ITR is annual and up to fifteen months stale — it establishes income level; GSTR-3B is monthly — it supplies recency. Both are needed.</td></tr>
+          <tr><td>EPFO · further out</td><td>ReBIT publishes an EPF FI schema; our pension parser already targets it. Parsing, storage and goal-linking are done and tested.</td><td>EPF is not yet a requestable FI type in AA 2.1.0: a spec revision, EPFO onboarding and FIU re-certification for the type.</td></tr>
+          <tr><td>CBDT · speculative</td><td>Neither a schema nor a FIP today.</td><td>Everything — we flag this as speculative, not proposed.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout"><p>Advice, not lending. Lending consent is one-shot and adversarial — the user consents to be judged. Advisory consent is periodic and aligned — the user consents to be helped, up to 45 fetches a month, from someone who isn't borrowing. That is a non-credit reason for EPFO and GSTN to join the rail.</p></div>
+    </section>
+
+    <section>
+      <h2>Who this includes</h2>
+      <div class="flow">
+        <div class="step"><h3>For the person</h3><p>A catch-up contribution sized to what they actually have; advice based on declared rather than inferred income. The engine ranks the emergency fund and protection ahead of goals — a floor before a return.</p></div>
+        <div class="step"><h3>For inclusion</h3><p>SEBI caps a fixed-fee adviser at ₹1.51 lakh a year per family. AA rails make a fee-only, regulated adviser at ₹199 a month (analysis free) possible for salaried earners; declared income on the rail extends it to the documented-but-invisible. 58.4% of workers are self-employed (PLFS 2023-24) — that is the size of the exclusion, not our reach.</p></div>
+        <div class="step"><h3>For the ecosystem</h3><p>AA volume today is lending-led. An advisory FIU brings periodic, aligned consent from people who aren't borrowing.</p></div>
+      </div>
+      <p class="note"><strong>MVP stage.</strong> Once the rails exist we will measure the share of users whose retirement adequacy changes on EPF inclusion; surplus-band width for non-salaried users before and after declared income; and consent completion for the new FI types.</p>
+    </section>
+
+    <section>
+      <h2>Registration &amp; disclosure</h2>
+      <dl class="facts">
+        <div><dt>Account Aggregator</dt><dd>Certified FIU under Sahamati's framework · Central Registry #178 · live on Finvu</dd></div>
+        <div><dt>SEBI RIA</dt><dd>INA000021331 · BSE enlistment 2408</dd></div>
+        <div><dt>Technology entity</dt><dd>Finwiser Technologies LLP, Bengaluru · DPIIT DIPP240313</dd></div>
+        <div><dt>Founder &amp; SPOC</dt><dd>Chandrachuda Sarma Yemmanuru · chandrachudasarma@finwiser.org</dd></div>
+      </dl>
+      <div class="disclosure">Investment advisory services are provided by <strong>Chandrachuda Sarma Yemmanuru Proprietor Finwiser</strong>, SEBI-registered Investment Adviser (Reg. No. INA000021331), which also holds the Account Aggregator FIU certification (Central Registry #178). Finwiser Technologies LLP is the technology provider and is not a SEBI-registered intermediary. SEBI registration does not guarantee performance or assure returns. No regulator endorses or certifies Finwiser.</div>
+      <div class="links">
+        <a href="Finwiser-SamvAAd-2026-TechOverview.pdf" target="_blank">Technology overview (PDF)</a>
+        <a href="https://play.google.com/store/apps/details?id=org.finwiser.app" rel="noopener" target="_blank">Android app (Google Play)</a>
+        <a href="https://finwiser.org">Main website</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © 2026 Finwiser Technologies LLP · Bengaluru · <a href="https://finwiser.org">finwiser.org</a> · <a href="https://www.linkedin.com/in/chandrachudasarma/" rel="noopener" target="_blank">Founder on LinkedIn</a> · Prepared for Sahamati SamvAAd 2026 — Financial Services Innovation Challenge
+    </div>
+  </footer>
+</body>
+</html>
