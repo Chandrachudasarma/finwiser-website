@@ -107,7 +107,7 @@
 
   <main class="wrap">
     <section id="video">
-      <h2>What one missing rail costs — in 77 seconds</h2>
+      <h2>What one missing rail costs — in 85 seconds</h2>
       <div class="video"><video controls playsinline preload="metadata" src="finwiser-samvaad-2026.mp4"></video></div>
       <p class="note">The live product on today's rails, then the two demonstrators below. <a href="finwiser-samvaad-2026.mp4">Direct link to the file</a>.</p>
     </section>
@@ -156,7 +156,7 @@
             <p>Feasibility catch-up SIP <strong>₹14,444/month — 34% of surplus</strong></p>
             <p>72 contribution rows reveal <strong>₹21,600/month</strong> of forced saving no bank statement shows</p></div>
         </div>
-        <div class="honest">Real: the EPF parser, the ingestion processor, the net-worth engine, goal auto-linking, the feasibility check and the Next Best Rupee ranking. Simulated: the EPFO feed and the baseline accounts, on a synthetic user in a local test database — no production or personal data; no EPFO data has been accessed. The run also surfaced a value-mapping defect for EPF in our net-worth calculator, fixed in the product afterwards with tests. Projections based on stated assumptions; not guaranteed.</div>
+        <div class="honest">Real: the EPF parser, the ingestion processor, the net-worth engine, goal auto-linking, the feasibility check and the Next Best Rupee ranking. Simulated: the EPFO feed and the baseline accounts, on a synthetic user in a local test database — no production or personal data; no EPFO data has been accessed. Exercising this path also caught a separate defect — our net-worth calculator valued a spec-conformant EPF record at ₹0, which would have kept the corpus invisible even after the rail opened. It did not cause the 55%; it is fixed in the product, with tests. Projections based on stated assumptions; not guaranteed.</div>
       </div>
     </section>
 
@@ -167,10 +167,8 @@
         <div class="bignum">₹67K <span class="arrow">→</span> ₹88K</div>
         <div class="bigcap">what Priya can safely lock in for her plan each month — savings first, expenses after</div>
         <p>Finwiser asks users to <strong>commit their surplus first</strong> — "Lock in ₹X for my plan" — so saving happens before spending and expenses adapt to what's left. With inferred income, a freelancer can only safely commit the conservative end of her estimate. Declared income lifts the ceiling on the engine's income-quality component, narrows the estimated band from ±27% to ±7%, and lets her commit <strong>₹21K a month more, first</strong>.</p>
-        <div class="grid">
-          <div><img src="demoB-before.png" alt="Planning surplus card today — inferred income"><div class="cap"><strong>Today · AA rails only.</strong> The app estimates ₹93K/month, but with inferred income the band is ₹67K–₹1.18L — so the amount Priya can safely lock in is the conservative end, ₹67K.</div></div>
-          <div><img src="demoB-after.png" alt="Planning surplus card with declared income"><div class="cap"><strong>With ITR + GST on the rail.</strong> Estimate ₹96K/month, band ₹88K–₹1.02L — the conservative end she can safely lock in rises to ₹88K.</div></div>
-        </div>
+        <img src="lockin-before-after.png" alt="Today: Lock in ₹67K for my plan, inferred income, limited confidence. With ITR and GST on the rail: Lock in ₹88K for my plan, declared income." style="margin-top:12px">
+        <div class="cap">The lock-in, before and after declared income reaches the rail. Estimated band about ±27% → ±7%.</div>
         <div class="honest">Illustrative only. CBDT and GSTN income data are not available to this product on the Account Aggregator network today; no ITR or GSTN data has been accessed. The confidence mechanism is real and shipped; the rupee figures on the mock are not. Declared income would corroborate the user's own figure for their own plan, under a separately worded consent — it is not an income-verification service for lenders or third parties.</div>
       </div>
     </section>
