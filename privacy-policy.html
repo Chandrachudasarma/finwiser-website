@@ -146,7 +146,7 @@
     <div class="legal-title">
       <div class="legal-title__inner">
         <h1 class="h1">Finwiser Privacy Policy</h1>
-        <p class="caption updated">Last Updated: 22 April 2026</p>
+        <p class="caption updated">Last Updated: 28 September 2026</p>
       </div>
     </div>
 
@@ -313,6 +313,17 @@
                 <p>Limited historical derived summaries and security or audit logs (excluding raw Financial Information payloads) may be retained solely for security monitoring, dispute resolution, and regulatory compliance, as permitted under Applicable Law.</p>
             </div>
 
+            <h3>3.3A Your PAN and Date of Birth</h3>
+            <p>We collect your PAN and date of birth on our own details screen, before you link any accounts. With your consent on the sign-in screen, we may look up your PAN, name and date of birth from your verified mobile number through our identity-verification partner; you confirm or correct them before we use them. We use your PAN and date of birth only to:</p>
+            <ul>
+                <li><strong>find the accounts you choose to link</strong> — we share them with your Account Aggregator, and through it with the banks, fund houses and other providers you pick, because many providers now need your PAN or date of birth together with your mobile number to find your accounts. Under the Account Aggregator rules they may use them only to find your accounts and must not keep them afterwards;</li>
+                <li><strong>get your credit report</strong> from Experian through our credit-information partner, with your credit-report consent;</li>
+                <li><strong>analyse your credit card transactions</strong> from your email statements, if you connect your email — on our servers only;</li>
+                <li><strong>confirm you are 18 or older</strong>; and</li>
+                <li><strong>verify your identity (KYC)</strong> if you become a paying advisory client, as SEBI requires — we will tell you first.</li>
+            </ul>
+            <p>We never sell your PAN or date of birth, never use them for marketing, and never show your full PAN in the app. We store your PAN encrypted. If we ever want to use them for anything else, we will ask you first.</p>
+
             <h3>3.4 Conditional Processing for Investment Advisory Services (Clients Only)</h3>
             <p><em>This section applies only if you execute a valid Investment Advisory Agreement with Finwiser.</em></p>
             <p>Where you become a Client, Finwiser may additionally process personal data to:</p>
@@ -448,6 +459,8 @@
                 <li><strong>MongoDB Atlas</strong> (hosted database, MongoDB Inc.) — stores your financial data encrypted at rest in the Mumbai, India region.</li>
                 <li><strong>MSG91</strong> (OTP SMS delivery, WALKOVER WEB SOLUTIONS PVT LTD) — delivers the one-time password to your registered mobile number during login. Receives only your mobile number and the OTP.</li>
                 <li><strong>Finvu</strong> and <strong>Saafe</strong> (RBI-licensed Account Aggregators) — receive your consent to share financial data from your banks and mutual funds, and relay encrypted data to Finwiser. Finwiser is registered as a Financial Information User (FIU) with these Account Aggregators.</li>
+                <li><strong>Identity-verification and credit-information partner</strong> — used, only with your consent, to look up your PAN from your mobile number and to fetch your Experian credit report.</li>
+                <li><strong>Experian Credit Information Company of India Pvt Ltd</strong> (credit bureau) — provides your credit report, on your credit-report consent.</li>
                 <li><strong>Google Firebase Cloud Messaging</strong> (push notifications, Google LLC) — delivers non-financial push notifications (e.g. goal reminders) to your device. Does not receive financial data.</li>
                 <li><strong>Google Cloud Platform</strong> (email push infrastructure, Google LLC) — used to receive notifications from Gmail when you have connected Gmail for email-based statement ingestion (optional, off by default).</li>
                 <li><strong>Zoho Mail</strong> (business email, Zoho Corporation Pvt Ltd) — hosts the grievance-officer mailbox (<a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a>).</li>
@@ -590,26 +603,28 @@
             </ul>
             <p>When you request account deletion, we take the following actions:</p>
             <ol>
-                <li>We permanently delete the following data from our active systems:
+                <li>We permanently delete from our systems everything that no law requires us to keep, including:
                     <ul>
-                        <li>your user account record (name, email, mobile number, date of birth, PAN, address, profile details);</li>
-                        <li>your onboarding progress, financial profile, risk profile, and goals;</li>
-                        <li>your budgets, holdings, transactions, net-worth snapshots, and cash-flow snapshots; and</li>
-                        <li>all JWT refresh tokens and active session credentials.</li>
+                        <li>your bank and other account data received through the Account Aggregator, your transactions, holdings, balances, net-worth and cash-flow snapshots, budgets and spending categories;</li>
+                        <li>your credit reports, the result of the PAN lookup from your mobile number, passwords you saved to access your statements, and access to any email account you connected;</li>
+                        <li>your app preferences, notification settings, device tokens, refresh tokens and active sessions.</li>
                     </ul>
                 </li>
+                <li><strong>What we must keep, and why.</strong> As a SEBI-registered Investment Adviser, SEBI (Investment Advisers) Regulations, 2013 (Regulation 19) require us to keep certain records for at least five years, and the Prevention of Money-Laundering Act, 2002 requires identity records to be kept for five years after the relationship ends. We therefore keep only:
+                    <ul>
+                        <li>your identity details (name, mobile number, email, PAN and date of birth);</li>
+                        <li>records of the consents you gave (what you agreed to and when), including your Account Aggregator consent details (but not the financial data itself);</li>
+                        <li>your risk profile, the information used to judge suitability, your goals as advised, the advice we gave and the reasons for it, and your conversations with Finwy and our advisor; and</li>
+                        <li>any complaint you raised and how it was resolved, and a record that your deletion was carried out.</li>
+                    </ul>
+                    These records are moved to a separate, locked archive. They are not used for any other purpose, are opened only by our compliance officer when a law, a regulator or a complaint requires it (each access is logged), and are deleted automatically after five years. They are kept longer only while a specific complaint, dispute or legal proceeding involving you is still open.</li>
+                <li>If you are under 18 and we erase your details for that reason, we keep only a record that the erasure was done — not your identity.</li>
                 <li>We delete our local copy of your Account Aggregator consent artefacts and immediately stop all scheduled data fetches against them.</li>
                 <li><strong>Important — Account Aggregator consent revocation is done by you at the Account Aggregator.</strong> Under the RBI/ReBIT Account Aggregator framework, only the user (Data Principal) can revoke a consent issued to a Financial Information User (FIU). Finwiser, as the FIU, cannot revoke your AA consents programmatically on your behalf. To fully revoke the consent at the AA provider, please open your Account Aggregator app (Finvu or Saafe) and revoke the consent there. The deletion confirmation screen in the Finwiser app displays the consent IDs you need to revoke and provides links where available. We have stopped using the consent from the moment you requested deletion; full revocation at the AA is the final step only you can take.</li>
+                <li>Technical and security logs (for example, sign-in records) are kept for up to one year, and administrator action logs for up to two years, and then deleted.</li>
                 <li>Backup copies of deleted data are purged from our backups within 30 days of your request.</li>
                 <li>Anonymous, non-identifying aggregate statistics (e.g. total active user counts) may persist in our analytics systems; these do not contain any data that could identify you after deletion.</li>
             </ol>
-            <p>Finwiser may retain limited information after deletion where necessary for:</p>
-            <ul>
-                <li>compliance with Applicable Law;</li>
-                <li>regulatory record-keeping (including SEBI requirements where applicable);</li>
-                <li>fraud prevention and security; or</li>
-                <li>resolution of disputes and grievances.</li>
-            </ul>
 
             <h3>6.4 Erasure, Portability, and Legal Overrides</h3>
             <p>Finwiser may provide access to, or export of, basic profile information, user-provided data, and derived summaries where technically feasible and permitted under Applicable Law.</p>
