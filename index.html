@@ -1631,7 +1631,12 @@
     .seen__stage.seen-scrub.is-composite .seen__pane:not(.is-dealt) {
       opacity: 0; transform: scale(0.97); animation: none;
     }
-    .seen__stage.seen-scrub.is-composite .seen__pane.is-dealt { transition-delay: 0s; }
+    /* desktop deals the panes one by one already, so the CSS stagger (up to
+       360ms on the fade, 960ms on the ring flash) would only push the last
+       flash past the hold line; phones keep production's stagger */
+    .seen[data-pin] .seen__stage.seen-scrub.is-composite .seen__pane.is-dealt {
+      transition-delay: 0s; animation-delay: 0s;
+    }
     @media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
       .steps__row[data-pin="on"] {
         min-height: calc(var(--beats) * var(--beat) + var(--stage-h));
@@ -3450,6 +3455,9 @@
       transition: flex-basis var(--dur-scene) var(--ease-out);
     
     }
+    /* scroll-driven: the split follows the counts within a tap, so it never
+       shows a fill the numbers beside it have already left */
+    .sp-scrub .flow__counter-bar-seg { transition-duration: var(--dur-tap); }
     .flow__counter-bar-seg--income   { background: var(--mint);  }
     .flow__counter-bar-seg--fixed    { background: var(--gold);  }
     .flow__counter-bar-seg--variable { background: var(--gold);  }
@@ -3662,13 +3670,17 @@
       display: flex; flex-direction: column; align-items: center;
       text-align: center; gap: 10px;
       opacity: 0; transform: translateY(14px) scale(0.92);
-      transition: opacity var(--dur-reveal) var(--ease-in-out), transform var(--dur-scene) var(--ease-out);
+      /* entering eases (below); leaving is instant — scrolled back, the
+         insights must not outlive the surplus they are read from */
+      transition: none;
     }
     .insight--score    { border-left-color: var(--rose); background: var(--rose-05);  }
     .insight--shield   { border-left-color: var(--rose); background: var(--rose-05);  }
     .insight--runway   { border-left-color: var(--gold); background: var(--gold-08);  }
     .insight--idle     { border-left-color: var(--mint); background: var(--mint-04);  }
-    .is-insighting .insight { opacity: 1; transform: none;  }
+    .is-insighting .insight { opacity: 1; transform: none;
+      transition: opacity var(--dur-reveal) var(--ease-in-out), transform var(--dur-scene) var(--ease-out);
+    }
     .is-insighting .insight:nth-child(1) { transition-delay: 0ms;  }
     .is-insighting .insight:nth-child(2) { transition-delay: var(--dur-tap);  }
     .is-insighting .insight:nth-child(3) { transition-delay: var(--dur-ui);  }
@@ -6286,19 +6298,21 @@
                 unpinned (pass) -> the stretch in which >=50% of its
                           picture is on screen (half entered at the fold ->
                           half still visible under the nav).
-           xH = the HOLD line: 360px (pinned: 250px held + one 100px wheel notch
-                of latency) / 60px (pass) before the end.
+           xH = the HOLD line: 450px (pinned: 350px held + one 100px wheel notch
+                of latency) / 70px (pass) before the 50%-visible exit.
                 From here on the scene is in its terminal pose, full stop:
                 the chapter player lands at once and the scene's CSS
                 transitions and one-shot animations are cut (data-hurry). A reader who flicks
                 past therefore never leaves a scene half-played on screen,
-                and every pinned scene has >=250px of held final frame.
+                and every pinned scene has >=350px of held final frame.
            xT = where the terminal beat fires: xH minus the scene's TAIL
                 (the ms its last reveals run on after the trigger) at a
                 steady 667px/s (one 100px notch per 150ms), so at that pace
                 the tail finishes by itself exactly at the hold line and
-                nothing snaps. Faster readers get the snap at xH.
-           beats are then spaced EVENLY from just after lock to xT.
+                nothing snaps. Faster readers get the snap at xH. (Unpinned: xT = xH,
+                see below.)
+           beats (the thresholds that VISIBLY change the frame) are then spaced
+           EVENLY from the first notch after lock (60px) to xT.
 
          The old maps were each scene's own box law (65/35 of the section),
          which slid every beat later on shorter screens until the payoff
@@ -6307,7 +6321,7 @@
          verdict after it, and a ~500px dead start on step 03). Phones and
          reduced motion never get data-pin and keep their original maps.
          ============================================================ */
-      var FW_HOLD_PX = 360, FW_PASS_HOLD_PX = 60, FW_STEADY_PX_PER_MS = 0.667;
+      var FW_HOLD_PX = 450, FW_PASS_HOLD_PX = 70, FW_STEADY_PX_PER_MS = 0.667;
       function fwNavBottom() {
         var nav = document.querySelector('.fw-nav');
         return nav ? nav.getBoundingClientRect().bottom : 64;
@@ -6320,7 +6334,9 @@
       }
       /* o: { root, sticky, pic, beats: [p of first beat .. p of terminal
          beat] in the scene's own progress, even: space all beats evenly
-         (chapter scenes) or only the ends (continuous scrubs), tailMs } */
+         (chapter scenes) or only the ends (continuous scrubs), tailMs,
+         p0: progress already reached at lock (for a scene whose opening
+         threshold changes nothing visible) } */
       function fwPlan(o) {
         var geo = null, hurried = false;
         addEventListener('resize', function () { geo = null; }, { passive: true });
@@ -6336,10 +6352,10 @@
             if (!geo) readGeo();
             var pr = geo.par.getBoundingClientRect();
             var L = Math.max(1, pr.height - geo.padT - geo.padB - o.sticky.offsetHeight - geo.mb);
-            return { x: fwClamp01((geo.top - pr.top - geo.padT) / L), L: L, H: FW_HOLD_PX, xS: Math.min(0.08, 100 / L) };
+            return { x: fwClamp01((geo.top - pr.top - geo.padT) / L), L: L, H: FW_HOLD_PX, xS: Math.min(0.08, 60 / L) };
           }
           var r = o.pic.getBoundingClientRect(), w = fwPassWin(r, window.innerHeight, fwNavBottom());
-          return { x: fwClamp01((w.top0 - r.top) / w.travel), L: w.travel, H: FW_PASS_HOLD_PX, xS: 0.03 };
+          return { x: fwClamp01((w.top0 - r.top) / w.travel), L: w.travel, H: FW_PASS_HOLD_PX, xS: 10 / w.travel, pass: true };
         }
         /* While hurried, one-shot animations and transitions that are still
            running (a pulse, a count, a fade begun just before the line) are
@@ -6371,9 +6387,15 @@
             }
             var s = span(mode), B = o.beats, n = B.length;
             var xH = Math.max(0.5, 1 - s.H / s.L);
-            var xT = Math.min(xH, Math.max(0.55 * xH, xH - o.tailMs * FW_STEADY_PX_PER_MS / s.L));
+            /* pinned: the tail plays out before the hold line at a steady
+               667px/s (floor: chapters keep >=45% of the pin). Unpinned: the
+               window is only ~one screen, so the beats take all of it and the
+               terminal beat lands AT the hold line, set rather than played —
+               every px of the >=50%-visible stretch goes to the play. */
+            var xT = s.pass ? xH
+                   : Math.min(xH, Math.max(0.45 * xH, xH - o.tailMs * FW_STEADY_PX_PER_MS / s.L));
             setHurry(s.x >= xH);
-            var X = [0, s.xS], P = [0, B[0]];
+            var X = [0, s.xS], P = [o.p0 || 0, B[0]];
             if (o.even) {
               for (var i = 1; i < n; i++) { X.push(s.xS + (xT - s.xS) * i / (n - 1)); P.push(B[i]); }
             } else { X.push(xT); P.push(B[n - 1]); }
@@ -7450,10 +7472,10 @@
              selects the target stop. */
           var seenRender = null;
           /* desktop tail after the last chapter fires: its play (<=600ms)
-             plus the last pane's deal-in (--dur-scene 700ms; no CSS stagger on desktop,
-             the panes are already dealt one by one) — measured ~1.2s */
+             plus the last pane's fade and ring flash (--dur-scene 700ms each, no CSS
+             delay on desktop — the panes are already dealt one by one), ~1.25s */
           var seenPlan = fwPlan({ root: seenSection, sticky: seenSection.querySelector('.seen__inner') || seenStage,
-                                  pic: seenStage, beats: [0.52, 0.72, 0.88], even: true, tailMs: 1200 });
+                                  pic: seenStage, beats: [0.52, 0.72, 0.88], even: true, tailMs: 1250 });
           /* COHERENT PANES (every width). STOP 2 used to show the composite's
              panes fully drawn with every number at zero and the bars full —
              forward that read as a broken dashboard, and scrolling back it
@@ -7534,7 +7556,11 @@
               if (op !== co.lastOp)   { co.el.style.opacity = op;          co.lastOp = op; }
             }
 
-            var paneDeal = true;
+            /* desktop deals each pane with its own count-up; the phone keeps
+               production's timing (all panes arrive with the composite, ring
+               flashes and all) and simply shows the real values in them —
+               no count from zero under a pane that is already on screen */
+            var deskDeal = seenSection.hasAttribute('data-pin');
             for (var m = 0; m < seenCounters.length; m++) {
               var cn = seenCounters[m];
               var st = SEEN_STATS_IN + m * SEEN_STAT_STAGGER;
@@ -7542,12 +7568,12 @@
               var eased = 1 - Math.pow(1 - cp, 3);
               /* a hidden pane holds its real value; a dealt one
                  counts up from a non-zero first step ("1 of 5", not "0") */
-              if (paneDeal) eased = cp <= 0 ? 1 : Math.max(eased, cn.format === 'int' ? 0.5 / cn.target + 0.001 : 0.05);
+              eased = !deskDeal || cp <= 0 ? 1 : Math.max(eased, cn.format === 'int' ? 0.5 / cn.target + 0.001 : 0.05);
               var txt = seenFmt(cn.target * eased, cn.format);
               if (txt !== cn.last) { cn.el.textContent = txt; cn.last = txt; }
             }
             for (var pn = 0; pn < seenPanes.length; pn++) {
-              var dealt = paneDeal ? p > SEEN_STATS_IN + pn * SEEN_STAT_STAGGER : true;
+              var dealt = deskDeal ? p > SEEN_STATS_IN + pn * SEEN_STAT_STAGGER : p > SEEN_COMPOSITE_AT;
               if (dealt !== seenPaneLast[pn]) { seenPanes[pn].classList.toggle('is-dealt', dealt); seenPaneLast[pn] = dealt; }
             }
           };
@@ -7852,7 +7878,10 @@
                zone left the active area empty between stack and badge */
             var finished = done === n;
 
-            if (done !== cnLastDone) {
+            /* keyed on the active card too: gated on `done` alone, the first
+               card only lit up at the first APPROVAL, one beat late */
+            var cnKey = done * 2 + (p > 0.05 ? 1 : 0);
+            if (cnKey !== cnLastDone) {
               for (var i = 0; i < n; i++) {
                 var card = connectCards[i];
                 var isDone = i < done;
@@ -7876,7 +7905,7 @@
                 else s.val.textContent = connectFormatINR(sums[k]);
               });
               if (connectCounter) connectCounter.textContent = done;
-              cnLastDone = done;
+              cnLastDone = cnKey;
             }
             if (finished !== cnLastFinished) {
               connectFeed.classList.toggle('is-done', finished);
@@ -8140,6 +8169,7 @@
           /* change detection — the handler must not touch layout every frame */
           var spLastRouted = -1, spLastPhase = '', spLastCount = -1, spLastTotal = null;
           var spLastBd = { i: -1, f: -1, v: -1 };
+          var spCnts = { income: 0, fixed: 0, variable: 0 };
 
           function surplusRenderAt(p) {
             var n = SP_CHIPS.length;
@@ -8190,7 +8220,7 @@
                 r.sum = sums[k];
                 r.total.textContent = r.sign + surplusFormatINR(sums[k]);
               });
-              surplusSetBreakdown(cnts.income, cnts.fixed, cnts.variable);
+              spCnts = cnts;
               spLastRouted = routed;
             }
 
@@ -8198,19 +8228,24 @@
                textContent and flexBasis assignments invalidate layout even when
                the value is identical, and doing that every frame while a thumb
                is moving makes the scene visibly shake on a phone. */
+            /* ONE count model. The counter and the income/fixed/variable
+               breakdown (and the bar drawn from it) used to come from two
+               formulas — routed chips for one, a separate roll for the other —
+               and only the roll branch ever wrote the breakdown, so scrolling
+               back out of the roll left "22 categorised" over "1 / 5 / 6", then
+               "0 categorised" over a bar still 60% full. Now each category
+               rolls from its routed count to its final count, and the counter
+               is always their sum. */
             var rollP = spTrack(p, SP_CHIPS_END, SP_ROLL_END);
-            var nCount = rollP > 0 ? Math.round(routed + (COUNTER_FINAL - routed) * rollP) : routed;
-            if (nCount !== spLastCount) { surplusSetCounter(nCount); spLastCount = nCount; }
-
-            if (rollP > 0) {
-              var bi = Math.round(BREAKDOWN_FINAL.income   * rollP);
-              var bf = Math.round(BREAKDOWN_FINAL.fixed    * rollP);
-              var bv = Math.round(BREAKDOWN_FINAL.variable * rollP);
-              if (bi !== spLastBd.i || bf !== spLastBd.f || bv !== spLastBd.v) {
-                surplusSetBreakdown(bi, bf, bv);
-                spLastBd.i = bi; spLastBd.f = bf; spLastBd.v = bv;
-              }
+            var bi = Math.round(spCnts.income   + (BREAKDOWN_FINAL.income   - spCnts.income)   * rollP);
+            var bf = Math.round(spCnts.fixed    + (BREAKDOWN_FINAL.fixed    - spCnts.fixed)    * rollP);
+            var bv = Math.round(spCnts.variable + (BREAKDOWN_FINAL.variable - spCnts.variable) * rollP);
+            if (bi !== spLastBd.i || bf !== spLastBd.f || bv !== spLastBd.v) {
+              surplusSetBreakdown(bi, bf, bv);
+              spLastBd.i = bi; spLastBd.f = bf; spLastBd.v = bv;
             }
+            var nCount = bi + bf + bv;
+            if (nCount !== spLastCount) { surplusSetCounter(nCount); spLastCount = nCount; }
 
             var revealP = spTrack(p, SP_ROLL_END, SP_REVEAL_END);
             var totalTxt = revealP > 0 ? surplusFormatINR(SURPLUS_FINAL * revealP) : '';
@@ -8232,6 +8267,7 @@
           }
 
           var spTicking = false;
+          surplusFlow.classList.add('sp-scrub');   /* the bar tracks the scroll, not a 700ms ease */
           /* chips from 0.08, done at 0.84; the tail is the insight row
              (up to 400ms stagger + 700ms settle) */
           var spPlan = fwPlan({ root: surplusRow, sticky: surplusRow.querySelector('.steps__card'),
@@ -8318,10 +8354,15 @@
             allocGetP = fwPinP(allocPinMQ.matches ? allocCard : allocConcept,
                                allocPinMQ.matches ? allocStep : allocCard);
           });
-          /* desktop: six chapters evenly over the pin; the tail is the last
-             play plus the verdict's reveal, measured ~400ms at a steady scroll */
+          /* desktop: the beats that visibly change the board, evenly over the
+             pin. The 0.13 threshold is NOT one of them: its pose (0.29) is the
+             same "ranked rows" frame as the entry pose (0.04), so spacing it
+             as a beat bought ~500px of scroll where nothing moved. It is
+             crossed on the way to the first real beat (the first bar filling,
+             LEFT TO PLACE draining). Tail = last play + the verdict's reveal,
+             measured ~400ms at a steady scroll. */
           var allocPlan = fwPlan({ root: allocStep, sticky: allocCard, pic: allocConcept,
-                                   beats: [0.13, 0.32, 0.52, 0.72, 0.90], even: true, tailMs: 500 });
+                                   beats: [0.32, 0.52, 0.72, 0.90], even: true, tailMs: 500, p0: 0.13 });
 
           var alLastCount = -1, alLastPhase = '';
 
@@ -8332,7 +8373,10 @@
              poses are the resting q values; render maps q -> visuals so a
              scrub back reverses the fills and the counter exactly. */
           fwChapters({ el: allocStep,
-            poses: [0.04, 0.22, 0.44, 0.64, 0.82, 1.0],
+            /* pose 1 sits just under the 0.30 "place" boundary: 0.22 and 0.29
+               draw the same ranked board, but from 0.29 the next play shows
+               movement in its first frames instead of ~200ms later */
+            poses: [0.04, 0.29, 0.44, 0.64, 0.82, 1.0],
             thresholds: [0.13, 0.32, 0.52, 0.72, 0.90],
             speed: 0.42, fastDist: 0.5,
             getP: function () { return allocPlan.p(allocGetP); },
