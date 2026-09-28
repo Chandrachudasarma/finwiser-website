@@ -1596,55 +1596,64 @@
     /*     seen 5 · step-01 5 · step-02 6 · step-03 6 · engine 6     */
     /* fwScrub needs no change — travel follows the row height.      */
     /* ============================================================ */
-    /* min-height 860px gate: below it the tallest cards (822/832px at 1440)
-       cannot fit the pinned frame and would be clipped — those screens keep
-       the pass-through behaviour instead of losing the scene's payoff. */
+    /* Scene lengths, every width. The TRACKS themselves are set per mode:
+       phone (<=900) in the block below; desktop only once fwFit has proved
+       the scene fits the pinned frame and set data-pin="on". */
     @media (prefers-reduced-motion: no-preference) {
       #connect-step-row { --beats: 5;  }
       #s2-row           { --beats: 6;  }
       #s3-row           { --beats: 6;  }
-      #connect-step-row, #s2-row, #s3-row {
-        min-height: calc(var(--beats) * var(--beat));
-        align-items: stretch;
-        padding-bottom: 0;
-
-    }
-      /* step-03 pins on every device (M1), so it always carries the stage
-         term; steps 01/02 only pin on desktop, below. */
-      #s3-row { min-height: calc(var(--beats) * var(--beat) + var(--stage-h));  }
-      /* The card has to be as tall as its track or `sticky` has nowhere
-         to travel; `align-items: start` on the grid was stopping it. */
-      #connect-step-row .steps__card,
-      #s2-row .steps__card,
-      #s3-row .steps__card { align-self: stretch;  }
       .seen   { --beats: 5;  }
       .engine { --beats: 6;  }
-      .seen, .engine { min-height: calc(var(--beats) * var(--beat));  }
     }
-    @media (min-width: 901px) and (min-height: 860px) and (prefers-reduced-motion: no-preference) {
-      /* Desktop: the whole card pins — heading, copy and picture stay in
-         one frame, which is the composition the reduced-motion build
-         already proves works at this width. */
-      #connect-step-row, #s2-row {
+    /* FIT-TO-SCREEN (founder, 2026-09-28). Desktop no longer asks "is the
+       screen at least 860px tall?" — a guess that clipped the tallest cards
+       at 1512x860 and threw the whole pin away on every laptop below it.
+       fwFit (script) measures each scene's natural height against the
+       pinned frame's own CSS cap and writes --fit (zoom on the .fw-fit
+       wrapper, floor 0.80) plus data-pin on the scene root:
+         on  -> the scene pins, scaled so the whole frame is on screen;
+         off -> below the floor: no sticky, no track, the scene plays as it
+                passes (fwPinP pass mode).
+       At fit 1 (1920x990, 1728x980) every rule below resolves to exactly
+       the values the old 860 block had. Small type never renders under
+       12px: the caption/label tokens are floored in px inside the zoom.
+       .fw-fit is a layout no-op (display: contents) everywhere else. */
+    .fw-fit { display: contents; }
+    @media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+      .steps__row[data-pin="on"] {
         min-height: calc(var(--beats) * var(--beat) + var(--stage-h));
-
-    }
-      #connect-step-row .steps__card,
-      #s2-row .steps__card,
-      #s3-row .steps__card {
+        align-items: stretch;
+        padding-bottom: 0;
+      }
+      /* The card has to be as tall as its track or `sticky` has nowhere
+         to travel; `align-items: start` on the grid was stopping it. */
+      .steps__row[data-pin="on"] .steps__card {
+        align-self: stretch;
         position: sticky;
         top: var(--stage-top);
         max-height: calc(100svh - var(--nav-h) - 14px);
         overflow: hidden;
-
-    }
+      }
       /* chapters, not scrub: one flick per stop */
-      .seen { min-height: calc(var(--beats) * var(--beat) + var(--stage-h));  }
-      .seen__inner {
+      .seen[data-pin="on"] { min-height: calc(var(--beats) * var(--beat) + var(--stage-h));  }
+      .seen[data-pin="on"] .seen__inner {
         position: sticky;
         top: calc(var(--nav-h) + 16px);
-
-    }
+        max-height: calc(100svh - var(--nav-h) - 32px);
+      }
+      .engine[data-pin="on"] .engine__inner { min-height: calc(var(--beats) * var(--beat) + var(--stage-h));  }
+      .engine[data-pin="on"] .case-card {
+        position: sticky;
+        top: calc(var(--nav-h) + var(--engine-head-h, 0px) + 8px);
+        max-height: calc(100svh - var(--nav-h) - var(--engine-head-h, 0px) - 16px);
+      }
+      [data-pin="on"] .fw-fit {
+        display: flow-root;
+        zoom: var(--fit, 1);
+        --fs-caption: max(14px, calc(12px / var(--fit, 1)));
+        --fs-label:   max(13px, calc(12px / var(--fit, 1)));
+      }
     }
     /* Phone. Two different answers, because the three cards are three
        different shapes:
@@ -1660,6 +1669,23 @@
          above the viewport by the time row 6 landed, so the balance
          counter and the last "Not feasible" could never share a frame. */
     @media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
+      /* Phone tracks (moved verbatim from the all-widths block when desktop
+         moved to fit-to-screen; the phone cascade is unchanged). */
+      #connect-step-row, #s2-row, #s3-row {
+        min-height: calc(var(--beats) * var(--beat));
+        align-items: stretch;
+        padding-bottom: 0;
+
+    }
+      /* step-03 pins on every device (M1), so it always carries the stage
+         term; steps 01/02 pass through on the phone. */
+      #s3-row { min-height: calc(var(--beats) * var(--beat) + var(--stage-h));  }
+      /* The card has to be as tall as its track or `sticky` has nowhere
+         to travel; `align-items: start` on the grid was stopping it. */
+      #connect-step-row .steps__card,
+      #s2-row .steps__card,
+      #s3-row .steps__card { align-self: stretch;  }
+      .seen, .engine { min-height: calc(var(--beats) * var(--beat));  }
       /* Same grid correction as step 03 below, for the same reason and to
          a different end. Steps 01 and 02 are meant to sit CENTRED in their
          track so the spare travel splits evenly above and below the card
@@ -1670,7 +1696,7 @@
          step 02 at 390: the first beat went from 24.7% fill (a numeral
          alone over 700px of navy) to a composed frame. */
       /* MOBILE VOID FIX (founder, 2026-08-24). Steps 01/02 pass through on
-         the phone — they do NOT pin (that stays desktop-only, >=901/860).
+         the phone — they do NOT pin (pinning is desktop-only, >=901 + fwFit).
          The 5-/6-beat track (1300/1560px) was far taller than the card
          (~726/~1072px at 390), and `align-self:center` split the spare into
          a ~257px navy gap ABOVE the card and another below: you scrolled
@@ -2247,8 +2273,12 @@
        --engine-head-h is written by the scene JS from the real measured
        head height (sticky on desktop, static and 0 below 900). */
     /* ------------------------------------------------------------ */
+    /* Desktop (>=901) pins the card only when fwFit sets data-pin="on" —
+       the desktop copy of these two rules lives in the FIT-TO-SCREEN block. */
     @media (prefers-reduced-motion: no-preference) {
       .engine { --beats: 6;  }
+    }
+    @media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
       .engine__inner { min-height: calc(var(--beats) * var(--beat) + var(--stage-h));  }
       .engine .case-card {
         position: sticky;
@@ -3960,20 +3990,21 @@
 
     /* Desktop pin whitespace reclaim — scoped to #s3-row so step 01
        (the founder's benchmark) is untouched. On desktop the WHOLE card
-       pins with overflow:hidden at (100svh - nav - 14); the board through
-       the verdict must fit that box so beat ③'s payoff is on-screen. */
-    @media (min-width: 901px) and (min-height: 860px) and (prefers-reduced-motion: no-preference) {
-      #s3-row .steps__card { padding: 20px 32px; }
-      #s3-row .steps__card > h3 { margin-bottom: 4px; }
-      #s3-row .steps__card > p { margin-bottom: 8px; }
-      #s3-row .steps__tags { margin-top: 8px; margin-bottom: 0; }
-      #s3-row .steps__concept { padding: 14px; margin-top: 12px; }
-      #s3-row .steps__concept--allocate .alloc-ribbon { margin-bottom: 8px; }
-      #s3-row .steps__concept--allocate .cascade__row { padding: 6px 8px; }
-      #s3-row .steps__concept--allocate .cascade__row--star { padding: 8px 10px; }
-      #s3-row .steps__concept--allocate .alloc-divider { padding: 6px 4px; }
-      #s3-row .steps__concept--allocate .alloc-verdict { margin-top: 8px; padding: 11px 18px; }
-      #s3-row .step-payoff { margin-top: 4px; }
+       pins (data-pin="on", set by fwFit) with overflow:hidden at
+       (100svh - nav - 14); the diet is applied BEFORE fwFit measures, so
+       the fit is computed for the dieted board (verdict on-screen at beat ③). */
+    @media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+      #s3-row[data-pin="on"] .steps__card { padding: 20px 32px; }
+      #s3-row[data-pin="on"] .fw-fit > h3 { margin-bottom: 4px; }
+      #s3-row[data-pin="on"] .fw-fit > p { margin-bottom: 8px; }
+      #s3-row[data-pin="on"] .steps__tags { margin-top: 8px; margin-bottom: 0; }
+      #s3-row[data-pin="on"] .steps__concept { padding: 14px; margin-top: 12px; }
+      #s3-row[data-pin="on"] .steps__concept--allocate .alloc-ribbon { margin-bottom: 8px; }
+      #s3-row[data-pin="on"] .steps__concept--allocate .cascade__row { padding: 6px 8px; }
+      #s3-row[data-pin="on"] .steps__concept--allocate .cascade__row--star { padding: 8px 10px; }
+      #s3-row[data-pin="on"] .steps__concept--allocate .alloc-divider { padding: 6px 4px; }
+      #s3-row[data-pin="on"] .steps__concept--allocate .alloc-verdict { margin-top: 8px; padding: 11px 18px; }
+      #s3-row[data-pin="on"] .step-payoff { margin-top: 4px; }
     }
 
     /* Reduced motion — resolved board, no transitions/animation */
@@ -4520,7 +4551,7 @@
     <!-- §5 — WHAT FINWY SEES                                          -->
     <!-- ============================================================ -->
     <section class="seen" aria-labelledby="seen-heading" data-snap-anim="seen" data-theme="dark">
-      <div class="seen__inner">
+      <div class="seen__inner"><div class="fw-fit">
         <h2 id="seen-heading" class="seen__heading">Watch your money come together.</h2>
         <p class="seen__sub seen__sub--trifecta">
           <span>Every account connected.</span>
@@ -4820,6 +4851,7 @@
           </div>
           <figcaption class="seen__composite-disclaimer">Illustrative example &middot; Your numbers will be yours.</figcaption>
         </figure>
+      </div><!-- /.fw-fit -->
       </div>
     </section>
 
@@ -4845,7 +4877,7 @@
 
         <div class="steps__row" data-step="1" id="connect-step-row" data-snap-anim="step-1-connect">
           <div class="steps__num-col"><div class="steps__num">01</div></div>
-          <div class="steps__card">
+          <div class="steps__card"><div class="fw-fit">
             <h2 id="steps-heading" class="steps__card-title">Connect once. Never think about it again.</h2>
             <p>Every account, in a few taps. You approve each connection on your bank&rsquo;s own RBI-regulated rail &mdash; the Account Aggregator. Finwy, the adviser inside Finwiser, never sees your bank password. Disconnect any time, one tap.</p>
             <ul class="steps__tags" role="list">
@@ -5036,12 +5068,13 @@
               </div>
             </div>
             <p class="step-payoff">Connect once &mdash; and forget it&rsquo;s even there.</p>
+          </div><!-- /.fw-fit -->
           </div>
         </div>
 
         <div class="steps__row" data-step="2" id="s2-row" data-snap-anim="step-2-surplus">
           <div class="steps__num-col"><div class="steps__num">02</div></div>
-          <div class="steps__card">
+          <div class="steps__card"><div class="fw-fit">
             <h3>See what&rsquo;s actually left.</h3>
             <p>Every transaction, sorted automatically. Then the one number you&rsquo;re tired of guessing.</p>
             <ul class="steps__tags" role="list">
@@ -5231,6 +5264,7 @@
               </div>
             </div>
             <p class="step-payoff">Most months, it&rsquo;s bigger than you think.</p>
+          </div><!-- /.fw-fit -->
           </div>
         </div>
 
@@ -5240,7 +5274,7 @@
              standalone 2->3 bridge is folded into step 03's subhead below. -->
         <div class="steps__row" data-step="3" id="s3-row" data-snap-anim="step-3-allocation">
           <div class="steps__num-col"><div class="steps__num">03</div></div>
-          <div class="steps__card">
+          <div class="steps__card"><div class="fw-fit">
             <h3>Tell Finwy your goals. Watch it decide.</h3>
             <p>That surplus you just saw? Here&rsquo;s where it goes first. You list what matters &mdash; emergency, retirement, the flat in 2031. Finwy ranks them, allocates every rupee, and says up front which ones fit.</p>
             <ul class="steps__tags" role="list">
@@ -5356,6 +5390,7 @@
               <p class="step-payoff">Fits your goals. Fits your priorities.</p>
 
             </div>
+          </div><!-- /.fw-fit -->
           </div>
         </div>
       </div>
@@ -5423,7 +5458,7 @@
       <div class="engine__inner">
 
         <!-- 1 — Same surplus. Opposite portfolios. -->
-        <article class="case-card" id="pair-portfolios" data-pair="portfolios" data-snap-anim="engine-portfolios" aria-labelledby="engine-case-tagline">
+        <article class="case-card" id="pair-portfolios" data-pair="portfolios" data-snap-anim="engine-portfolios" aria-labelledby="engine-case-tagline"><div class="fw-fit">
           <p class="visually-hidden">Both 35, both with 52,000 rupees left over every month. Four things match: their age, their goals, their monthly surplus and their priorities. One thing differs. Riya holds 83 percent equity in a 46-lakh portfolio; Aman holds no equity, with 6 lakh sitting in a fixed deposit. Risk is the factor that decides it. Riya, who self-rates conservative, is told to stop adding equity because she is already over-exposed. Aman, who self-rates aggressive, is told to start equity today because cash is his real risk. For Riya, equity is the danger. For Aman, cash is.</p>
 
           <!-- Persistent split — Riya vs Aman stay co-visible at every width. -->
@@ -5490,6 +5525,7 @@
           </div>
 
           <p class="seen-kicker" aria-hidden="true">For Riya, equity is the danger. For Aman, cash is.</p>
+        </div><!-- /.fw-fit -->
         </article>
 
         <!-- 2 — Same portfolio. Different goals. -->
@@ -6201,21 +6237,171 @@
          reads happen inside the rAF *before* any style write, so this
          adds no forced reflow (§9.7).
          ============================================================ */
-      function fwPinP(stage, host) {
-        var top = 0;
+      /* PASS MODE. When fwFit has unpinned a desktop scene (it cannot fit
+         the frame even at the 0.80 floor) the stage is no longer sticky,
+         so "lock to release" has no meaning. The scene then plays while the
+         stage FILLS the screen: p=0 as its top reaches the nav, p=passEnd
+         as its bottom reaches the fold — the payoff lands the moment it is
+         on screen. passEnd lets a scene whose chapters finish early (the
+         engine's terminal chapter is reached by 0.58) end there. Phones
+         always see sticky stages, so this branch never runs on them. */
+      function fwPinP(stage, host, passEnd) {
+        var top = 0, pinned = true, navB = 72;
         function readTop() {
-          var t = parseFloat(getComputedStyle(stage).top);
+          var cs = getComputedStyle(stage);
+          var t = parseFloat(cs.top);
           top = isNaN(t) ? 0 : t;
+          pinned = cs.position === 'sticky';
+          var nav = document.querySelector('.fw-nav');
+          navB = (nav ? nav.getBoundingClientRect().height : 64) + 8;
         }
         readTop();
         addEventListener('resize', readTop, { passive: true });
         return function () {
+          if (!pinned) {
+            var sr = stage.getBoundingClientRect(), vh = window.innerHeight;
+            var pass = Math.max(sr.height - (vh - navB), 0.25 * vh);
+            return fwClamp01((navB - sr.top) / pass) * (passEnd || 1);
+          }
           var hr = host.getBoundingClientRect();
           var travel = hr.height - stage.offsetHeight;
           if (travel < 1) travel = 1;
           return fwClamp01((top - hr.top) / travel);
         };
       }
+
+      /* Seen and steps 01/02 measure their own box (fwScrub's 65/35 law,
+         tuned for a pinned or phone track). When fwFit unpins one on
+         desktop, that law would play the scene while its picture is still
+         below the fold, so an unpinned scene takes the same pass-mode
+         progress as the fwPinP scenes. Pinned and phone paths untouched. */
+      function fwPassAware(root, stage) {
+        var pass = fwPinP(stage, root);
+        return function (p) { return root.getAttribute('data-pin') === 'off' ? pass() : p; };
+      }
+
+      /* ============================================================
+         fwFit — FIT-TO-SCREEN for the five desktop film scenes.
+         The old rule pinned a scene only on screens >= 860px tall, a guess
+         that clipped the tallest cards at 860 and dropped the pin on every
+         shorter laptop. This one CALCULATES: each scene's natural height is
+         measured against its pinned frame's own CSS cap (max-height, in
+         svh — the single source of truth), and the .fw-fit wrapper is
+         zoomed by the largest --fit (0.02 steps, floor 0.80) at which the
+         whole frame fits. Zoom, not transform: zoom re-lays the content at
+         the wider local width, so text reflows shorter and the scene's own
+         geometry (sticky travel, rects) stays honest.
+         Below the floor the scene sets data-pin="off" and plays as it
+         passes (fwPinP pass mode). Phones (<=900) and reduced motion never
+         get data-pin, so their cascade is exactly what it was.
+         No ResizeObserver: zooming the wrapper resizes it, which would
+         loop. Re-fit on resize / fonts / load instead; a change of pin or
+         fit re-broadcasts 'resize' so every scene re-reads its geometry.
+         ============================================================ */
+      var FIT_FLOOR = 0.80;
+      var fitDeskMQ = matchMedia('(min-width: 901px)');
+      var fitZoomOK = !!(window.CSS && CSS.supports && CSS.supports('zoom', '0.5'));
+      var fitScenes = [['#connect-step-row', '.steps__card'], ['#s2-row', '.steps__card'],
+                       ['#s3-row', '.steps__card'], ['.seen', '.seen__inner'],
+                       ['.engine', '.case-card']]
+        .map(function (d) {
+          var root = document.querySelector(d[0]);
+          var sticky = root && root.querySelector(d[1]);
+          var wrap = sticky && sticky.querySelector('.fw-fit');
+          return (wrap && wrap.parentNode === sticky) ? { root: root, sticky: sticky, wrap: wrap } : null;
+        })
+        .filter(Boolean);
+      function fitUnset(s) {
+        s.root.removeAttribute('data-pin');
+        s.root.style.removeProperty('--fit');
+        s.root.__fwK = 1;
+      }
+      function fitOne(s) {
+        if (reduce || !fitDeskMQ.matches) { fitUnset(s); return; }
+        /* measuring state: pinned at 1 (the s3 diet and the sticky caps apply) */
+        s.root.setAttribute('data-pin', 'on');
+        s.root.style.setProperty('--fit', '1');
+        var cs = getComputedStyle(s.sticky);
+        var chrome = cs.boxSizing === 'border-box'
+          ? parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) +
+            parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth)
+          : 0;
+        var avail = parseFloat(cs.maxHeight) - chrome;
+        var nat = s.wrap.getBoundingClientRect().height;
+        if (!(avail > 0) || !(nat > 0)) { fitUnset(s); return; }
+        /* probe a little above the linear estimate: zoom widens the local
+           width, so text reflows shorter than a pure scale predicts */
+        var f = Math.min(1, Math.floor(avail / nat * 50) / 50 + 0.04);
+        if (f < 1 && !fitZoomOK) f = 0;
+        while (f >= FIT_FLOOR) {
+          s.root.style.setProperty('--fit', String(f));
+          if (s.wrap.getBoundingClientRect().height <= avail + 0.5) break;
+          f = Math.round((f - 0.02) * 50) / 50;
+        }
+        if (f < FIT_FLOOR) {
+          s.root.setAttribute('data-pin', 'off');
+          s.root.style.removeProperty('--fit');
+          s.root.__fwK = 1;
+          return;
+        }
+        if (f === 1) s.root.style.removeProperty('--fit');
+        /* __fwK converts rendered px (getBoundingClientRect) to the wrapper's
+           local px. Engines that report zoomed rects need 1/f; an engine
+           that reports local rects needs 1. Measured, not sniffed. */
+        var contentW = s.sticky.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        s.root.__fwK = Math.abs(s.wrap.getBoundingClientRect().width - contentW) < 1 ? 1 / f : 1;
+      }
+      /* Keep the reader where they were. Pinning or unpinning a scene
+         changes its track by thousands of px, and browser scroll anchoring
+         does not follow a sticky frame (measured: a 1366->1280 resize mid
+         step 02 threw the reader ~2,500px past it). So fwFit anchors
+         explicitly: the scene under the viewport's middle keeps the same
+         fraction of its track there; elsewhere the element at the middle
+         keeps its offset. */
+      function fitAnchor() {
+        var mid = innerHeight / 2;
+        for (var i = 0; i < fitScenes.length; i++) {
+          var r = fitScenes[i].root.getBoundingClientRect();
+          if (r.top <= mid && r.bottom > mid && r.height > 0) {
+            return { el: fitScenes[i].root, frac: (mid - r.top) / r.height };
+          }
+        }
+        var el = document.elementFromPoint(innerWidth / 2, mid);
+        return el ? { el: el, top: el.getBoundingClientRect().top } : null;
+      }
+      function fitRestore(a) {
+        if (!a || !a.el.isConnected) return;
+        var r = a.el.getBoundingClientRect();
+        var d = a.frac != null ? r.top + a.frac * r.height - innerHeight / 2 : r.top - a.top;
+        if (Math.abs(d) >= 1) window.scrollTo({ top: window.scrollY + d, behavior: 'instant' });
+      }
+      var fitBusy = false;
+      function fwFit() {
+        if (!fitScenes.length) return;
+        fitBusy = true;
+        var sig = function () {
+          return fitScenes.map(function (s) {
+            return (s.root.getAttribute('data-pin') || '-') + (s.root.style.getPropertyValue('--fit') || '');
+          }).join('|');
+        };
+        var before = sig();
+        var anchor = window.scrollY > 0 ? fitAnchor() : null;
+        fitScenes.forEach(fitOne);
+        var changed = sig() !== before;
+        if (changed) fitRestore(anchor);
+        window.__fwFitRuns = (window.__fwFitRuns || 0) + 1;
+        if (changed) dispatchEvent(new Event('resize'));
+        fitBusy = false;
+      }
+      fwFit();
+      var fitRaf = null;
+      addEventListener('resize', function () {
+        if (fitBusy || fitRaf) return;
+        fitRaf = requestAnimationFrame(function () { fitRaf = null; fwFit(); });
+      }, { passive: true });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fwFit);
+      addEventListener('load', fwFit);
+      window.__fwFit = fwFit;
 
       /* ============================================================
          fwSceneReveal — the answer to two findings at once.
@@ -7075,9 +7261,11 @@
              q is the played position in choreography space; scroll p only
              selects the target stop. */
           var seenRender = null;
+          var seenPassP = fwPassAware(seenSection, seenSection.querySelector('.seen__inner') || seenSection);
           fwChapters({ el: seenSection,
             poses: [0.44, 0.658, 0.855, 1.0],
             thresholds: [0.52, 0.72, 0.88],
+            getP: seenPassP,
             render: function (qq) { if (seenRender) seenRender(qq); } });
 
           seenRender = function (p) {
@@ -7442,7 +7630,9 @@
           });
           var cnLastDone = -1, cnLastFinished = null;
 
+          var cnPassP = fwPassAware(connectRow, connectRow.querySelector('.steps__card') || connectRow);
           fwScrub(connectRow, function (p) {
+            p = cnPassP(p);
             var n = connectCards.length;
             var done = Math.min(n, Math.floor(fwTrack(p, 0.05, 0.78) * n));
             /* the badge follows the last card immediately — a 0.78..0.9 dead
@@ -7580,9 +7770,12 @@
           if (!rowEl) return { x: 360, y: 0 };
           var chipRect = chipEl.getBoundingClientRect();
           var rowRect  = rowEl.getBoundingClientRect();
+          /* rects are rendered px; --route-x/y are applied inside the fwFit
+             zoom, i.e. in local px — __fwK converts (1 when unzoomed) */
+          var k = surplusRow.__fwK || 1;
           return {
-            x: Math.round((rowRect.left + rowRect.width / 2) - (chipRect.left + chipRect.width / 2)),
-            y: Math.round((rowRect.top  + rowRect.height / 2) - (chipRect.top  + chipRect.height / 2))
+            x: Math.round(((rowRect.left + rowRect.width / 2) - (chipRect.left + chipRect.width / 2)) * k),
+            y: Math.round(((rowRect.top  + rowRect.height / 2) - (chipRect.top  + chipRect.height / 2)) * k)
           };
         }
         function surplusReset() {
@@ -7826,6 +8019,7 @@
           }
 
           var spTicking = false;
+          var spPassP = fwPassAware(surplusRow, surplusRow.querySelector('.steps__card') || surplusRow);
           function surplusDrive() {
             spTicking = false;
             var h = surplusRow.offsetHeight;
@@ -7833,7 +8027,7 @@
             var travel = h - vhS * 0.35;   /* scene plays across its pass */
             if (travel <= 0) return;
             var into = vhS * 0.65 - surplusRow.getBoundingClientRect().top;
-            surplusRenderAt(spClamp01(into / travel));
+            surplusRenderAt(spPassP(spClamp01(into / travel)));
           }
           function spOnScroll() {
             if (!spTicking) { spTicking = true; requestAnimationFrame(surplusDrive); }
@@ -7897,7 +8091,10 @@
           allocBlock.classList.add('alloc-js');   /* arm the scroll-driven reveal */
 
           var allocConcept = allocBlock;
-          var allocPinMQ = matchMedia('(min-width: 901px) and (min-height: 860px)');
+          /* Desktop: the whole card is the stage (pinned or, when fwFit
+             unpins it, in pass mode — fwPinP reads which). Phone: only the
+             concept block pins, inside the card. */
+          var allocPinMQ = matchMedia('(min-width: 901px)');
           var allocCard  = allocStep.querySelector('.steps__card') || allocStep;
           var allocGetP  = fwPinP(allocPinMQ.matches ? allocCard : allocConcept,
                                   allocPinMQ.matches ? allocStep : allocCard);
@@ -8076,7 +8273,7 @@
              run from the frame it locks to the frame it releases (fwPinP),
              so Riya-vs-Aman is still on screen when the verdicts land. */
           var host = engineSection.querySelector('.engine__inner') || engineSection;
-          var getP = fwPinP(card, host);
+          var getP = fwPinP(card, host, 0.6);   /* pass mode ends on the terminal chapter */
 
           /* Thresholds map scroll (getP) -> chapter. They finish EARLY —
              the terminal chapter (pose 1.0: all rows + matched + verdicts +
