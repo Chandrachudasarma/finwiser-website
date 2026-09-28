@@ -1626,12 +1626,12 @@
     [data-hurry] .fw-fit *, [data-hurry] .fw-fit *::before, [data-hurry] .fw-fit *::after {
       transition: none !important;   /* none, not 0s: only removing the property cancels a transition already running */
     }
-    /* Desktop "what Finwy sees": a composite pane is on screen only once
+    /* "What Finwy sees" (scroll-driven, every width): a composite pane is on screen only once
        its own number is landing (see the pane-deal note in the script). */
-    .seen[data-pin] .seen__stage.is-composite .seen__pane:not(.is-dealt) {
+    .seen__stage.seen-scrub.is-composite .seen__pane:not(.is-dealt) {
       opacity: 0; transform: scale(0.97); animation: none;
     }
-    .seen[data-pin] .seen__stage.is-composite .seen__pane { transition-delay: 0s; }
+    .seen__stage.seen-scrub.is-composite .seen__pane.is-dealt { transition-delay: 0s; }
     @media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
       .steps__row[data-pin="on"] {
         min-height: calc(var(--beats) * var(--beat) + var(--stage-h));
@@ -7454,14 +7454,13 @@
              the panes are already dealt one by one) — measured ~1.2s */
           var seenPlan = fwPlan({ root: seenSection, sticky: seenSection.querySelector('.seen__inner') || seenStage,
                                   pic: seenStage, beats: [0.52, 0.72, 0.88], even: true, tailMs: 1200 });
-          /* COHERENT PANES (desktop). STOP 2 used to show the composite's
+          /* COHERENT PANES (every width). STOP 2 used to show the composite's
              panes fully drawn with every number at zero and the bars full —
              forward that read as a broken dashboard, and scrolling back it
-             reset the numbers under panes that stayed on screen. On desktop
-             each pane now deals in only as its own number starts to land,
-             and whenever it is hidden (or fading out) its text holds the real
-             value, so a visible pane always shows its value. Phones keep the
-             original STOP 2 (their frames are pinned to production). */
+             reset the numbers under panes that stayed on screen. Each pane
+             now deals in only as its own number starts to land, and whenever
+             it is hidden (or fading out) its text holds the real value, so a
+             visible pane always shows its value. */
           var seenPanes = Array.prototype.slice.call(seenStage.querySelectorAll('.seen__pane'));
           var seenPaneLast = [];
           fwChapters({ el: seenSection,
@@ -7535,13 +7534,13 @@
               if (op !== co.lastOp)   { co.el.style.opacity = op;          co.lastOp = op; }
             }
 
-            var paneDeal = seenSection.hasAttribute('data-pin');
+            var paneDeal = true;
             for (var m = 0; m < seenCounters.length; m++) {
               var cn = seenCounters[m];
               var st = SEEN_STATS_IN + m * SEEN_STAT_STAGGER;
               var cp = fwTrack(p, st, st + SEEN_STAT_WIN);
               var eased = 1 - Math.pow(1 - cp, 3);
-              /* desktop: a hidden pane holds its real value; a dealt one
+              /* a hidden pane holds its real value; a dealt one
                  counts up from a non-zero first step ("1 of 5", not "0") */
               if (paneDeal) eased = cp <= 0 ? 1 : Math.max(eased, cn.format === 'int' ? 0.5 / cn.target + 0.001 : 0.05);
               var txt = seenFmt(cn.target * eased, cn.format);
