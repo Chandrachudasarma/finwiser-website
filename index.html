@@ -1620,6 +1620,18 @@
        12px: the caption/label tokens are floored in px inside the zoom.
        .fw-fit is a layout no-op (display: contents) everywhere else. */
     .fw-fit { display: contents; }
+    /* Past a scene's hold line (fwPlan) its terminal pose is SET, not
+       played: a reader who has outrun the tail gets the finished frame
+       while it is still pinned, never a half-faded one leaving the screen. */
+    [data-hurry] .fw-fit *, [data-hurry] .fw-fit *::before, [data-hurry] .fw-fit *::after {
+      transition: none !important;   /* none, not 0s: only removing the property cancels a transition already running */
+    }
+    /* Desktop "what Finwy sees": a composite pane is on screen only once
+       its own number is landing (see the pane-deal note in the script). */
+    .seen[data-pin] .seen__stage.is-composite .seen__pane:not(.is-dealt) {
+      opacity: 0; transform: scale(0.97); animation: none;
+    }
+    .seen[data-pin] .seen__stage.is-composite .seen__pane { transition-delay: 0s; }
     @media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
       .steps__row[data-pin="on"] {
         min-height: calc(var(--beats) * var(--beat) + var(--stage-h));
@@ -1918,12 +1930,15 @@
       transform: translate(-50%, -50%) scale(0.92);
       display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 200px; outline: var(--ring-mint); outline-offset: 0;
       opacity: 0; pointer-events: none;
-      transition: opacity var(--dur-reveal) var(--ease-in-out) var(--dur-ui),
-                  transform var(--dur-scene) var(--ease-out) var(--dur-ui);
+      /* leaving is instant: scrolling back un-approves the last cards at
+         once, and a fading badge drawn over them read as a glitch */
+      transition: none;
       z-index: 5; text-align: center;
     }
     .is-done .connect-active__done {
       opacity: 1; transform: translate(-50%, -50%) scale(1);
+      transition: opacity var(--dur-reveal) var(--ease-in-out) var(--dur-ui),
+                  transform var(--dur-scene) var(--ease-out) var(--dur-ui);
     
     }
     .connect-active__done-mark {
@@ -6180,6 +6195,13 @@
         fwScrub(cfg.el, function (p) {
           var t = chapterFor(cfg.getP ? cfg.getP(p) : p);
           if (q === null) { q = cfg.poses[t]; target = t; cfg.render(q); return; }
+          /* past the scene's hold line (fwPlan): no play, the pose is set */
+          if (cfg.hurry && cfg.hurry()) {
+            if (raf) { cancelAnimationFrame(raf); raf = null; }
+            target = t;
+            if (q !== cfg.poses[t]) { land(cfg.poses[t]); if (cfg.settle) cfg.settle(); }
+            return;
+          }
           if (t !== target) {
             target = t;
             // Every retarget is a fresh play: its own origin, its own
@@ -6237,48 +6259,15 @@
          reads happen inside the rAF *before* any style write, so this
          adds no forced reflow (§9.7).
          ============================================================ */
-      /* PASS MODE. When fwFit has unpinned a desktop scene (it cannot fit
-         the frame even at the 0.80 floor) the stage is no longer sticky,
-         so "lock to release" has no meaning. The scene then plays across
-         the whole stretch in which at least HALF of its picture (the
-         animated block, not the copy above it) is on screen: from half
-         entered at the fold to half still visible as it leaves under the
-         nav. That stretch is max(picture, visible band) — the most scroll
-         an unpinned block can give while staying >=50% visible — and each
-         scene maps it onto its OWN play range (first chapter to last), so
-         the choreography spreads across all of it. The first cut ("top at
-         the nav -> bottom at the fold", progress 0..1 over a range whose
-         ends held no chapters) played a whole scene in 120-300px, one or
-         two wheel notches. Phones always see sticky stages, so this never
-         runs there. */
-      function fwNavBottom() {
-        var nav = document.querySelector('.fw-nav');
-        return nav ? nav.getBoundingClientRect().bottom : 64;
-      }
-      /* for a picture rect: its viewport top at the start of the pass, and
-         the page travel from start to end */
-      function fwPassWin(r, vh, navB) {
-        var m = 0.5 * Math.min(r.height, vh - navB);
-        return { top0: vh - m, travel: Math.max(1, (vh - navB) + r.height - 2 * m) };
-      }
-      /* range = [p at the start, p at the end] of the scene's own progress */
-      function fwPassP(pic, range) {
-        var r = pic.getBoundingClientRect(), w = fwPassWin(r, window.innerHeight, fwNavBottom());
-        var t = fwClamp01((w.top0 - r.top) / w.travel);
-        return range[0] + t * (range[1] - range[0]);
-      }
-      function fwPinP(stage, host, passRange, picture) {
-        var top = 0, pinned = true;
+      function fwPinP(stage, host) {
+        var top = 0;
         function readTop() {
-          var cs = getComputedStyle(stage);
-          var t = parseFloat(cs.top);
+          var t = parseFloat(getComputedStyle(stage).top);
           top = isNaN(t) ? 0 : t;
-          pinned = cs.position === 'sticky';
         }
         readTop();
         addEventListener('resize', readTop, { passive: true });
         return function () {
-          if (!pinned) return fwPassP(picture || stage, passRange || [0, 1]);
           var hr = host.getBoundingClientRect();
           var travel = hr.height - stage.offsetHeight;
           if (travel < 1) travel = 1;
@@ -6286,13 +6275,120 @@
         };
       }
 
-      /* Seen and steps 01/02 measure their own box (fwScrub's 65/35 law,
-         tuned for a pinned or phone track). When fwFit unpins one on
-         desktop, that law would play the scene while its picture is still
-         below the fold, so an unpinned scene takes the same pass-mode
-         progress as the fwPinP scenes. Pinned and phone paths untouched. */
-      function fwPassAware(root, picture, passRange) {
-        return function (p) { return root.getAttribute('data-pin') === 'off' ? fwPassP(picture, passRange) : p; };
+      /* ============================================================
+         fwPlan — DESKTOP SCENE TIMING, keyed to the scroll the reader
+         actually has. Every desktop scene (data-pin set by fwFit) runs on
+         one law, pinned or not:
+
+           x  = how far through its span the scene is:
+                pinned -> the fraction of the REAL pinned travel (lock ->
+                          release, from the sticky's containing block);
+                unpinned (pass) -> the stretch in which >=50% of its
+                          picture is on screen (half entered at the fold ->
+                          half still visible under the nav).
+           xH = the HOLD line: 360px (pinned: 250px held + one 100px wheel notch
+                of latency) / 60px (pass) before the end.
+                From here on the scene is in its terminal pose, full stop:
+                the chapter player lands at once and the scene's CSS
+                transitions and one-shot animations are cut (data-hurry). A reader who flicks
+                past therefore never leaves a scene half-played on screen,
+                and every pinned scene has >=250px of held final frame.
+           xT = where the terminal beat fires: xH minus the scene's TAIL
+                (the ms its last reveals run on after the trigger) at a
+                steady 667px/s (one 100px notch per 150ms), so at that pace
+                the tail finishes by itself exactly at the hold line and
+                nothing snaps. Faster readers get the snap at xH.
+           beats are then spaced EVENLY from just after lock to xT.
+
+         The old maps were each scene's own box law (65/35 of the section),
+         which slid every beat later on shorter screens until the payoff
+         landed on release (measured at 1470x835: step 01 "All connected"
+         at release, step 02's insight row fading in after it, step 03's
+         verdict after it, and a ~500px dead start on step 03). Phones and
+         reduced motion never get data-pin and keep their original maps.
+         ============================================================ */
+      var FW_HOLD_PX = 360, FW_PASS_HOLD_PX = 60, FW_STEADY_PX_PER_MS = 0.667;
+      function fwNavBottom() {
+        var nav = document.querySelector('.fw-nav');
+        return nav ? nav.getBoundingClientRect().bottom : 64;
+      }
+      /* for a picture rect: its viewport top at the start of the pass, and
+         the page travel from start to end (>=50% of it visible throughout) */
+      function fwPassWin(r, vh, navB) {
+        var m = 0.5 * Math.min(r.height, vh - navB);
+        return { top0: vh - m, travel: Math.max(1, (vh - navB) + r.height - 2 * m) };
+      }
+      /* o: { root, sticky, pic, beats: [p of first beat .. p of terminal
+         beat] in the scene's own progress, even: space all beats evenly
+         (chapter scenes) or only the ends (continuous scrubs), tailMs } */
+      function fwPlan(o) {
+        var geo = null, hurried = false;
+        addEventListener('resize', function () { geo = null; }, { passive: true });
+        function readGeo() {
+          var par = o.sticky.parentNode, pcs = getComputedStyle(par), scs = getComputedStyle(o.sticky);
+          geo = { par: par,
+                  padT: (parseFloat(pcs.paddingTop) || 0) + (parseFloat(pcs.borderTopWidth) || 0),
+                  padB: (parseFloat(pcs.paddingBottom) || 0) + (parseFloat(pcs.borderBottomWidth) || 0),
+                  top: parseFloat(scs.top) || 0, mb: parseFloat(scs.marginBottom) || 0 };
+        }
+        function span(mode) {
+          if (mode === 'on') {
+            if (!geo) readGeo();
+            var pr = geo.par.getBoundingClientRect();
+            var L = Math.max(1, pr.height - geo.padT - geo.padB - o.sticky.offsetHeight - geo.mb);
+            return { x: fwClamp01((geo.top - pr.top - geo.padT) / L), L: L, H: FW_HOLD_PX, xS: Math.min(0.08, 100 / L) };
+          }
+          var r = o.pic.getBoundingClientRect(), w = fwPassWin(r, window.innerHeight, fwNavBottom());
+          return { x: fwClamp01((w.top0 - r.top) / w.travel), L: w.travel, H: FW_PASS_HOLD_PX, xS: 0.03 };
+        }
+        /* While hurried, one-shot animations and transitions that are still
+           running (a pulse, a count, a fade begun just before the line) are
+           finished outright — when the line is crossed and when a hurried
+           chapter lands, never per scroll frame (getAnimations flushes style).
+           Endless ambient loops are left alone. */
+        var settleRaf = null;
+        function settle() {
+          settleRaf = null;
+          if (!hurried || !o.root.getAnimations) return;
+          o.root.getAnimations({ subtree: true }).forEach(function (a) {
+            var t = a.effect && a.effect.getComputedTiming ? a.effect.getComputedTiming() : null;
+            if (t && t.iterations !== Infinity && a.playState !== 'finished') { try { a.finish(); } catch (e) {} }
+          });
+        }
+        function setHurry(h) {
+          if (h && !hurried && !settleRaf) settleRaf = requestAnimationFrame(settle);
+          if (h === hurried) return;
+          hurried = h;
+          if (h) o.root.setAttribute('data-hurry', ''); else o.root.removeAttribute('data-hurry');
+        }
+        return {
+          /* fallback: the scene's own progress (value or getter) for phones */
+          p: function (fallback) {
+            var mode = o.root.getAttribute('data-pin');
+            if (mode !== 'on' && mode !== 'off') {
+              setHurry(false);
+              return typeof fallback === 'function' ? fallback() : fallback;
+            }
+            var s = span(mode), B = o.beats, n = B.length;
+            var xH = Math.max(0.5, 1 - s.H / s.L);
+            var xT = Math.min(xH, Math.max(0.55 * xH, xH - o.tailMs * FW_STEADY_PX_PER_MS / s.L));
+            setHurry(s.x >= xH);
+            var X = [0, s.xS], P = [0, B[0]];
+            if (o.even) {
+              for (var i = 1; i < n; i++) { X.push(s.xS + (xT - s.xS) * i / (n - 1)); P.push(B[i]); }
+            } else { X.push(xT); P.push(B[n - 1]); }
+            X.push(1); P.push(1);
+            for (var j = 1; j < X.length; j++) {
+              if (s.x <= X[j]) {
+                var d = X[j] - X[j - 1];
+                return d > 0 ? P[j - 1] + (s.x - X[j - 1]) / d * (P[j] - P[j - 1]) : P[j];
+              }
+            }
+            return 1;
+          },
+          hurry: function () { return hurried; },
+          settle: function () { if (!settleRaf) settleRaf = requestAnimationFrame(settle); }
+        };
       }
 
       /* ============================================================
@@ -6423,10 +6519,32 @@
         }
         if (Math.abs(target - window.scrollY) >= 1) window.scrollTo({ top: target, behavior: 'instant' });
       }
-      var fitBusy = false, fitHeld = null, fitFrozen = false, fitScrollRaf = null;
+      /* The per-scroll record reads NO layout: each scene's window is cached
+         in page coordinates and refreshed only when layout can have moved
+         (after a fit, on load/fonts, and when the page's height changes). */
+      var fitBusy = false, fitHeld = null, fitFrozen = false, fitScrollRaf = null, fitWins = [];
+      function fitCache() {
+        fitWins = [];
+        if (!fitDeskMQ.matches) return;
+        for (var i = 0; i < fitScenes.length; i++) {
+          if (fitScenes[i].root.hasAttribute('data-pin')) {
+            var w = fitWindow(fitScenes[i]);
+            fitWins.push({ s: fitScenes[i], a: w.a, b: w.b });
+          }
+        }
+      }
       function fitRecord() {
         fitScrollRaf = null;
-        if (!fitFrozen && !fitBusy) fitHeld = fitAnchor();
+        if (fitFrozen || fitBusy) return;
+        var y = window.scrollY;
+        fitHeld = null;
+        for (var i = 0; i < fitWins.length; i++) {
+          var w = fitWins[i];
+          if (y >= w.a && y <= w.b) { fitHeld = { s: w.s, f: (y - w.a) / (w.b - w.a) }; return; }
+        }
+      }
+      if (window.ResizeObserver) {
+        new ResizeObserver(function () { if (!fitBusy) fitCache(); }).observe(document.body);
       }
       function fwFit(fromResize) {
         if (!fitScenes.length) return;
@@ -6446,12 +6564,23 @@
         if (changed) dispatchEvent(new Event('resize'));
         fitBusy = false;
         fitFrozen = false;
+        fitCache();
         fitRecord();
       }
       fwFit();
-      var fitRaf = null;
+      var fitRaf = null, fitLastW = window.innerWidth;
+      /* A touch device's browser chrome (iPadOS Safari's toolbar, phone URL
+         bars) changes only the HEIGHT, mid-scroll. The pinned frames are
+         sized in svh, which ignores it, so there is nothing to re-fit — and
+         restoring the reader's place during a finger scroll would fight it.
+         Height-only resizes on a touch device are therefore ignored; a
+         desktop window resized in height is a real resize and re-fits. */
+      var fitTouchMQ = matchMedia('(any-pointer: coarse)');
       addEventListener('resize', function () {
         if (fitBusy) return;
+        var wNow = window.innerWidth;
+        if (wNow === fitLastW && fitTouchMQ.matches) return;
+        fitLastW = wNow;
         fitFrozen = true;
         if (fitRaf) return;
         fitRaf = requestAnimationFrame(function () { fitRaf = null; fwFit(true); });
@@ -7320,50 +7449,26 @@
              q is the played position in choreography space; scroll p only
              selects the target stop. */
           var seenRender = null;
-          var seenPassP = fwPassAware(seenSection, seenStage, [0.48, 0.92]);   /* chapters 0.52-0.88 */
-          /* DESKTOP PIN TIMING. The thresholds below are in fwScrub's 65/35
-             section progress, whose offsets scale with the viewport, so on a
-             short screen every chapter slid later in the pin: the last one
-             fired 354px before release at 990 but 166px at 790 and 116px at
-             650, and a quick flick carried its play past the release. When
-             the desktop pin is on, progress is instead measured as the
-             fraction of the REAL pinned travel (lock to release, which is
-             ~1,300-1,400px at every height) and mapped onto the same
-             thresholds. The chapters fire at 0.16 / 0.34 / 0.52 of the pin,
-             so the rest (>=48%, >=610px) is a held final frame: measured with
-             a fast ~860px/s wheel the numbers finish landing >=230px before
-             release at every desktop height (Chromium + WebKit).
-             (1920x990 was 0.24 / 0.52 / 0.75: chapters now land 110-320px
-             earlier there; the track length is unchanged.) */
-          var SEEN_PIN_AT = [0, 0.16, 0.34, 0.52, 1], SEEN_P_AT = [0, 0.52, 0.72, 0.88, 1];
-          var seenInner = seenSection.querySelector('.seen__inner');
-          var seenPinGeo = null;
-          function seenPinRead() {
-            var cs = getComputedStyle(seenSection);
-            seenPinGeo = { padT: parseFloat(cs.paddingTop) || 0, padB: parseFloat(cs.paddingBottom) || 0,
-                           top: parseFloat(getComputedStyle(seenInner).top) || 0 };
-          }
-          addEventListener('resize', function () { seenPinGeo = null; }, { passive: true });
-          function seenPinP() {
-            if (!seenPinGeo) seenPinRead();
-            var hr = seenSection.getBoundingClientRect();
-            var travel = Math.max(1, hr.height - seenPinGeo.padT - seenPinGeo.padB - seenInner.offsetHeight);
-            var f = fwClamp01((seenPinGeo.top - hr.top - seenPinGeo.padT) / travel);
-            for (var i = 1; i < SEEN_PIN_AT.length; i++) {
-              if (f <= SEEN_PIN_AT[i]) {
-                var k = (f - SEEN_PIN_AT[i - 1]) / (SEEN_PIN_AT[i] - SEEN_PIN_AT[i - 1]);
-                return SEEN_P_AT[i - 1] + k * (SEEN_P_AT[i] - SEEN_P_AT[i - 1]);
-              }
-            }
-            return 1;
-          }
+          /* desktop tail after the last chapter fires: its play (<=600ms)
+             plus the last pane's deal-in (--dur-scene 700ms; no CSS stagger on desktop,
+             the panes are already dealt one by one) — measured ~1.2s */
+          var seenPlan = fwPlan({ root: seenSection, sticky: seenSection.querySelector('.seen__inner') || seenStage,
+                                  pic: seenStage, beats: [0.52, 0.72, 0.88], even: true, tailMs: 1200 });
+          /* COHERENT PANES (desktop). STOP 2 used to show the composite's
+             panes fully drawn with every number at zero and the bars full —
+             forward that read as a broken dashboard, and scrolling back it
+             reset the numbers under panes that stayed on screen. On desktop
+             each pane now deals in only as its own number starts to land,
+             and whenever it is hidden (or fading out) its text holds the real
+             value, so a visible pane always shows its value. Phones keep the
+             original STOP 2 (their frames are pinned to production). */
+          var seenPanes = Array.prototype.slice.call(seenStage.querySelectorAll('.seen__pane'));
+          var seenPaneLast = [];
           fwChapters({ el: seenSection,
             poses: [0.44, 0.658, 0.855, 1.0],
             thresholds: [0.52, 0.72, 0.88],
-            getP: function (p) {
-              var pin = seenInner && seenSection.getAttribute('data-pin');
-              return pin === 'on' ? seenPinP() : seenPassP(p);
-            },
+            getP: function (p) { return seenPlan.p(p); },
+            hurry: seenPlan.hurry, settle: seenPlan.settle,
             render: function (qq) { if (seenRender) seenRender(qq); } });
 
           seenRender = function (p) {
@@ -7430,13 +7535,21 @@
               if (op !== co.lastOp)   { co.el.style.opacity = op;          co.lastOp = op; }
             }
 
+            var paneDeal = seenSection.hasAttribute('data-pin');
             for (var m = 0; m < seenCounters.length; m++) {
               var cn = seenCounters[m];
               var st = SEEN_STATS_IN + m * SEEN_STAT_STAGGER;
               var cp = fwTrack(p, st, st + SEEN_STAT_WIN);
               var eased = 1 - Math.pow(1 - cp, 3);
+              /* desktop: a hidden pane holds its real value; a dealt one
+                 counts up from a non-zero first step ("1 of 5", not "0") */
+              if (paneDeal) eased = cp <= 0 ? 1 : Math.max(eased, cn.format === 'int' ? 0.5 / cn.target + 0.001 : 0.05);
               var txt = seenFmt(cn.target * eased, cn.format);
               if (txt !== cn.last) { cn.el.textContent = txt; cn.last = txt; }
+            }
+            for (var pn = 0; pn < seenPanes.length; pn++) {
+              var dealt = paneDeal ? p > SEEN_STATS_IN + pn * SEEN_STAT_STAGGER : true;
+              if (dealt !== seenPaneLast[pn]) { seenPanes[pn].classList.toggle('is-dealt', dealt); seenPaneLast[pn] = dealt; }
             }
           };
           /* first paint for deep links that land mid-scene */
@@ -7728,9 +7841,12 @@
           });
           var cnLastDone = -1, cnLastFinished = null;
 
-          var cnPassP = fwPassAware(connectRow, connectRow.querySelector('.steps__concept') || connectRow, [0.02, 0.82]);   /* approvals 0.05-0.78 */
+          /* approvals run 0.05 -> 0.78; the tail is the "All connected"
+             badge (240ms delay + 700ms settle) */
+          var cnPlan = fwPlan({ root: connectRow, sticky: connectRow.querySelector('.steps__card'),
+                                pic: connectRow.querySelector('.steps__concept'), beats: [0.05, 0.78], even: false, tailMs: 940 });
           fwScrub(connectRow, function (p) {
-            p = cnPassP(p);
+            p = cnPlan.p(p);
             var n = connectCards.length;
             var done = Math.min(n, Math.floor(fwTrack(p, 0.05, 0.78) * n));
             /* the badge follows the last card immediately — a 0.78..0.9 dead
@@ -8117,7 +8233,10 @@
           }
 
           var spTicking = false;
-          var spPassP = fwPassAware(surplusRow, surplusRow.querySelector('.steps__concept') || surplusRow, [0.05, 0.88]);   /* chips 0.08 -> done 0.84 */
+          /* chips from 0.08, done at 0.84; the tail is the insight row
+             (up to 400ms stagger + 700ms settle) */
+          var spPlan = fwPlan({ root: surplusRow, sticky: surplusRow.querySelector('.steps__card'),
+                                pic: surplusRow.querySelector('.steps__concept'), beats: [0.08, 0.84], even: false, tailMs: 1100 });
           function surplusDrive() {
             spTicking = false;
             var h = surplusRow.offsetHeight;
@@ -8125,7 +8244,7 @@
             var travel = h - vhS * 0.35;   /* scene plays across its pass */
             if (travel <= 0) return;
             var into = vhS * 0.65 - surplusRow.getBoundingClientRect().top;
-            surplusRenderAt(spPassP(spClamp01(into / travel)));
+            surplusRenderAt(spPlan.p(spClamp01(into / travel)));
           }
           function spOnScroll() {
             if (!spTicking) { spTicking = true; requestAnimationFrame(surplusDrive); }
@@ -8195,11 +8314,15 @@
           var allocPinMQ = matchMedia('(min-width: 901px)');
           var allocCard  = allocStep.querySelector('.steps__card') || allocStep;
           var allocGetP  = fwPinP(allocPinMQ.matches ? allocCard : allocConcept,
-                                  allocPinMQ.matches ? allocStep : allocCard, [0.09, 0.94], allocConcept);
+                                  allocPinMQ.matches ? allocStep : allocCard);
           allocPinMQ.addEventListener('change', function () {
             allocGetP = fwPinP(allocPinMQ.matches ? allocCard : allocConcept,
-                               allocPinMQ.matches ? allocStep : allocCard, [0.09, 0.94], allocConcept);
+                               allocPinMQ.matches ? allocStep : allocCard);
           });
+          /* desktop: six chapters evenly over the pin; the tail is the last
+             play plus the verdict's reveal, measured ~400ms at a steady scroll */
+          var allocPlan = fwPlan({ root: allocStep, sticky: allocCard, pic: allocConcept,
+                                   beats: [0.13, 0.32, 0.52, 0.72, 0.90], even: true, tailMs: 500 });
 
           var alLastCount = -1, alLastPhase = '';
 
@@ -8213,7 +8336,8 @@
             poses: [0.04, 0.22, 0.44, 0.64, 0.82, 1.0],
             thresholds: [0.13, 0.32, 0.52, 0.72, 0.90],
             speed: 0.42, fastDist: 0.5,
-            getP: function () { return allocGetP(); },
+            getP: function () { return allocPlan.p(allocGetP); },
+            hurry: allocPlan.hurry, settle: allocPlan.settle,
             render: allocRenderQ });
 
           function allocRenderQ(p) {
@@ -8371,7 +8495,12 @@
              run from the frame it locks to the frame it releases (fwPinP),
              so Riya-vs-Aman is still on screen when the verdicts land. */
           var host = engineSection.querySelector('.engine__inner') || engineSection;
-          var getP = fwPinP(card, host, [0.04, 0.62]);   /* pass mode: chapters 0.08-0.58 */
+          var enPin = fwPinP(card, host);
+          /* desktop: chapters evenly over the pin; tail = last play + the
+             verdict / kicker reveals, measured ~400ms at a steady scroll */
+          var enPlan = fwPlan({ root: engineSection, sticky: card, pic: card,
+                                beats: [0.08, 0.18, 0.28, 0.38, 0.48, 0.58], even: true, tailMs: 500 });
+          var getP = function () { return enPlan.p(enPin); };
 
           /* Thresholds map scroll (getP) -> chapter. They finish EARLY —
              the terminal chapter (pose 1.0: all rows + matched + verdicts +
@@ -8386,6 +8515,7 @@
             thresholds: [0.08, 0.18, 0.28, 0.38, 0.48, 0.58],
             speed: 0.5, fastDist: 0.22,
             getP: function () { return getP(); },
+            hurry: enPlan.hurry, settle: enPlan.settle,
             render: engineRender
           });
         });
