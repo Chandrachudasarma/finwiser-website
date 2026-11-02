@@ -476,6 +476,43 @@
     }
     .fw-nav.is-over-dark .fw-nav__logo-img--pos { opacity: 0; }
     .fw-nav.is-over-dark .fw-nav__logo-img--rev { opacity: 1; }
+    /* Complaints data next to the logo: SEBI IA Master Circular, homepage
+       without scrolling. Monthly update = the month + numbers here and the
+       row on complaints.html. Font floor 12px. */
+    .fw-nav__cpl {
+      display: inline-flex; align-items: baseline; gap: 4px; flex-shrink: 0;
+      margin-left: 16px; margin-right: auto; padding: 3px 0 3px 14px;
+      border-left: 1px solid color-mix(in srgb, var(--nav-fg, var(--navy-deep)) 25%, transparent);
+      color: var(--nav-fg, var(--navy-deep)); text-decoration: none;
+      font-family: var(--font-sans); font-size: 13px; line-height: 1.3; white-space: nowrap;
+    }
+    .fw-nav__cpl-go { color: var(--teal); margin-left: 2px; }
+    .fw-nav.is-over-dark .fw-nav__cpl-go { color: var(--mint); }
+    .fw-nav__cpl:hover strong { text-decoration: underline; }
+    /* Phone and wide desktop: beside the logo, logo keeps full size.
+       768-1439 the bar is already full, so it sits on a thin line under it. */
+    @media (max-width: 767px), (min-width: 1440px) { .fw-nav__logo { flex-shrink: 0; } }
+    @media (max-width: 767px) { .fw-nav__cpl { margin-left: 10px; padding-left: 10px; gap: 3px; font-size: 12px; } }
+    @media (max-width: 374px) { .fw-nav__cpl { margin-left: 6px; padding-left: 6px; } }
+    @media (min-width: 768px) and (max-width: 1439px) {
+      .fw-nav__cpl {
+        position: absolute; left: 0; right: 0; top: 100%;
+        margin: 0; border-left: 0; padding-block: 5px; padding-inline: inherit;
+        background: var(--navy-deep); color: var(--text-on-dark);
+        box-shadow: 0 0 0 100vmax var(--navy-deep), 0 1px 0 100vmax var(--border-on-dark);
+        clip-path: inset(0 -100vmax -1px);
+      }
+      .fw-nav__cpl-go { color: var(--mint); }
+    }
+    /* Drop-down with the full Annexure C table. Opens on tap, closes on
+       scroll, outside tap or Esc. */
+    .cdata.fw-cpl-panel {
+      position: absolute; left: 0; right: 0; top: 100%; z-index: 49;
+      max-height: calc(100svh - var(--nav-h) - 16px); overflow: auto;
+      box-shadow: 0 12px 32px rgba(0,0,0,.35);
+    }
+    .fw-nav__cpl[aria-expanded="true"] .fw-nav__cpl-go { display: inline-block; transform: rotate(90deg); }
+    .fw-nav__cpl-go { display: inline-block; transition: transform .2s; }
     .fw-nav__list { list-style: none; display: flex; align-items: center;  }
     /* The nav links take their foreground from the surface they sit on, not
        from a hard-coded token. The bar is white, so the default is navy; the
@@ -591,17 +628,12 @@
     /* ============================================================ */
     /* §1a — COMPLAINTS DATA BAND (SEBI IA Master Circular cl. 2.4)  */
     /* ============================================================ */
-    /* The regulation, not a design choice: the month's complaints data
-       in the Annexure C format, on the homepage, visible WITHOUT
-       SCROLLING, at 12px or above, refreshed within 7 days of month-end.
-       It sits above the sticky nav in normal flow, so it is the first
-       thing painted at y=0 on every viewport and scrolls away with the
-       page; the hero underneath is untouched. Wide screens get the
-       Annexure C table as printed (sources as rows); phones get the same
-       cells transposed (sources as columns) so seven columns never need
-       a sideways scroll. Monthly update = edit the month in the title and
-       the cells here, and the row on complaints.html. Font floor 12px is
-       a hard rule here — never size this band below --fs-label. */
+    /* The month's complaints data in the Annexure C format. It lives in the
+       drop-down opened by "Complaints 0/0" next to the logo (§1 nav):
+       homepage, no scrolling, 12px floor, refreshed within 7 days of
+       month-end. Wide screens get the table as printed; phones get the
+       same cells transposed. Monthly update = the 0/0 link, the cells
+       here, and the row on complaints.html. */
     .cdata {
       background: var(--navy-deep); color: var(--text-on-dark);
       border-bottom: var(--hairline) solid var(--border-on-dark);
@@ -4116,14 +4148,77 @@
 
   <a href="#main" class="skip-link">Skip to main content</a>
 
+
   <!-- ============================================================ -->
-  <!-- §1a — COMPLAINTS DATA (SEBI IA Master Circular cl. 2.4,       -->
-  <!--       Annexure C). Update within 7 days of every month-end.   -->
+  <!-- §1 — NAV                                                      -->
   <!-- ============================================================ -->
-  <aside class="cdata" aria-labelledby="cdata-title">
+  <header class="fw-nav is-over-dark" role="banner">
+    <div class="fw-nav__inner">
+      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
+           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
+           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
+             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
+                     lockup = 63% of a 390px viewport, over the 40% cap, so
+                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
+                     30px where the render is mud).
+             >=1024  nav logo 48px -> head 48px, the rule is met, and the
+                     247px lockup fits a 64px bar at 75%. Served as rasters,
+                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
+                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
+           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
+           two are drop-in swaps and nothing reflows at the breakpoint. -->
+      <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
+                          assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
+               src="assets/finwy-3d/finwiser-logo-flat.svg"
+               alt="Finwiser" width="330" height="64" decoding="async">
+        </picture>
+        <picture class="fw-nav__logo-pic">
+          <source media="(min-width: 1024px)" type="image/webp"
+                  srcset="assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
+                          assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
+                  sizes="248px">
+          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
+               src="assets/finwy-3d/finwiser-logo-flat-reversed.svg"
+               alt="" width="330" height="64" decoding="async" aria-hidden="true">
+        </picture>
+      </a>
+      <a class="fw-nav__cpl" href="complaints.html" role="button" aria-expanded="false" aria-controls="fw-cpl-panel" title="Investor complaints, October 2026: 0 received, 0 pending" aria-label="Investor complaints, October 2026: 0 received, 0 pending. Show the full table">Complaints <strong>0/0</strong><span class="fw-nav__cpl-go" aria-hidden="true">&rsaquo;</span></a>
+      <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
+      </button>
+      <div class="fw-nav__scrim" aria-hidden="true"></div>
+      <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
+        <ul class="fw-nav__list">
+          <li style="--li:0"><a class="fw-nav__link" href="#capabilities">What it does</a></li>
+          <li style="--li:1"><a class="fw-nav__link" href="#how">How it works</a></li>
+          <li style="--li:2"><a class="fw-nav__link" href="#pricing">Pricing</a></li>
+          <li style="--li:3"><a class="fw-nav__link" href="#team">Team</a></li>
+          <li style="--li:4"><a class="fw-nav__link" href="#faq">Help</a></li>
+          <!-- The two real DESTINATIONS (founder decision D4, "mixed nav"): the
+               one-page film keeps its five anchors, and the two pages that
+               actually convert a sceptic — a calculator that needs no signup,
+               and the plain-English answer to "why do you want my bank data" —
+               stop being 24 screens down in the footer (re-audit IA F1/F8, UX
+               U6). `--page` marks them as pages rather than anchors: they are
+               not scroll positions, so no future scrollspy may ever mark them
+               current. (There is no scrollspy on this nav today.) -->
+          <li style="--li:5" class="fw-nav__item--page"><a class="fw-nav__link fw-nav__link--page" href="/surplus-calculator.html">Calculator</a></li>
+          <li style="--li:6" class="fw-nav__item--page"><a class="fw-nav__link fw-nav__link--page" href="/account-aggregator.html">Account Aggregator</a></li>
+          <li style="--li:7"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
+        </ul>
+      </nav>
+    </div>
+        <div id="fw-cpl-panel" class="cdata fw-cpl-panel" role="region" aria-label="Investor complaints data" hidden>
     <div class="container cdata__inner">
       <div class="cdata__head">
-        <h2 id="cdata-title" class="cdata__title">Investor complaints &mdash; data for the month ending 31&nbsp;Oct&nbsp;2026</h2>
+        <h2 class="cdata__title">Investor complaints &mdash; data for the month ending 31&nbsp;Oct&nbsp;2026</h2>
         <p class="cdata__sub">SEBI-prescribed format (Annexure C). Updated within 7 days of month-end.</p>
         <a class="cdata__more" href="complaints.html">Monthly &amp; annual trends <span aria-hidden="true">&rarr;</span></a>
       </div>
@@ -4169,73 +4264,7 @@
       <p class="cdata__notes cdata__notes--full">Complaints received during the month due to impersonation by some other entity: 0. &middot; * Inclusive of complaints of previous months resolved in the current month. &middot; # Inclusive of complaints pending as on the last day of the month. &middot; ^ Sum of days taken to resolve each complaint in the month &divide; complaints resolved in the month.</p>
       <p class="cdata__notes cdata__notes--short">Impersonation complaints this month: 0 &middot; NA: not applicable &middot; * incl. earlier months&rsquo; complaints resolved this month &middot; # incl. complaints pending on the last day &middot; ^ days to resolve &divide; complaints resolved. <a class="cdata__more" href="complaints.html">Full data <span aria-hidden="true">&rarr;</span></a></p>
     </div>
-  </aside>
-
-  <!-- ============================================================ -->
-  <!-- §1 — NAV                                                      -->
-  <!-- ============================================================ -->
-  <header class="fw-nav is-over-dark" role="banner">
-    <div class="fw-nav__inner">
-      <!-- Nav logo — the 3D lockup, split by size on the README §8 rule.
-           MEASURED, not assumed (src/12-flat-lockup.py): the head's ink is
-           1:1 with the lockup's height, so a 30px nav logo is a 30px head.
-             phone   nav logo 30px -> head 30px. A 48px head needs a 247px
-                     lockup = 63% of a 390px viewport, over the 40% cap, so
-                     the phone gets finwiser-logo-flat.svg (5.2 KB, crisp at
-                     30px where the render is mud).
-             >=1024  nav logo 48px -> head 48px, the rule is met, and the
-                     247px lockup fits a 64px bar at 75%. Served as rasters,
-                     not the SVG: the lockup SVG embeds a 52 KB WebP, where
-                     112h/168h WebP are 16.4/25.8 KB and cover 2x/3x.
-           Both artworks share viewBox 329.95 x 64.04 (aspect 5.152), so the
-           two are drop-in swaps and nothing reflows at the breakpoint. -->
-      <a class="fw-nav__logo" href="/" aria-label="Finwiser home">
-        <picture class="fw-nav__logo-pic">
-          <source media="(min-width: 1024px)" type="image/webp"
-                  srcset="assets/finwy-3d/raster/finwiser-logo-3d-112h.webp 577w,
-                          assets/finwy-3d/raster/finwiser-logo-3d-168h.webp 866w"
-                  sizes="248px">
-          <img class="fw-nav__logo-img fw-nav__logo-img--pos"
-               src="assets/finwy-3d/finwiser-logo-flat.svg"
-               alt="Finwiser" width="330" height="64" decoding="async">
-        </picture>
-        <picture class="fw-nav__logo-pic">
-          <source media="(min-width: 1024px)" type="image/webp"
-                  srcset="assets/finwy-3d/raster/finwiser-logo-3d-reversed-112h.webp 577w,
-                          assets/finwy-3d/raster/finwiser-logo-3d-reversed-168h.webp 866w"
-                  sizes="248px">
-          <img class="fw-nav__logo-img fw-nav__logo-img--rev"
-               src="assets/finwy-3d/finwiser-logo-flat-reversed.svg"
-               alt="" width="330" height="64" decoding="async" aria-hidden="true">
-        </picture>
-      </a>
-      <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
-        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
-        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
-        <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
-      </button>
-      <div class="fw-nav__scrim" aria-hidden="true"></div>
-      <nav id="fw-nav-menu" class="fw-nav__menu" aria-label="Primary">
-        <ul class="fw-nav__list">
-          <li style="--li:0"><a class="fw-nav__link" href="#capabilities">What it does</a></li>
-          <li style="--li:1"><a class="fw-nav__link" href="#how">How it works</a></li>
-          <li style="--li:2"><a class="fw-nav__link" href="#pricing">Pricing</a></li>
-          <li style="--li:3"><a class="fw-nav__link" href="#team">Team</a></li>
-          <li style="--li:4"><a class="fw-nav__link" href="#faq">Help</a></li>
-          <!-- The two real DESTINATIONS (founder decision D4, "mixed nav"): the
-               one-page film keeps its five anchors, and the two pages that
-               actually convert a sceptic — a calculator that needs no signup,
-               and the plain-English answer to "why do you want my bank data" —
-               stop being 24 screens down in the footer (re-audit IA F1/F8, UX
-               U6). `--page` marks them as pages rather than anchors: they are
-               not scroll positions, so no future scrollspy may ever mark them
-               current. (There is no scrollspy on this nav today.) -->
-          <li style="--li:5" class="fw-nav__item--page"><a class="fw-nav__link fw-nav__link--page" href="/surplus-calculator.html">Calculator</a></li>
-          <li style="--li:6" class="fw-nav__item--page"><a class="fw-nav__link fw-nav__link--page" href="/account-aggregator.html">Account Aggregator</a></li>
-          <li style="--li:7"><a class="fw-nav__cta" href="https://play.google.com/store/apps/details?id=org.finwiser.app">Get the app</a></li>
-        </ul>
-      </nav>
-    </div>
+      </div>
   </header>
 
   <main id="main">
@@ -9057,5 +9086,26 @@
       });
     })();
     </script>
+<script>
+(function () {
+  var btn = document.querySelector('.fw-nav__cpl');
+  var panel = document.getElementById('fw-cpl-panel');
+  if (!btn || !panel) return;
+  var openY = 0;
+  function setOpen(open) {
+    panel.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    openY = window.scrollY;
+  }
+  btn.addEventListener('click', function (e) { e.preventDefault(); setOpen(panel.hidden); });
+  window.addEventListener('scroll', function () {
+    if (!panel.hidden && Math.abs(window.scrollY - openY) > 24) setOpen(false);
+  }, { passive: true });
+  document.addEventListener('click', function (e) {
+    if (!panel.hidden && !panel.contains(e.target) && !btn.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) { setOpen(false); btn.focus(); } });
+})();
+</script>
 </body>
 </html>
