@@ -589,6 +589,72 @@
     html.fw-nav-locked { overflow: hidden; overscroll-behavior: none;  }
 
     /* ============================================================ */
+    /* §1a — COMPLAINTS DATA BAND (SEBI IA Master Circular cl. 2.4)  */
+    /* ============================================================ */
+    /* The regulation, not a design choice: the month's complaints data
+       in the Annexure C format, on the homepage, visible WITHOUT
+       SCROLLING, at 12px or above, refreshed within 7 days of month-end.
+       It sits above the sticky nav in normal flow, so it is the first
+       thing painted at y=0 on every viewport and scrolls away with the
+       page; the hero underneath is untouched. Wide screens get the
+       Annexure C table as printed (sources as rows); phones get the same
+       cells transposed (sources as columns) so seven columns never need
+       a sideways scroll. Monthly update = edit the month in the title and
+       the cells here, and the row on complaints.html. Font floor 12px is
+       a hard rule here — never size this band below --fs-label. */
+    .cdata {
+      background: var(--navy-deep); color: var(--text-on-dark);
+      border-bottom: var(--hairline) solid var(--border-on-dark);
+      font-family: var(--font-sans); font-size: var(--fs-label); line-height: 1.35;
+      position: relative; z-index: 51;
+    }
+    .cdata__inner {
+      display: grid; grid-template-columns: minmax(200px, 260px) 1fr;
+      gap: 6px 32px; align-items: start;
+      padding-block: 10px;
+    }
+    .cdata__title {
+      font-size: var(--fs-label); font-weight: var(--fw-semi);
+      color: var(--text-on-dark); line-height: 1.35; margin: 0;
+    }
+    .cdata__sub { margin: 2px 0 0; color: var(--text-on-dark-muted); }
+    .cdata__more { color: var(--mint); white-space: nowrap; }
+    .cdata__table {
+      width: 100%; border-collapse: collapse;
+      font-size: var(--fs-label); font-variant-numeric: tabular-nums;
+    }
+    .cdata__table th, .cdata__table td {
+      border: var(--hairline) solid var(--border-on-dark);
+      padding: 2px 8px; text-align: center; vertical-align: middle;
+    }
+    .cdata__table th { font-weight: var(--fw-medium); color: var(--text-on-dark-muted); background: var(--white-04); }
+    .cdata__table th[scope="row"] { text-align: left; }
+    .cdata__table--wide td:nth-child(2) { text-align: left; white-space: nowrap; }
+    .cdata__table--wide thead th { line-height: 1.2; padding-block: 3px; }
+    .cdata__table tr.cdata__total > * { font-weight: var(--fw-semi); color: var(--text-on-dark); }
+    .cdata__table--narrow { display: none; }
+    .cdata__notes { grid-column: 2; margin: 0; line-height: 1.3; color: var(--text-on-dark-muted); }
+    .cdata__notes--short { display: none; }
+    /* Laptop-narrow and tablet: head above the table, same table. */
+    @media (max-width: 1199px) {
+      .cdata__inner { grid-template-columns: 1fr; gap: 6px; padding-block: 8px; }
+      .cdata__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 16px; }
+      .cdata__sub { margin: 0; }
+      .cdata__notes { grid-column: 1; }
+    }
+    /* Phone: the transposed table. */
+    @media (max-width: 767px) {
+      .cdata__sub, .cdata__head .cdata__more { display: none; }
+      .cdata__table--wide, .cdata__notes--full { display: none; }
+      .cdata__table--narrow { display: table; }
+      .cdata__notes--short { display: block; }
+      .cdata__table, .cdata__notes { font-size: max(12px, calc(var(--fs-label) - 1px)); }
+      .cdata__table th, .cdata__table td { padding: 1px 4px; }
+      .cdata__table--narrow td, .cdata__table--narrow thead th + th { width: 1%; white-space: nowrap; padding-inline: 4px; }
+      .cdata__table--narrow abbr { text-decoration: none; }
+    }
+
+    /* ============================================================ */
     /* §2 — HERO                                                     */
     /* ============================================================ */
     .hero {
@@ -4051,6 +4117,61 @@
   <a href="#main" class="skip-link">Skip to main content</a>
 
   <!-- ============================================================ -->
+  <!-- §1a — COMPLAINTS DATA (SEBI IA Master Circular cl. 2.4,       -->
+  <!--       Annexure C). Update within 7 days of every month-end.   -->
+  <!-- ============================================================ -->
+  <aside class="cdata" aria-labelledby="cdata-title">
+    <div class="container cdata__inner">
+      <div class="cdata__head">
+        <h2 id="cdata-title" class="cdata__title">Investor complaints &mdash; data for the month ending 31&nbsp;Oct&nbsp;2026</h2>
+        <p class="cdata__sub">SEBI-prescribed format (Annexure C). Updated within 7 days of month-end.</p>
+        <a class="cdata__more" href="complaints.html">Monthly &amp; annual trends <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <table class="cdata__table cdata__table--wide">
+        <thead>
+          <tr>
+            <th scope="col">Sr. No.</th>
+            <th scope="col">Received from</th>
+            <th scope="col">Pending at the end of last month</th>
+            <th scope="col">Received</th>
+            <th scope="col">Resolved*</th>
+            <th scope="col">Total Pending#</th>
+            <th scope="col">Pending complaints &gt; 3 months</th>
+            <th scope="col">Average Resolution time^ (in days)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Directly from Investors</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Not Applicable</td></tr>
+          <tr><td>2</td><td>SEBI (SCORES)</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Not Applicable</td></tr>
+          <tr><td>3</td><td>Other Sources (if any)</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Not Applicable</td></tr>
+          <tr class="cdata__total"><td></td><td>Grand Total</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Not Applicable</td></tr>
+        </tbody>
+      </table>
+      <table class="cdata__table cdata__table--narrow">
+        <thead>
+          <tr>
+            <th scope="col">Received from</th>
+            <th scope="col"><abbr title="Directly from Investors">Direct</abbr></th>
+            <th scope="col"><abbr title="SEBI (SCORES)">SCORES</abbr></th>
+            <th scope="col"><abbr title="Other Sources (if any)">Other</abbr></th>
+            <th scope="col"><abbr title="Grand Total">Total</abbr></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><abbr title="Pending at the end of last month">Pending end of last month</abbr></th><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><th scope="row">Received</th><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><th scope="row">Resolved*</th><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><th scope="row">Total Pending#</th><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><th scope="row">Pending &gt; 3 months</th><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><th scope="row"><abbr title="Average Resolution time (in days)">Avg. resolution^ (days)</abbr></th><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+        </tbody>
+      </table>
+      <p class="cdata__notes cdata__notes--full">Complaints received during the month due to impersonation by some other entity: 0. &middot; * Inclusive of complaints of previous months resolved in the current month. &middot; # Inclusive of complaints pending as on the last day of the month. &middot; ^ Sum of days taken to resolve each complaint in the month &divide; complaints resolved in the month.</p>
+      <p class="cdata__notes cdata__notes--short">Impersonation complaints this month: 0 &middot; NA: not applicable &middot; * incl. earlier months&rsquo; complaints resolved this month &middot; # incl. complaints pending on the last day &middot; ^ days to resolve &divide; complaints resolved. <a class="cdata__more" href="complaints.html">Full data <span aria-hidden="true">&rarr;</span></a></p>
+    </div>
+  </aside>
+
+  <!-- ============================================================ -->
   <!-- §1 — NAV                                                      -->
   <!-- ============================================================ -->
   <header class="fw-nav is-over-dark" role="banner">
@@ -5869,6 +5990,7 @@
             <li><a href="investor-charter.html">Investor Charter</a></li>
             <li><a href="investment-advisory-agreement.html">Advisory Agreement</a></li>
             <li><a href="disclosures.html">Disclosures</a></li>
+            <li><a href="disclosures.html#section-9">Compliance Audit</a></li>
             <li><a href="complaints.html">Grievances</a></li>
             <li><a href="accessibility.html">Accessibility</a></li>
           </ul>
