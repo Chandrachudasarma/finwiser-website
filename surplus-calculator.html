@@ -276,9 +276,12 @@
     /* ============================================================ */
     /* §3 — THE CALCULATOR                                           */
     /* ============================================================ */
-    .calc-wrap { display: grid; gap: var(--gutter); align-items: start; }
+    .calc-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gutter); align-items: start; }
+    /* minmax(0,…) + min-width:0: at 320px the cards' content no longer
+       props the column open 2px past the viewport (WCAG 1.4.10). */
+    .calc-wrap > * { min-width: 0; }
     @media (min-width: 900px) {
-      .calc-wrap { grid-template-columns: 1fr 1fr; }
+      .calc-wrap { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
     }
 
     .field + .field { margin-top: var(--sp-4); }
@@ -287,13 +290,15 @@
     .field__box {
       position: relative; display: flex; align-items: center;
       margin-top: var(--sp-2);
-      border: var(--hairline) solid var(--line);
+      /* The field's edge is a UI boundary (WCAG 1.4.11): --navy-56 is 3.6:1
+         on white, where the hairline --line was 1.2:1. */
+      border: var(--hairline) solid var(--navy-56);
       border-radius: var(--r-sm);
       background: var(--white);
       transition: border-color var(--dur-ui) var(--ease-in-out),
                   box-shadow var(--dur-ui) var(--ease-in-out);
     }
-    .field__box:focus-within { border-color: var(--teal-ink); outline: 2px solid var(--mint); outline-offset: 2px; }
+    .field__box:focus-within { border-color: var(--teal-ink); outline: 2px solid var(--focus-ring, var(--teal-ink)); outline-offset: 2px; }
     .field__rupee {
       /* U9: the ₹ is the same size and face as its digits, so it takes the
          same role class as the input and only needs placement here. */
@@ -972,16 +977,29 @@
         if (!el) return;
         try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
       }
+      /* While the drawer is open everything outside the header is inert:
+         Tab, Shift+Tab and screen-reader browse cannot reach the page hidden
+         behind the scrim (WCAG 2.4.3 / 2.4.11). Only nodes this script marked
+         are released again. */
+      function setPageInert(on) {
+        Array.prototype.forEach.call(document.body.children, function (el) {
+          if (el.contains(toggle) || el.tagName === 'SCRIPT') return;
+          if (on && !el.hasAttribute('inert')) { el.setAttribute('inert', ''); el.setAttribute('data-fw-inert', ''); }
+          else if (!on && el.hasAttribute('data-fw-inert')) { el.removeAttribute('inert'); el.removeAttribute('data-fw-inert'); }
+        });
+      }
       function openMenu() {
         toggle.setAttribute('aria-expanded', 'true');
         toggle.setAttribute('aria-label', 'Close menu');
         document.documentElement.classList.add('fw-nav-locked');
+        setPageInert(true);
         focusNoScroll(menu.querySelector('a[href]'));
       }
       function closeMenu(returnFocus) {
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open menu');
         document.documentElement.classList.remove('fw-nav-locked');
+        setPageInert(false);
         if (returnFocus) focusNoScroll(toggle);
       }
       toggle.addEventListener('click', function () {
@@ -1045,5 +1063,29 @@
   </script>
 
   <script src="assets/calc.js"></script>
+<script>
+/* Keyboard focus lands on screen at once (WCAG 2.4.7 / 2.4.11). The page
+   scrolls smoothly, and a Tab that jumps thousands of px (through pinned
+   scenes on the homepage, down a long legal document) used to leave the
+   focused element off screen for over a second while the scroll played.
+   A focus target that isn't fully visible below the sticky bar is brought
+   to the middle of the screen instantly. The bar, the drawer and the
+   back-to-top button are always on screen and are left alone. */
+(function () {
+  document.addEventListener('focusin', function (e) {
+    var el = e.target;
+    if (!el || el === document.body || !el.getBoundingClientRect) return;
+    if (el.closest && el.closest('.fw-nav, .fw-totop, .skip-link')) return;
+    var r = el.getBoundingClientRect();
+    if (!r.width && !r.height) return;
+    var nav = document.querySelector('.fw-nav');
+    var top = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+    var tall = r.height > window.innerHeight - top - 32;
+    if (r.top >= top && (r.bottom <= window.innerHeight || (tall && r.top <= window.innerHeight / 2))) return;
+    var y = window.scrollY + r.top - Math.max(top + 16, (window.innerHeight - r.height) / 2);
+    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+  });
+})();
+</script>
 </body>
 </html>

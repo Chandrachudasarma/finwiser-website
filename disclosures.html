@@ -171,7 +171,7 @@
         <section class="card" id="section-1">
             <h2 class="h2">1. Registration &amp; Identity</h2>
             <div class="card data-card">
-                <h4>Investment Adviser (Regulated Identity)</h4>
+                <h3 class="as-h4">Investment Adviser (Regulated Identity)</h3>
                 <ul>
                     <li><strong>Name:</strong> Chandrachuda Sarma Yemmanuru (Proprietor: Finwiser)</li>
                     <li><strong>Legal Structure:</strong> Sole Proprietorship (Individual)</li>
@@ -184,7 +184,7 @@
             </div>
 
             <div class="card data-card">
-                <h4>Platform Provider (Non-Regulated Identity)</h4>
+                <h3 class="as-h4">Platform Provider (Non-Regulated Identity)</h3>
                 <ul>
                     <li><strong>Name:</strong> Finwiser Technologies LLP</li>
                     <li><strong>Role:</strong> Operates and publishes the Finwiser mobile application and website; operates servers and infrastructure. Does <em>not</em> provide regulated investment advice.</li>
@@ -194,7 +194,7 @@
             </div>
 
             <div class="card data-card">
-                <h4>NISM Certification of Principal Officer</h4>
+                <h3 class="as-h4">NISM Certification of Principal Officer</h3>
                 <ul>
                     <li><strong>NISM Registration Number:</strong> NISM-202500082015</li>
                     <li><strong>NISM Series-X-A (Investment Adviser &mdash; Level 1):</strong> Enrolment No. 2510182801, cleared on 19 May 2025, valid until <strong>18 May 2028</strong>.</li>
@@ -204,14 +204,14 @@
             </div>
 
             <div class="card data-card">
-                <h4>Registered / Principal Office</h4>
+                <h3 class="as-h4">Registered / Principal Office</h3>
                 <p>H.No. 181, 14th Cross, Bluejay Atmosphere Phase II,<br>
                 Andhrahalli Main Road, Nagasandra Post,<br>
                 Bengaluru &ndash; 560073, Karnataka, India</p>
             </div>
 
             <div class="card data-card">
-                <h4>Contact</h4>
+                <h3 class="as-h4">Contact</h3>
                 <ul>
                     <li><strong>Email:</strong> <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></li>
                     <li><strong>Mobile:</strong> +91 8801294657</li>
@@ -228,6 +228,7 @@
             <h2 class="h2">2. Fee Structure</h2>
             <p>Finwiser operates on the <strong>Fixed Fee</strong> mode permitted under Regulation 15A of the SEBI (Investment Advisers) Regulations, 2013. Fees are disclosed below and specified in detail in the Investment Advisory Agreement executed with each client.</p>
 
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Table: Fee structure">
             <table class="caption">
                 <thead>
                     <tr>
@@ -249,6 +250,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
 
             <div class="highlight-box">
                 <p><strong>All fees are inclusive of applicable GST (currently 18%).</strong> Illustrative breakdown at current rate: &#8377;199/month = &#8377;168.64 base + &#8377;30.36 GST. GST classification: HSN/SAC <strong>9971</strong> (Financial and related services). A GST invoice is issued against the client's registered details for each billing cycle.</p>
@@ -393,21 +395,21 @@
         <section class="card" id="section-7">
             <h2 class="h2">7. Regulatory Bodies &amp; Grievance Redressal</h2>
             <div class="card data-card">
-                <h4>Primary Regulator</h4>
+                <h3 class="as-h4">Primary Regulator</h3>
                 <p><strong>Securities and Exchange Board of India (SEBI)</strong><br>
                 SEBI Bhavan II, Plot C7, G Block, Bandra Kurla Complex, Bandra (E), Mumbai &ndash; 400 051<br>
                 Website: <a href="https://www.sebi.gov.in" target="_blank" rel="noopener">www.sebi.gov.in</a></p>
             </div>
 
             <div class="card data-card">
-                <h4>Supervisory Body (IAASB)</h4>
+                <h3 class="as-h4">Supervisory Body (IAASB)</h3>
                 <p><strong>BSE Administration &amp; Supervision Limited (BASL)</strong><br>
                 P. J. Towers, Dalal Street, Mumbai &ndash; 400 001<br>
                 Website: <a href="https://www.bseasl.com" target="_blank" rel="noopener">www.bseasl.com</a></p>
             </div>
 
             <div class="card data-card">
-                <h4>Complaint Platforms</h4>
+                <h3 class="as-h4">Complaint Platforms</h3>
                 <ul>
                     <li><strong>SEBI SCORES 2.0:</strong> <a href="https://scores.sebi.gov.in" target="_blank" rel="noopener">scores.sebi.gov.in</a> &mdash; SEBI's centralised complaint redress system operating a two-tier review (first tier by the Designated Body BASL within 21 days; if unresolved, second tier by SEBI within a further 21 days).</li>
                     <li><strong>SMART ODR:</strong> <a href="https://smartodr.in" target="_blank" rel="noopener">smartodr.in</a> &mdash; Online Dispute Resolution platform for unresolved grievances (mediation / conciliation / arbitration).</li>
@@ -442,7 +444,7 @@
             <p>Under <strong>Regulation 19(3)</strong> of the SEBI (Investment Advisers) Regulations, 2013 and the SEBI Master Circular for Investment Advisers, the Investment Adviser conducts an annual audit of compliance with the Regulations and the circulars issued under them, and publishes here the status of the audit and the adverse findings, with the action taken on each.</p>
 
             <div class="card data-card">
-                <h4>FY 2025&ndash;26 &mdash; Audit Status</h4>
+                <h3 class="as-h4">FY 2025&ndash;26 &mdash; Audit Status</h3>
                 <ul>
                     <li><strong>Status:</strong> Completed. The Annual Compliance Audit Report and the Action Taken Report on adverse findings have been submitted to BSE Ltd (IAASB).</li>
                     <li><strong>Period covered:</strong> 04 November 2025 (date of SEBI registration) to 31 March 2026.</li>
@@ -604,16 +606,29 @@
         if (!el) return;
         try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
       }
+      /* While the drawer is open everything outside the header is inert:
+         Tab, Shift+Tab and screen-reader browse cannot reach the page hidden
+         behind the scrim (WCAG 2.4.3 / 2.4.11). Only nodes this script marked
+         are released again. */
+      function setPageInert(on) {
+        Array.prototype.forEach.call(document.body.children, function (el) {
+          if (el.contains(toggle) || el.tagName === 'SCRIPT') return;
+          if (on && !el.hasAttribute('inert')) { el.setAttribute('inert', ''); el.setAttribute('data-fw-inert', ''); }
+          else if (!on && el.hasAttribute('data-fw-inert')) { el.removeAttribute('inert'); el.removeAttribute('data-fw-inert'); }
+        });
+      }
       function openMenu() {
         toggle.setAttribute('aria-expanded', 'true');
         toggle.setAttribute('aria-label', 'Close menu');
         document.documentElement.classList.add('fw-nav-locked');
+        setPageInert(true);
         focusNoScroll(menu && menu.querySelector('a[href]'));
       }
       function closeMenu(returnFocus) {
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open menu');
         document.documentElement.classList.remove('fw-nav-locked');
+        setPageInert(false);
         if (returnFocus) focusNoScroll(toggle);
       }
       if (toggle && menu) {
@@ -714,5 +729,29 @@
       }, { passive: true });
     })();
   </script>
+<script>
+/* Keyboard focus lands on screen at once (WCAG 2.4.7 / 2.4.11). The page
+   scrolls smoothly, and a Tab that jumps thousands of px (through pinned
+   scenes on the homepage, down a long legal document) used to leave the
+   focused element off screen for over a second while the scroll played.
+   A focus target that isn't fully visible below the sticky bar is brought
+   to the middle of the screen instantly. The bar, the drawer and the
+   back-to-top button are always on screen and are left alone. */
+(function () {
+  document.addEventListener('focusin', function (e) {
+    var el = e.target;
+    if (!el || el === document.body || !el.getBoundingClientRect) return;
+    if (el.closest && el.closest('.fw-nav, .fw-totop, .skip-link')) return;
+    var r = el.getBoundingClientRect();
+    if (!r.width && !r.height) return;
+    var nav = document.querySelector('.fw-nav');
+    var top = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+    var tall = r.height > window.innerHeight - top - 32;
+    if (r.top >= top && (r.bottom <= window.innerHeight || (tall && r.top <= window.innerHeight / 2))) return;
+    var y = window.scrollY + r.top - Math.max(top + 16, (window.innerHeight - r.height) / 2);
+    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+  });
+})();
+</script>
 </body>
 </html>

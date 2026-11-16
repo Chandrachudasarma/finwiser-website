@@ -319,7 +319,7 @@
     :focus { outline: none;  }
     a:focus-visible, button:focus-visible, summary:focus-visible,
     details:focus-visible, [tabindex]:focus-visible, .device:focus-visible {
-      outline: 2px solid var(--mint); outline-offset: 2px; border-radius: var(--r-sm);
+      outline: 2px solid var(--focus-ring, var(--teal-ink)); outline-offset: 2px; border-radius: var(--r-sm);
     
     }
     /* The browser default is a blue wash — on a mint button it reads as a bug.
@@ -440,8 +440,11 @@
        rows, the founder). --rv is written by fwSceneReveal and is a pure
        function of scroll; transform and opacity only, so it composites.
        Default 1 means no-JS and reduced-motion get the settled state. */
+    /* Starts at 0, not a 10% ghost: text parked below the fold at the
+       pre-entrance pose is then simply not rendered, instead of sitting on
+       the page at 1.1:1 contrast (WCAG 1.4.3). */
     .fw-rv {
-      opacity: calc(0.10 + 0.90 * var(--rv, 1));
+      opacity: var(--rv, 1);
       transform: translateY(calc((1 - var(--rv, 1)) * 14px));
 
     }
@@ -485,6 +488,15 @@
       border-left: 1px solid color-mix(in srgb, var(--nav-fg, var(--navy-deep)) 25%, transparent);
       color: var(--nav-fg, var(--navy-deep)); text-decoration: none;
       font-family: var(--font-sans); font-size: 13px; line-height: 1.3; white-space: nowrap;
+      /* a real <button> (Enter AND Space open it): drop the UA button chrome */
+      background: none; border-top: 0; border-right: 0; border-bottom: 0;
+      font-weight: inherit; cursor: pointer;
+    }
+    /* Touch: a 44px-tall hit area from an invisible ::after, so the chip
+       (and its divider rule) keep their drawn size. */
+    @media (pointer: coarse) and (max-width: 767px), (pointer: coarse) and (min-width: 1440px) {
+      .fw-nav__cpl { position: relative; }
+      .fw-nav__cpl::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%); }
     }
     .fw-nav__cpl-go { color: var(--teal); margin-left: 2px; }
     .fw-nav.is-over-dark .fw-nav__cpl-go { color: var(--mint); }
@@ -494,6 +506,12 @@
     @media (max-width: 767px), (min-width: 1440px) { .fw-nav__logo { flex-shrink: 0; } }
     @media (max-width: 767px) { .fw-nav__cpl { margin-left: 10px; padding-left: 10px; gap: 3px; font-size: 12px; } }
     @media (max-width: 374px) { .fw-nav__cpl { margin-left: 6px; padding-left: 6px; } }
+    /* 320-374px: logo + chip + menu button must fit without sideways scroll
+       (WCAG 1.4.10). Tighter gap and a 22px logo; the rail stays 24px. */
+    @media (max-width: 374px) {
+      .fw-nav__inner { gap: var(--sp-2); }
+      .fw-nav__logo-img { height: 22px; }
+    }
     @media (min-width: 768px) and (max-width: 1439px) {
       .fw-nav__cpl {
         position: absolute; left: 0; right: 0; top: 100%;
@@ -503,6 +521,7 @@
         clip-path: inset(0 -100vmax -1px);
       }
       .fw-nav__cpl-go { color: var(--mint); }
+      .fw-nav__cpl { --focus-ring: var(--mint); }   /* the strip is navy */
     }
     /* Drop-down with the full Annexure C table. Opens on tap, closes on
        scroll, outside tap or Esc. */
@@ -550,6 +569,10 @@
     /* 44x44 is the tap target; the three bars stay 22px wide, so the button
        grows in hit area only. */
     .fw-nav__toggle { display: none; background: transparent; border: 0; width: 44px; height: 44px; cursor: pointer; padding: 0;  }
+    /* Flex used to shrink the box to 22px on phones (the bars fit, the tap
+       target did not). Fixed at 44px; -11px each side keeps the bars where
+       they were drawn. */
+    .fw-nav__toggle { flex-shrink: 0; margin-inline: -11px;  }
     .fw-nav__toggle-bar {
       display: block; width: 22px; height: 2px; margin: 5px auto;
       background: var(--nav-fg, var(--navy-deep));
@@ -842,7 +865,9 @@
       position: absolute; display: inline-flex; align-items: center; gap: 8px;
       background: var(--navy-deep); border: 1px solid var(--border-on-dark); color: var(--text-on-dark); padding: 10px 14px; border-radius: var(--r-md);
       box-shadow: var(--shadow-2);
-      animation: chip-float calc(var(--dur-scene) * 9) var(--ease-in-out) infinite;
+      /* Two cycles, then rest on the keyframes' 0%/100% pose (WCAG 2.2.2:
+         no endless motion; the hero's pause button covers the rest). */
+      animation: chip-float calc(var(--dur-scene) * 9) var(--ease-in-out) 2;
     
     }
     .hero__chip svg { width: 16px; height: 16px; fill: var(--mint);  }
@@ -856,6 +881,29 @@
     .hero__chip--bank { top: 8%; left: -4%;  }
     .hero__chip--mf   { top: 44%; right: -6%; animation-delay: calc(var(--dur-scene) * -3);  }
     .hero__chip--card { bottom: 10%; left: 6%; animation-delay: calc(var(--dur-scene) * -6);  }
+    .hero.is-motion-paused .hero__chip { animation-play-state: paused; }
+    /* Pause / play for the hero's moving parts (film + chips). A 44px target
+       around a 32px disc, bottom-right of the hero; removed once the motion
+       has finished, and never shown under reduced motion (nothing moves). */
+    .hero__inner { position: relative; }
+    .hero__motion {
+      position: absolute; right: 0; bottom: 0; z-index: 2;
+      width: 44px; height: 44px; padding: 0; border: 0; cursor: pointer;
+      background: transparent; color: var(--text-on-dark);
+      display: grid; place-items: center;
+    }
+    .hero__motion[hidden] { display: none; }
+    .hero__motion::before {
+      content: ''; position: absolute; inset: 6px; border-radius: var(--r-pill);
+      background: var(--white-08); border: 1px solid var(--white-32);
+      transition: background var(--dur-ui) var(--ease-in-out);
+    }
+    .hero__motion:hover::before { background: var(--white-16); }
+    .hero__motion svg { position: relative; width: 14px; height: 14px; fill: currentColor; }
+    .hero__motion .hero__motion-play { display: none; }
+    .hero.is-motion-paused .hero__motion .hero__motion-play { display: block; }
+    .hero.is-motion-paused .hero__motion .hero__motion-pause { display: none; }
+    @media (prefers-reduced-motion: reduce) { .hero__motion { display: none !important; } }
     @keyframes chip-float { 0%, 100% { transform: translateY(0);  } 50% { transform: translateY(-8px);  } }
     @keyframes hero-rise { to { opacity: 1; transform: translateY(0);  } }
 
@@ -2450,8 +2498,11 @@
     .seen-person__meta {
       text-transform: uppercase; letter-spacing: 0.04em;
       font-size: var(--fs-label); color: var(--text-on-light-muted);
+      overflow-wrap: anywhere;
 
     }
+    /* 320-374px: "CONSERVATIVE" is wider than its column with tracking on. */
+    @media (max-width: 374px) { .seen-person__meta { letter-spacing: 0; } }
     .seen-vs {
       display: grid; place-items: center;
       background: var(--surface-light);
@@ -2518,7 +2569,7 @@
     }
     /* First difference = teal; the decider = a gold-highlighted row with a
        gold ★ tag (gold is a light token, so its text/star ride on navy). */
-    .seen-row--diff .seen-ftag { background: var(--teal-16); color: var(--teal-ink);  }
+    .seen-row--diff .seen-ftag { background: var(--teal-16); color: var(--teal-ink-deep);  }
     .seen-row--decide {
       background: linear-gradient(90deg, var(--gold-16), transparent, var(--gold-16));
 
@@ -2579,13 +2630,21 @@
        opacity/transform only (rows keep their box), so the pinned card's
        height is constant: no CLS, and the terminal frame always fits. */
     @media (prefers-reduced-motion: no-preference) {
-      html.js .engine .seen-row {
-        opacity: 0.28;
-        transition: opacity var(--dur-reveal) var(--ease-out),
-                    background var(--dur-reveal) var(--ease-out);
-
+      /* Un-reached rows: the factor label (AGE, GOALS…) stays at full
+         contrast and the two answers + tag wait, hidden, until the row is
+         reached. A ghosted row at 0.28 opacity put 1.4–1.8:1 text on screen
+         (WCAG 1.4.3); hidden text has no contrast to fail. */
+      html.js .engine .seen-row .seen-fv,
+      html.js .engine .seen-row .seen-ftag {
+        opacity: 0;
+        transition: opacity var(--dur-reveal) var(--ease-out);
     }
-      html.js .engine .seen-row.on { opacity: 1;  }
+      html.js .engine .seen-row {
+        transition: background var(--dur-reveal) var(--ease-out);
+    }
+      html.js .engine .seen-row--decide:not(.on) { background: transparent; }
+      html.js .engine .seen-row.on .seen-fv,
+      html.js .engine .seen-row.on .seen-ftag { opacity: 1;  }
       html.js .engine .seen-matched,
       html.js .engine .seen-kicker {
         opacity: 0;
@@ -2831,17 +2890,26 @@
     .caps-rail-wrap.is-at-end::after   { opacity: 0;  }
 
     /* Progress dots — one button per card. */
+    /* Each dot is a 44x44 tap target (WCAG 2.5.5); the visible dot is the
+       8px ::before inside it. The row's negative margins cancel the extra
+       18px above and below, so the dots sit where the 8px buttons sat. */
     .caps-dots {
-      display: flex; justify-content: center; gap: var(--sp-2);
-      margin: var(--sp-4) 0 0; padding: 0;
+      display: flex; justify-content: center; gap: 0;
+      margin: calc(var(--sp-4) - 18px) 0 -18px; padding: 0;
     }
     .caps-dot {
-      width: 8px; height: 8px; padding: 0; border: 0; cursor: pointer;
+      position: relative;
+      width: 44px; height: 44px; padding: 0; border: 0; cursor: pointer;
+      background: transparent;
+    }
+    .caps-dot::before {
+      content: ''; position: absolute; left: 50%; top: 50%;
+      width: 8px; height: 8px; transform: translate(-50%, -50%);
       border-radius: var(--r-pill); background: var(--border-on-light);
       transition: background var(--dur-ui) var(--ease-out),
                   width var(--dur-ui) var(--ease-out);
     }
-    .caps-dot.is-active { background: var(--gold); width: 22px;  }
+    .caps-dot.is-active::before { background: var(--gold); width: 22px;  }
 
     /* First-run hint — a finite, reduced-motion-safe nudge of the next arrow. */
     @keyframes caps-nudge { 0%, 100% { transform: translateY(-50%); } 50% { transform: translateY(-50%) translateX(4px); } }
@@ -2913,7 +2981,7 @@
     .compare tbody th { color: var(--text-on-light);
      }
     .compare tbody td { color: var(--text-on-light-muted);  }
-    .compare__finwiser { background: var(--teal-08); color: var(--teal-ink) !important;  }
+    .compare__finwiser { background: var(--teal-08); color: var(--teal-ink-deep) !important;  }
     .compare__check, .compare__cross {
       display: inline-block; width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;
     
@@ -2986,7 +3054,7 @@
         font-weight: var(--fw-semibold);
 
     }
-      .compare tbody td.compare__finwiser::before { color: var(--teal-ink);  }
+      .compare tbody td.compare__finwiser::before { color: var(--teal-ink-deep);  }
       /* Three flex items in that cell — label, tick, answer. space-between
          would strand the tick in the middle, so the tick carries the gap and
          the pair travels right together. */
@@ -3870,9 +3938,12 @@
     .steps__concept--allocate .alloc-beat__sep { color: var(--white-32); }
     /* JS arms the reveal: beats dim, then light per scroll q. Without
        JS the default above already shows every beat lit (rest state). */
-    .steps__concept--allocate.alloc-js .alloc-beat { color: var(--white-32); }
+    /* Dim = --white-56, the floor for muted TEXT on dark (5.2:1 here);
+       --white-32 was 2.7:1 (WCAG 1.4.3). The lit beat keeps full white and
+       the mint numeral disc, so the step still reads as "not yet". */
+    .steps__concept--allocate.alloc-js .alloc-beat { color: var(--white-56); }
     .steps__concept--allocate.alloc-js .alloc-beat__n {
-      background: var(--white-08); border-color: var(--white-16); color: var(--white-56);
+      background: var(--white-08); border-color: var(--white-16); color: var(--text-on-dark-muted);
     }
     .steps__concept--allocate.alloc-js .alloc-beat.on { color: var(--text-on-dark); }
     .steps__concept--allocate.alloc-js .alloc-beat.on .alloc-beat__n {
@@ -4008,7 +4079,7 @@
       display: flex; align-items: center; gap: 12px;
       padding: 7px 4px 7px;
       text-transform: uppercase; letter-spacing: .12em;
-      font-size: var(--fs-label); color: var(--gold-50);
+      font-size: var(--fs-label); color: var(--gold-88);
     }
     .steps__concept--allocate .alloc-divider::before,
     .steps__concept--allocate .alloc-divider::after {
@@ -4187,7 +4258,7 @@
                alt="" width="330" height="64" decoding="async" aria-hidden="true">
         </picture>
       </a>
-      <a class="fw-nav__cpl" href="complaints.html" role="button" aria-expanded="false" aria-controls="fw-cpl-panel" title="Investor complaints, October 2026: 0 received, 0 pending" aria-label="Investor complaints, October 2026: 0 received, 0 pending. Show the full table">Complaints <strong>0/0</strong><span class="fw-nav__cpl-go" aria-hidden="true">&rsaquo;</span></a>
+      <button class="fw-nav__cpl" type="button" aria-expanded="false" aria-controls="fw-cpl-panel" title="Investor complaints, October 2026: 0 received, 0 pending" aria-label="Investor complaints, October 2026: 0 received, 0 pending. Show the full table">Complaints <strong>0/0</strong><span class="fw-nav__cpl-go" aria-hidden="true">&rsaquo;</span></button>
       <button class="fw-nav__toggle" type="button" aria-controls="fw-nav-menu" aria-expanded="false" aria-label="Open menu">
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
         <span class="fw-nav__toggle-bar" aria-hidden="true"></span>
@@ -4440,6 +4511,10 @@
             <span>Credit card</span>
           </div>
         </div>
+        <button class="hero__motion" type="button" aria-label="Pause animation" hidden>
+          <svg class="hero__motion-pause" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M3 2h3v10H3zM8 2h3v10H8z"/></svg>
+          <svg class="hero__motion-play" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M3.5 1.5 12 7l-8.5 5.5z"/></svg>
+        </button>
       </div>
     </section>
 
@@ -7315,17 +7390,56 @@
                  sleepImg.addEventListener('error', kick, { once: true }); }
 
           var heroT0 = null;   // null, not 0: a now of 0 is a legal first frame
-          heroRaf = requestAnimationFrame(function tick(now) {
-            if (heroT0 === null) heroT0 = now;
+          var heroFrom = 0;    // where a resumed film picks up (pause button)
+          var heroTick = function tick(now) {
+            if (heroT0 === null) heroT0 = now - heroFrom;
             var t = now - heroT0;
             if (t >= HERO_END) {
               heroLastT = HERO_END; heroFrame(HERO_END);
-              heroRaf = 0; heroDone = true; return;
+              heroRaf = 0; heroDone = true; heroMotionCheck(); return;
             }
             heroLastT = t;
             heroFrame(t);
             heroRaf = requestAnimationFrame(tick);
+          };
+          heroRaf = requestAnimationFrame(heroTick);
+
+          /* Pause control (WCAG 2.2.2). The film runs 7.6 s and the chips two
+             6.3 s cycles, so the hero moves for more than five seconds: one
+             button pauses both, resumes both from where they stopped, and
+             removes itself once everything has come to rest. */
+          var heroSection = document.querySelector('.hero');
+          var heroMotionBtn = document.querySelector('.hero__motion');
+          var heroChips = document.querySelectorAll('.hero__chip');
+          var heroChipsLeft = heroChips.length;
+          var heroPaused = false;
+          var heroMotionCheck = function () {
+            if (!heroMotionBtn || !heroDone || heroChipsLeft > 0) return;
+            if (document.activeElement === heroMotionBtn) {
+              heroMotionBtn.addEventListener('blur', function () { heroMotionBtn.hidden = true; }, { once: true });
+            } else {
+              heroMotionBtn.hidden = true;
+            }
+          };
+          Array.prototype.forEach.call(heroChips, function (chip) {
+            chip.addEventListener('animationend', function (e) {
+              if (e.animationName === 'chip-float') { heroChipsLeft--; heroMotionCheck(); }
+            });
           });
+          if (heroMotionBtn && heroSection) {
+            heroMotionBtn.hidden = false;
+            heroMotionBtn.addEventListener('click', function () {
+              heroPaused = !heroPaused;
+              heroSection.classList.toggle('is-motion-paused', heroPaused);
+              heroMotionBtn.setAttribute('aria-label', heroPaused ? 'Play animation' : 'Pause animation');
+              if (heroPaused) {
+                heroStop();
+              } else if (!heroDone && !heroRaf) {
+                heroFrom = heroLastT; heroT0 = null;
+                heroRaf = requestAnimationFrame(heroTick);
+              }
+            });
+          }
         }
 
         /* The hero section still carries data-snap-anim, so SnapAnim still
@@ -7364,11 +7478,23 @@
         if (!el) return;
         try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
       }
+      /* While the drawer is open everything outside the header is inert:
+         Tab, Shift+Tab and screen-reader browse cannot reach the page hidden
+         behind the scrim (WCAG 2.4.3 / 2.4.11). Only nodes this script marked
+         are released again. */
+      function setPageInert(on) {
+        Array.prototype.forEach.call(document.body.children, function (el) {
+          if (el.contains(toggle) || el.tagName === 'SCRIPT') return;
+          if (on && !el.hasAttribute('inert')) { el.setAttribute('inert', ''); el.setAttribute('data-fw-inert', ''); }
+          else if (!on && el.hasAttribute('data-fw-inert')) { el.removeAttribute('inert'); el.removeAttribute('data-fw-inert'); }
+        });
+      }
       function openMenu() {
         if (!toggle) return;
         toggle.setAttribute('aria-expanded', 'true');
         toggle.setAttribute('aria-label', 'Close menu');
         document.documentElement.classList.add('fw-nav-locked');
+        setPageInert(true);
         focusNoScroll(menu && menu.querySelector('a[href]'));
       }
       function closeMenu(returnFocus) {
@@ -7376,6 +7502,7 @@
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open menu');
         document.documentElement.classList.remove('fw-nav-locked');
+        setPageInert(false);
         if (returnFocus) focusNoScroll(toggle);
       }
       /* Focus trap. Tabbing past the last drawer item used to walk straight
@@ -9105,6 +9232,30 @@
     if (!panel.hidden && !panel.contains(e.target) && !btn.contains(e.target)) setOpen(false);
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) { setOpen(false); btn.focus(); } });
+})();
+</script>
+<script>
+/* Keyboard focus lands on screen at once (WCAG 2.4.7 / 2.4.11). The page
+   scrolls smoothly, and a Tab that jumps thousands of px (through pinned
+   scenes on the homepage, down a long legal document) used to leave the
+   focused element off screen for over a second while the scroll played.
+   A focus target that isn't fully visible below the sticky bar is brought
+   to the middle of the screen instantly. The bar, the drawer and the
+   back-to-top button are always on screen and are left alone. */
+(function () {
+  document.addEventListener('focusin', function (e) {
+    var el = e.target;
+    if (!el || el === document.body || !el.getBoundingClientRect) return;
+    if (el.closest && el.closest('.fw-nav, .fw-totop, .skip-link')) return;
+    var r = el.getBoundingClientRect();
+    if (!r.width && !r.height) return;
+    var nav = document.querySelector('.fw-nav');
+    var top = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+    var tall = r.height > window.innerHeight - top - 32;
+    if (r.top >= top && (r.bottom <= window.innerHeight || (tall && r.top <= window.innerHeight / 2))) return;
+    var y = window.scrollY + r.top - Math.max(top + 16, (window.innerHeight - r.height) / 2);
+    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+  });
 })();
 </script>
 </body>

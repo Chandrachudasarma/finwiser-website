@@ -147,7 +147,7 @@
     <div class="legal-title">
       <div class="legal-title__inner">
         <h1 class="h1">Accessibility Statement</h1>
-        <p class="caption updated">Last reviewed: 7 May 2026.</p>
+        <p class="caption updated">Last reviewed: 17 November 2026.</p>
       </div>
     </div>
 
@@ -165,12 +165,13 @@
     <ul>
       <li>Built the marketing website with semantic HTML, single <code>&lt;main&gt;</code> landmark, <code>&lt;nav aria-label&gt;</code> on each navigation region, and a skip-to-main link as the first focusable element.</li>
       <li>Verified colour contrast across the brand palette: all body text passes 4.5:1; large text and UI components pass 3:1; brand mint <code>#35d6c6</code> on navy <code>#002d56</code> measures approximately 8.4:1.</li>
-      <li>Implemented visible <code>:focus-visible</code> states on every interactive element with a 2px mint outline and 3px offset.</li>
+      <li>Implemented visible <code>:focus-visible</code> states on every interactive element with a 2px outline &mdash; teal on light backgrounds, mint on dark, at least 3:1 against either &mdash; and a 3px offset.</li>
       <li>Honoured <code>prefers-reduced-motion: reduce</code> across all animations &mdash; under the reduced-motion preference, all content is visible immediately with no stagger, no scroll-driven motion, and no transforms.</li>
-      <li>Designed the navigation drawer for keyboard users (Escape closes; focus returns to the toggle).</li>
+      <li>Designed the navigation drawer for keyboard users (Escape closes; focus returns to the toggle; the page behind it cannot be reached while it is open).</li>
       <li>Used native <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> for the FAQ accordion to preserve assistive-technology semantics.</li>
       <li>Specified <code>lang="en-IN"</code> at the document root.</li>
       <li>Filed Finwiser&rsquo;s Digital Accessibility Readiness Report with the BSE under Circular 2025/111 (Case 38717, submitted 31 March 2026).</li>
+      <li>On 16&ndash;17 November 2026 we ran an internal pre-audit of all eleven public pages (automated axe-core checks plus manual keyboard, contrast, 320px reflow and motion checks) and fixed what it found: focus-ring contrast, touch-target size, text contrast, small-screen reflow and wide tables, heading order, the homepage animation (now with a pause button), and two broken links to government sites.</li>
     </ul>
 
     <h2 class="h2">Known limitations</h2>
@@ -182,12 +183,14 @@
     </ul>
 
     <h2 class="h2">Standards we conform with (target)</h2>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Table: Standards we conform with">
     <table class="caption">
       <tr><th>Standard</th><th>Target level</th><th>Status</th></tr>
       <tr><td>WCAG 2.1</td><td>Level AA</td><td>Working towards full conformance</td></tr>
       <tr><td>IS 17802:2022 (BIS, India)</td><td>Required</td><td>Working towards full conformance</td></tr>
       <tr><td>GIGW 3.0</td><td>Required</td><td>Working towards full conformance</td></tr>
     </table>
+    </div>
 
     <h2 class="h2">Accessibility complaints &mdash; how to escalate</h2>
     <p>If you encounter any accessibility barrier on Finwiser&rsquo;s website or app, please write to us first. We will acknowledge your message within one working day and resolve it within seven working days where possible (outer limit: twenty-one days).</p>
@@ -302,16 +305,29 @@
         if (!el) return;
         try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
       }
+      /* While the drawer is open everything outside the header is inert:
+         Tab, Shift+Tab and screen-reader browse cannot reach the page hidden
+         behind the scrim (WCAG 2.4.3 / 2.4.11). Only nodes this script marked
+         are released again. */
+      function setPageInert(on) {
+        Array.prototype.forEach.call(document.body.children, function (el) {
+          if (el.contains(toggle) || el.tagName === 'SCRIPT') return;
+          if (on && !el.hasAttribute('inert')) { el.setAttribute('inert', ''); el.setAttribute('data-fw-inert', ''); }
+          else if (!on && el.hasAttribute('data-fw-inert')) { el.removeAttribute('inert'); el.removeAttribute('data-fw-inert'); }
+        });
+      }
       function openMenu() {
         toggle.setAttribute('aria-expanded', 'true');
         toggle.setAttribute('aria-label', 'Close menu');
         document.documentElement.classList.add('fw-nav-locked');
+        setPageInert(true);
         focusNoScroll(menu && menu.querySelector('a[href]'));
       }
       function closeMenu(returnFocus) {
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open menu');
         document.documentElement.classList.remove('fw-nav-locked');
+        setPageInert(false);
         if (returnFocus) focusNoScroll(toggle);
       }
       if (toggle && menu) {
@@ -412,5 +428,29 @@
       }, { passive: true });
     })();
   </script>
+<script>
+/* Keyboard focus lands on screen at once (WCAG 2.4.7 / 2.4.11). The page
+   scrolls smoothly, and a Tab that jumps thousands of px (through pinned
+   scenes on the homepage, down a long legal document) used to leave the
+   focused element off screen for over a second while the scroll played.
+   A focus target that isn't fully visible below the sticky bar is brought
+   to the middle of the screen instantly. The bar, the drawer and the
+   back-to-top button are always on screen and are left alone. */
+(function () {
+  document.addEventListener('focusin', function (e) {
+    var el = e.target;
+    if (!el || el === document.body || !el.getBoundingClientRect) return;
+    if (el.closest && el.closest('.fw-nav, .fw-totop, .skip-link')) return;
+    var r = el.getBoundingClientRect();
+    if (!r.width && !r.height) return;
+    var nav = document.querySelector('.fw-nav');
+    var top = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+    var tall = r.height > window.innerHeight - top - 32;
+    if (r.top >= top && (r.bottom <= window.innerHeight || (tall && r.top <= window.innerHeight / 2))) return;
+    var y = window.scrollY + r.top - Math.max(top + 16, (window.innerHeight - r.height) / 2);
+    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+  });
+})();
+</script>
 </body>
 </html>

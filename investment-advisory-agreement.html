@@ -198,6 +198,7 @@
             <h2 class="h2">1. Parties and Recitals</h2>
 
             <h3>1.1 The Adviser</h3>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Table: The Adviser">
             <table class="caption">
                 <tr><th>Field</th><th>Details</th></tr>
                 <tr><td>Name</td><td>Chandrachuda Sarma Yemmanuru</td></tr>
@@ -207,6 +208,7 @@
                 <tr><td>Contact</td><td><a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></td></tr>
                 <tr><td>SEBI Regional Office</td><td>SEBI Southern Regional Office, Bengaluru</td></tr>
             </table>
+            </div>
 
             <h3>1.2 The Client</h3>
             <p>The individual who executes this Agreement through the Finwiser Platform, identified by their registered name, mobile number, email address, and KYC details as provided during onboarding.</p>
@@ -358,11 +360,13 @@
             <h3>6.1 Fee Mode</h3>
             <p>The Adviser operates on a <strong>Fixed Fee</strong> basis, as permitted under Regulation 15A of the IA Regulations. The applicable fees are:</p>
 
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Table: Fee mode">
             <table class="caption">
                 <tr><th>Service</th><th>Fee</th><th>Nature</th></tr>
                 <tr><td>Advisory Unlock</td><td>&#8377;49</td><td>One-time fee for initial personalised advisory report (portfolio diagnostics, problem identification, and recommended actions)</td></tr>
                 <tr><td>Ongoing Advisory</td><td>&#8377;199 per month</td><td>Continuous personalised advisory services, including portfolio monitoring, goal tracking, surplus allocation, and periodic rebalancing recommendations</td></tr>
             </table>
+            </div>
 
             <p>The total annual fee per Client Family shall not exceed the cap prescribed by SEBI under the IA Regulations (currently &#8377;1,51,000 per annum per family of clients for Fixed Fee mode).</p>
 
@@ -644,12 +648,14 @@
             <h2 class="h2">16. Grievance Redressal</h2>
 
             <h3>16.1 Grievance Officer</h3>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Table: Grievance Officer">
             <table class="caption">
                 <tr><th>Field</th><th>Details</th></tr>
                 <tr><td>Name</td><td>Chandrachuda Sarma Yemmanuru</td></tr>
                 <tr><td>Email</td><td><a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></td></tr>
                 <tr><td>Response Time</td><td>Acknowledgement within 1 working day of receipt; substantive resolution target of 7 calendar days; SEBI outer limit of 21 calendar days</td></tr>
             </table>
+            </div>
 
             <h3>16.2 Escalation Path</h3>
             <p>If a grievance is not resolved satisfactorily, the Client may escalate through the following channels:</p>
@@ -740,6 +746,7 @@
 
             <!-- MITC 2 -->
             <h3>2. Service Fees</h3>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Table: MITC: service fees">
             <table class="caption">
                 <tr><th>Component</th><th>Amount</th><th>Description</th></tr>
                 <tr><td>Fee Mode</td><td colspan="2">Fixed Fee (per Regulation 15A)</td></tr>
@@ -749,6 +756,7 @@
                 <tr><td>Payment Modes</td><td colspan="2">Bank transfer, UPI only. <strong>No cash.</strong></td></tr>
                 <tr><td>Change Notice</td><td colspan="2">At least 21 calendar days' prior written notice (by email) for any fee change; Client may terminate at no further charge before the revised fee takes effect.</td></tr>
             </table>
+            </div>
 
             <!-- MITC 3 -->
             <h3>3. No Trade Execution Without Consent</h3>
@@ -768,6 +776,7 @@
 
             <!-- MITC 5 -->
             <h3>5. Grievance Redressal</h3>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Table: MITC: grievance redressal">
             <table class="caption">
                 <tr><th>Channel</th><th>Details</th></tr>
                 <tr><td>Grievance Officer</td><td>Chandrachuda Sarma Yemmanuru &mdash; <a href="mailto:helpdesk@finwiser.org">helpdesk@finwiser.org</a></td></tr>
@@ -776,6 +785,7 @@
                 <tr><td>ODR Portal</td><td>SEBI Online Dispute Resolution platform</td></tr>
                 <tr><td>Consumer Forum</td><td>Client's right to approach Consumer Disputes Redressal Commission is preserved</td></tr>
             </table>
+            </div>
 
             <!-- MITC 6 -->
             <h3>6. Termination</h3>
@@ -914,16 +924,29 @@
         if (!el) return;
         try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
       }
+      /* While the drawer is open everything outside the header is inert:
+         Tab, Shift+Tab and screen-reader browse cannot reach the page hidden
+         behind the scrim (WCAG 2.4.3 / 2.4.11). Only nodes this script marked
+         are released again. */
+      function setPageInert(on) {
+        Array.prototype.forEach.call(document.body.children, function (el) {
+          if (el.contains(toggle) || el.tagName === 'SCRIPT') return;
+          if (on && !el.hasAttribute('inert')) { el.setAttribute('inert', ''); el.setAttribute('data-fw-inert', ''); }
+          else if (!on && el.hasAttribute('data-fw-inert')) { el.removeAttribute('inert'); el.removeAttribute('data-fw-inert'); }
+        });
+      }
       function openMenu() {
         toggle.setAttribute('aria-expanded', 'true');
         toggle.setAttribute('aria-label', 'Close menu');
         document.documentElement.classList.add('fw-nav-locked');
+        setPageInert(true);
         focusNoScroll(menu && menu.querySelector('a[href]'));
       }
       function closeMenu(returnFocus) {
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open menu');
         document.documentElement.classList.remove('fw-nav-locked');
+        setPageInert(false);
         if (returnFocus) focusNoScroll(toggle);
       }
       if (toggle && menu) {
@@ -1024,5 +1047,29 @@
       }, { passive: true });
     })();
   </script>
+<script>
+/* Keyboard focus lands on screen at once (WCAG 2.4.7 / 2.4.11). The page
+   scrolls smoothly, and a Tab that jumps thousands of px (through pinned
+   scenes on the homepage, down a long legal document) used to leave the
+   focused element off screen for over a second while the scroll played.
+   A focus target that isn't fully visible below the sticky bar is brought
+   to the middle of the screen instantly. The bar, the drawer and the
+   back-to-top button are always on screen and are left alone. */
+(function () {
+  document.addEventListener('focusin', function (e) {
+    var el = e.target;
+    if (!el || el === document.body || !el.getBoundingClientRect) return;
+    if (el.closest && el.closest('.fw-nav, .fw-totop, .skip-link')) return;
+    var r = el.getBoundingClientRect();
+    if (!r.width && !r.height) return;
+    var nav = document.querySelector('.fw-nav');
+    var top = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+    var tall = r.height > window.innerHeight - top - 32;
+    if (r.top >= top && (r.bottom <= window.innerHeight || (tall && r.top <= window.innerHeight / 2))) return;
+    var y = window.scrollY + r.top - Math.max(top + 16, (window.innerHeight - r.height) / 2);
+    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+  });
+})();
+</script>
 </body>
 </html>

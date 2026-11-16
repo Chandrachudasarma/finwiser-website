@@ -68,6 +68,13 @@
                              clears 4.5:1 on BOTH light surfaces (#00847e
                              clears white at 4.55 but fails the card at 4.32) */
   --gold:      #f5c26b;
+  --teal-ink-deep: #006b66; /* teal TEXT on a teal tint (--teal-08/16):
+                             >=5:1 where --teal-ink drops to 4.2-4.4      */
+
+  /* ---- focus ring (WCAG 1.4.11, >=3:1 against the ground it sits on) ---
+     --teal-ink on light grounds (5.13:1 on #ffffff), --mint on navy
+     (9.2:1). Each ground re-points it in §7; the nav and drawer below. */
+  --focus-ring: var(--teal-ink);
 
   /* ---- derived surfaces (elevation, never a page ground) ----------------- */
   --surface-dark:  #002d56;
@@ -98,11 +105,13 @@
   --navy-08:  rgba(0,45,86,0.08);
   --navy-16:  rgba(0,45,86,0.16);
   --navy-32:  rgba(0,45,86,0.32);
+  --navy-56:  rgba(0,45,86,0.56);  /* form-field boundary: 3.6:1 on #ffffff  */
 
   --gold-08:  rgba(245,194,107,0.08);
   --gold-16:  rgba(245,194,107,0.16);
   --gold-32:  rgba(245,194,107,0.32);
   --gold-56:  rgba(245,194,107,0.56);
+  --gold-88:  rgba(245,194,107,0.88);  /* gold label text on navy: >=4.5:1 */
 
   --black-32: rgba(0,0,0,0.32);
   --black-45: rgba(0,0,0,0.45);
@@ -443,6 +452,7 @@
   --fg-muted:  var(--text-on-dark-muted);
   --line:      var(--border-on-dark);
   --accent:    var(--mint);
+  --focus-ring: var(--mint);
   --card-bg:   var(--white-04);
   --card-shadow: none;
 }
@@ -454,6 +464,7 @@
   --fg-muted:  var(--text-on-light-muted);
   --line:      var(--border-on-light);
   --accent:    var(--teal-ink);
+  --focus-ring: var(--teal-ink);
   --card-bg:   var(--white);
   --card-shadow: var(--shadow-1);
 }
@@ -960,6 +971,7 @@ strong, b,
   --nav-ground: 0,31,61;
   --nav-fg: var(--text-on-dark);
   --nav-fg-hover: var(--mint);
+  --focus-ring: var(--mint);
   --nav-line: var(--border-on-dark);
   --nav-shadow: var(--shadow-1);
 }
@@ -1002,6 +1014,8 @@ strong, b,
    and the legal pages carry the same markup. min-height rather than padding
    arithmetic so the floor holds whatever the label does. */
 @media (max-width: 767px) {
+  /* The drawer is always navy, whatever the bar is over. */
+  .fw-nav__menu { --focus-ring: var(--mint); }
   .fw-nav__menu .fw-nav__link {
     display: flex; align-items: center;
     min-height: 44px; padding: 10px 16px;
@@ -1212,7 +1226,24 @@ strong, b,
 :focus { outline: none; }
 a:focus-visible, button:focus-visible, summary:focus-visible,
 details:focus-visible, [tabindex]:focus-visible, .device:focus-visible {
-  outline: 2px solid var(--mint); outline-offset: 3px; border-radius: var(--r-sm);
+  outline: 2px solid var(--focus-ring, var(--teal-ink)); outline-offset: 3px; border-radius: var(--r-sm);
+}
+
+/* --- 9.7a · TOUCH TARGETS ------------------------------------------------
+   On a touch screen every navigation link is at least 44 px tall (WCAG 2.5.5
+   good practice, Apple HIG). Mouse and trackpad layouts are untouched: the
+   query only matches a coarse pointer. Specificity is one step above each
+   page's own rule so the page <style> blocks, loaded later, don't undo it. */
+@media (pointer: coarse) {
+  .site-footer .site-footer__col a {
+    display: flex; align-items: center; min-height: 44px; margin-bottom: 0;
+  }
+  .fw-nav .fw-nav__cta { min-height: 44px; }
+  .legal-crumb li a,
+  .legal a.back-to-top { display: inline-flex; align-items: center; min-height: 44px; }
+}
+@media (pointer: coarse) and (min-width: 768px) {
+  .fw-nav__inner .fw-nav__link { display: inline-flex; align-items: center; min-height: 44px; }
 }
 
 /* --- 9.8 · MEDIA -----------------------------------------------------------

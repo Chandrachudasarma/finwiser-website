@@ -241,7 +241,7 @@ html.fw-nav-locked { overflow: hidden; overscroll-behavior: none; }
   scroll-margin-top: calc(var(--nav-h) + var(--sp-4));
 }
 .legal h3 { color: var(--fg); margin: var(--sp-6) 0 var(--sp-2); scroll-margin-top: calc(var(--nav-h) + var(--sp-4)); }
-.legal h4 { color: var(--fg); margin: var(--sp-5) 0 var(--sp-2); }
+.legal h4, .legal .as-h4 { color: var(--fg); margin: var(--sp-5) 0 var(--sp-2); }
 .legal p  { margin-bottom: var(--sp-3); color: var(--fg); max-width: var(--measure-body); }
 .legal ul, .legal ol { margin: var(--sp-3) 0 var(--sp-3) var(--sp-5); }
 .legal li { margin-bottom: var(--sp-2); max-width: var(--measure-body); }
@@ -301,7 +301,9 @@ html.fw-nav-locked { overflow: hidden; overscroll-behavior: none; }
 .legal .snapshot-card { margin: var(--sp-4) 0; }
 .legal .data-card h4,
 .legal .data-category h4,
-.legal .contact-card h4 { margin-top: 0; margin-bottom: var(--sp-2); }
+.legal .contact-card h4,
+.legal .data-card .as-h4,
+.legal .contact-card .as-h4 { margin-top: 0; margin-bottom: var(--sp-2); }
 
 /* --- Do / Don't pairs (investor charter). The glyph carries the meaning;
        colour only reinforces it. -------------------------------------------- */
@@ -315,7 +317,8 @@ html.fw-nav-locked { overflow: hidden; overscroll-behavior: none; }
 }
 .legal .do-card   { border-left: 4px solid var(--teal-ink); }
 .legal .dont-card { border-left: 4px solid var(--gold); }
-.legal .do-card h4, .legal .dont-card h4 { margin-top: 0; margin-bottom: var(--sp-2); }
+.legal .do-card h4, .legal .dont-card h4,
+.legal .do-card .as-h4, .legal .dont-card .as-h4 { margin-top: 0; margin-bottom: var(--sp-2); }
 .legal .do-card p:last-child, .legal .dont-card p:last-child { margin-bottom: 0; }
 @media (max-width: 767px) { .legal .do-dont-grid { grid-template-columns: 1fr; } }
 
@@ -336,6 +339,14 @@ html.fw-nav-locked { overflow: hidden; overscroll-behavior: none; }
 }
 .legal table { width: 100%; border-collapse: collapse; margin: var(--sp-5) 0; }
 .legal .table-scroll table { margin: 0; min-width: 520px; }
+/* A text table that may outgrow a 320px screen scrolls inside its own box
+   too (WCAG 1.4.10), without the numeric-grid styling or the edge shade.
+   Both wrappers are keyboard-scrollable regions: tabindex="0", role="region"
+   and an aria-label in the markup, plus the site focus ring. */
+.legal .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: var(--sp-5) 0; }
+.legal .table-wrap table { margin: 0; }
+.legal .table-scroll:focus-visible,
+.legal .table-wrap:focus-visible { outline-offset: 2px; border-radius: 0; }
 .legal th, .legal td {
   padding: var(--sp-3) var(--sp-4); text-align: left; vertical-align: top;
   border-bottom: var(--hairline) solid var(--line);
@@ -479,7 +490,7 @@ html.fw-nav-locked { overflow: hidden; overscroll-behavior: none; }
   .legal h2, .legal h3, .legal h4 { break-after: avoid; }
   .legal table { break-inside: auto; }
   .legal tr { break-inside: avoid; }
-  .legal .table-scroll { overflow: visible !important; box-shadow: none !important; }
+  .legal .table-scroll, .legal .table-wrap { overflow: visible !important; box-shadow: none !important; }
   /* On paper there is no sideways scroll: the widest table has to fit the
      page, so its columns are forced into the measure instead of clipped. */
   .legal .table-scroll table { min-width: 0; width: 100%; table-layout: fixed; }
@@ -526,8 +537,9 @@ html.fw-nav-locked { overflow: hidden; overscroll-behavior: none; }
 
 /* O3 · .legal h4 — the fourth level, and the heading inside a small card.
    The Body role at the emphasis weight brand.css already uses for `strong`.
-   No new size, no new weight. */
-.legal h4 {
+   No new size, no new weight. `.as-h4` is an <h3> that sits directly under
+   an <h2> (so the outline doesn't skip a level) but keeps this card look. */
+.legal h4, .legal .as-h4 {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   font-weight: var(--fw-semi);

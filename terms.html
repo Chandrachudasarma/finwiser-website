@@ -214,7 +214,7 @@
 
             <p><strong class="definition-term">Account</strong> — Means the user account created by you on the Platform for accessing Platform features.</p>
 
-            <p><strong class="definition-term">Applicable Law</strong> — Means all applicable laws, rules, regulations, circulars, directions, and guidelines in force in India, including those issued by <a href="https://www.sebi.gov.in/" target="_blank" rel="noopener">SEBI</a>, <a href="https://www.rbi.org.in/" target="_blank" rel="noopener">RBI</a>, and under the <a href="https://www.meity.gov.in/content/information-technology-act" target="_blank" rel="noopener">Information Technology Act, 2000</a> and the <a href="https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a>.</p>
+            <p><strong class="definition-term">Applicable Law</strong> — Means all applicable laws, rules, regulations, circulars, directions, and guidelines in force in India, including those issued by <a href="https://www.sebi.gov.in/" target="_blank" rel="noopener">SEBI</a>, <a href="https://www.rbi.org.in/" target="_blank" rel="noopener">RBI</a>, and under the <a href="https://www.meity.gov.in/content/information-technology-act" target="_blank" rel="noopener">Information Technology Act, 2000</a> and the <a href="https://indiacode.gov.in/act/c058fa9f-eaf0-4ca3-98f1-3443b087bca9" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a>.</p>
 
             <p><strong class="definition-term">Platform</strong> — Means the Finwiser software application, website, dashboards, calculators, tools, visualisations, and related technology interfaces made available to Users.</p>
 
@@ -421,7 +421,7 @@
             <p>Finwiser does not warrant that FI fetched through AA will reflect real-time or exhaustive financial positions.</p>
 
             <h3>6.6 Storage, Retention, and Security of FI</h3>
-            <p>FI is handled in accordance with the <a href="https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a>, RBI Account Aggregator guidelines, SEBI record-keeping requirements, and Finwiser's internal security policies.</p>
+            <p>FI is handled in accordance with the <a href="https://indiacode.gov.in/act/c058fa9f-eaf0-4ca3-98f1-3443b087bca9" target="_blank" rel="noopener">Digital Personal Data Protection Act, 2023</a>, RBI Account Aggregator guidelines, SEBI record-keeping requirements, and Finwiser's internal security policies.</p>
             <p>FI is stored securely using industry-standard safeguards, retained only for as long as required for the stated purpose or Applicable Law, and subject to deletion, anonymisation, or archival in accordance with Finwiser's Data Retention and Erasure Policy.</p>
 
             <h3>6.7 No Sale or Monetisation of Financial Information</h3>
@@ -733,7 +733,7 @@
 
             <h3>15.2 Dispute Resolution</h3>
             <p>The parties shall attempt to resolve disputes arising under these Terms amicably within 30 days of written notice by one party to the other.</p>
-            <p>If unresolved, the dispute may be referred to arbitration under the <a href="https://legislative.gov.in/sites/default/files/A1996-26_0.pdf" target="_blank" rel="noopener">Arbitration and Conciliation Act, 1996</a>:</p>
+            <p>If unresolved, the dispute may be referred to arbitration under the <a href="https://indiacode.gov.in/act/51601006-0e76-4a81-83ce-739f3a021112" target="_blank" rel="noopener">Arbitration and Conciliation Act, 1996</a>:</p>
             <ul>
                 <li>Arbitration shall be conducted by a sole arbitrator mutually appointed.</li>
                 <li>The seat and venue of arbitration shall be <strong>Bengaluru, Karnataka</strong>.</li>
@@ -873,16 +873,29 @@
         if (!el) return;
         try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
       }
+      /* While the drawer is open everything outside the header is inert:
+         Tab, Shift+Tab and screen-reader browse cannot reach the page hidden
+         behind the scrim (WCAG 2.4.3 / 2.4.11). Only nodes this script marked
+         are released again. */
+      function setPageInert(on) {
+        Array.prototype.forEach.call(document.body.children, function (el) {
+          if (el.contains(toggle) || el.tagName === 'SCRIPT') return;
+          if (on && !el.hasAttribute('inert')) { el.setAttribute('inert', ''); el.setAttribute('data-fw-inert', ''); }
+          else if (!on && el.hasAttribute('data-fw-inert')) { el.removeAttribute('inert'); el.removeAttribute('data-fw-inert'); }
+        });
+      }
       function openMenu() {
         toggle.setAttribute('aria-expanded', 'true');
         toggle.setAttribute('aria-label', 'Close menu');
         document.documentElement.classList.add('fw-nav-locked');
+        setPageInert(true);
         focusNoScroll(menu && menu.querySelector('a[href]'));
       }
       function closeMenu(returnFocus) {
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open menu');
         document.documentElement.classList.remove('fw-nav-locked');
+        setPageInert(false);
         if (returnFocus) focusNoScroll(toggle);
       }
       if (toggle && menu) {
@@ -983,5 +996,29 @@
       }, { passive: true });
     })();
   </script>
+<script>
+/* Keyboard focus lands on screen at once (WCAG 2.4.7 / 2.4.11). The page
+   scrolls smoothly, and a Tab that jumps thousands of px (through pinned
+   scenes on the homepage, down a long legal document) used to leave the
+   focused element off screen for over a second while the scroll played.
+   A focus target that isn't fully visible below the sticky bar is brought
+   to the middle of the screen instantly. The bar, the drawer and the
+   back-to-top button are always on screen and are left alone. */
+(function () {
+  document.addEventListener('focusin', function (e) {
+    var el = e.target;
+    if (!el || el === document.body || !el.getBoundingClientRect) return;
+    if (el.closest && el.closest('.fw-nav, .fw-totop, .skip-link')) return;
+    var r = el.getBoundingClientRect();
+    if (!r.width && !r.height) return;
+    var nav = document.querySelector('.fw-nav');
+    var top = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+    var tall = r.height > window.innerHeight - top - 32;
+    if (r.top >= top && (r.bottom <= window.innerHeight || (tall && r.top <= window.innerHeight / 2))) return;
+    var y = window.scrollY + r.top - Math.max(top + 16, (window.innerHeight - r.height) / 2);
+    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+  });
+})();
+</script>
 </body>
 </html>
