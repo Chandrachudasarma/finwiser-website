@@ -140,6 +140,27 @@ footer{border-top:1px solid var(--rule);padding:28px 0 48px;color:var(--ink2);fo
     </div>
   </section>
 
+  <section class="block" aria-labelledby="h-custom">
+    <h2 id="h-custom">Custom-built controls</h2>
+    <p class="hint" style="font-size:1rem;max-width:46rem">These controls are our own, not standard platform ones, so a screen reader only knows what we tell it. The middle column is what the app tells the screen reader today, taken from the app's accessibility tree. Please check that it is announced this way on real devices and that it makes sense to users.</p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th scope="col">Control</th><th scope="col">Journey</th><th scope="col">What the screen reader is told</th><th scope="col">Expected behaviour</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">6-box sign-in code</th><td><a href="#j1">1. Sign in</a></td><td>Text field "Six-digit code", hint "0 of 6 digits"</td><td>One field, not six separate stops. The count updates as digits are typed. SMS auto-fill fills every box.</td></tr>
+        <tr><th scope="row">PIN keypad and dots</th><td><a href="#j2">2. App lock</a></td><td>Keys: buttons "0" to "9" and "Delete". Dots: "PIN, 0 of 4 digits"</td><td>Each key is at least 48 dp. The dots are a live region, so the count is read as it changes. A wrong PIN is read out.</td></tr>
+        <tr><th scope="row">Segmented PAN and date of birth</th><td><a href="#j3">3. Your details</a></td><td>"PAN, 0 of 10" · "Day, 0 of 2" · "Month, 0 of 2" · "Year, 0 of 4"</td><td>One field per part, with a running count. The DD/MM/YYYY hints are not read separately. Errors are read out when they appear.</td></tr>
+        <tr><th scope="row">Disability choice chips</th><td><a href="#j3">3. Accessibility help</a></td><td>Buttons "Seeing", "Hearing", "Movement", "Other", "No", "Prefer not to say", each with a selected or not-selected state</td><td>One choice at a time, none chosen at the start, all optional. Tapping the chosen chip clears it. Each chip is 48 dp tall.</td></tr>
+        <tr><th scope="row">Call-back switch</th><td><a href="#j3">3. Accessibility help</a></td><td>Switch "Call me to help me sign up. Our helpdesk will call your number", on or off</td><td>Saving is confirmed out loud: "Saved. Our helpdesk will call you to help you finish signing up."</td></tr>
+        <tr><th scope="row">Linked-accounts ring</th><td><a href="#j4">4. Linking accounts</a></td><td>"0 of 4 kinds added", for example "1 of 4 kinds added" after one is chosen</td><td>A single summary instead of the drawn ring and its labels.</td></tr>
+        <tr><th scope="row">Budget bars</th><td><a href="#j5">5. Cash flow</a></td><td>"Obligations, 28 thousand rupees, of ₹40K limit, On track". Over the limit: "…, over by" and the amount</td><td>Overspending is shown by a hatch pattern and words as well as colour.</td></tr>
+        <tr><th scope="row">Month switcher</th><td><a href="#j5">5. Cash flow</a></td><td>Other months: buttons "Show Oct 2026", "Show Sep 2026". The month on screen: its name, for example "This month"</td><td>Switching month updates the whole page. At large text the row scrolls sideways.</td></tr>
+        <tr><th scope="row">Trend chart in answers</th><td><a href="#j6">6. Finwy</a></td><td>One stop per month: "Apr, ₹51.8K", "May, ₹55.3K" …</td><td>Each month's value is read with its month, in order.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
   <nav class="toc block" aria-labelledby="h-toc">
     <h2 id="h-toc">Journeys</h2>
     <ol><li><a href="#j1">Sign in</a></li><li><a href="#j2">App lock</a></li><li><a href="#j3">Your details and accessibility help</a></li><li><a href="#j4">Linking bank and investment accounts</a></li><li><a href="#j5">Cash flow</a></li><li><a href="#j6">Finwy (questions and answers)</a></li><li><a href="#j7">Goals</a></li><li><a href="#j8">Accounts</a></li><li><a href="#j9">Risk profile</a></li><li><a href="#j10">Profile and settings</a></li><li><a href="#j11">Help and complaints</a></li></ol>
