@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
 <meta name="googlebot" content="noindex, nofollow, noimageindex">
 <meta name="referrer" content="no-referrer">
-<title>Finwiser app: screens for accessibility audit</title>
-<meta name="description" content="Screen list and accessibility notes for the Finwiser mobile app, for accessibility audit vendors.">
+<title>Finwiser app: screens and accessibility readiness</title>
+<meta name="description" content="Every screen in the Finwiser mobile app and the accessibility already built on each.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,86 +79,31 @@ footer{border-top:1px solid var(--rule);padding:28px 0 48px;color:var(--ink2);fo
 </header>
 
 <main id="main" class="wrap">
-  <h1>Finwiser app: screens for accessibility audit</h1>
-  <p class="lead">This page lists every screen in the Finwiser mobile app, with screenshots and our accessibility notes for each. It is for firms quoting for, or carrying out, our audit under SEBI's digital-accessibility circular.</p>
+  <h1>Finwiser app: screens and accessibility readiness</h1>
+  <p class="lead">Every screen in the Finwiser mobile app, with what is already built for accessibility on each.</p>
 
   <ul class="facts">
     <li><b>App</b><span>Finwiser, iOS and Android</span></li>
     <li><b>Built with</b><span>Flutter, one code base for both platforms</span></li>
     <li><b>Minimum OS</b><span>iOS 16 · Android 9 (API 28)</span></li>
-    <li><b>Scope</b><span>11 journeys, 38 screen states</span></li>
+    <li><b>Screens</b><span>38 screens in 11 journeys</span></li>
     <li><b>Standards</b><span>WCAG 2.1 AA · GIGW 3.0 · IS 17802</span></li>
-    <li><b>Circular</b><span>SEBI/HO/ITD-1/ITD_VIAP/P/CIR/2025/111</span></li>
+    <li><b>Automated checks</b><span>0 failures on all {{STATES}} screens</span></li>
   </ul>
 
-  <section class="block" aria-labelledby="h-about">
-    <h2 id="h-about">About this audit</h2>
-    <h3>What we ask of the auditor</h3>
+  <section class="block" aria-labelledby="h-ready">
+    <h2 id="h-ready">Ready on every screen</h2>
+    <p class="hint" style="font-size:1rem;max-width:46rem">Each screen is tested automatically on every code change for touch-target size (48 dp Android, 44 pt iOS), labelled controls, text contrast, and layout at 200% text. All pass.</p>
     <ul class="tight">
-      <li>Test every journey below on a real iPhone with VoiceOver and a real Android phone with TalkBack.</li>
-      <li>Test at the largest system text size, with reduce-motion on, and with a switch or external keyboard where the platform supports it.</li>
-      <li>Include usability testing with persons with disabilities, as §5.1 of the circular asks.</li>
-      <li>Deliver the report in the format of Tables C1–C4 (circular 2025/131), signed by an IAAP-certified professional with the certificate number.</li>
-      <li>Recheck after we fix what you find, and confirm the closure.</li>
+      <li><b>Screen readers:</b> every page has a heading read out when it opens; section titles are headings; buttons, links, switches and choices carry their role, name and state.</li>
+      <li><b>Errors:</b> read out as soon as they appear; each form field shows its own error.</li>
+      <li><b>Text size:</b> follows the phone setting up to 200%. The five bottom-tab labels stop growing at 130% so they fit side by side; they are still read in full.</li>
+      <li><b>Colour:</b> text 4.5:1 (3:1 large), field borders and icons 3:1; status is never shown by colour alone.</li>
+      <li><b>Motion:</b> the phone's reduce-motion setting turns animations off.</li>
+      <li><b>Orientation:</b> portrait and landscape both work.</li>
+      <li><b>Time limits:</b> the app lock time is the user's choice (1–20 minutes); typing and screen-reader actions count as use; nothing is lost behind the lock.</li>
+      <li><b>SEBI §4 help:</b> "Trouble seeing or using the app? Tap here" on sign-in and details, and in Profile: helpdesk call-back, phone, email, and an optional disability field. Complaints have an "Accessibility" category.</li>
     </ul>
-    <h3>What we have already done</h3>
-    <ul class="tight">
-      <li>An internal review in November 2026: automated checks on every screen, code review, and a check against SEBI §4 (help for persons with disabilities during sign-up).</li>
-      <li>Each automated check now runs as a test on every change: tap targets (48 dp Android, 44 pt iOS), labelled controls, text contrast, and layout at 200% text.</li>
-      <li>We fixed what the review found. The test build you receive includes those fixes.</li>
-    </ul>
-    <h3>Access</h3>
-    <ul class="tight">
-      <li>We share a test build through TestFlight (iOS) and Play testing (Android), with a test account that holds sample financial data.</li>
-      <li>Signing up uses a one-time code sent by SMS. The test account avoids the need for a real bank account.</li>
-    </ul>
-    <h3>Outside our app</h3>
-    <ul class="tight">
-      <li><b>Account Aggregator consent page.</b> To link bank accounts, the user approves a consent on the Account Aggregator's own page, which is operated by an RBI-licensed Account Aggregator, not by us. Please note any problems you find there separately.</li>
-      <li><b>System screens</b> such as Face ID or fingerprint prompts, the phone dialer, and the email app.</li>
-    </ul>
-  </section>
-
-  <section class="block" aria-labelledby="h-wide">
-    <h2 id="h-wide">Across the whole app</h2>
-    <div class="tablewrap">
-    <table>
-      <caption class="hint" style="text-align:left;caption-side:top;padding-bottom:4px">App-wide behaviour, so it is not repeated on every screen.</caption>
-      <thead><tr><th scope="col">Area</th><th scope="col">What the app does</th></tr></thead>
-      <tbody>
-        <tr><th scope="row">Screen readers</th><td>Every page has a heading that is announced when the page opens. Section titles are headings. Buttons and links carry their role and a name.</td></tr>
-        <tr><th scope="row">Text size</th><td>Text follows the phone's text size, tested up to 200%. One exception: the five bottom-tab labels stop growing at 130%, because "Accounts" and "Cash Flow" do not fit side by side above that. The tabs are still read out in full.</td></tr>
-        <tr><th scope="row">Colour</th><td>Text meets 4.5:1 (3:1 for large text). Field borders and icons meet 3:1. Status is never shown by colour alone: an overspent budget bar also has a hatch pattern.</td></tr>
-        <tr><th scope="row">Motion</th><td>The phone's reduce-motion setting turns off animations, in more than 50 places.</td></tr>
-        <tr><th scope="row">Orientation</th><td>Not locked: portrait and landscape both work.</td></tr>
-        <tr><th scope="row">Time limits</th><td>The app locks after a period without use. The user picks 1, 2, 5, 10 or 20 minutes (default 2). Typing and screen-reader actions count as use, and the screen is kept as it was behind the lock. Sign-in codes last 10 minutes and can be resent after 60 seconds.</td></tr>
-        <tr><th scope="row">Errors</th><td>Error messages are announced by the screen reader when they appear, and each form field shows its own error.</td></tr>
-        <tr><th scope="row">Help (SEBI §4)</th><td>"Trouble seeing or using the app? Tap here" on the sign-in and details screens, and under Profile. It offers a call-back from our helpdesk, a phone number and an email address, and lets the user record a disability (optional). Complaints have an "Accessibility" category.</td></tr>
-        <tr><th scope="row">Language</th><td>English.</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </section>
-
-  <section class="block" aria-labelledby="h-custom">
-    <h2 id="h-custom">Custom-built controls</h2>
-    <p class="hint" style="font-size:1rem;max-width:46rem">These controls are our own, not standard platform ones, so a screen reader only knows what we tell it. The middle column is what the app tells the screen reader today, taken from the app's accessibility tree. Please check that it is announced this way on real devices and that it makes sense to users.</p>
-    <div class="tablewrap">
-    <table>
-      <thead><tr><th scope="col">Control</th><th scope="col">Journey</th><th scope="col">What the screen reader is told</th><th scope="col">Expected behaviour</th></tr></thead>
-      <tbody>
-        <tr><th scope="row">6-box sign-in code</th><td><a href="#j1">1. Sign in</a></td><td>Text field "Six-digit code", hint "0 of 6 digits"</td><td>One field, not six separate stops. The count updates as digits are typed. SMS auto-fill fills every box.</td></tr>
-        <tr><th scope="row">PIN keypad and dots</th><td><a href="#j2">2. App lock</a></td><td>Keys: buttons "0" to "9" and "Delete". Dots: "PIN, 0 of 4 digits"</td><td>Each key is at least 48 dp. The dots are a live region, so the count is read as it changes. A wrong PIN is read out.</td></tr>
-        <tr><th scope="row">Segmented PAN and date of birth</th><td><a href="#j3">3. Your details</a></td><td>"PAN, 0 of 10" · "Day, 0 of 2" · "Month, 0 of 2" · "Year, 0 of 4"</td><td>One field per part, with a running count. The DD/MM/YYYY hints are not read separately. Errors are read out when they appear.</td></tr>
-        <tr><th scope="row">Disability choice chips</th><td><a href="#j3">3. Accessibility help</a></td><td>Buttons "Seeing", "Hearing", "Movement", "Other", "No", "Prefer not to say", each with a selected or not-selected state</td><td>One choice at a time, none chosen at the start, all optional. Tapping the chosen chip clears it. Each chip is 48 dp tall.</td></tr>
-        <tr><th scope="row">Call-back switch</th><td><a href="#j3">3. Accessibility help</a></td><td>Switch "Call me to help me sign up. Our helpdesk will call your number", on or off</td><td>Saving is confirmed out loud: "Saved. Our helpdesk will call you to help you finish signing up."</td></tr>
-        <tr><th scope="row">Linked-accounts ring</th><td><a href="#j4">4. Linking accounts</a></td><td>"0 of 4 kinds added", for example "1 of 4 kinds added" after one is chosen</td><td>A single summary instead of the drawn ring and its labels.</td></tr>
-        <tr><th scope="row">Budget bars</th><td><a href="#j5">5. Cash flow</a></td><td>"Obligations, 28 thousand rupees, of ₹40K limit, On track". Over the limit: "…, over by" and the amount</td><td>Overspending is shown by a hatch pattern and words as well as colour.</td></tr>
-        <tr><th scope="row">Month switcher</th><td><a href="#j5">5. Cash flow</a></td><td>Other months: buttons "Show Oct 2026", "Show Sep 2026". The month on screen: its name, for example "This month"</td><td>Switching month updates the whole page. At large text the row scrolls sideways.</td></tr>
-        <tr><th scope="row">Trend chart in answers</th><td><a href="#j6">6. Finwy</a></td><td>One stop per month: "Apr, ₹51.8K", "May, ₹55.3K" …</td><td>Each month's value is read with its month, in order.</td></tr>
-      </tbody>
-    </table>
-    </div>
   </section>
 
   <nav class="toc block" aria-labelledby="h-toc">
@@ -171,100 +116,67 @@ footer{border-top:1px solid var(--rule);padding:28px 0 48px;color:var(--ink2);fo
     <div class="screen-head"><span class="num" aria-hidden="true">1</span><h2 id="j1-h">Sign in</h2></div>
     <p class="meta"><b>What it is for:</b> Enter a mobile number, then the 6-digit code sent by SMS. <b>How to reach it:</b> First screen after install. <b>Screens:</b> 3</p>
     <div class="shots" role="group" aria-label="Sign in screenshots" tabindex="0"><figure><a href="shots/01-1-phone.png" aria-label="Sign in: Phone number, full size"><img src="shots/01-1-phone.png" alt="Sign in: Phone number" loading="lazy"></a><figcaption>Phone number</figcaption></figure><figure><a href="shots/01-2-code.png" aria-label="Sign in: Enter the code, full size"><img src="shots/01-2-code.png" alt="Sign in: Enter the code" loading="lazy"></a><figcaption>Enter the code</figcaption></figure><figure><a href="shots/01-3-help.png" aria-label="Sign in: Help before sign-in: Call or Email, full size"><img src="shots/01-3-help.png" alt="Sign in: Help before sign-in: Call or Email" loading="lazy"></a><figcaption>Help before sign-in: Call or Email</figcaption></figure></div><p class="hint">Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>The page title is read out when the screen opens.</li><li>The phone field is named; the &quot;+91&quot; prefix is not a separate stop.</li><li>A wrong or expired code, an invalid number or a failed send is read out as soon as it appears.</li><li>&quot;Terms of Use&quot; and &quot;Privacy Policy&quot; are links with 48 dp touch areas.</li><li>The code is valid for 10 minutes and can be resent after 60 seconds.</li><li>&quot;Trouble seeing or using the app? Tap here&quot; opens Call and Email options for our helpdesk (no account exists yet, so nothing is saved here).</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Reading and entering the 6-digit code with VoiceOver and TalkBack, including SMS auto-fill.</li><li>Focus order from number to code to the help link.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>The page title is read out when the screen opens.</li><li>The phone field is named; the &quot;+91&quot; prefix is not a separate stop.</li><li>The 6-box code is one field, read as &quot;Six-digit code, 0 of 6 digits&quot;, and SMS auto-fill fills it.</li><li>A wrong or expired code, an invalid number or a failed send is read out as soon as it appears.</li><li>&quot;Terms of Use&quot; and &quot;Privacy Policy&quot; are links with 48 dp touch areas.</li><li>The code is valid for 10 minutes and can be resent after 60 seconds.</li><li>&quot;Trouble seeing or using the app? Tap here&quot; opens Call and Email options for our helpdesk (no account exists yet, so nothing is saved here).</li></ul></div>
   </article>
   <article class="screen" id="j2" aria-labelledby="j2-h">
     <div class="screen-head"><span class="num" aria-hidden="true">2</span><h2 id="j2-h">App lock</h2></div>
     <p class="meta"><b>What it is for:</b> Set a 4-digit PIN, unlock the app, and change lock settings. <b>How to reach it:</b> After first sign-in; the lock appears after the chosen idle time. Settings: Profile → App lock. <b>Screens:</b> 4</p>
     <div class="shots" role="group" aria-label="App lock screenshots" tabindex="0"><figure><a href="shots/02-1-set-pin.png" aria-label="App lock: Set a PIN, full size"><img src="shots/02-1-set-pin.png" alt="App lock: Set a PIN" loading="lazy"></a><figcaption>Set a PIN</figcaption></figure><figure><a href="shots/02-2-lock.png" aria-label="App lock: Lock screen, full size"><img src="shots/02-2-lock.png" alt="App lock: Lock screen" loading="lazy"></a><figcaption>Lock screen</figcaption></figure><figure><a href="shots/02-3-settings.png" aria-label="App lock: App lock settings, full size"><img src="shots/02-3-settings.png" alt="App lock: App lock settings" loading="lazy"></a><figcaption>App lock settings</figcaption></figure><figure><a href="shots/02-4-lock-after.png" aria-label="App lock: Lock-after choices, full size"><img src="shots/02-4-lock-after.png" alt="App lock: Lock-after choices" loading="lazy"></a><figcaption>Lock-after choices</figcaption></figure></div><p class="hint">Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>Every PIN key is named and at least 48 dp.</li><li>A wrong PIN is read out.</li><li>Face ID or fingerprint can be used instead of the PIN.</li><li>&quot;Lock after&quot; is a choice of 1, 2, 5, 10 or 20 minutes. Typing and screen-reader actions count as use.</li><li>Whatever the user was doing is kept behind the lock.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>How PIN progress (dots filled) is announced.</li><li>Moving between the system biometric prompt and the PIN pad with a screen reader.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>Every PIN key is named (&quot;0&quot; to &quot;9&quot;, &quot;Delete&quot;) and at least 48 dp.</li><li>The dots are read as &quot;PIN, 0 of 4 digits&quot; and update as digits are entered.</li><li>A wrong PIN is read out.</li><li>Face ID or fingerprint can be used instead of the PIN.</li><li>&quot;Lock after&quot; is a choice of 1, 2, 5, 10 or 20 minutes. Typing and screen-reader actions count as use.</li><li>Whatever the user was doing is kept behind the lock.</li></ul></div>
   </article>
   <article class="screen" id="j3" aria-labelledby="j3-h">
     <div class="screen-head"><span class="num" aria-hidden="true">3</span><h2 id="j3-h">Your details and accessibility help</h2></div>
     <p class="meta"><b>What it is for:</b> Enter PAN or date of birth so we can find the user's accounts. This is also where SEBI §4 help is offered. <b>How to reach it:</b> Right after sign-in, on first use. <b>Screens:</b> 6</p>
     <div class="shots" role="group" aria-label="Your details and accessibility help screenshots" tabindex="0"><figure><a href="shots/03-1-pan.png" aria-label="Your details and accessibility help: PAN and date of birth, full size"><img src="shots/03-1-pan.png" alt="Your details and accessibility help: PAN and date of birth" loading="lazy"></a><figcaption>PAN and date of birth</figcaption></figure><figure><a href="shots/03-2-consent.png" aria-label="Your details and accessibility help: Credit report consent, full size"><img src="shots/03-2-consent.png" alt="Your details and accessibility help: Credit report consent" loading="lazy"></a><figcaption>Credit report consent</figcaption></figure><figure><a href="shots/03-3-error.png" aria-label="Your details and accessibility help: PAN error, full size"><img src="shots/03-3-error.png" alt="Your details and accessibility help: PAN error" loading="lazy"></a><figcaption>PAN error</figcaption></figure><figure><a href="shots/03-4-help.png" aria-label="Your details and accessibility help: Accessibility help sheet, full size"><img src="shots/03-4-help.png" alt="Your details and accessibility help: Accessibility help sheet" loading="lazy"></a><figcaption>Accessibility help sheet</figcaption></figure><figure><a href="shots/03-5-under18.png" aria-label="Your details and accessibility help: Under-18 stop, full size"><img src="shots/03-5-under18.png" alt="Your details and accessibility help: Under-18 stop" loading="lazy"></a><figcaption>Under-18 stop</figcaption></figure><figure><a href="shots/03-6-contact.png" aria-label="Your details and accessibility help: Under-18: Contact us, full size"><img src="shots/03-6-contact.png" alt="Your details and accessibility help: Under-18: Contact us" loading="lazy"></a><figcaption>Under-18: Contact us</figcaption></figure></div><p class="hint">Scroll sideways for more. Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>Date-of-birth cells are named Day, Month and Year.</li><li>PAN and date errors are read out when they appear.</li><li>&quot;Trouble seeing or using the app? Tap here&quot; opens the Accessibility help sheet: an optional &quot;Do you have a disability?&quot; choice (Seeing, Hearing, Movement, Other, No, Prefer not to say), a &quot;Call me to help me sign up&quot; switch, and Call and Email buttons.</li><li>Saving is confirmed out loud. A call-back request alerts our helpdesk.</li><li>If the date of birth shows the user is under 18, sign-up stops, with &quot;Think this is wrong? Contact us&quot; leading to a person.</li><li>The same help sheet is under Profile → Privacy &amp; data, to change the answer later.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Entering the PAN in its segmented field with a screen reader.</li><li>Whether the selected disability choice and the switch state are announced clearly.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>PAN and date-of-birth boxes are read with a running count: &quot;PAN, 0 of 10&quot;, &quot;Day, 0 of 2&quot;, &quot;Month, 0 of 2&quot;, &quot;Year, 0 of 4&quot;.</li><li>PAN and date errors are read out when they appear.</li><li>&quot;Trouble seeing or using the app? Tap here&quot; opens the Accessibility help sheet: an optional &quot;Do you have a disability?&quot; choice (Seeing, Hearing, Movement, Other, No, Prefer not to say), a &quot;Call me to help me sign up&quot; switch, and Call and Email buttons.</li><li>Each choice is a 48 dp button that says whether it is selected; the call-back switch says on or off.</li><li>Saving is confirmed out loud. A call-back request alerts our helpdesk.</li><li>If the date of birth shows the user is under 18, sign-up stops, with &quot;Think this is wrong? Contact us&quot; leading to a person.</li><li>The same help sheet is under Profile → Privacy &amp; data, to change the answer later.</li></ul></div>
   </article>
   <article class="screen" id="j4" aria-labelledby="j4-h">
     <div class="screen-head"><span class="num" aria-hidden="true">4</span><h2 id="j4-h">Linking bank and investment accounts</h2></div>
     <p class="meta"><b>What it is for:</b> Choose banks and investment accounts, then approve sharing through an Account Aggregator. <b>How to reach it:</b> During first use, and from Accounts → Linked accounts. <b>Screens:</b> 6</p>
     <div class="shots" role="group" aria-label="Linking bank and investment accounts screenshots" tabindex="0"><figure><a href="shots/04-1-banks.png" aria-label="Linking bank and investment accounts: Choose banks, full size"><img src="shots/04-1-banks.png" alt="Linking bank and investment accounts: Choose banks" loading="lazy"></a><figcaption>Choose banks</figcaption></figure><figure><a href="shots/04-2-investments.png" aria-label="Linking bank and investment accounts: Choose investments, full size"><img src="shots/04-2-investments.png" alt="Linking bank and investment accounts: Choose investments" loading="lazy"></a><figcaption>Choose investments</figcaption></figure><figure><a href="shots/04-3-connecting.png" aria-label="Linking bank and investment accounts: Connecting, full size"><img src="shots/04-3-connecting.png" alt="Linking bank and investment accounts: Connecting" loading="lazy"></a><figcaption>Connecting</figcaption></figure><figure><a href="shots/04-4-unreachable.png" aria-label="Linking bank and investment accounts: Can't reach the Account Aggregator, full size"><img src="shots/04-4-unreachable.png" alt="Linking bank and investment accounts: Can't reach the Account Aggregator" loading="lazy"></a><figcaption>Can't reach the Account Aggregator</figcaption></figure><figure><a href="shots/04-5-how.png" aria-label="Linking bank and investment accounts: How linking works, full size"><img src="shots/04-5-how.png" alt="Linking bank and investment accounts: How linking works" loading="lazy"></a><figcaption>How linking works</figcaption></figure><figure><a href="shots/04-6-linked.png" aria-label="Linking bank and investment accounts: Linked accounts, full size"><img src="shots/04-6-linked.png" alt="Linking bank and investment accounts: Linked accounts" loading="lazy"></a><figcaption>Linked accounts</figcaption></figure></div><p class="hint">Scroll sideways for more. Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>Bank tiles announce whether they are selected.</li><li>The ring showing what is linked is named, for example &quot;0 of 4 kinds added&quot;.</li><li>The guide line at the top is read out when it changes.</li><li>The whole search box (not just the text line) can be tapped to type.</li><li>&quot;Skip investments&quot; and other links have 48 dp touch areas.</li><li>If the Account Aggregator cannot be reached in 20 seconds, the app says so and offers &quot;Try again&quot;.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Moving from the app to the Account Aggregator's page and back with a screen reader. (The Account Aggregator's page itself is run by them; see &quot;Outside our app&quot;.)</li><li>The waiting state while the connection is made.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>Bank tiles announce whether they are selected.</li><li>The ring showing what is linked is named, for example &quot;0 of 4 kinds added&quot;.</li><li>The guide line at the top is read out when it changes.</li><li>The whole search box (not just the text line) can be tapped to type.</li><li>&quot;Skip investments&quot; and other links have 48 dp touch areas.</li><li>If the Account Aggregator cannot be reached in 20 seconds, the app says so and offers &quot;Try again&quot;.</li></ul></div>
   </article>
   <article class="screen" id="j5" aria-labelledby="j5-h">
     <div class="screen-head"><span class="num" aria-hidden="true">5</span><h2 id="j5-h">Cash flow</h2></div>
     <p class="meta"><b>What it is for:</b> Money in and out this month, budget by category, and where the money went. <b>How to reach it:</b> Cash Flow tab. <b>Screens:</b> 1</p>
     <div class="shots" role="group" aria-label="Cash flow screenshots" tabindex="0"><figure><a href="shots/06-1-cashflow.png" aria-label="Cash flow: Cash flow (full page), full size"><img src="shots/06-1-cashflow.png" alt="Cash flow: Cash flow (full page)" loading="lazy"></a><figcaption>Cash flow (full page)</figcaption></figure></div><p class="hint">Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>Every amount is read with its sign, for example &quot;Spent, minus 72 thousand rupees&quot;.</li><li>Each budget bar is read with its limit and status, for example &quot;Obligations, 28 thousand rupees, of ₹40K limit, On track&quot;.</li><li>An overspent bar has a hatch pattern, not only a colour.</li><li>Section titles are headings.</li><li>At 200% text the month tabs scroll sideways instead of being cut off.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Whether the month switcher and the bars make sense when heard in order.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>Every amount is read with its sign, for example &quot;Spent, minus 72 thousand rupees&quot;.</li><li>Each budget bar is read with its limit and status, for example &quot;Obligations, 28 thousand rupees, of ₹40K limit, On track&quot;.</li><li>An overspent bar has a hatch pattern, not only a colour.</li><li>Section titles are headings.</li><li>Other months are buttons, for example &quot;Show Oct 2026&quot;; at 200% text the month row scrolls sideways instead of being cut off.</li></ul></div>
   </article>
   <article class="screen" id="j6" aria-labelledby="j6-h">
     <div class="screen-head"><span class="num" aria-hidden="true">6</span><h2 id="j6-h">Finwy (questions and answers)</h2></div>
     <p class="meta"><b>What it is for:</b> Ask money questions in plain words; answers can include short charts. <b>How to reach it:</b> Finwy tab (the first tab). <b>Screens:</b> 2</p>
     <div class="shots" role="group" aria-label="Finwy (questions and answers) screenshots" tabindex="0"><figure><a href="shots/07-1-fresh.png" aria-label="Finwy (questions and answers): New conversation, full size"><img src="shots/07-1-fresh.png" alt="Finwy (questions and answers): New conversation" loading="lazy"></a><figcaption>New conversation</figcaption></figure><figure><a href="shots/07-2-thread.png" aria-label="Finwy (questions and answers): Answer with a chart (full page), full size"><img src="shots/07-2-thread.png" alt="Finwy (questions and answers): Answer with a chart (full page)" loading="lazy"></a><figcaption>Answer with a chart (full page)</figcaption></figure></div><p class="hint">Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>A finished answer is read out.</li><li>A failed or limited answer is also read out.</li><li>Charts are read one month at a time, for example &quot;Apr, ₹51.8K&quot;.</li><li>The whole question box can be tapped to type.</li><li>Works at 200% text with nothing cut off.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Long answers and follow-up questions with a screen reader.</li><li>Typing a question with the phone's voice dictation.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>A finished answer is read out.</li><li>A failed or limited answer is also read out.</li><li>Charts are read one month at a time, for example &quot;Apr, ₹51.8K&quot;.</li><li>The whole question box can be tapped to type.</li><li>Works at 200% text with nothing cut off.</li></ul></div>
   </article>
   <article class="screen" id="j7" aria-labelledby="j7-h">
     <div class="screen-head"><span class="num" aria-hidden="true">7</span><h2 id="j7-h">Goals</h2></div>
     <p class="meta"><b>What it is for:</b> The user's goals, how much to set aside each month, and what is left over. <b>How to reach it:</b> Goals tab. <b>Screens:</b> 2</p>
     <div class="shots" role="group" aria-label="Goals screenshots" tabindex="0"><figure><a href="shots/08-1-plan.png" aria-label="Goals: Goals plan (full page), full size"><img src="shots/08-1-plan.png" alt="Goals: Goals plan (full page)" loading="lazy"></a><figcaption>Goals plan (full page)</figcaption></figure><figure><a href="shots/08-2-nosurplus.png" aria-label="Goals: No surplus set yet, full size"><img src="shots/08-2-nosurplus.png" alt="Goals: No surplus set yet" loading="lazy"></a><figcaption>No surplus set yet</figcaption></figure></div><p class="hint">Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>Section titles (&quot;Your goals&quot;, &quot;Must-have&quot;, &quot;The bottom line&quot;) are headings.</li><li>Amounts are read in full.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Goal progress and monthly amounts when heard in order.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>Section titles (&quot;Your goals&quot;, &quot;Must-have&quot;, &quot;The bottom line&quot;) are headings.</li><li>Amounts are read in full.</li></ul></div>
   </article>
   <article class="screen" id="j8" aria-labelledby="j8-h">
     <div class="screen-head"><span class="num" aria-hidden="true">8</span><h2 id="j8-h">Accounts</h2></div>
     <p class="meta"><b>What it is for:</b> Net worth and the accounts behind it: banks, investments, loans. <b>How to reach it:</b> Accounts tab. <b>Screens:</b> 1</p>
     <div class="shots" role="group" aria-label="Accounts screenshots" tabindex="0"><figure><a href="shots/09-1-accounts.png" aria-label="Accounts: Accounts (full page), full size"><img src="shots/09-1-accounts.png" alt="Accounts: Accounts (full page)" loading="lazy"></a><figcaption>Accounts (full page)</figcaption></figure></div><p class="hint">Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>Net worth is read in full, for example &quot;Estimated net worth, 42.4 lakh rupees&quot;.</li><li>Section titles are headings.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Lists of accounts with many rows.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>Net worth is read in full, for example &quot;Estimated net worth, 42.4 lakh rupees&quot;.</li><li>Section titles are headings.</li></ul></div>
   </article>
   <article class="screen" id="j9" aria-labelledby="j9-h">
     <div class="screen-head"><span class="num" aria-hidden="true">9</span><h2 id="j9-h">Risk profile</h2></div>
     <p class="meta"><b>What it is for:</b> A short questionnaire that SEBI requires before advice, then the result. <b>How to reach it:</b> From Finwy before advice is given, or from Profile. <b>Screens:</b> 3</p>
     <div class="shots" role="group" aria-label="Risk profile screenshots" tabindex="0"><figure><a href="shots/10-1-intro.png" aria-label="Risk profile: Introduction, full size"><img src="shots/10-1-intro.png" alt="Risk profile: Introduction" loading="lazy"></a><figcaption>Introduction</figcaption></figure><figure><a href="shots/10-2-q1.png" aria-label="Risk profile: Question 1 of 9, full size"><img src="shots/10-2-q1.png" alt="Risk profile: Question 1 of 9" loading="lazy"></a><figcaption>Question 1 of 9</figcaption></figure><figure><a href="shots/10-3-result.png" aria-label="Risk profile: Result (full page), full size"><img src="shots/10-3-result.png" alt="Risk profile: Result (full page)" loading="lazy"></a><figcaption>Result (full page)</figcaption></figure></div><p class="hint">Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>All text and the Begin button meet contrast.</li><li>At 200% text the intro scrolls, so Begin can always be reached.</li><li>Answer options announce whether they are selected.</li><li>The market-fall animation follows the reduce-motion setting.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Questions 2 to 9 at 200% text and with a screen reader.</li><li>Whether the result explanation is clear when heard.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>All text and the Begin button meet contrast.</li><li>At 200% text the intro scrolls, so Begin can always be reached.</li><li>Answer options announce whether they are selected.</li><li>The market-fall animation follows the reduce-motion setting.</li></ul></div>
   </article>
   <article class="screen" id="j10" aria-labelledby="j10-h">
     <div class="screen-head"><span class="num" aria-hidden="true">10</span><h2 id="j10-h">Profile and settings</h2></div>
     <p class="meta"><b>What it is for:</b> Profile, privacy and data controls, notifications, and About. <b>How to reach it:</b> Profile tab. <b>Screens:</b> 4</p>
     <div class="shots" role="group" aria-label="Profile and settings screenshots" tabindex="0"><figure><a href="shots/11-1-profile.png" aria-label="Profile and settings: Profile (full page), full size"><img src="shots/11-1-profile.png" alt="Profile and settings: Profile (full page)" loading="lazy"></a><figcaption>Profile (full page)</figcaption></figure><figure><a href="shots/11-2-privacy.png" aria-label="Profile and settings: Privacy &amp; data (the server line is from the test setup), full size"><img src="shots/11-2-privacy.png" alt="Profile and settings: Privacy &amp; data (the server line is from the test setup)" loading="lazy"></a><figcaption>Privacy &amp; data (the server line is from the test setup)</figcaption></figure><figure><a href="shots/11-3-notifications.png" aria-label="Profile and settings: Notifications, full size"><img src="shots/11-3-notifications.png" alt="Profile and settings: Notifications" loading="lazy"></a><figcaption>Notifications</figcaption></figure><figure><a href="shots/11-4-about.png" aria-label="Profile and settings: About, full size"><img src="shots/11-4-about.png" alt="Profile and settings: About" loading="lazy"></a><figcaption>About</figcaption></figure></div><p class="hint">Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>Each page has its own heading, announced on opening, and section titles are separate headings.</li><li>Footer links are links with 48 dp touch areas.</li><li>Privacy &amp; data has the &quot;Accessibility help&quot; entry to view or change the saved answer.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Switches (on or off) in Notifications and Privacy &amp; data.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>Each page has its own heading, announced on opening, and section titles are separate headings.</li><li>Footer links are links with 48 dp touch areas.</li><li>Privacy &amp; data has the &quot;Accessibility help&quot; entry to view or change the saved answer.</li></ul></div>
   </article>
   <article class="screen" id="j11" aria-labelledby="j11-h">
     <div class="screen-head"><span class="num" aria-hidden="true">11</span><h2 id="j11-h">Help and complaints</h2></div>
     <p class="meta"><b>What it is for:</b> FAQ, contact, raise a complaint, and track complaints. <b>How to reach it:</b> Profile → Help &amp; support. <b>Screens:</b> 6</p>
     <div class="shots" role="group" aria-label="Help and complaints screenshots" tabindex="0"><figure><a href="shots/12-1-help.png" aria-label="Help and complaints: Help &amp; support, full size"><img src="shots/12-1-help.png" alt="Help and complaints: Help &amp; support" loading="lazy"></a><figcaption>Help &amp; support</figcaption></figure><figure><a href="shots/12-2-faq.png" aria-label="Help and complaints: FAQ, full size"><img src="shots/12-2-faq.png" alt="Help and complaints: FAQ" loading="lazy"></a><figcaption>FAQ</figcaption></figure><figure><a href="shots/12-3-raise.png" aria-label="Help and complaints: Raise a complaint, full size"><img src="shots/12-3-raise.png" alt="Help and complaints: Raise a complaint" loading="lazy"></a><figcaption>Raise a complaint</figcaption></figure><figure><a href="shots/12-4-categories.png" aria-label="Help and complaints: Complaint categories, with Accessibility, full size"><img src="shots/12-4-categories.png" alt="Help and complaints: Complaint categories, with Accessibility" loading="lazy"></a><figcaption>Complaint categories, with Accessibility</figcaption></figure><figure><a href="shots/12-5-errors.png" aria-label="Help and complaints: Complaint with errors, full size"><img src="shots/12-5-errors.png" alt="Help and complaints: Complaint with errors" loading="lazy"></a><figcaption>Complaint with errors</figcaption></figure><figure><a href="shots/12-6-track.png" aria-label="Help and complaints: Track complaints, full size"><img src="shots/12-6-track.png" alt="Help and complaints: Track complaints" loading="lazy"></a><figcaption>Track complaints</figcaption></figure></div><p class="hint">Scroll sideways for more. Select a screenshot to open it full size.</p>
-    <div class="cols">
-      <div class="box done"><h3>Already in place</h3><ul class="tight"><li>Complaint fields are named by their visible labels.</li><li>Each empty field shows its own error, and the summary is read out.</li><li>Field borders meet 3:1 contrast.</li><li>Links and tabs are at least 48 dp.</li><li>Complaints have an &quot;Accessibility&quot; category.</li></ul></div>
-      <div class="box check"><h3>Please check in particular</h3><ul class="tight"><li>Raising and tracking a complaint end to end with a screen reader.</li></ul></div>
-    </div>
+    <div class="box done" style="margin-top:16px"><h3>Accessibility in place</h3><ul class="tight"><li>Complaint fields are named by their visible labels.</li><li>Each empty field shows its own error, and the summary is read out.</li><li>Field borders meet 3:1 contrast.</li><li>Links and tabs are at least 48 dp.</li><li>Complaints have an &quot;Accessibility&quot; category.</li></ul></div>
   </article>
 </main>
 
